@@ -1,0 +1,295 @@
+/*
+ * Bookmarks.java
+ *
+ * Created on 18.09.2005, 0:03
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2009, Alexej Kotov (aqent), http://bombusmod-qd.wen.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
+package Conference;
+import Client.*;
+import Conference.affiliation.Affiliations;
+//#ifdef SERVICE_DISCOVERY
+import ServiceDiscovery.ServiceDiscovery;
+//#endif
+//#ifndef MENU_LISTENER
+//# import javax.microedition.lcdui.CommandListener;
+//# import javax.microedition.lcdui.Command;
+//#else
+import Menu.MenuListener;
+import Menu.Command;
+import Menu.MyMenu;
+//#endif
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Display;
+import locale.SR;
+import ui.*;
+import java.util.*;
+import com.alsutton.jabber.*;
+import ui.MainBar;
+import ui.controls.AlertBox;
+//#ifdef GRAPHICS_MENU        
+//# import ui.GMenu;
+//#endif   
+/**
+ *
+ * @author EvgS,aqent
+ */
+public class Bookmarks 
+        extends VirtualList 
+        implements
+//#ifndef MENU_LISTENER
+//#         CommandListener
+//#else
+        MenuListener
+//#endif
+    {   
+    
+    private BookmarkItem toAdd;
+    
+    private StaticData sd = StaticData.getInstance();
+    private Config cf=Config.getInstance();
+    
+    private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
+    private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
+    private Command cmdAdvJoin=new Command (SR.MS_EDIT_JOIN, Command.SCREEN, 2);
+    //private Command cmdDoAutoJoin=new Command(SR.MS_DO_AUTOJOIN, Command.SCREEN, 3);
+    private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 4);
+    private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 5);
+//#ifdef SERVICE_DISCOVERY
+    private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 6);
+//#endif
+    private Command cmdUp=new Command (SR.MS_MOVE_UP, Command.SCREEN, 7);
+    private Command cmdDwn=new Command (SR.MS_MOVE_DOWN, Command.SCREEN, 8);
+    private Command cmdSort=new Command (SR.MS_SORT, Command.SCREEN, 9);
+    private Command cmdSave=new Command (SR.MS_SAVE_LIST, Command.SCREEN, 10);
+
+    private Command cmdRoomOwners=new Command (SR.MS_OWNERS, Command.SCREEN, 11);
+    private Command cmdRoomAdmins=new Command (SR.MS_ADMINS, Command.SCREEN, 12);
+    private Command cmdRoomMembers=new Command (SR.MS_MEMBERS, Command.SCREEN, 13);
+    private Command cmdRoomBanned=new Command (SR.MS_BANNED, Command.SCREEN, 14);
+    
+    private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 15);
+
+    private Command cmdMyService=new Command(SR.MS_SERVICE, Command.SCREEN, 31);
+    
+    JabberStream stream=sd.roster.theStream;
+    /** Creates a new instance of Bookmarks */
+    public Bookmarks(Display display, Displayable pView, BookmarkItem toAdd) {
+        super ();
+        if (getItemCount()==0 && toAdd==null) {
+            new ConferenceForm(display, pView);
+            return;
+        }
+
+        this.toAdd=toAdd;
+
+        if (toAdd!=null) 
+            addBookmark();
+        
+        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));//for title updating after "add bookmark"
+        
+        commandState();
+
+        setCommandListener(this);
+	attachDisplay(display);
+        this.parentView=pView;
+    }
+    
+    public void commandState() {
+//#ifdef MENU_LISTENER
+        menuCommands.removeAllElements();
+        cmdfirstList.removeAllElements();
+        cmdsecondList.removeAllElements();
+        cmdThirdList.removeAllElements();
+//#endif
+        addCommand(cmdJoin); cmdJoin.setImg(0x60);
+        addCommand(cmdAdvJoin); cmdAdvJoin.setImg(0x61);
+	addCommand(cmdNew); cmdNew.setImg(0x62);
+        addCommand(cmdUp); cmdUp.setImg(0x45);
+        addCommand(cmdDwn); cmdDwn.setImg(0x46);
+        addCommand(cmdSave); cmdSave.setImg(0x44);
+        
+       addCommand(cmdMyService); cmdMyService.setImg(0x27); 
+        addInCommand(3,cmdSort); cmdSort.setImg(0x64);
+        addInCommand(3,cmdDel); cmdDel.setImg(0x41);
+        addInCommand(3,cmdRoomOwners); cmdRoomOwners.setImg(0x66);
+        addInCommand(3,cmdRoomAdmins); cmdRoomAdmins.setImg(0x67);
+        addInCommand(3,cmdRoomMembers); cmdRoomMembers.setImg(0x70);
+        addInCommand(3,cmdRoomBanned); cmdRoomBanned.setImg(0x71);
+        addInCommand(3,cmdConfigure); cmdConfigure.setImg(0x72);
+//#ifdef SERVICE_DISCOVERY
+        addCommand(cmdDisco); cmdDisco.setImg(0x65);
+//#endif             
+//#ifndef GRAPHICS_MENU        
+     addCommand(cmdCancel);
+//#endif     
+    }
+
+    protected int getItemCount() { 
+        Vector bookmarks=sd.roster.bookmarks;
+        return (bookmarks==null)?0: bookmarks.size(); 
+    }
+    
+    protected VirtualElement getItemRef(int index) { 
+        return (VirtualElement) sd.roster.bookmarks.elementAt(index); 
+    }
+    
+    public void loadBookmarks() {
+    }
+
+    private void addBookmark() {
+        if (toAdd!=null) {
+            Vector bm=sd.roster.bookmarks;
+            bm.addElement(toAdd);
+            //sort(bm);
+            saveBookmarks();
+        }
+    }
+    
+    public void eventOk(){
+        if (getItemCount()==0) 
+            return;
+        
+        BookmarkItem join=(BookmarkItem)getFocusedObject();
+        if (join==null) 
+            return;
+        if (join.isUrl) 
+            return;
+        ConferenceForm.join(join.desc, join.getJidNick(), join.password, cf.confMessageCount);
+        display.setCurrent(sd.roster);
+    }
+    
+    public void commandAction(Command c, Displayable d){
+        if (c==cmdCancel) exitBookmarks();
+        if (c==cmdNew) { 
+            new ConferenceForm(display, this);
+            return;
+        }
+        if (c==cmdJoin) eventOk();
+        
+	if (getItemCount()==0) return;
+        String roomJid=((BookmarkItem)getFocusedObject()).getJid();
+
+        if (c==cmdAdvJoin) {
+            BookmarkItem join=(BookmarkItem)getFocusedObject();
+            new ConferenceForm(display, this, join, cursor);
+        } else if (c==cmdDel) {
+            deleteBookmark();
+            setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));
+            return;
+        }
+//#ifdef SERVICE_DISCOVERY
+        else if (c==cmdDisco) new ServiceDiscovery(display, roomJid, null, false);
+//#endif
+        else if (c==cmdConfigure) new QueryConfigForm(display,roomJid);
+        else if (c==cmdRoomOwners) new Affiliations(display, this, roomJid, (short)1);  
+        else if (c==cmdRoomAdmins) new Affiliations(display, this, roomJid, (short)2);  
+        else if (c==cmdRoomMembers) new Affiliations(display, this, roomJid, (short)3);  
+        else if (c==cmdRoomBanned) new Affiliations(display, this, roomJid, (short)4);  
+        else if (c==cmdSort) sort(sd.roster.bookmarks);
+        /*else if (c==cmdDoAutoJoin) {
+            for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements();) {
+                BookmarkItem bm=(BookmarkItem) e.nextElement();
+                if (bm.autojoin) 
+                    ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
+            }
+        }*/
+        
+        else if (c==cmdSave) saveBookmarks();
+        else if (c==cmdUp) { move(-1); keyUp(); }
+        else if (c==cmdDwn) { move(+1); keyDwn(); }
+        redraw();
+    }
+    
+    private void deleteBookmark(){
+        BookmarkItem del=(BookmarkItem)getFocusedObject();
+        if (del==null) 
+            return;
+        if (del.isUrl) 
+            return;
+
+        sd.roster.bookmarks.removeElement(del);
+        if (getItemCount()<=cursor) 
+            moveCursorEnd();
+        saveBookmarks();
+        redraw();
+    }
+    
+    private void saveBookmarks() {
+        new BookmarkQuery(BookmarkQuery.SAVE);
+    }
+
+    private void exitBookmarks(){
+        display.setCurrent(sd.roster);
+    }
+    
+    public void move(int offset){
+        try {
+            int index=cursor;
+            BookmarkItem p1=(BookmarkItem)getItemRef(index);
+            BookmarkItem p2=(BookmarkItem)getItemRef(index+offset);
+            
+            sd.roster.bookmarks.setElementAt(p1, index+offset);
+            sd.roster.bookmarks.setElementAt(p2, index);
+        } catch (Exception e) {/* IndexOutOfBounds */}
+    }
+
+    public void userKeyPressed(int keyCode) {
+        super.userKeyPressed(keyCode);
+
+        switch (keyCode) {
+            case KEY_NUM4:
+                pageLeft(); break;
+            case KEY_NUM6:
+                pageRight(); break;
+        }
+    }
+    
+    protected void keyClear(){
+        new AlertBox(SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), display, this) {
+            public void yes() {
+                deleteBookmark();
+            }
+            public void no() {}
+        };
+    }
+        
+//#ifdef MENU_LISTENER
+    
+//#ifdef GRAPHICS_MENU        
+//#     public int showGraphicsMenu() {
+//#         commandState();
+//#         new GMenu(display, parentView, this, null, menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);      
+//#         GMenuConfig.getInstance().itemGrMenu=GMenu.BOOKMARKS;        
+//#         return GMenu.BOOKMARKS;
+//#     }
+//#else
+    public void showMenu() {
+        commandState();
+        new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null, menuCommands);
+    }  
+//#endif      
+
+//#endif
+}

@@ -1,0 +1,250 @@
+/*
+ * PepListener.java
+ *
+ * Created on 30.04.2008, 21:37
+ *
+ * Copyright (c) 2005-2007, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2009, Alexej Kotov (aqent), http://bombusmod-qd.wen.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+//#ifdef PEP
+//# package xmpp.extensions;
+//# 
+//# import Client.*;
+//# import Mood.Moods;
+//# import com.alsutton.jabber.*; 
+//# import com.alsutton.jabber.datablocks.*;
+//# import java.util.*;
+//# import locale.SR;
+//# 
+//# public class PepListener implements JabberBlockListener{
+//#ifdef PLUGINS
+//#     public static String plugin = new String("PLUGIN_PEP");
+//#endif
+//#     /** Singleton */
+//#     public static PepListener instance;
+//#     
+//#     public static PepListener getInstance() {
+//#         if (instance==null) instance=new PepListener();
+//#         return instance;
+//#     }
+//#    
+//#     StaticData sd = StaticData.getInstance();
+//#     Config cf = Config.getInstance();
+//#     
+//#     /** Creates a new instance of PepListener */
+//#     public PepListener() { }
+//#     
+//#     public void addBlockListener() {
+//#         sd.roster.theStream.addBlockListener(instance);
+//#     }
+//#     
+//#      public void removeBlockListener() {
+//#         sd.roster.theStream.cancelBlockListener(instance);
+//#     }   
+//# 
+//#     public int blockArrived(JabberDataBlock data) {
+//#         if (!(data instanceof Message)) return BLOCK_REJECTED;
+//#         //if (!data.getTypeAttribute().equals("headline")) return BLOCK_REJECTED;
+//#         
+//#         String from=data.getAttribute("from");
+//#         String id=null;
+//#         StringBuffer result=new StringBuffer();
+//#         boolean  tuneVaule=false;
+//#         int moodIndex=-1;        
+//#         String tag=null;
+//#         String moodText = "";
+//#         String activity_name="";
+//# 
+//#         JabberDataBlock event=data.findNamespace("event", "http://jabber.org/protocol/pubsub#event");
+//#         if (event==null) {         
+//#             return BLOCK_REJECTED;
+//#         }
+//#         
+//# 
+//#         String type="";
+//#         
+//#         boolean hasActivity=false;
+//#         if (cf.rcvactivity) {
+//#             JabberDataBlock activity=extractEvent(event, "activity", "http://jabber.org/protocol/activity");
+//#             if (activity!=null) {
+//#                 tag=null;
+//#                 String activityText=null;
+//#                 try {
+//#                     for (Enumeration e=activity.getChildBlocks().elements(); e.hasMoreElements();) {
+//#                         JabberDataBlock child=(JabberDataBlock)e.nextElement();
+//#                         tag=child.getTagName();
+//#                         if(locale.Activity.getIconIndex(tag)>-1){
+//#                            activity_name = tag;
+//#                         }
+//#                         tag=child.getTagName();
+//#                         if (tag.equals("text")) continue;
+//#                         result.append(locale.Activity.loadString(tag));
+//#                         if (child.getChildBlocks()!=null){
+//#                             activity_name =  ((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName();
+//#                             result.append(": ").append(
+//#                                     locale.Activity.loadString(
+//#                                         ((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName()
+//#                                         )
+//#                                     );
+//#                         }
+//#                         id=activity.getParent().getAttribute("id");
+//#                     }
+//#                 } catch (Exception ex) { }
+//# 
+//#                 activityText=activity.getChildBlockText("text");
+//#                 if (activityText!=null){
+//#                     if (activityText.length()>0) {
+//#                         result.append("(")
+//#                                 .append(activityText)
+//#                                 .append(")");
+//#                     }
+//#                 }
+//#                 hasActivity=true;
+//# 
+//#ifdef DEBUG
+//#             System.out.println(from+": "+result.toString());
+//#endif
+//#                 type=SR.MS_USERACTIVITY;
+//#             }
+//#         }
+//#         
+//# 
+//#         boolean  hasTune=false;
+//#         if (cf.rcvtune) {
+//#             JabberDataBlock tune=extractEvent(event, "tune", "http://jabber.org/protocol/tune");
+//#             if (tune!=null) {
+//#                 if (tune.getChildBlocks()==null)
+//#                     result.append("(silence.No music)");
+//#                 else {
+//#                     String src=tune.getChildBlockText("source");
+//#                     String len=tune.getChildBlockText("length");
+//#                     String track=tune.getChildBlockText("track");
+//#                     
+//#                     if (track.length()>0) {
+//#                         result.append(track)
+//#                         .append(").");
+//#                     }                     
+//#                     
+//#                     result.append(tune.getChildBlockText("title"))
+//#                     .append(" - ")
+//#                     .append(tune.getChildBlockText("artist"));
+//# 
+//#                     if (src.length()>0) {
+//#                         result.append(" (")
+//#                         .append(src)
+//#                         .append(')');
+//#                     }
+//#                     hasTune=true;
+//#                 }
+//#ifdef DEBUG
+//#             System.out.println(from+": "+result.toString());
+//#endif
+//#                 type=SR.MS_USERTUNE;
+//#             }
+//#         }
+//#         moodIndex=-1;
+//#         JabberDataBlock mood=null;
+//#         moodText=null;
+//#         tag=null;
+//#         boolean hasMood = false;
+//#         
+//#         if (cf.sndrcvmood) {
+//#             mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
+//#             if (mood!=null) {
+//#                 try {
+//#                     for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
+//#                         JabberDataBlock child=(JabberDataBlock)e.nextElement();
+//#                         tag=child.getTagName();
+//#                         if (tag.equals("text")) continue;
+//# 
+//#                         moodIndex=Moods.getInstance().getMoodIngex(tag);
+//# 
+//#                         id=mood.getParent().getAttribute("id");
+//#                     }
+//#                 } catch (Exception ex) {
+//#                     moodIndex=Moods.getInstance().getMoodIngex("-");
+//#                 }
+//# 
+//#                 result.append(Moods.getInstance().getMoodLabel(moodIndex));
+//#                 moodText=mood.getChildBlockText("text");
+//#                 if (moodText!=null){
+//#                     if (moodText.length()>0) {
+//#                         result.append("(")
+//#                                 .append(moodText)
+//#                                 .append(")");
+//#                     }
+//#                 }
+//#                 hasMood = true;
+//#ifdef DEBUG
+//#             System.out.println(from+": "+result.toString());
+//#endif
+//#                 type=SR.MS_USERMOOD;
+//#             }
+//#         }
+//# 
+//#         Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, result.toString());
+//#         
+//#         Vector hContacts=sd.roster.getHContacts();
+//#         synchronized (hContacts) {
+//#             Jid j=new Jid(from);
+//#             for (Enumeration e=hContacts.elements();e.hasMoreElements();){
+//#                 Contact c=(Contact)e.nextElement();
+//#                     if (c.jid.equals(j, false)) {              
+//#                     if (hasMood) {
+//#                         c.pepMood=moodIndex;
+//#                         c.pepMoodName=Moods.getInstance().getMoodLabel(moodIndex);
+//#                         c.pepMoodText=moodText;
+//#                         
+//#                         if (c.getGroupType()==Groups.TYPE_SELF) {
+//#                             if (id!=null) Moods.getInstance().myMoodId=id;
+//#                             Moods.getInstance().myMoodName=tag;
+//#                             Moods.getInstance().myMoodName=moodText;
+//#                         }
+//#                     }
+//#                     if (hasActivity) {
+//#                         c.activity=result.toString();
+//#                         c.activ = locale.Activity.getIconIndex(activity_name);
+//#                     }
+//#                     if (hasTune) {
+//#                         c.pepTune=true;
+//#                         c.pepTuneText=result.toString();
+//#                     }
+//#                     c.addMessage(m);
+//#                 }
+//#             }
+//#         }
+//#         
+//#         sd.roster.redraw();
+//#         
+//#         return BLOCK_PROCESSED;
+//#     }
+//#     
+//#     JabberDataBlock extractEvent(JabberDataBlock data, String tagName, String xmlns) {
+//#         JabberDataBlock items=data.getChildBlock("items");
+//#         if (items==null) return null;
+//#         if (!xmlns.equals(items.getAttribute("node"))) return null;
+//#         JabberDataBlock item=items.getChildBlock("item");
+//#         if (item==null) return new JabberDataBlock();
+//#         return item.findNamespace(tagName, xmlns);
+//#     }
+//# }
+//#endif
