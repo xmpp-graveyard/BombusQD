@@ -1,0 +1,2 @@
+/skins/default.txt	default
+/skins/z-ice.txt	z-ice
