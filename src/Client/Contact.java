@@ -738,7 +738,7 @@ public class Contact extends IconTextElement{
     }
 //#endif
     
-    public String[][] checkersPos = null; //board
+    //public String[][] checkersPos = null; //board
     private int checkers = -1; //END_GAME_FLAG
     public void setCheckers(int checkers) {
       this.checkers=checkers;

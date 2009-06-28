@@ -81,60 +81,54 @@ public class Presence extends JabberDataBlock {
         }
     }
 
-    //private StringBuffer text;
     private int presenceCode;
   
     public String getText(){
-        String show;
         String errText=null;
-        //text=new StringBuffer();
+        StringBuffer text=new StringBuffer();
         String type=getTypeAttribute();
         presenceCode=PRESENCE_AUTH;
         if (type!=null) {
-          if (type.indexOf(PRS_OFFLINE)>-1) { 
+          if (type.equals(PRS_OFFLINE)) { 
               presenceCode=PRESENCE_OFFLINE;
-              return SR.MS_OFFLINE;
+              text.append(SR.MS_OFFLINE);
           }
-          if (type.indexOf("subscribe")>-1) {
+          if (type.equals("subscribe")) {
               presenceCode=PRESENCE_AUTH_ASK;
-              return SR.MS_SUBSCRIPTION_REQUEST_FROM_USER;
+              text.append(SR.MS_SUBSCRIPTION_REQUEST_FROM_USER);
           } 
-          if (type.indexOf("subscribed")>-1) return SR.MS_SUBSCRIPTION_RECEIVED;
-          if (type.indexOf("unsubscribed")>-1) return SR.MS_SUBSCRIPTION_DELETED;
+          if (type.equals("subscribed")) text.append(SR.MS_SUBSCRIPTION_RECEIVED);
+          if (type.equals("unsubscribed")) text.append(SR.MS_SUBSCRIPTION_DELETED);
 
-          if (type.indexOf(PRS_ERROR)>-1) {
+          if (type.equals(PRS_ERROR)) {
               presenceCode=PRESENCE_ERROR;
+              text.append(PRS_ERROR);
               errText=XmppError.findInStanza(this).toString();
-              return PRS_ERROR;
           }
 
           if (type.length()==0) {
-              //TODO: weather.13.net.ru workaround. remove warning when fixed
               presenceCode=PRESENCE_UNKNOWN;
-              return "UNKNOWN presence stanza";
+              text.append("UNKNOWN presence stanza");
           }
         } else {
-            // online-kinds
-            show=getShow(); 
+            String show=getShow(); 
+            text.append(SR.getPresence(show));
             presenceCode=PRESENCE_ONLINE;
-            if (show.indexOf(PRS_AWAY)>-1) presenceCode=PRESENCE_AWAY;
-            else if (show.indexOf(PRS_DND)>-1) presenceCode=PRESENCE_DND;
-            else if (show.indexOf(PRS_XA)>-1) presenceCode=PRESENCE_XA;
-            else if (show.indexOf(PRS_CHAT)>-1) presenceCode=PRESENCE_CHAT;
-            
-            return SR.getPresence(show);
+            if (show.equals(PRS_AWAY)) presenceCode=PRESENCE_AWAY;
+            else if (show.equals(PRS_DND)) presenceCode=PRESENCE_DND;
+            else if (show.equals(PRS_XA)) presenceCode=PRESENCE_XA;
+            else if (show.equals(PRS_CHAT)) presenceCode=PRESENCE_CHAT;
         }
 
         String status=(errText==null)? getChildBlockText("status"):errText;
         if (status!=null)
             if (status.length()>0)
-                return " (".concat(status).concat(")");
-
-        // priority
+                text.append(" (").append( status ).append(')');
         int priority=getPriority();
         if (priority!=0)
-            return " [".concat(Integer.toString(getPriority())).concat("]");
-       return "";
+            text.append(" [").append(getPriority()).append(']');
+
+        return text.toString();
     }
     
 
@@ -177,7 +171,7 @@ public class Presence extends JabberDataBlock {
     public String getStatus(){
         return (getChildBlockText("status").length()==0)? null: getChildBlockText("status");
     }
-  
+
     public boolean hasEntityCaps() {
         if (getChildBlock("c")==null) return false;
         return getChildBlock("c").isJabberNameSpace("http://jabber.org/protocol/caps");

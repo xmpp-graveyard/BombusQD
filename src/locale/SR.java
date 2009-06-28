@@ -790,12 +790,15 @@ public class SR {
    public static String AVATAR_FOLDER = loadString("Avatar Folder");      
    public static String AVATAR_ROSTER_LOADFS = loadString("Roster:Load all Avatars from FS");  
    public static String AVATAR_MUC_LOADFS = loadString("Muc:Load all Avatars from FS");
-   
+
+   public static String GAME_CHECKERS_MSG = loadString("User wants to play checkers with you");    
+   public static String GAME_SEND_GAME = loadString("Checkers:send invite");  
+   public static String GAME_APPLIED = loadString("Checkers:start game");
+   public static String GAME_STOP = loadString("Checkers:stop game");  
+   public static String GAME_RESUME = loadString("Checkers:resume");
+      
   
-   
-   
-   
-   
+
    
    public static String MS_ONLINE = loadString("online");
    public static String MS_CHAT = loadString("chat");

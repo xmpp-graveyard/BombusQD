@@ -49,6 +49,7 @@ public class Msg {
     public final static int MESSAGE_TYPE_AUTH=14;
     public final static int MESSAGE_TYPE_SYSTEM=15;
     public final static int MESSAGE_TYPE_EVIL=16;
+    public final static int MESSAGE_TYPE_GAME=17;
     
     public boolean highlite;
     public boolean history;
@@ -117,6 +118,7 @@ public class Msg {
             case MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
             case MESSAGE_TYPE_EVIL: return 0xFF0000;
             case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
+            case MESSAGE_TYPE_GAME: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
         }
         return ColorTheme.getColor(ColorTheme.LIST_INK);
     }

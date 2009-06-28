@@ -301,7 +301,7 @@ public class StringUtils {
         XmppError xe=XmppError.findInStanza(presence);
         int errCode=xe.getCondition();
 
-        ConferenceGroup grp=(ConferenceGroup)group;
+        //ConferenceGroup grp=(ConferenceGroup)group;//? 
         if (presenceType>=Presence.PRESENCE_OFFLINE) 
             muc.testMeOffline();
         if (errCode!=XmppError.CONFLICT || presenceType>=Presence.PRESENCE_OFFLINE)

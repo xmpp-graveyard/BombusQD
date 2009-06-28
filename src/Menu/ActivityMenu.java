@@ -40,7 +40,7 @@
 //#     Activity ac = new Activity();
 //#     
 //#      private String[] activity = {
-//#        ac.CATEGORY_drinking ,             "having_a_beer",
+//#        ac.CATEGORY_drinking ,             ac.ACTIVITY_having_a_beer,
 //#                                           ac.ACTIVITY_having_coffee,ac.ACTIVITY_having_tea,
 //#        
 //#        ac.CATEGORY_doing_chores,          ac.ACTIVITY_buying_groceries,ac.ACTIVITY_cleaning,ac.ACTIVITY_cooking,ac.ACTIVITY_doing_maintenance,
@@ -75,6 +75,7 @@
 //#                                           ac.ACTIVITY_walking,
 //#        
 //#        ac.CATEGORY_working,               ac.ACTIVITY_coding,ac.ACTIVITY_in_a_meeting,ac.ACTIVITY_studying,ac.ACTIVITY_writing
+//#                
 //#     };  
 //#             
 //#     public ActivityMenu(Display display, Displayable pView) {
@@ -113,13 +114,13 @@
 //#         int type = 0;
 //#         Config.getInstance().cursorPos[2]=cursor;
 //#         
-//# 
+//#         System.out.println(index);
 //#           if(index==0||index==4||index==14||index==19
 //#                ||index==29||index==36||index==37
-//#                   ||index==46 || index==59||index==63||index==73) {
+//#                   ||index==46 || index==59||index==63||index==73||index==100) {
 //#             //descr = null;
 //#           }else{
-//#             descr = activity[index];//баг тут,т.е. переводить на английские эквиваленты здесь
+//#              descr = ac.NAMES[index];
 //#           }
 //#             
 //#             if(index>=0 && index<4){ type=1; }
@@ -148,9 +149,10 @@
 //#                 case 9: category="talking"; break; 
 //#                 case 10: category="traveling"; break;  
 //#                 case 11: category="working"; break;    
-//#                 case 12: category=null; descr=null; break;                                                                
+//#                 case 12: category=null; break;                                                                
 //#       }
 //#       if(type>0){
+//#                   System.out.println(type);
 //#           new ActivityText(display,parentView,category,descr);
 //#           return;
 //#          //publishTune(category,descr);

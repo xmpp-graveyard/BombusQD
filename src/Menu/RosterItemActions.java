@@ -136,20 +136,21 @@ public class RosterItemActions extends Menu {
 //#                     addItem("Change transport", 915);
 //#endif
 	    }
-            
+
+
             switch (contact.getCheckers()) {
-                case -1: //END_GAME_FLAG:
-                    addItem("send game and wait..",220, 0x0f04);
+                case -1:
+                    addItem(SR.GAME_SEND_GAME,220, 0x06);
                     break;
-                case 0: //waiting and then start
-                    addItem("OK!I applied game!Start!",222, 0x0f04);
-                    break;                    
-                case 1: //END_GAME_FLAG:
-                    addItem("stop game",221, 0x0f04);
+                case 0:
+                    addItem(SR.GAME_APPLIED,222, 0x06);
                     break;
-                case 2: //resume:
-                    addItem("RESUME",223, 0x0f04);
-                    break;                     
+                case 1:
+                    addItem(SR.GAME_STOP,221, 0x01);
+                    break;
+                case 2:
+                    addItem(SR.GAME_RESUME,223, 0x02);
+                    break;
             }
 
             
@@ -382,23 +383,23 @@ public class RosterItemActions extends Menu {
             switch (index) {
 //#ifdef CHECKERS
 //#                 
-//#                 case 220: // "send game and wait.." LETS PLAY,I am FIRST start checkers
+//#                 case 220:
 //#                     sd.roster.theStream.send(new IqCheckers(c.getJid(), true));
-//#                     new Checkers(display, c, true, true);  //запуск wait экрана                 
+//#                     new Checkers(display, c, true);  //запуск wait экрана                 
 //#                     break;
-//#                 case 221: // end checkers
+//#                 case 221:
 //#                     c.setCheckers(-1);
 //#                     sd.roster.theStream.send(new IqCheckers(c.getJid()));
 //#                     break;  
-//#                 case 222: //"OK!I applied game!Start!"
+//#                 case 222:
 //#                     JabberDataBlock jdb = new Iq(c.getJid(), 2, "checkers");
 //#                     jdb.addChildNs("query", "checkers").setAttribute("state", "game_ok");
 //#                     c.setIncoming(Contact.INC_NONE);
-//#                     new Checkers(display, c, false, false);
+//#                     new Checkers(display, c, false);
 //#                     sd.roster.theStream.send(jdb);
 //#                     break;
 //#                 case 223: //resume:
-//#                     new Checkers(display, c, false, false);
+//#                     //new Checkers(display, c, false, false);
 //#                     break;                              
 //#endif                
                 case 0: // version

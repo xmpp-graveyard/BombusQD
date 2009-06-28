@@ -184,7 +184,7 @@ public class JabberStream extends XmppParser implements Runnable {
                 int length=iostream.read(cbuf);
                 if (length==0) {
                     try { 
-                        Thread.sleep(120);
+                        Thread.sleep(130);
                     } catch (Exception e) {};
                     continue;
                 }

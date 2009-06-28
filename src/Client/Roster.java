@@ -1032,12 +1032,32 @@ public class Roster
             countNewMsgs();
         }
     }
+    
+    public final Contact findContact(final Jid j, final boolean compareResources) {
+        Contact c=null;
+        int size=hContacts.size();        
+        synchronized (hContacts) {
+         for(int i=0;i<size;i++){
+                c =(Contact)hContacts.elementAt(i);
+                if (c.jid.equals(j,compareResources)) return c;             
+         }  
+        }
+        return null;
+    }    
+    
 //#ifndef WMUC
+    
     public MucContact findMucContact(Jid jid) {
         Contact contact=findContact(jid, true);
         try {
             return (MucContact) contact;
-        } catch (Exception e) {
+        } 
+        catch(OutOfMemoryError eom)
+        {
+            errorLog("error Roster::0");
+            return null;
+        } 
+        catch (Exception e) {
             // drop buggy bookmark in roster
             synchronized (hContacts) {
                 hContacts.removeElement(contact);
@@ -1154,7 +1174,7 @@ public class Roster
             addContact(c);
             c.origin=Contact.ORIGIN_GC_MEMBER;
         }
-        
+
         c.group=grp;
         sort(hContacts);
         return c;
@@ -1193,20 +1213,6 @@ public class Roster
         synchronized (hContacts) { hContacts.addElement(c); }
     }
 
-    public final Contact findContact(final Jid j, final boolean compareResources) {
-        Contact c=null;
-        int size=hContacts.size();        
-        synchronized (hContacts) {
-         for(int i=0;i<size;i++){
-                c =(Contact)hContacts.elementAt(i);
-                if (c.jid.equals(j,compareResources)) return c;             
-         }  
-        }
-        return null;
-    }
-
-    
-    
     int firstStatus = -1;
     
     public void sendPresence(int newStatus, String message) {
@@ -1470,7 +1476,9 @@ public class Roster
         
             lastMessageTime=Time.utcTimeMillis();
             playNotify(SOUND_OUTGOING);
-        } catch (Exception e) { e.printStackTrace(); }
+        } 
+        catch(OutOfMemoryError eom) { errorLog("error Roster::1"); }
+        catch (Exception e) { e.printStackTrace(); }
 //#ifdef AUTOSTATUS
 //#         messageActivity();
 //#endif
@@ -1730,27 +1738,27 @@ public class Roster
     
 
 
-//#if FILE_IO   
-    public void cashePhoto(VCard vcard,Contact c){
-        StringBuffer nickDate=new StringBuffer();
-        if (!(c instanceof MucContact)){
-           nickDate.append("roster_"+c.bareJid);
-        }else{
-           nickDate.append("muc_"+c.nick);
-        }
-       String filename = StringUtils.replaceBadChars(nickDate.toString());
-       nickDate=null;
-       OutputStream os;
-        try {
-            FileIO file=FileIO.createConnection(cf.msgAvatarPath+filename+vcard.getFileType());
-            os = file.openOutputStream(0);
-            os.write(vcard.getPhoto());
-            os.close();
-            os.flush();
-            file.close();
-            file=null;
-        } catch (IOException ex) { }       
-    }
+//#if FILE_IO && HISTORY
+//#     public void cashePhoto(VCard vcard,Contact c){
+//#         StringBuffer nickDate=new StringBuffer();
+//#         if (!(c instanceof MucContact)){
+//#            nickDate.append("roster_"+c.bareJid);
+//#         }else{
+//#            nickDate.append("muc_"+c.nick);
+//#         }
+//#        String filename = StringUtils.replaceBadChars(nickDate.toString());
+//#        nickDate=null;
+//#        OutputStream os;
+//#         try {
+//#             FileIO file=FileIO.createConnection(cf.msgAvatarPath+filename+vcard.getFileType());
+//#             os = file.openOutputStream(0);
+//#             os.write(vcard.getPhoto());
+//#             os.close();
+//#             os.flush();
+//#             file.close();
+//#             file=null;
+//#         } catch (IOException ex) { }       
+//#     }
 //#endif      
     
     
@@ -1850,14 +1858,13 @@ public class Roster
                 if ( type.equals( "result" ) ) {
                   if(id.equals("checkers")) {
                    JabberDataBlock query=data.getChildBlock("query");
-                   System.out.println("maybe checkers?..");
                     if (query!=null){
 //#ifdef CHECKERS
 //#                        //lets play?
 //#                         if (query.isJabberNameSpace("checkers")) {
 //#                             if(query.getAttribute("state").equals("start")){
 //#                               Contact c=getContact(from, true);
-//#                               c.setCheckers(0);
+//#                               c.addMessage(new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, null, SR.GAME_CHECKERS_MSG));
 //#                              return JabberBlockListener.BLOCK_PROCESSED;
 //#                             }
 //#                         }
@@ -2067,7 +2074,8 @@ public class Roster
                 long tStamp=message.getMessageTime();
 	
 		int mType=Msg.MESSAGE_TYPE_IN;
-//#ifdef PEP                                
+//#ifdef PEP    
+//#              /*
 //#                 if(1==0) {//temp closed,mood in msg stanza
 //#                   JabberDataBlock moodName = data.findNamespace("mood","http://jabber.org/protocol/mood");
 //#                   if(moodName!=null){
@@ -2102,9 +2110,10 @@ public class Roster
 //#                    }
 //#                    moodName=null;
 //#                   }
+//#             */
 //#endif
                 
-                
+
                   try {
                      evil=message.findNamespace("evil", "http://jabber.org/protocol/evil");
                      if(evil!=null){
@@ -2142,6 +2151,7 @@ public class Roster
                     type="chat";
                 }
 //#ifndef WMUC
+                try {
                     JabberDataBlock xmlns=message.findNamespace("x", "http://jabber.org/protocol/muc#user");
                     if (xmlns!=null) {
                         JabberDataBlock invite=xmlns.getChildBlock("invite");
@@ -2171,6 +2181,9 @@ public class Roster
                             }
                          }
                     }
+                }
+                catch(OutOfMemoryError eom) { errorLog("error Roster::2"); } 
+                catch (Exception e) { e.printStackTrace(); }
 //#endif
                 if (name==null) name=c.getName();
                 // /me
@@ -2323,7 +2336,8 @@ public class Roster
                 Msg m=new Msg( (ti==Presence.PRESENCE_AUTH ||
                         ti==Presence.PRESENCE_AUTH_ASK)?
                               Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, Prtext );
-                Prtext=null;
+                System.out.println(Prtext);
+                //Prtext=null;
 //#ifndef WMUC
                 JabberDataBlock xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc#user");
                 if (xmuc==null) xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc"); //join errors
@@ -2371,7 +2385,8 @@ public class Roster
                          new QueryConfigForm(display,from.substring(0,index));                          
                         }
                        } else { status = null; }
-                   
+                     
+                    try {
                         MucContact c = mucContact(from);
                         if (pr.getAttribute("ver")!=null) c.version=pr.getAttribute("ver"); // for bombusmod only
 //#ifdef CLIENTS_ICONS
@@ -2407,6 +2422,8 @@ public class Roster
                         lang=null;
                         c.priority=pr.getPriority();
                         c=null;
+                    }
+                    catch(OutOfMemoryError eom){ errorLog("error Roster::3"); } catch (Exception e) { e.printStackTrace(); }
                 } else {
 //#endif
                     Contact c=null;
@@ -2961,7 +2978,10 @@ public class Roster
                     }
                 }
 //#endif 
-            } catch (Exception e) { /* NullPointerException */ }
+            }
+            catch(OutOfMemoryError eom) { 
+                 errorLog("error Roster::4"); 
+            } catch (Exception e) {}
         }
     }
 
@@ -3125,7 +3145,7 @@ public class Roster
             else if (phoneManufacturer==Config.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
                  try {
                       BombusQD.getInstance().platformRequest("native:ELSE_STR_MYMENU");
-                 } catch (Exception e) { }     
+                 } catch (Exception e) { }
             else if (phoneManufacturer==Config.SIEMENS)//SIEMENS-NSG: MYMENU call. Possible Native Menu for capable phones
                  try {
                     BombusQD.getInstance().platformRequest("native:NAT_MAIN_MENU");
@@ -3176,7 +3196,8 @@ public class Roster
                     )
                 return;
             setWobbler(1, (Contact) null, null);
-        } catch (Exception e) { }
+        } 
+        catch(OutOfMemoryError eom){ errorLog("error Roster::5"); } catch (Exception e) { e.printStackTrace(); }        
     }
 
     public void setWobbler(int type, Contact contact, String info) {
@@ -3419,7 +3440,8 @@ public class Roster
             if (currentContact==nowContact) return;
             Contact c=(Contact)activeContacts.elementAt(nowContact);
             new ContactMessageList((Contact)c,display);
-        } catch (Exception e) { }
+        }
+       catch(OutOfMemoryError eom){ errorLog("error Roster::6"); } catch (Exception e) { e.printStackTrace(); }        
     }
 
     public void deleteContact(Contact c) {

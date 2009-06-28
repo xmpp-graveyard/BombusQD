@@ -109,6 +109,13 @@ public class JabberDataBlockDispatcher extends Thread
   public void broadcastJabberDataBlock( JabberDataBlock dataBlock )
   {
     waitingQueue.addElement( dataBlock );
+    if(Runtime.getRuntime().freeMemory()<150000) {//150kb
+        while( waitingQueue.size() != 0 ) {
+            try {
+                Thread.sleep( 50L );
+            } catch( InterruptedException e ) { }
+        }
+    }    
   }
 
   /**

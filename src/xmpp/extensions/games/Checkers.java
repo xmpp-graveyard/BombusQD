@@ -1,5 +1,6 @@
 /*
  * Checkers.java
+ * Copyright (c) 2006-2007, Daniel Apatin (ad), http://apatin.net.ru
  * Copyright (c) 2009, Alexej Kotov (aqent), http://bombusmod-qd.wen.ru
  *
  * This program is free software; you can redistribute it and/or
@@ -21,102 +22,228 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- */ 
+ */
+
 package xmpp.extensions.games;
 import Client.Contact;
-import javax.microedition.lcdui.*;
+import Client.Roster;
 import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 import java.util.Vector;
-import Client.Roster;
-import ui.ImageBuffer;
+import javax.microedition.lcdui.Canvas;
+import javax.microedition.lcdui.Command;
+import javax.microedition.lcdui.CommandListener;
+import javax.microedition.lcdui.Display;
+import javax.microedition.lcdui.Displayable;
+import javax.microedition.lcdui.Font;
+import javax.microedition.lcdui.Graphics;
 
 public class Checkers extends Canvas implements CommandListener, JabberBlockListener {
+    
+    boolean game=false;
+    
+    public static final int BLACK = 0;
+    public static final int WHITE = 0xffffff;
+    public static final int RED = 0xf96868;
+    public static final int GREY = 0x969696;
+    
+    public static final int GREEN = 0x00ff00;
+    public static final int BLUE = 0x0000ff;
+    
+    public static final int LT_GREY = 0xe5e3e3;
+    public static final int GRID_WIDTH = 8;
+
+    public static final byte START_GAME_REQUEST_FLAG = -6;
+    public static final byte START_GAME_FLAG = -5;
+    public static final byte END_GAME_FLAG = -4;
+    public static final byte END_TURN_FLAG = -3;
+    public static final byte OPPONENT_MOVE = -2;
+    public static final byte WAIT_FLAG = -1;
+
 
     private Display display;
     private Displayable parentView;
+
+    private int mySquareSize;
+
+    private int myMinSquareSize = 15;
+
+    private boolean myIsWaiting; // = true;
+
+    
+    public boolean isEndGame = false;
+    private boolean myTurnIsDone = true;
+            
+    Roster roster=StaticData.getInstance().roster;
     
     private Command addMsg = new Command("Add message", Command.SCREEN, 97);
     private Command myHideCommand = new Command("Hide(not work)", Command.SCREEN, 98);
     private Command myExitCommand = new Command("End Game", Command.EXIT, 99);
 
     private Contact contact;
-    boolean wait_screen=true; 
-    boolean game=false;
-    boolean firstRun=false;
-    
-    boolean stepFIRST_player=true;
-    
-    int[] coodrinats;
-    
-    ImageBuffer ib = ImageBuffer.getInstance();
-    int xR,yR,xR_,yR_;
-    
-    public Checkers(Display display, Contact contact,boolean wait_screen,boolean firstRun) {
+
+    boolean flag;
+
+    public Checkers(Display display, Contact contact,boolean flag) {
+//#ifdef DEBUG
+//#         System.out.println("checkers started");
+//#endif
         this.display = display;
         this.contact = contact;
-        this.wait_screen=wait_screen;
-        this.firstRun=firstRun;
+        this.flag=flag;
         parentView=display.getCurrent();
+        
+        roster.theStream.addBlockListener(this);
+        
+        addCommand(addMsg);
         addCommand(myHideCommand);
         addCommand(myExitCommand);
-        addCommand(addMsg);
         setCommandListener(this);
         display.setCurrent(this);
                 
         int width = getWidth();
         int height = getHeight();
-        
-        if(firstRun){
-            //checkersPos
-           if(contact.checkersPos==null) {
-             contact.checkersPos = new String[][] { 
-                {"b",  "1",   "2",   "3",    "4",    "5",   "6",   "7",   "8"    },
-                {"1",  "-",   "b",   "-",    "b",    "-",    "b",   "-",   "b"   },
-                {"2",  "b",   "-",   "b",    "-",    "b",    "-",   "b",   "-"   },
-                {"3",  "-",   "b",   "-",    "b",    "-",    "b",   "-",   "b"   },
-                {"4",  "-",   "-",   "-",    "-",    "-",    "-",   "-",   "-"   },
-                {"5",  "-",   "-",   "-",    "-",    "-",    "-",   "-",   "-"   },                
-                {"6",  "w",   "-",   "w",    "-",    "w",    "-",   "w",   "-"   },
-                {"7",  "-",   "w",   "-",    "w",    "-",    "w",   "-",   "w"   },
-                {"8",  "w",   "-",   "w",    "-",    "w",    "-",   "w",   "-"   }
-             };
-             xR=0;
-             yR=5*20;
-           }
-        }else{
-           if(contact.checkersPos==null) {
-              contact.checkersPos = new String[][] {
-                {"w",  "1",    "2",    "3",    "4",     "5",    "6",    "7",    "8"   },
-                {"1",  "-",    "w",    "-",    "w",     "-",    "w",    "-",    "w"   },
-                {"2",  "w",    "-",    "w",    "-",     "w",    "-",    "w",    "-"   },
-                {"3",  "-",    "w",    "-",    "w",     "-",    "w",    "-",    "w"   },
-                {"4",  "-",    "-",    "-",    "-",     "-",    "-",    "-",    "-"   },
-                {"5",  "-",    "-",    "-",    "-",     "-",    "-",    "-",    "-"   },                
-                {"6",  "b",    "-",    "b",    "-",     "b",    "-",    "b",    "-"   },
-                {"7",  "-",    "b",    "-",    "b",     "-",    "b",    "-",    "b"   },
-                {"8",  "b",    "-",    "b",    "-",     "b",    "-",    "b",    "-"   }              
-             };
-             xR=0;
-             yR=5*20;
-           }
-           stepFIRST_player=false;
+
+        int screenSquareWidth = height;
+        if(width < height) {
+          screenSquareWidth = width;
         }
-        setFullScreenMode(true);
-        StaticData.getInstance().roster.theStream.addBlockListener(this);        
+        mySquareSize = screenSquareWidth / GRID_WIDTH;
+        setWaitScreen(flag);
         game=true;
+        //if(mySquareSize < myMinSquareSize) System.out.println("Display too small");
+        start();
     }
 
-    
-    private void closeGame(){
-        JabberDataBlock jdb = new Iq(contact.getJid(), 2, "checkers");
-        jdb.addChildNs("query", "checkers").setAttribute("state", "game_close");
-        StaticData.getInstance().roster.theStream.send(jdb);
-        StaticData.getInstance().roster.theStream.cancelBlockListener(this);
-        contact.setCheckers(-1);
-        contact.checkersPos=null;
+    void setWaitScreen(boolean wait) { myIsWaiting = wait; }
+
+    protected void paint(Graphics g) {
+        int width = getWidth();
+        int height = getHeight();
+        g.setColor(WHITE);
+        g.fillRect(0, 0, width, height);
+
+        if(game==false){
+           g.setColor(255,0,0);
+           g.drawString("game closed by another player",20,20,Graphics.LEFT|Graphics.TOP);
+           return;
+        }        
+
+       if(myIsWaiting) {
+            // perform some calculations to place the text correctly:
+            Font font = g.getFont();
+            int fontHeight = font.getHeight();
+            int fontWidth = font.stringWidth("wait..");
+            g.setColor(WHITE);
+            g.fillRect((width - fontWidth)/2, (height - fontHeight)/2, fontWidth + 2, fontHeight);
+            g.setColor(BLACK);
+            g.setFont(font);
+            g.drawString("wait..", (width - fontWidth)/2, (height - fontHeight)/2, g.TOP|g.LEFT);
+            return;
+        }
+        // draw the checkerboard:
+        // dark squares:
+
+        byte offset = 0;
+        for(byte i = 0; i < 4; i++) {
+            for(byte j = 0; j < 8; j++) {
+                if(j % 2 != 0) {
+                    offset = 1;
+                } else {
+                    offset = 0;
+                }
+                // selected square
+                if(isSelected(i, j)) {
+                    g.setColor(LT_GREY);
+                    g.fillRect((2*i + offset)*mySquareSize, j*mySquareSize,  mySquareSize, mySquareSize);
+                } else {
+                    // not selected
+                    g.setColor(GREY);
+                    g.fillRect((2*i + offset)*mySquareSize, j*mySquareSize, mySquareSize, mySquareSize);
+                }
+                // put the pieces
+                g.setColor(RED);
+                int piece = getPiece(i, j);
+                int circleOffset = 2;
+                int circleSize = mySquareSize - 2*circleOffset;
+                if(piece < 0) {
+                    // black
+                    g.setColor(BLACK);
+                    g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset,
+                            circleSize, circleSize, circleSize, circleSize);
+                    // king
+                    if(piece < -1) {
+                        g.setColor(GREEN);
+                        g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset,
+                                circleSize, circleSize, circleSize, circleSize);
+                    }
+                } else if(piece > 0) {
+                    // red
+                    g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset,
+                            circleSize, circleSize, circleSize, circleSize);
+                    // player king
+                    if(piece > 1) {
+                        g.setColor(BLUE);
+                        g.fillRoundRect((2*i + offset)*mySquareSize + circleOffset, j*mySquareSize + circleOffset,
+                                circleSize, circleSize, circleSize, circleSize);
+                    }
+                }
+            }
+        }
+    // blank squares
+    g.setColor(WHITE);
+    for(int i = 0; i < 4; i++) {
+      for(int j = 0; j < 8; j++) {
+          if(j % 2 == 0) {
+            offset = 1;
+          } else {
+            offset = 0;
+          }
+          g.fillRect((2*i + offset)*mySquareSize, j*mySquareSize,  mySquareSize, mySquareSize);
+      }
+    }
+        if(getGameOver()) {
+            // perform some calculations to place the text correctly:
+            Font font = g.getFont();
+            int fontHeight = font.getHeight();
+            int fontWidth = font.stringWidth("Game Over");
+            g.setColor(WHITE);
+            g.fillRect((width - fontWidth)/2, (height - fontHeight)/2,
+            fontWidth + 2, fontHeight);
+            // write in black
+            g.setColor(BLACK);
+            g.setFont(font);
+            g.drawString("Game Over", (width - fontWidth)/2, (height - fontHeight)/2, g.TOP|g.LEFT);
+            removeCommand(myHideCommand);
+            removeCommand(addMsg);            
+        }
+    }
+
+    public void keyPressed(int keyCode) {  
+        if(!flag){
+           return;
+        }
+        if(isMyTurn()) {
+          int action = getGameAction(keyCode);   
+          switch (action) {
+              case LEFT:
+                  leftPressed();
+                  break;
+              case RIGHT:
+                  rightPressed();
+                  break;
+              case UP:
+                  upPressed();
+                  break;
+              case DOWN:
+                  deselect();
+                  break;
+          }
+          repaint();
+          //serviceRepaints();
+        }
     }
 
     public void commandAction(Command c, Displayable displayable) {
@@ -132,424 +259,481 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
             
         }
     }
-    
 
-    public void destroyView(){
-        if (display!=null)
-            display.setCurrent(StaticData.getInstance().roster);
+    private void closeGame(){
+        JabberDataBlock jdb = new Iq(contact.getJid(), 2, "checkers");
+        jdb.addChildNs("query", "checkers").setAttribute("state", "game_close");
+        StaticData.getInstance().roster.theStream.send(jdb);
+        StaticData.getInstance().roster.theStream.cancelBlockListener(this);
+        contact.setCheckers(-1);
+    }    
+    
+    public void destroy() {
+        endGame();
+        System.gc();
+        destroyView();
     }
 
+    void errorMsg(Exception e) {
+        e.printStackTrace();
+        if(e.getMessage() == null) {
+            errorMsg(e.getClass().getName());
+        } else {
+            errorMsg(e.getMessage());
+        }
+    }
 
-    public int blockArrived(JabberDataBlock data) { 
+    void errorMsg(String msg) {
+//#ifdef DEBUG
+//#         System.out.println("!!!Error: "+msg);
+//#endif
+        //Alert errorAlert = new Alert("error",  msg, null, AlertType.ERROR);
+        //errorAlert.setCommandListener(this);
+        //errorAlert.setTimeout(Alert.FOREVER);
+        //display.setCurrent(errorAlert);
+    }
+    
+    public void destroyView(){
+        if (display!=null)
+            display.setCurrent(parentView);
+    }
+    
+    void endGame() {
+//#ifdef DEBUG
+//#         System.out.println("end game");
+//#endif
+        sendCommand(END_GAME_FLAG, 0, 0, 0, 0);
+        isEndGame = true;
+        setGameOver();
+    }
+    
+    void move(byte sourceX, byte sourceY, byte destinationX, byte destinationY) {
+//#ifdef DEBUG
+//#         System.out.println("move x("+sourceX+"->"+destinationX+") y("+sourceY+"->"+destinationY+")");
+//#endif       
+        sendCommand(OPPONENT_MOVE, sourceX, sourceY, destinationX, destinationY);
+        
+        myTurnIsDone = true; //false
+    }
+    
+    void endTurn() {
+//#ifdef DEBUG
+//#         System.out.println("end turn");
+//#endif
+        myTurnIsDone = true;
+    }
+
+    void sendCommand(int state, int sourceX, int sourceY, int destX, int destY) {
+        JabberDataBlock iq=new Iq(contact.getJid(), Iq.TYPE_RESULT, "setCheckers");
+        iq.setAttribute("i0", Integer.toString(state)); //state;
+        iq.setAttribute("i1", Integer.toString(sourceX)); //sourceX;
+        iq.setAttribute("i2", Integer.toString(sourceY)); //sourceY;
+        iq.setAttribute("i3", Integer.toString(destX)); //destinationX;
+        iq.setAttribute("i4", Integer.toString(destY)); //destinationY;
+
+        //roster.theStream.addBlockListener(this);
+        //System.out.println(iq.toString());
+
+        if (!roster.isLoggedIn()) 
+            return;
+        roster.theStream.send(iq);
+        repaint();
+    }
+
+    public int blockArrived(JabberDataBlock data) {
         if (data instanceof Iq) {
-            System.out.println(data);
             if (data.getTypeAttribute().equals("result") && data.getAttribute("from").equals(contact.getJid())) {
+                //Ответ с другой стороны
+                
                 JabberDataBlock query=data.getChildBlock("query");
                    if (query!=null){
                         //Ответ с другой стороны
                         if (query.isJabberNameSpace("checkers")) {
                           if(query.getAttribute("state").equals("game_ok")){
-                            wait_screen=false;
-                            System.out.println("wait_screen was closed");
+                            setWaitScreen(false);
                             repaint();
                             return BLOCK_PROCESSED;
                           }
                           else if(query.getAttribute("state").equals("game_close")){
                             game=false;
-                            removeCommand(myHideCommand);
+                            roster.theStream.cancelBlockListener(this);
                             repaint();
                             return BLOCK_REJECTED;
                           }
+                          /*
+                          else if(query.getAttribute("state").equals("game_over")){
+                            game=false;
+                            removeCommand(myHideCommand);
+                            removeCommand(addMsg);
+                            looser=true;
+                            repaint();
+                            return BLOCK_REJECTED;
+                          }
+                           */                          
                         }
-                    } 
-                if (!data.getAttribute("id").equals("step")) //listen 2 player
-                    return BLOCK_REJECTED;      
-                   
-                String p1 = data.getAttribute("p1");
-                String p2 = data.getAttribute("p2");
-                String del = data.getAttribute("del");
+                    }                 
+                
+                if (!data.getAttribute("id").equals("setCheckers")) 
+                    return BLOCK_REJECTED;
+                
+                flag=true;
+                int i0 = Integer.parseInt(data.getAttribute("i0"));
+                int i1 = Integer.parseInt(data.getAttribute("i1"));
+                int i2 = Integer.parseInt(data.getAttribute("i2"));
+                int i3 = Integer.parseInt(data.getAttribute("i3"));
+                int i4 = Integer.parseInt(data.getAttribute("i4"));
+                
 
-                if(p1.length()>0 && p2.length()>0){
-                    stepFIRST_player=true;
-                     contact.checkersPos[Integer.parseInt(p1.substring(0,1))][Integer.parseInt(p1.substring(1,2))]="-";
-                     contact.checkersPos[Integer.parseInt(p2.substring(0,1))][Integer.parseInt(p2.substring(1,2))]=firstRun?"b":"w";
-                     if(!del.equals("-1")){
-                      contact.checkersPos[Integer.parseInt(del.substring(0,1))][Integer.parseInt(del.substring(1,2))]="-";
-                     }
-                    startAnalys=false;
+/*
+    public static final byte START_GAME_REQUEST_FLAG = -6;
+    public static final byte START_GAME_FLAG = -5;
+    public static final byte END_GAME_FLAG = -4;
+    public static final byte END_TURN_FLAG = -3;
+    public static final byte OPPONENT_MOVE = -2;
+    public static final byte WAIT_FLAG = -1;    
+ */
+
+                switch (i0) {
+                        case START_GAME_FLAG:
+//#ifdef DEBUG
+//#                             System.out.println("game started");
+//#endif
+                            //myCanvas.setWaitScreen(false);
+                            //myCanvas.repaint();
+                            break;
+                        case END_GAME_FLAG:
+//#ifdef DEBUG
+//#                             System.out.println("end game flag");
+//#endif
+                            //myCanvas.setWaitScreen(true);
+                            endGame();
+                            roster.theStream.cancelBlockListener(this);                            
+                            break;
+                        case END_TURN_FLAG:
+//#ifdef DEBUG
+//#                             System.out.println("end turn flag");
+//#endif
+                            //myGame.endOpponentTurn();
+                            break;
+                        case WAIT_FLAG:
+                            break;
+                        case OPPONENT_MOVE:
+                            if (myTurnIsDone) {
+//#ifdef DEBUG
+//#                                 System.out.println("opponent move");
+//#endif
+                                moveOpponent(i1, i2, i3, i4);
+                                endOpponentTurn();
+                                //myCanvas.repaint();
+                            } else {
+//#ifdef DEBUG
+//#                                 System.out.println("don`t touch! it`s my move!");
+//#endif
+                            }
+                    }
                     repaint();
-                   return BLOCK_REJECTED;
-                }
-                //..
-              repaint();
-              return BLOCK_PROCESSED;
+
+                    return BLOCK_PROCESSED;
             }
         }
         return BLOCK_REJECTED;
     }
 
+  /**
+   * 0 = empty
+   * 1 = local player's piece
+   * 2 = local player's king
+   * -1 = remote player's piece
+   * -2 = remote player's king
+   */
     
-    protected void paint(Graphics g) {
-        int width = getWidth();
-        int height = getHeight();
-        g.fillRect(0, 0, width, height);
-        g.setColor(0xFFFBF0);
+    public static final byte X_LENGTH = 4;
+    public static final byte Y_LENGTH = 8;
+    private byte[][] myGrid;
+
+    private byte mySelectedX = -1;
+    private byte mySelectedY = -1;
+    private byte myDestinationX = -1;
+    private byte myDestinationY = -1;
+
+    private Vector myPossibleMoves = new Vector(4);
+
+    private boolean myGameOver = false;
+
+    private boolean myTurn = false;
+
+    private boolean myIsJumping = false;
+
+    byte getPiece(byte x, byte y) {
+        return(myGrid[x][y]);
+    }
+
+    boolean isSelected(byte x, byte y) {
+        if((x == mySelectedX) && (y == mySelectedY)) {
+            return true;
+        } else if((x == myDestinationX) && (y == myDestinationY)) {
+            return true;
+        }
+        return false;
+    }
+
+    boolean isMyTurn() {
+        if((!myGameOver) && ((myTurn) || (myIsJumping))) {
+            return true;
+        }
+        return false;
+    }
+
+    boolean getGameOver() {
+        return myGameOver;
+    }
+
+    void setGameOver() {
+        myGameOver = true;
+    }
+
+    void start() {
+        myGrid = new byte[X_LENGTH][];
+        for(byte i = 0; i < myGrid.length; i++) {
+            myGrid[i] = new byte[Y_LENGTH];
+            for(byte j = 0; j < myGrid[i].length; j++) {
+                if(j < 3) {
+                    myGrid[i][j] = -1; // fill the top of the board with remote players
+                } else if(j > 4) {
+                    myGrid[i][j] = 1; // fill the bottom of the board with local players
+                }
+            }
+        }
         
-      if(wait_screen){
-          g.drawString("waiting for game..",20,20,Graphics.LEFT|Graphics.TOP); 
-      }else{
-          if(game==false){
-              g.drawString("game closed by another player",20,20,Graphics.LEFT|Graphics.TOP); 
-              return;
-          }
-          g.translate(5,5);
-          g.drawImage(ib.bgnd_checkers,0,0,Graphics.TOP|Graphics.LEFT);
-
-          //указатель
-          if(stepFIRST_player==false){
-              g.setColor(0xff0000);
-              g.drawString("step another player!",20,20,Graphics.LEFT|Graphics.TOP);
-          }else{
-              g.setColor(0x000000);
-              g.fillRect(xR,yR,20,20);
-          }
-          if(startAnalys){
-             for(byte r = 0; r < analysRects.size(); r++){ 
-               int i1 = Integer.parseInt( ((String)analysRects.elementAt(r)).substring(0,1));
-               int i2 = Integer.parseInt( ((String)analysRects.elementAt(r)).substring(1,2));          
-               g.setColor(0x0000ff);
-               g.fillRect((i2-1)*20,(i1-1)*20,20,20);
-               if(stepAnalys>-1){
-                 g.setColor(0x00ff00);
-                 g.drawRect(xR_,yR_,20,20);
-               }
-             }
-          }
-          for(byte i = 1; i <= 8; i++) {
-            for(byte j = 1; j <= 8; j++){
-              if( ((String)contact.checkersPos[i][j]).startsWith("b") ){
-                g.drawImage(ib.checkers_black, (j-1)*20 + 2, (i-1)*20 + 2, Graphics.TOP|Graphics.LEFT);
-              } 
-              else if( ((String)contact.checkersPos[i][j]).startsWith("w") ){
-                g.drawImage(ib.checkers_white, (j-1)*20 + 2, (i-1)*20 + 2, Graphics.TOP|Graphics.LEFT);
-              }
-          }}
-      }
-    }    
-
-    boolean startAnalys = false;
-    Vector objects = new Vector();
-    Vector avsteps = new Vector();
-    Vector mySteps = new Vector();
-    int myStepSize=0;
-    int step=0;
-    
-    int stepAnalys=-1;
-    
-    private String inverse(String s){
-      if(s.startsWith("-1")){
-          return "-1";
-      }
-      String res = "";
-      String res_ = "";
-      switch(s.charAt(0)){
-          case '1': res="8"; break;
-          case '2': res="7"; break;
-          case '3': res="6"; break;
-          case '4': res="5"; break;
-          case '5': res="4"; break;
-          case '6': res="3"; break;
-          case '7': res="2"; break;
-          case '8': res="1"; break;
-      }        
-       switch(s.charAt(1)){
-          case '1': res_="8"; break;
-          case '2': res_="7"; break;
-          case '3': res_="6"; break;
-          case '4': res_="5"; break;
-          case '5': res_="4"; break;
-          case '6': res_="3"; break;
-          case '7': res_="2"; break;
-          case '8': res_="1"; break;          
-      }
-      return res+res_;
+        mySelectedX = 0;
+        mySelectedY = 5;
+        myTurn = true;
+        getMoves(mySelectedX, mySelectedY, myPossibleMoves, false);
     }
-    
-    private void checkStep(int press){
-      switch(press){
-          case 4:
-              if(startAnalys){
-                  stepAnalys-=1;
-                  if(stepAnalys<0){
-                    stepAnalys=analysRects.size()-1;
-                  }
-                  int i1 = Integer.parseInt( ((String)analysRects.elementAt(stepAnalys)).substring(0,1));//6
-                  int i2 = Integer.parseInt( ((String)analysRects.elementAt(stepAnalys)).substring(1,2));//1
-                  yR_=(i1-1)*20;
-                  xR_=(i2-1)*20;
-              }else{
-                goStep(false);
-              }
-              break;
-          case 6:
-              if(startAnalys){
-                  stepAnalys+=1;
-                  if(stepAnalys>analysRects.size()-1){
-                    stepAnalys=0;
-                  }
-                  int i1 = Integer.parseInt( ((String)analysRects.elementAt(stepAnalys)).substring(0,1));//6
-                  int i2 = Integer.parseInt( ((String)analysRects.elementAt(stepAnalys)).substring(1,2));//1
-                  yR_=(i1-1)*20;
-                  xR_=(i2-1)*20;                  
-              }else{
-                goStep(true);
-              }
-              break;
-          case 5:
-              if(startAnalys){
-                //начальное положение
-                int i1 = yR/20+1;
-                int i2 = xR/20+1;
-                
-                //конечный выбор хода
-                int i1_ = yR_/20+1; //координаты 
-                int i2_ = xR_/20+1; //координаты
-                
-                contact.checkersPos[i1][i2]="-"; //у себя
-                contact.checkersPos[i1_][i2_]=firstRun?"w":"b";
-                
-                String del = "-1";
-                
-                for(byte r = 0; r < analysRects.size(); r++){
-                  if(analysRects.elementAt(r).toString().indexOf("DEL")>-1){
-                    System.out.println("ANALIZ: "+(String)analysRects.elementAt(r));
-                    int d_1 = Integer.parseInt( ((String)analysRects.elementAt(r)).substring(5,6));
-                    int d_2 = Integer.parseInt( ((String)analysRects.elementAt(r)).substring(6,7));
-                    String d1 = Integer.toString(d_1);
-                    String d2 = Integer.toString(d_2);
-                    del = d1+d2;
-                    contact.checkersPos[d_1][d_2]="-";
-                  }
+
+    void moveOpponent(int sourceX, int sourceY, int destX, int destY) { //moveOpponent(opMove);
+        sourceX = (new Integer(X_LENGTH - sourceX - 1)).byteValue();
+        destX = (new Integer(X_LENGTH - destX - 1)).byteValue();
+        sourceY = (new Integer(Y_LENGTH - sourceY - 1)).byteValue();
+        destY = (new Integer(Y_LENGTH - destY - 1)).byteValue();
+        myGrid[destX][destY] = myGrid[sourceX][sourceY];
+        myGrid[sourceX][sourceY] = 0;
+
+        if((sourceY - destY > 1) ||  (destY - sourceY > 1)) {
+            int jumpedY = (sourceY + destY)/2;
+            int jumpedX = sourceX;
+            int parity = sourceY % 2;
+            if((parity > 0) && (destX > sourceX)) {
+                jumpedX++;
+            } else if((parity == 0) && (sourceX > destX)) {
+                jumpedX--;
+            }
+            myGrid[jumpedX][jumpedY] = 0;
+//#ifdef DEBUG
+//#             System.out.println("opponent`s move x("+sourceX+"->"+jumpedX+") y("+sourceY+"->"+jumpedY+")");
+//#endif
+        }
+        // if the opponent reaches the far side, 
+        // make him a king:
+        if(destY == Y_LENGTH - 1) {
+            myGrid[destX][destY] = -2;
+        }
+    }
+
+    void endOpponentTurn() {
+        myTurn = true;
+        mySelectedX = 0; mySelectedY = 0; myDestinationX = -1; myDestinationY = -1;
+        rightPressed();
+    }
+
+    void leftPressed() {
+        if(myDestinationX == -1) {
+            selectPrevious();
+            if(myPossibleMoves.size() == 0)
+                endGame();
+        } else {
+            for(byte i = 0; i < myPossibleMoves.size(); i++) {
+                byte[] coordinates = (byte[])myPossibleMoves.elementAt(i);
+                if((coordinates[0] == myDestinationX) &&  (coordinates[1] == myDestinationY)) {
+                    i++;
+                    i = (new Integer(i % myPossibleMoves.size())).byteValue();
+                    coordinates = (byte[])myPossibleMoves.elementAt(i);
+                    myDestinationX = coordinates[0]; myDestinationY = coordinates[1];
+                    break;
                 }
+            }
+        }
+    }
 
-                sendCoordCommand("step",
-                        inverse(Integer.toString(i1)+Integer.toString(i2)), 
-                        inverse(Integer.toString(i1_)+Integer.toString(i2_)), inverse(del));
-                
-                //проверка
-                //firstRun?"b":"w"
-                int count=0;
-                for(byte i = 1; i <= 8; i++) {//b вниз i
-                  for(byte j = 1; j <= 8; j++){//b влево j
-                   if( ((String)contact.checkersPos[i][j]).startsWith(firstRun?"w":"b") ) {
-                      //проверка противоположных шашек на доске
-                      count+=1;
-                   }
-                  }  
+    void rightPressed() {
+        if(myDestinationX == -1) {
+            selectNext();
+            if(myPossibleMoves.size() == 0) {
+                endGame();
+            }
+        } else {
+            for(byte i = 0; i < myPossibleMoves.size(); i++) {
+                byte[] coordinates = (byte[])myPossibleMoves.elementAt(i);
+                if((coordinates[0] == myDestinationX) &&  (coordinates[1] == myDestinationY)) {
+                    i++;
+                    i = (new Integer(i % myPossibleMoves.size())).byteValue();
+                    coordinates = (byte[])myPossibleMoves.elementAt(i);
+                    myDestinationX = coordinates[0];
+                    myDestinationY = coordinates[1];
+                    break;
                 }
-                if(count==0){
-                   //станза победы 
-                }
-                
-                stepAnalys=-1;
-                startAnalys=false;
-                stepFIRST_player=false;//временный запрет хода после отправки      
-              }
-              else//startAnalys==false
-              {
-                int i1 = yR/20+1;
-                int i2 = xR/20+1;
-                doAnalysStep(i1,i2);
-                 startAnalys=true;
-                 stepAnalys=0;
-                 int i1_ = Integer.parseInt( ((String)analysRects.elementAt(0)).substring(0,1));//6
-                 int i2_ = Integer.parseInt( ((String)analysRects.elementAt(0)).substring(1,2));//1
-                 yR_=(i1_-1)*20;
-                 xR_=(i2_-1)*20;
-              }
-              break;
-      }
+            }
+        }
     }
-    
-    void sendCoordCommand(String str, String p1, String p2,String del) {
-        JabberDataBlock iq=new Iq(contact.getJid(), Iq.TYPE_RESULT, str);
-        iq.setAttribute("p1", p1); 
-        iq.setAttribute("p2", p2);
-        iq.setAttribute("del",del);
-        if (!StaticData.getInstance().roster.isLoggedIn()) 
-            return;
-        StaticData.getInstance().roster.theStream.send(iq);
-    }    
 
-    Vector analysRects = new Vector();
-    private int doAnalysStep(int i1,int i2){
-         analysRects.removeAllElements();
-         if(i2 == 1){
-         //6-1  ->  5-2,(7-2 если дамка)
-                       if(((String)contact.checkersPos[i1][i2]).startsWith("!")){//дамка
-                         for(byte p = 1; p <= 2; p++){
-                           if( check("-",i1-1,i2+1) && p == 1) { addAnalys(i1-1,i2+1);  } else {  if(check(firstRun?"b":"w",i1-1,i2+1) && p == 1){  addDEL(i1-2,i2+2, i1-1,i2+1); };  } //5-2 верх
-                           if( check("-",i1+1,i2+1) && p == 2) { addAnalys(i1+1,i2+1);  } else {  if(check(firstRun?"b":"w",i1+1,i2+1) && p == 2){  addDEL(i1+2,i2+2, i1+1,i2+1); };  } //7-2 низ
-                         }
-                       }else{
-                           if( check("-",i1-1,i2+1)) { addAnalys(i1-1,i2+1); } else {  if((check(firstRun?"b":"w",i1-1,i2+1) && check("-",i1-2,i2+2))){ addDEL(i1-2,i2+2, i1-1,i2+1); };  }
-                       }
-                  }
-         else if(i2 == 8){
-         //5-8  ->  4-7,(6-7 если дамка)
-                       if(((String)contact.checkersPos[i1][i2]).startsWith("!")){//дамка
-                         for(byte r = 1; r <= 2; r++){
-                           if( check("-",i1-1,i2-1)  && r == 1){ addAnalys(i1-1,i2-1);  } else {  if(check(firstRun?"b":"w",i1-2,i2-2) && r == 1){  addDEL(i1-2,i2-2, i1-2,i2-2); };  }//4-7
-                           if( check("-",i1+1,i2-1)  && r == 2){ addAnalys(i1+1,i2-1);  } else {  if(check(firstRun?"b":"w",i1+2,i2-2) && r == 2){  addDEL(i1+2,i2-2, i1+2,i2-2); };  }//6-7
-                         }
-                       }else{
-                           if( check("-",i1-1,i2-1)) { addAnalys(i1-1,i2-1); } else {  if((check(firstRun?"b":"w",i1-1,i2-1) && check("-",i1-2,i2-2))){ addDEL(i1-2,i2-2, i1-1,i2-1); };  }//5-2
-                       }
-                  }
-        else{
-        //6-3 ->  5-2,5-4,(7-2,7-4 если дамка)
-                       if(((String)contact.checkersPos[i1][i2]).startsWith("!")){//дамка
-                         for(byte k = 1; k <= 4; k++){
-                           if( check("-",i1-1,i2-1) && k == 1){  addAnalys(i1-1,i2-1);  } else {  if(check(firstRun?"b":"w",i1-2,i2-2) && k == 1){  addDEL(i1-2,i2-2, i1-2,i2-2); };  }//5-2
-                           if( check("-",i1-1,i2+1) && k == 2){  addAnalys(i1-1,i2+1);  } else {  if(check(firstRun?"b":"w",i1-2,i2+2) && k == 2){  addDEL(i1-2,i2+2, i1-2,i2+2); };  }//5-4
-                           if( check("-",i1+1,i2-1) && k == 3){  addAnalys(i1+1,i2-1);  } else {  if(check(firstRun?"b":"w",i1+2,i2-2) && k == 3){  addDEL(i1+2,i2-2, i1+2,i2-2); };  }//7-2
-                           if( check("-",i1+1,i2+1) && k == 4){  addAnalys(i1+1,i2+1);  } else {  if(check(firstRun?"b":"w",i1+2,i2+2) && k == 4){  addDEL(i1+2,i2+2, i1+2,i2+2); };  }//7-4
-                         }
-                       }else{
-                         for(byte t = 1; t <= 2; t++){
-                           if( check("-",i1-1,i2-1)  && t == 1){  addAnalys(i1-1,i2-1); } else{ if((check(firstRun?"b":"w",i1-1,i2-1) && check("-",i1-2,i2-2))) { addDEL(i1-2,i2-2, i1-1,i2-1); }; }//5-2
-                           if( check("-",i1-1,i2+1)  && t == 2){  addAnalys(i1-1,i2+1); } else{ if((check(firstRun?"b":"w",i1-1,i2+1) && check("-",i1-2,i2+2))) { addDEL(i1-2,i2+2, i1-1,i2+1); }; }//5-4
-                         }
-                       }
-         }
-         System.out.println("result of AnalysStep end analysRects: " + analysRects.size() + " : " + analysRects.toString());
-         repaint();
-       return analysRects.size();
+    void upPressed() {
+        if(myDestinationX == -1) {
+            fixSelection();
+        } else {
+            move();
+        }
     }
-    
-    
-    private void addAnalys(int x,int y){
-       analysRects.addElement(Integer.toString(x) + Integer.toString(y));
+
+    void deselect() {
+        if(myIsJumping) {
+            mySelectedX = -1; mySelectedY = -1; myDestinationX = -1; myDestinationY = -1;
+            myIsJumping = false; myTurn = false;
+            endTurn();
+        } else {
+            myDestinationX = -1; myDestinationY = -1;
+        }
     }
-    
-    
-    private void addDEL(int x,int y,int delx,int dely){
-       analysRects.addElement(Integer.toString(x) + Integer.toString(y)+"DEL"+Integer.toString(delx) + Integer.toString(dely));
-    }    
-    
-    
-    private boolean check(String symbol,int x,int y){
+
+    private void fixSelection() {
+        byte[] destination = (byte[])myPossibleMoves.elementAt(0);
+        myDestinationX = destination[0]; myDestinationY = destination[1];
+    }
+
+    private void selectNext() {
+        byte testX = mySelectedX;
+        byte testY = mySelectedY;
+        while(true) {
+            testX++;
+            if(testX >= X_LENGTH) {
+                testX = 0;
+                testY++;
+                testY = (new Integer(testY % Y_LENGTH)).byteValue();
+            }
+            getMoves(testX, testY, myPossibleMoves, false);
+            if((myPossibleMoves.size() != 0) ||  ((testX == mySelectedX) && (testY == mySelectedY))) {
+                mySelectedX = testX;
+                mySelectedY = testY;
+                break;
+            }
+        }
+    }
+
+    private void selectPrevious() {
+        byte testX = mySelectedX;
+        byte testY = mySelectedY;
+        while(true) {
+            testX--;
+            if(testX < 0) {
+                testX += X_LENGTH;
+                testY--;
+                if(testY < 0) {
+                    testY += Y_LENGTH;
+                }
+            }
+            getMoves(testX, testY, myPossibleMoves, false);
+            if((myPossibleMoves.size() != 0) ||  ((testX == mySelectedX) && (testY == mySelectedY))) {
+                mySelectedX = testX;
+                mySelectedY = testY;
+                break;
+            }
+        }
+    }
+
+    private void move() {
+        myGrid[myDestinationX][myDestinationY]  = myGrid[mySelectedX][mySelectedY];
+
+        myGrid[mySelectedX][mySelectedY] = 0;
+        if(myDestinationY == 0)
+            myGrid[myDestinationX][myDestinationY] = 2;
+
+        move(mySelectedX, mySelectedY,  myDestinationX, myDestinationY);
+
+        if((mySelectedY - myDestinationY > 1) ||  (myDestinationY - mySelectedY > 1)) {
+            int jumpedY = (mySelectedY + myDestinationY)/2;
+            int jumpedX = mySelectedX;
+            int parity = mySelectedY % 2;
+
+            if((parity > 0) && (myDestinationX > mySelectedX)) {
+                jumpedX++;
+            } else if((parity == 0) && (mySelectedX > myDestinationX)) {
+                jumpedX--;
+            }
+
+            myGrid[jumpedX][jumpedY] = 0;
+
+            mySelectedX = myDestinationX;
+            mySelectedY = myDestinationY;
+            myDestinationX = -1;
+            myDestinationY = -1;
+
+            getMoves(mySelectedX, mySelectedY, myPossibleMoves, true);
+
+            if(myPossibleMoves.size() != 0) {
+                myIsJumping = true;
+                byte[] landing = (byte[])myPossibleMoves.elementAt(0);
+                myDestinationX = landing[0];
+                myDestinationY = landing[1];
+            } else {
+                myTurn = false;
+                endTurn();
+            }
+        } else {
+            mySelectedX = -1; mySelectedY = -1; myDestinationX = -1; myDestinationY = -1;
+            myPossibleMoves.removeAllElements();
+            myTurn = false;
+            endTurn();
+        }
+    }
+
+    private byte[] getCornerCoordinates(byte x, byte y, byte corner) {
+        byte[] retArray = null;
+        if(corner < 2) {
+            y--;
+        } else {
+            y++;
+        }
+        if((corner % 2 == 0) && (y % 2 != 0)) {
+            x--;
+        } else if((corner % 2 != 0) && (y % 2 == 0)) {
+            x++;
+        }
         try {
-           return ((String)contact.checkersPos[x][y]).startsWith(symbol);
-        } catch(ArrayIndexOutOfBoundsException e) { return false; }
-    }       
+            if(myGrid[x][y] > -15) {
+                retArray = new byte[2];
+                retArray[0] = x;
+                retArray[1] = y;
+            }
+        } catch(ArrayIndexOutOfBoundsException e) { }
+        return(retArray);
+    }
 
-    
-    private void goStep(boolean isRigth){
-       mySteps.removeAllElements();
-       objects.removeAllElements();
-              for(byte i = 1; i <= 8; i++) {
-                for(byte j = 1; j <= 8; j++){
-                   if( ((String)contact.checkersPos[i][j]).startsWith(firstRun?"w":"b") ) {
-                      objects.addElement(Integer.toString(i) + Integer.toString(j));
-                   }
-                }  
-              }
-              String check_ = firstRun?"w":"b";
-              
-              for(byte i = 0; i < objects.size(); i++){
-                  int i1 = Integer.parseInt( ((String)objects.elementAt(i)).substring(0,1));//6
-                  int i2 = Integer.parseInt( ((String)objects.elementAt(i)).substring(1,2));//1
-                  avsteps.removeAllElements();
-                  if(i2 == 1){
-                    //6-1  ->  5-2,(7-2 если дамка)
-                       if(((String)contact.checkersPos[i1][i2]).startsWith("!")){//дамка
-                         for(byte p = 1; p <= 2; p++){
-                           if( (check("-",i1-1,i2+1) || check(firstRun?"b":"w",i1-1,i2+1)) && p == 1) { add(i1-1,i2+1);  } //5-2
-                           if( (check("-",i1+1,i2+1) || check(firstRun?"b":"w",i1+1,i2+1)) && p == 2) { add(i1+1,i2+1);  } //7-2
-                         }
-                       }else{
-                           if( check("-",i1-1,i2+1) || check(firstRun?"b":"w",i1-1,i2+1) ) { add(i1-1,i2+1); }//5-2
-                       }
-                  }
-                  else if(i2 == 8){
-                      //5-8  ->  4-7,(6-7 если дамка)
-                       if(((String)contact.checkersPos[i1][i2]).startsWith("!")){//дамка
-                         for(byte r = 1; r <= 2; r++){
-                           if( (check("-",i1-1,i2-1) || check(firstRun?"b":"w",i1-1,i2-1)) && r == 1){  add(i1-1,i2-1);  }//4-7
-                           if( (check("-",i1+1,i2-1) || check(firstRun?"b":"w",i1+1,i2-1)) && r == 2){  add(i1+1,i2-1);  }//6-7
-                         }
-                       }else{
-                           if( (check("-",i1-1,i2-1))|| check(firstRun?"b":"w",i1-1,i2-1)) { add(i1-1,i2-1);   }//5-2
-                       }
-                  }                  
-                  else{
-                    //6-3 ->  5-2,5-4,(7-2,7-4 если дамка)
-                       if(((String)contact.checkersPos[i1][i2]).startsWith("!")){//дамка
-                         for(byte k = 1; k <= 4; k++){
-                           if( (check("-",i1-1,i2-1) || check(firstRun?"b":"w",i1-1,i2-1)) && k == 1){  add(i1-1,i2-1);  }//5-2
-                           if( (check("-",i1-1,i2+1) || check(firstRun?"b":"w",i1-1,i2+1)) && k == 2){  add(i1-1,i2+1);  }//5-4
-                           if( (check("-",i1+1,i2-1) || check(firstRun?"b":"w",i1+1,i2-1)) && k == 3){  add(i1+1,i2-1);  }//7-2
-                           if( (check("-",i1+1,i2+1) || check(firstRun?"b":"w",i1+1,i2+1)) && k == 4){  add(i1+1,i2+1);  }//7-4
-                         }
-                       }else{
-                         for(byte t = 1; t <= 2; t++){
-                           if( (check("-",i1-1,i2-1) || check(firstRun?"b":"w",i1-1,i2-1)) && t == 1){  add(i1-1,i2-1); }//5-2
-                           if( (check("-",i1-1,i2+1) || check(firstRun?"b":"w",i1-1,i2+1)) && t == 2){  add(i1-1,i2+1); }//5-4
-                         }
-                       }
-                  }
-                if(avsteps.size()>0){
-                 mySteps.addElement(objects.elementAt(i));
-                 myStepSize=mySteps.size();
+    private void getMoves(byte x, byte y, Vector toFill, boolean jumpsOnly) {
+        toFill.removeAllElements();
+        if(myGrid[x][y] <= 0)
+            return;
+        for(byte i = 0; i < 4; i++) {
+            byte[] coordinates = getCornerCoordinates(x, y, i);
+            if((coordinates != null) && ((myGrid[x][y] > 1) || (i < 2))) {
+                if((myGrid[coordinates[0]][coordinates[1]] == 0) && (! jumpsOnly)) {
+                    toFill.addElement(coordinates);
+                } else if(myGrid[coordinates[0]][coordinates[1]] < 0) {
+                    byte[] jumpLanding = getCornerCoordinates(coordinates[0], coordinates[1], i);
+                    if((jumpLanding != null) &&  (myGrid[jumpLanding[0]][jumpLanding[1]] == 0)) {
+                        toFill.addElement(jumpLanding);
+                    }
                 }
-              }
-              if(isRigth){
-               step+=1;
-               if(step>(myStepSize-1)){
-                 step=0;
-               }
-              }else{
-                 step-=1;
-                 if(step<0){
-                   step=myStepSize-1;
-                 }                  
-              }
-              int i1 = Integer.parseInt( ((String)mySteps.elementAt(step)).substring(0,1));//6
-              int i2 = Integer.parseInt( ((String)mySteps.elementAt(step)).substring(1,2));//1          
-              yR=(i1-1)*20;
-              xR=(i2-1)*20;
+            }
+        }
     }
     
-    
-    private void add(int x,int y){
-       avsteps.addElement(Integer.toString(x) + Integer.toString(y));
-    }
-     
-    public void keyPressed(int keyCode) {  
-          int action = getGameAction(keyCode);   
-          if(!stepFIRST_player){
-              repaint();
-              return;
-          }
-          switch (action) {
-              case LEFT:
-                  checkStep(4);
-                  break;
-              case RIGHT:
-                  checkStep(6);
-                  break;
-              case UP:
-                  checkStep(2);
-                  break;
-              case DOWN:
-                  checkStep(8);
-                  break;
-              case FIRE:
-                  checkStep(5);
-                  break;
-          }
-          repaint();
-          //serviceRepaints();
-    }
 }

@@ -626,3 +626,8 @@ Graphics Menu	Графическое меню
 Cursor	Курсор
 Bold	Жирный шрифт
 Italic	Наклонный шрифт
+User wants to play checkers with you	Пользователь желает сыграть с Вами в шашки
+Checkers:send invite	Предложить игру в шашки
+Checkers:start game	Начать игру
+Checkers:stop game	Остановить игру
+Checkers:resume	Возобновить игру

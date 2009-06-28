@@ -43,12 +43,12 @@ public abstract class XmppParser implements XMLEventListener {
 
         JabberDataBlock parent = currentBlock.getParent();
         if (parent == null) {
-            
+            //System.out.println("currentBlock: ["+currentBlock.toString()+"]");
             dispatchXmppStanza(currentBlock);
             //dispatcher.broadcastJabberDataBlock( currentBlock );
-            //System.out.println(currentBlock.toString());
-        }  else
+        }  else {
             parent.addChild( currentBlock );
+        }
         currentBlock = parent;
     }
 
@@ -62,7 +62,7 @@ public abstract class XmppParser implements XMLEventListener {
      */
     
     public boolean tagStart(String name, Vector attributes) {
-        StaticData.getInstance().updateTrafficIn();
+        StaticData.getInstance().updateTrafficIn();//???
         
         if (currentBlock != null){
             
@@ -74,7 +74,7 @@ public abstract class XmppParser implements XMLEventListener {
             if ( name.equals("BINVAL") ){
                 return true;
             }            
-            //#endif
+//#endif
                         
         //                if (rosterNotify)                if (name.equals("item"))                    dispatcher.rosterNotify();
             

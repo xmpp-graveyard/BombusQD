@@ -67,7 +67,11 @@
 //#         
 //#         String from=data.getAttribute("from");
 //#         String id=null;
-//#         StringBuffer result=new StringBuffer();
+//#         
+//#         StringBuffer mood_=new StringBuffer();
+//#         StringBuffer activity_=new StringBuffer();
+//#         StringBuffer tune_=new StringBuffer();
+//#         
 //#         boolean  tuneVaule=false;
 //#         int moodIndex=-1;        
 //#         String tag=null;
@@ -89,18 +93,19 @@
 //#                 tag=null;
 //#                 String activityText=null;
 //#                 try {
-//#                     for (Enumeration e=activity.getChildBlocks().elements(); e.hasMoreElements();) {
-//#                         JabberDataBlock child=(JabberDataBlock)e.nextElement();
+//#                     int s = activity.getChildBlocks().size();
+//#                     for (int i=0; i<s; i++) {
+//#                         JabberDataBlock child=(JabberDataBlock)activity.getChildBlocks().elementAt(i);
 //#                         tag=child.getTagName();
 //#                         if(locale.Activity.getIconIndex(tag)>-1){
 //#                            activity_name = tag;
 //#                         }
 //#                         tag=child.getTagName();
 //#                         if (tag.equals("text")) continue;
-//#                         result.append(locale.Activity.loadString(tag));
+//#                         activity_.append(locale.Activity.loadString(tag));
 //#                         if (child.getChildBlocks()!=null){
 //#                             activity_name =  ((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName();
-//#                             result.append(": ").append(
+//#                             activity_.append(": ").append(
 //#                                     locale.Activity.loadString(
 //#                                         ((JabberDataBlock) child.getChildBlocks().elementAt(0)).getTagName()
 //#                                         )
@@ -113,7 +118,7 @@
 //#                 activityText=activity.getChildBlockText("text");
 //#                 if (activityText!=null){
 //#                     if (activityText.length()>0) {
-//#                         result.append("(")
+//#                         activity_.append("(")
 //#                                 .append(activityText)
 //#                                 .append(")");
 //#                     }
@@ -121,7 +126,7 @@
 //#                 hasActivity=true;
 //# 
 //#ifdef DEBUG
-//#             System.out.println(from+": "+result.toString());
+//#              System.out.println(from+": "+activity_.toString());
 //#endif
 //#                 type=SR.MS_USERACTIVITY;
 //#             }
@@ -133,30 +138,30 @@
 //#             JabberDataBlock tune=extractEvent(event, "tune", "http://jabber.org/protocol/tune");
 //#             if (tune!=null) {
 //#                 if (tune.getChildBlocks()==null)
-//#                     result.append("(silence.No music)");
+//#                     tune_.append("(silence.No music)");
 //#                 else {
 //#                     String src=tune.getChildBlockText("source");
 //#                     String len=tune.getChildBlockText("length");
 //#                     String track=tune.getChildBlockText("track");
 //#                     
 //#                     if (track.length()>0) {
-//#                         result.append(track)
+//#                         tune_.append(track)
 //#                         .append(").");
 //#                     }                     
 //#                     
-//#                     result.append(tune.getChildBlockText("title"))
+//#                     tune_.append(tune.getChildBlockText("title"))
 //#                     .append(" - ")
 //#                     .append(tune.getChildBlockText("artist"));
 //# 
 //#                     if (src.length()>0) {
-//#                         result.append(" (")
+//#                         tune_.append(" (")
 //#                         .append(src)
 //#                         .append(')');
 //#                     }
 //#                     hasTune=true;
 //#                 }
 //#ifdef DEBUG
-//#             System.out.println(from+": "+result.toString());
+//#              System.out.println(from+": "+tune_.toString());
 //#endif
 //#                 type=SR.MS_USERTUNE;
 //#             }
@@ -171,8 +176,9 @@
 //#             mood=extractEvent(event, "mood", "http://jabber.org/protocol/mood");
 //#             if (mood!=null) {
 //#                 try {
-//#                     for (Enumeration e=mood.getChildBlocks().elements(); e.hasMoreElements();) {
-//#                         JabberDataBlock child=(JabberDataBlock)e.nextElement();
+//#                     int s = mood.getChildBlocks().size();
+//#                     for (int i=0; i<s; i++) {
+//#                         JabberDataBlock child=(JabberDataBlock)mood.getChildBlocks().elementAt(i);                    
 //#                         tag=child.getTagName();
 //#                         if (tag.equals("text")) continue;
 //# 
@@ -181,34 +187,35 @@
 //#                         id=mood.getParent().getAttribute("id");
 //#                     }
 //#                 } catch (Exception ex) {
-//#                     moodIndex=Moods.getInstance().getMoodIngex("-");
+//#                     moodIndex=-1;//Moods.getInstance().getMoodIngex("-");
 //#                 }
 //# 
-//#                 result.append(Moods.getInstance().getMoodLabel(moodIndex));
+//#                 mood_.append(Moods.getInstance().getMoodLabel(moodIndex));
 //#                 moodText=mood.getChildBlockText("text");
 //#                 if (moodText!=null){
 //#                     if (moodText.length()>0) {
-//#                         result.append("(")
+//#                         mood_.append("(")
 //#                                 .append(moodText)
 //#                                 .append(")");
 //#                     }
 //#                 }
 //#                 hasMood = true;
 //#ifdef DEBUG
-//#             System.out.println(from+": "+result.toString());
+//#             System.out.println(from+": "+mood_.toString());
 //#endif
 //#                 type=SR.MS_USERMOOD;
 //#             }
 //#         }
 //# 
-//#         Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, result.toString());
-//#         
+//# 
 //#         Vector hContacts=sd.roster.getHContacts();
+//#         String msg="";
 //#         synchronized (hContacts) {
 //#             Jid j=new Jid(from);
-//#             for (Enumeration e=hContacts.elements();e.hasMoreElements();){
-//#                 Contact c=(Contact)e.nextElement();
-//#                     if (c.jid.equals(j, false)) {              
+//#             int s = hContacts.size();
+//#             for (int i=0; i<s; i++) {
+//#                 Contact c=(Contact)hContacts.elementAt(i);
+//#                 if (c.jid.equals(j, false)) {              
 //#                     if (hasMood) {
 //#                         c.pepMood=moodIndex;
 //#                         c.pepMoodName=Moods.getInstance().getMoodLabel(moodIndex);
@@ -219,20 +226,25 @@
 //#                             Moods.getInstance().myMoodName=tag;
 //#                             Moods.getInstance().myMoodName=moodText;
 //#                         }
+//#                         msg = mood_.toString();
 //#                     }
 //#                     if (hasActivity) {
-//#                         c.activity=result.toString();
+//#                         c.activity=activity_.toString();
 //#                         c.activ = locale.Activity.getIconIndex(activity_name);
+//#                         msg = activity_.toString();
 //#                     }
 //#                     if (hasTune) {
 //#                         c.pepTune=true;
-//#                         c.pepTuneText=result.toString();
+//#                         c.pepTuneText=tune_.toString();
+//#                         msg = tune_.toString();
 //#                     }
-//#                     c.addMessage(m);
+//#                     c.addMessage(new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, msg));
 //#                 }
 //#             }
 //#         }
-//#         
+//#         mood_=null;
+//#         activity_=null;
+//#         tune_=null;
 //#         sd.roster.redraw();
 //#         
 //#         return BLOCK_PROCESSED;

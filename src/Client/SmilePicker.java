@@ -260,7 +260,7 @@ public class SmilePicker
 //#     public int showGraphicsMenu() {
 //#         commandState();
 //#         new GMenu(display, parentView, this, null, menuCommands);        
-//#         GMenuConfig.getInstance().itemGrMenu=GMenu.CONFIG_FORM;
+//#         GMenuConfig.getInstance().itemGrMenu=GMenu.SMILE_PEAKER;
 //#         return GMenu.SMILE_PEAKER;
 //#     }
 //#else

@@ -1,2 +1,7 @@
-/skins/default.txt	default
-/skins/z-ice.txt	z-ice
+/themes/default.txt	default
+/themes/z-ice.txt	z-ice
+/themes/green.txt	green
+/themes/light.txt	light
+/themes/sky.txt	sky
+/themes/yellow.txt	yellow
+/themes/trikolor.txt	trikolor
