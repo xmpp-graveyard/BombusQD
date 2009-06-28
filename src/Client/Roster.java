@@ -1864,7 +1864,9 @@ public class Roster
 //#                         if (query.isJabberNameSpace("checkers")) {
 //#                             if(query.getAttribute("state").equals("start")){
 //#                               Contact c=getContact(from, true);
-//#                               c.addMessage(new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, null, SR.GAME_CHECKERS_MSG));
+//#                               c.setCheckers(0);
+//#                               c.addMessage(new Msg(Msg.MESSAGE_TYPE_IN, from, null, SR.GAME_CHECKERS_MSG));
+//#                               repaint();
 //#                              return JabberBlockListener.BLOCK_PROCESSED;
 //#                             }
 //#                         }
