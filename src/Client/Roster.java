@@ -1595,7 +1595,7 @@ public class Roster
 //#endif
 
 //#ifdef PEP
-//#         if (cf.sndrcvmood)
+//#         if (cf.sndrcvmood || cf.rcvtune || cf.rcvactivity)
 //#ifdef PLUGINS
 //#             if (sd.PEP)
 //#endif
@@ -2028,6 +2028,8 @@ public class Roster
                 
                 String from=message.getFrom();
                 
+                //System.out.println("data msg "+data);
+                
                 if (myJid.equals(new Jid(from), false)) //Enable forwarding only from self-jids
                     from=message.getXFrom();
                 
@@ -2061,7 +2063,7 @@ public class Roster
                 String body=message.getBody().trim();
                 String oob=message.getOOB();
 
-                
+                System.out.println("1");
 //#if BREDOGENERATOR         
 //#                 if(cf.bredoGen) { bredoGEN(body); }
 //#endif                 
@@ -2249,11 +2251,12 @@ public class Roster
      
                 Msg m=new Msg(mType, from, subj, body);    
                 m.MucChat = groupchat;
+
                 if (tStamp!=0) 
                     m.dateGmt=tStamp;
 //#ifndef WMUC
                 if (m.body.indexOf(SR.MS_IS_INVITING_YOU)>-1) m.dateGmt=0;
-                if (groupchat) {
+                if (groupchat && !cf.dont_loadMC) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
@@ -2293,8 +2296,14 @@ public class Roster
                     }
                     m.from=name;
                     mucGrp=null;
+                }else{
+                    if (groupchat && cf.dont_loadMC){
+                        String msg = message.getFrom();
+                        int rp=msg.indexOf('/')+1;
+                        m.from=msg.substring(rp);
+                        //System.out.println("groupchat "+msg+"   "+m.from);
+                    }
                 }
-                
 //#endif
                 messageStore(c, m);
                 from=null;type=null;
@@ -2317,7 +2326,7 @@ public class Roster
                     return JabberBlockListener.BLOCK_REJECTED;
 
                 Presence pr = (Presence) data;
-                
+
                 String from=pr.getFrom();
                 String Prtext = pr.getText();
                 int ti=pr.getTypeIndex();
@@ -2333,51 +2342,18 @@ public class Roster
                     }
                     c=null;
                 }
-                
 
-                Msg m=new Msg( (ti==Presence.PRESENCE_AUTH ||
-                        ti==Presence.PRESENCE_AUTH_ASK)?
-                              Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, Prtext );
-                System.out.println(Prtext);
-                //Prtext=null;
 //#ifndef WMUC
-                JabberDataBlock xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc#user");
+            JabberDataBlock xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc#user");
                 if (xmuc==null) xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc"); //join errors
-                
 
                 if (xmuc!=null) {
-                    /*
-                      String roomcheck = "qd@conference.jabber.ru";
-                      if(data.getAttribute("from").indexOf(roomcheck)>-1){//check room
-                       System.out.println("TO: "+data.getAttribute("to"));
-                       JabberDataBlock item=xmuc.getChildBlock("item");
-                       if(item!=null && data.getAttribute("to").indexOf(muc_conf_name)>-1){
-                        if(item.getAttribute("affiliation")!=null){
-                            
-                         if (item.getAttribute("affiliation").equals("owner"))
-                         {
-                           System.out.println("Owner"); 
-                         }
-                         else if (item.getAttribute("affiliation").equals("admin"))
-                         { 
-                           System.out.println("Admin"); 
-                         }
-                         else if (item.getAttribute("affiliation").equals("member"))
-                         {
-                           System.out.println("Member"); 
-                         }
-                         else {//non register,quit
-                            theStream.close();
-                            theStream=null;
-                            midlet.BombusQD.getInstance().destroyApp(true);
-                            midlet.BombusQD.getInstance().notifyDestroyed();
-                         }
-                        }
-                        item=null;
-                       }
-                      }
-                     
-                     */                    
+                
+                  if(cf.dont_loadMC){
+                     ///////.....
+                  }
+                  else
+                  {
                      JabberDataBlock status=xmuc.getChildBlock("status");
                       if(status!=null)
                       {
@@ -2419,6 +2395,8 @@ public class Roster
                             chatPresence=null;
                         }
                         chatPres=null;
+                        Msg m=new Msg( (ti==Presence.PRESENCE_AUTH ||
+                              ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, Prtext );                     
                         messageStore(c,m);
                         m=null;
                         lang=null;
@@ -2426,9 +2404,12 @@ public class Roster
                         c=null;
                     }
                     catch(OutOfMemoryError eom){ errorLog("error Roster::3"); } catch (Exception e) { e.printStackTrace(); }
+                  }
                 } else {
 //#endif
                     Contact c=null;
+                    Msg m=new Msg( (ti==Presence.PRESENCE_AUTH ||
+                         ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, Prtext );                    
                      if (ti==Presence.PRESENCE_AUTH_ASK) {
                         //processing subscriptions
                         if (cf.autoSubscribe==Config.SUBSCR_DROP)
@@ -2534,10 +2515,10 @@ public class Roster
 //#ifndef WMUC
                 }
 //#endif
-		sort(hContacts);
-                pr=null;
-                from=null;
-                reEnumRoster();
+		 sort(hContacts);
+                 pr=null;
+                 from=null;
+                 reEnumRoster();                 
                 return JabberBlockListener.BLOCK_PROCESSED;  
             }
         } catch( Exception e ) {

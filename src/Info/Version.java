@@ -38,7 +38,7 @@ public class Version {
 //#            public final static String version="0.8-17_Lite"
 //#                    + Config.getInstance().getStringProperty("build", "");//("+Config.getInstance().difficulty_level+")";    
     //#else
-//#            public final static String version="0.8-17"
+//#            public final static String version="0.8-17T"
 //#                    + Config.getInstance().getStringProperty("build", "") ;//("+Config.getInstance().difficulty_level+")";
     //#endif
 //#else

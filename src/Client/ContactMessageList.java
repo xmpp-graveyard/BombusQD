@@ -841,6 +841,19 @@ public class ContactMessageList extends MessageList {
                     super.pageLeft();
                 contact.setCursor(cursor);
                 break;
+            case KEY_NUM0:
+                int size = StaticData.getInstance().roster.hContacts.size();
+                Contact c;
+                synchronized (StaticData.getInstance().roster.hContacts) {
+                for(int i=0;i<size;i++){
+                        c = (Contact)StaticData.getInstance().roster.hContacts.elementAt(i);
+                        if (c.getNewMsgsCount()>0){
+                           new ContactMessageList(c,display);
+                           break;
+                        }
+                    }
+                  }                
+                  break;
             case KEY_NUM6:
                 if (cf.useTabs)
                     sd.roster.searchActiveContact(1);

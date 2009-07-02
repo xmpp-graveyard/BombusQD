@@ -91,7 +91,9 @@ public class XDataForm implements CommandListener {
                     if (data.isJabberNameSpace("urn:xmpp:bob") && cid.equals(data.getAttribute("cid"))) {
                         byte[] bytes=Strconv.fromBase64(data.getText());
                         Image img=Image.createImage(bytes, 0, bytes.length);
-                        f.set(field.mediaIndex, new ImageItem(null, img, Item.LAYOUT_CENTER, null));
+                        f.delete(field.mediaIndex);
+                        f.insert(field.mediaIndex, new ImageItem(null, img, Item.LAYOUT_CENTER, null));
+                        
                     }
                 }
             }

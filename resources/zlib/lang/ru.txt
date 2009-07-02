@@ -631,3 +631,4 @@ Checkers:send invite	Предложить игру в шашки
 Checkers:start game	Начать игру
 Checkers:stop game	Остановить игру
 Checkers:resume	Возобновить игру
+Don't load conference contacts	Не загружать контакты конференции

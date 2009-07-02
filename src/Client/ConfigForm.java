@@ -87,6 +87,7 @@ public class ConfigForm
 //#ifdef CLIENTS_ICONS
     private CheckBox showClientIcon;
 //#endif
+    private CheckBox dont_loadMC;
   
     private CheckBox gradient_cursor;    
     private CheckBox altern_chat_colors;
@@ -149,9 +150,7 @@ public class ConfigForm
 //#ifdef FILE_TRANSFER
     private CheckBox fileTransfer;
 //#endif
-//#ifdef HISTORY
-//#     private CheckBox saveHistory;
-//#endif
+
 //#ifdef ADHOC
 //#     private CheckBox adhoc;
 //#endif
@@ -231,7 +230,9 @@ public class ConfigForm
 //#endif
             itemsList.addElement(showClientIcon);
 //#endif
-
+        dont_loadMC  = new CheckBox(SR.DONT_LOAD_MUCCONTACTS, cf.dont_loadMC);
+        itemsList.addElement(dont_loadMC);
+        
         gradient_cursor  = new CheckBox(SR.MS_GRADIENT_CURSOR,cf.gradient_cursor); 
         itemsList.addElement(gradient_cursor);
 
@@ -375,13 +376,7 @@ public class ConfigForm
 //#endif
             itemsList.addElement(fileTransfer);
 //#endif
-//#ifdef HISTORY
-//#         saveHistory = new CheckBox(SR.MS_HISTORY, cf.saveHistory); 
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
-//#             itemsList.addElement(saveHistory);
-//#endif
+
 //#ifdef ADHOC
 //#         adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc); 
 //#ifdef PLUGINS
@@ -520,6 +515,7 @@ public class ConfigForm
 //#endif
             cf.showClientIcon=showClientIcon.getValue();
 //#endif
+        cf.dont_loadMC=dont_loadMC.getValue();
 
         cf.gradient_cursor=gradient_cursor.getValue();
         if(cf.difficulty_level>=1) cf.altern_chat_colors=altern_chat_colors.getValue();
@@ -540,16 +536,19 @@ public class ConfigForm
 //#         if (sd.PEP) {
 //#endif
 //#             cf.sndrcvmood=sndrcvmood.getValue();
-//#            if(StaticData.getInstance().roster.isLoggedIn()) {  
-//#              if(sndrcvmood.getValue()) {
-//#                 PepListener.getInstance().addBlockListener();
-//#              }else{
-//#                 PepListener.getInstance().removeBlockListener();                
-//#              }
-//#            }
 //#ifdef PEP
 //#             cf.rcvtune=rcvtune.getValue();
 //#             cf.rcvactivity=rcvactivity.getValue();
+//#             
+//#            if(StaticData.getInstance().roster.isLoggedIn()) {  
+//#             if(!sndrcvmood.getValue()&&!rcvtune.getValue()&&!rcvactivity.getValue()){
+//#                 PepListener.getInstance().removeBlockListener();
+//#              }else{
+//#                 if(PepListener.getInstance()==null){
+//#                   PepListener.getInstance().addBlockListener();          
+//#                 }
+//#              }
+//#            }            
 //#endif
 //#ifdef PLUGINS
 //#         }
@@ -603,12 +602,7 @@ public class ConfigForm
 //#endif
             cf.fileTransfer=fileTransfer.getValue();
 //#endif
-//#ifdef HISTORY
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
-//#             cf.saveHistory=saveHistory.getValue();
-//#endif
+
 //#ifdef ADHOC
 //#ifdef PLUGINS
 //#         if (sd.Adhoc)

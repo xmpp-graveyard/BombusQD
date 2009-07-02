@@ -116,13 +116,18 @@ public class RosterItemActions extends Menu {
 
         if (item==null) return;
         boolean isContact=( item instanceof Contact );
-
-
-        //System.out.println(contact.bareJid);
+        
 	if (isContact) {
 	    Contact contact=(Contact)item;            
             MainBar mainbar=new MainBar(contact);
             setMainBarItem(mainbar);
+            
+            System.out.println(contact.getGroupType()+":"+Groups.TYPE_CONFERENCE);
+            
+            if (contact.getGroupType()==Groups.TYPE_CONFERENCE) {
+               addItem(SR.MS_LEAVE_ROOM,902, menuIcons.ICON_LEAVE);
+               return;
+            }
  
         // if(contact.bareJid.equals(StaticData.HELPER_CONTACT)==false){            
 	    if (contact.getGroupType()==Groups.TYPE_TRANSP) {
@@ -136,8 +141,8 @@ public class RosterItemActions extends Menu {
 //#                     addItem("Change transport", 915);
 //#endif
 	    }
-
-
+            
+            /*
             switch (contact.getCheckers()) {
                 case -1:
                     addItem(SR.GAME_SEND_GAME,220, 0x06);
@@ -152,8 +157,8 @@ public class RosterItemActions extends Menu {
                     addItem(SR.GAME_RESUME,223, 0x02);
                     break;
             }
+             */
 
-            
 	    addItem(SR.MS_VCARD,1, menuIcons.ICON_VCARD);
 	    if(cf.difficulty_level>=1) {
                 addItem(SR.MS_FEATURES,250,menuIcons.ICON_INFO);
@@ -334,15 +339,20 @@ public class RosterItemActions extends Menu {
  		}
 	    } else {
 //#endif
-                if (    group.type!=Groups.TYPE_IGNORE
+               if (group.type==Groups.TYPE_CONFERENCE){
+                  addItem("CLOSE ALL ROOMS!",900, menuIcons.ICON_LEAVE);
+               }
+               else{
+                 if (    group.type!=Groups.TYPE_IGNORE
                         && group.type!=Groups.TYPE_NOT_IN_LIST
                         && group.type!=Groups.TYPE_SEARCH_RESULT
                         && group.type!=Groups.TYPE_SELF
                         && group.type!=Groups.TYPE_TRANSP)
-                {
+                 {
                     addItem(SR.MS_RENAME,1001, menuIcons.ICON_RENAME);
                     addItem(SR.MS_DELETE, 1004, menuIcons.ICON_DELETE);
-                }
+                 }
+               }
 //#ifndef WMUC
             }
 //#endif

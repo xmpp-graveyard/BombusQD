@@ -57,6 +57,7 @@ public class Groups implements JabberBlockListener{
     public final static int TYPE_SEARCH_RESULT=7;
     public final static int TYPE_NOT_IN_LIST=8;
     public final static int TYPE_TRANSP=9;
+    public final static int TYPE_CONFERENCE=10;    
 
     public final static String COMMON_GROUP=SR.MS_GENERAL;
     
@@ -72,6 +73,7 @@ public class Groups implements JabberBlockListener{
         addGroup(SR.MS_IGNORE_LIST, TYPE_IGNORE);
         addGroup(SR.MS_VISIBLE_GROUP, TYPE_VISIBLE);
         addGroup(SR.MS_VIP_GROUP, TYPE_VIP);
+        addGroup(SR.MS_CONFERENCE,TYPE_CONFERENCE);
         addGroup(Groups.COMMON_GROUP, TYPE_NO_GROUP);
     }
 

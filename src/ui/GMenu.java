@@ -288,7 +288,7 @@ public class GMenu extends Canvas {
        }
 
        g.translate(gm.xcoodr,gm.ycoodr);
-       //g.setClip(0,0,w+1,mHfh+1);
+       g.setClip(0,0,w+1,mHfh+1);
 
        int alpha_menu=ColorTheme.getARGB(true);
         if (alpha_menu!=-1){

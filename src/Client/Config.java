@@ -216,7 +216,7 @@ public class Config {
     public boolean showNickNames = true;
     public boolean fileTransfer=true;//Передача файлов
     public boolean adhoc=false;//Удаленное управление
-    public boolean saveHistory=false;//История
+    public boolean saveHistory=true;//История
     
     public boolean oldSE=false;    
     
@@ -303,6 +303,8 @@ public class Config {
     public boolean animateMenuAndRoster=false;
     public boolean cursivUse = false;
     public boolean isStatusFirst=false;
+    
+    public boolean dont_loadMC=false;
    
    
     public static Config getInstance(){
@@ -465,8 +467,6 @@ public class Config {
 //#endif
             showResources=inputStream.readBoolean();
             
-            saveHistory=inputStream.readBoolean(); //antispam
-
             enableVersionOs=inputStream.readBoolean();
             messageLimit=inputStream.readInt();
             lang=inputStream.readUTF();
@@ -607,6 +607,7 @@ public class Config {
             animateMenuAndRoster=inputStream.readBoolean(); 
             
             cursivUse=inputStream.readBoolean(); 
+            dont_loadMC=inputStream.readBoolean(); 
    
  //#if BREDOGENERATOR                
 //#         bredoGen=inputStream.readBoolean();
@@ -766,8 +767,6 @@ public class Config {
 //#endif
             outputStream.writeBoolean(showResources);
 
-            outputStream.writeBoolean(saveHistory); //antispam
-
             outputStream.writeBoolean(enableVersionOs);
             outputStream.writeInt(messageLimit);
             outputStream.writeUTF(lang);      
@@ -908,6 +907,7 @@ public class Config {
             outputStream.writeBoolean(animateMenuAndRoster);
             
             outputStream.writeBoolean(cursivUse);
+            outputStream.writeBoolean(dont_loadMC);
 //#if BREDOGENERATOR                
 //#             outputStream.writeBoolean(bredoGen);
 //#endif            

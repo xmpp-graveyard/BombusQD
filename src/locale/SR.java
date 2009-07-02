@@ -796,6 +796,8 @@ public class SR {
    public static String GAME_APPLIED = loadString("Checkers:start game");
    public static String GAME_STOP = loadString("Checkers:stop game");  
    public static String GAME_RESUME = loadString("Checkers:resume");
+   
+   public static String DONT_LOAD_MUCCONTACTS = loadString("Don't load conference contacts");
       
   
 

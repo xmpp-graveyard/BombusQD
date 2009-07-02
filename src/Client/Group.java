@@ -30,6 +30,7 @@ import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.util.*;
 import Colors.ColorTheme;
+import Conference.ConferenceGroup;
 import javax.microedition.lcdui.Graphics;
 import ui.*;
 
@@ -89,9 +90,11 @@ public class Group extends IconTextElement {
     public String getName() { return name; }
     
     protected String mainbar(String mainbarStart) {
+        if (this instanceof ConferenceGroup && Config.getInstance().dont_loadMC) {
+          return mainbarStart;
+        }
         StringBuffer mb=new StringBuffer(mainbarStart)
-        .append(" (")
-        .append(getOnlines())
+        .append(" (")        .append(getOnlines())
         .append("/")
         .append(getNContacts())
         .append(")");
