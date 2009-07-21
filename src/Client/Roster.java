@@ -1856,6 +1856,7 @@ public class Roster
                     
                 
                 if ( type.equals( "result" ) ) {
+                  /*
                   if(id.equals("checkers")) {
                    JabberDataBlock query=data.getChildBlock("query");
                     if (query!=null){
@@ -1874,6 +1875,7 @@ public class Roster
 //#endif
                     }
                    }
+                  */
                     
                     //fix
                     if(id.equals("delacc")) { 
@@ -2063,7 +2065,6 @@ public class Roster
                 String body=message.getBody().trim();
                 String oob=message.getOOB();
 
-                System.out.println("1");
 //#if BREDOGENERATOR         
 //#                 if(cf.bredoGen) { bredoGEN(body); }
 //#endif                 
@@ -2889,7 +2890,11 @@ public class Roster
               if(cf.useClassicChat){
                 new SimpleItemChat(display,this,(Contact)e);
               } else{
-	        new ContactMessageList((Contact)e,display);
+                if(((Contact)e).cList!=null){
+                  display.setCurrent( ((Contact)e).cList );   
+                }else{
+                  new ContactMessageList((Contact)e,display);  
+                }
               }                
         } else{
                     cleanupGroup();
@@ -2909,7 +2914,7 @@ public class Roster
     private Displayable createMsgList(){
         Object e=getFocusedObject();
         if (e instanceof Contact) {
-	     return new ContactMessageList((Contact)e,display);
+	     return ((Contact)e).cList!=null? ((Contact)e).cList : new ContactMessageList((Contact)e,display);
         }
         return null;
     }
@@ -3422,7 +3427,12 @@ public class Roster
             if (nowContact>=size) nowContact=0;
             if (currentContact==nowContact) return;
             Contact c=(Contact)activeContacts.elementAt(nowContact);
-            new ContactMessageList((Contact)c,display);
+            if(c.cList!=null){
+              display.setCurrent( c.cList );   
+            }else{
+              new ContactMessageList(c,display);  
+            }            
+            //new ContactMessageList((Contact)c,display);
         }
        catch(OutOfMemoryError eom){ errorLog("error Roster::6"); } catch (Exception e) { e.printStackTrace(); }        
     }

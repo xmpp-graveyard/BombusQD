@@ -23,7 +23,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
+/*
 package xmpp.extensions.games;
 import Client.Contact;
 import Client.Roster;
@@ -360,16 +360,6 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
                             repaint();
                             return BLOCK_REJECTED;
                           }
-                          /*
-                          else if(query.getAttribute("state").equals("game_over")){
-                            game=false;
-                            removeCommand(myHideCommand);
-                            removeCommand(addMsg);
-                            looser=true;
-                            repaint();
-                            return BLOCK_REJECTED;
-                          }
-                           */                          
                         }
                     }                 
                 
@@ -383,15 +373,6 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
                 int i3 = Integer.parseInt(data.getAttribute("i3"));
                 int i4 = Integer.parseInt(data.getAttribute("i4"));
                 
-
-/*
-    public static final byte START_GAME_REQUEST_FLAG = -6;
-    public static final byte START_GAME_FLAG = -5;
-    public static final byte END_GAME_FLAG = -4;
-    public static final byte END_TURN_FLAG = -3;
-    public static final byte OPPONENT_MOVE = -2;
-    public static final byte WAIT_FLAG = -1;    
- */
 
                 switch (i0) {
                         case START_GAME_FLAG:
@@ -439,14 +420,7 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
         return BLOCK_REJECTED;
     }
 
-  /**
-   * 0 = empty
-   * 1 = local player's piece
-   * 2 = local player's king
-   * -1 = remote player's piece
-   * -2 = remote player's king
-   */
-    
+
     public static final byte X_LENGTH = 4;
     public static final byte Y_LENGTH = 8;
     private byte[][] myGrid;
@@ -737,3 +711,4 @@ public class Checkers extends Canvas implements CommandListener, JabberBlockList
     }
     
 }
+ */

@@ -1383,7 +1383,13 @@ public abstract class VirtualList
 //#                    if(Config.getInstance().useClassicChat){
 //#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
 //#                    }else{
-//#                       new ContactMessageList(sd.roster.getContact(popup.getContact(), false),display);
+//#                        Contact c = sd.roster.getContact(popup.getContact(), false);
+//#                        if(c.cList!=null){
+//#                           display.setCurrent( c.cList );   
+//#                        }else{
+//#                           new ContactMessageList(c,display);  
+//#                        } 
+//#                       //new ContactMessageList(sd.roster.getContact(popup.getContact(), false),display);
 //#                    }                
 //#                 popup.next();
 //#                 return;
@@ -1857,24 +1863,13 @@ public abstract class VirtualList
 
     
     public void setInfo() {
-        getInfoBarItem().setElementAt((!showTimeTraffic)?touchLeftCommand():Time.getTimeWeekDay(), 1);
+        getInfoBarItem().setElementAt((!showTimeTraffic)?touchLeftCommand():Time.timeLocalString(Time.utcTimeMillis()), 1);
         getInfoBarItem().setElementAt((!showTimeTraffic)?touchRightCommand():getTraffic(), 3);
     }
-/*    
+
     public String getTraffic() {
         long traffic = StaticData.getInstance().traffic;
-        return StringUtils.getSizeString((traffic>0)?traffic*2:0);
-    }
- */
-    
-    public String getTraffic() {
-        long traffic = StaticData.getInstance().traffic;
-        if(StaticData.getInstance().roster.isLoggedIn()){
-          //System.out.println(StaticData.getInstance().roster.theStream.getStreamStatsBar());   
-          return StaticData.getInstance().roster.theStream.getStreamStatsBar().concat(StringUtils.getSizeString((traffic>0)?traffic*2:0));
-        }else{
-          return "";
-        }        
+        return StringUtils.getSizeString((traffic>0)?traffic:0);
     }   
 
     public String touchLeftCommand(){ return SR.MS_MENU; }

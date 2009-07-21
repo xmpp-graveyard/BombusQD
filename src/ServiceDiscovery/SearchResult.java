@@ -188,7 +188,12 @@ public class SearchResult
         try {
             Contact c=(Contact)getFocusedObject();
             if (c==null) return;
-            new ContactMessageList((Contact) getFocusedObject(), display);
+            if(c.cList!=null){//?
+                display.setCurrent( c.cList );   
+            }else{
+                new ContactMessageList(c,display);  
+            }             
+            //new ContactMessageList((Contact) getFocusedObject(), display);
         } catch (Exception e) {}
     }
 }

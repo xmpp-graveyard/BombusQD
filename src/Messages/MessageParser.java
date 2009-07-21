@@ -41,7 +41,8 @@ import Client.Msg;
 import Client.Config;
 import util.Strconv;
 
-public final class MessageParser implements Runnable{
+public final class MessageParser // implements Runnable
+{
     
     private final static int URL=-2;
     private final static int NOSMILE=-1;
@@ -58,9 +59,10 @@ public final class MessageParser implements Runnable{
 //#ifdef SMILES 
     private ImageList smileImages;
 //#endif
-    private Vector tasks=new Vector();
     
-    private Thread thread;
+    //private Vector tasks=new Vector();
+    //private Thread thread;
+    
     boolean wordsWrap;
     private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
     
@@ -113,8 +115,9 @@ public final class MessageParser implements Runnable{
 	p.smile=index;
     }
 
+    
     public void parseMsg(MessageItem messageItem,  int width) {
-        synchronized (tasks) {
+        //synchronized (tasks) {
             wordsWrap=Config.getInstance().textWrap==1;
             messageItem.msgLines=new Vector();
 //#ifdef SMILES
@@ -122,18 +125,24 @@ public final class MessageParser implements Runnable{
 //#endif
             this.width=width;
 
-            if (tasks.indexOf(messageItem)>=0) return;
+            //if (tasks.indexOf(messageItem)>=0) return;
 
-            tasks.addElement(messageItem);
+            parseMessage(messageItem);
+            messageItem.notifyRepaint();
+  
+        /* 
+             tasks.addElement(messageItem);
             if (thread==null) {
                 thread=new Thread(this);
                 thread.setPriority(Thread.MAX_PRIORITY);
                 thread.start();
             }
         }
+        */
         return;
     }
     
+    /*
     public void run() {
         while(true) {
             MessageItem task=null;
@@ -150,6 +159,7 @@ public final class MessageParser implements Runnable{
             }
         }
     }
+     */
 
     private MessageParser(String resource) {
         smileTable=null;
@@ -346,7 +356,7 @@ public final class MessageParser implements Runnable{
                     // добавим смайл
                     int iw=(smileIndex<0x01000000)? smileImages.getWidth() : 0;
                     if (w+iw>width) {
-                        task.notifyRepaint(lines, task.msg, false);
+                        //task.notifyRepaint(lines, task.msg, false);
                         l=new ComplexString(smileImages); // новая строка
                         lines.addElement(l);
                         if (singleLine) return;
@@ -387,7 +397,7 @@ public final class MessageParser implements Runnable{
 //#                         l=new ComplexString();
 //#endif
                             lines.addElement(l);
-                            task.notifyRepaint(lines, task.msg, false);
+                            //task.notifyRepaint(lines, task.msg, false);
 
                             if (singleLine) return;
 
@@ -432,7 +442,7 @@ public final class MessageParser implements Runnable{
             if (l.isEmpty())
                 lines.removeElementAt(lines.size()-1);
 
-            task.notifyRepaint(lines, task.msg, true);
+            //task.notifyRepaint(lines, task.msg, true);
             state++;
             s.setLength(0);
         }
@@ -442,8 +452,10 @@ public final class MessageParser implements Runnable{
         return FontCache.getFont(bold, FontCache.msg);
     }
     
-    public interface MessageParserNotify {
+    /*
+     public interface MessageParserNotify {
         void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized);
-    }
+     }
+    */
  
 }

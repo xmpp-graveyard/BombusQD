@@ -123,12 +123,12 @@ public class MessageEdit
        this.parentView=pView;
        if (cf.notifyWhenMessageType)
        {
-          t=new TextBox(to.toString(), body, 2048 , TextField.ANY);
+          t=new TextBox(to.toString(), body, 4096 , TextField.ANY);
           ticker = new Ticker("BombusQD");
           t.setTicker(ticker);
        }
        else{
-        int maxSize=2048;
+        int maxSize=4096;
         t=new TextBox(to.toString(), null, maxSize, TextField.ANY);
         try {
             maxSize=t.setMaxSize(4096);
@@ -185,13 +185,21 @@ public class MessageEdit
                 
         t.setCommandListener(this);
 //#ifdef RUNNING_MESSAGE
+//#         /*
 //#        if(cf.useLowMemory_msgedit==false){ 
 //#          if (thread==null) (thread=new Thread(this)).start() ;
 //#        }
+//#          */
 //#         
 //#else
     new Thread(this).start() ;
 //#endif
+        
+        if(thread==null){
+          thread=new Thread(this);
+          thread.start();
+          thread.run();
+        }
 
         display.setCurrent(t);
         this.parentView=pView;
@@ -229,6 +237,12 @@ public class MessageEdit
         if (c==cmdCancel) {
             composing=false;
             body=null;
+            thread=null;
+            if(to.cList!=null){
+              display.setCurrent( to.cList );
+            }else{
+              new ContactMessageList(to,display);  
+            }
         }
         if (c==cmdSuspend) {
                 composing=false; 
@@ -268,17 +282,21 @@ public class MessageEdit
         }        
         
 //#ifdef RUNNING_MESSAGE
-//#       if(to.msgSuspended==null){
+//#        if(to.msgSuspended==null){
+//#             /*
 //#         if(cf.useLowMemory_msgedit==false){ 
 //#           if (display!=null) display.setCurrent(parentView);
 //#           new Thread(this).start();
 //#           return;            
 //#          } else { 
+//#              */
 //#             send(body,subj);
-//#             display.setCurrent(parentView); 
-//#         }
+//#             display.setCurrent(parentView);
+//#       // }
 //#       }
 //#endif
+      thread=null;
+      System.out.println("null");
     }
 
     
@@ -331,6 +349,8 @@ public class MessageEdit
     }    
 
      public void run(){
+         System.out.println("runned");
+        /*
          String comp=null;
          String id=String.valueOf((int) System.currentTimeMillis());
          
@@ -374,6 +394,7 @@ public class MessageEdit
             try {
                ((ContactMessageList)parentView).forceScrolling();
             } catch (Exception e) { }
+         */
         }
 }
 

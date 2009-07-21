@@ -144,7 +144,7 @@ public class Contact extends IconTextElement{
 //#ifdef LOGROTATE
 //#     public boolean redraw=false;
 //#endif
-    private Config cf;
+    private final Config cf = Config.getInstance();
 
     public String j2j;
     public String lang;
@@ -160,6 +160,8 @@ public class Contact extends IconTextElement{
 //#endif
 //#endif
     
+   public ContactMessageList cList = null; 
+    
    private int fontHeight;
     
     int ilHeight;
@@ -168,7 +170,7 @@ public class Contact extends IconTextElement{
 
     protected Contact (){
         super(RosterIcons.getInstance());
-        cf=Config.getInstance();
+        //cf=Config.getInstance();
 
         msgs=null;
         msgs=new Vector();
@@ -738,6 +740,7 @@ public class Contact extends IconTextElement{
     }
 //#endif
     
+   /* 
     //public String[][] checkersPos = null; //board
     private int checkers = -1; //END_GAME_FLAG
     public void setCheckers(int checkers) {
@@ -746,6 +749,7 @@ public class Contact extends IconTextElement{
     public int getCheckers() {
       return checkers;
     }
+   */
     
    
 //#ifdef PEP

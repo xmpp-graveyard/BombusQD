@@ -35,10 +35,10 @@ public class Version {
 
 //#ifdef GRAPHICS_MENU  
    //#ifdef  SUPER_LIGHT
-//#            public final static String version="0.8-17_Lite"
+//#            public final static String version="0.8-17T_r12"
 //#                    + Config.getInstance().getStringProperty("build", "");//("+Config.getInstance().difficulty_level+")";    
     //#else
-//#            public final static String version="0.8-17T"
+//#            public final static String version="0.8-17T_r12"
 //#                    + Config.getInstance().getStringProperty("build", "") ;//("+Config.getInstance().difficulty_level+")";
     //#endif
 //#else

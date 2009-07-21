@@ -22,6 +22,7 @@ import java.util.Random;
 import Client.ClassicChat;
 import Client.Msg;
 import Client.Config;
+import Client.StaticData;
 /**
  *
  * @author ad
@@ -143,6 +144,7 @@ public class StringUtils {
                 suffix.append(number)
                       .append(" b");
             }
+            suffix.append(StaticData.getInstance().roster.theStream.getStreamStatsBar());
         } catch (Exception e) { }
         
         return suffix.toString();

@@ -147,14 +147,16 @@ public class BombusQD extends MIDlet implements Runnable{
 
         //cf.smiles=true;
         FontClass.getInstance().Init(cf.drwd_fontname); 
+        /*
         try {
            ib.bgnd_checkers = Image.createImage("/images/games/bgnd_checkers.png");
            ib.checkers_black = Image.createImage("/images/games/black.png");
            ib.checkers_white = Image.createImage("/images/games/white.png");
            System.out.println("checkers loaded!");
-        } catch (Exception e) {
+         } catch (Exception e) {
             s.img=null;
-        }         
+         } 
+         */        
 
           boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
           if (selAccount) 

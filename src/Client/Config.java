@@ -241,7 +241,7 @@ public class Config {
     public int maxAvatarWidth=45;
     public int bgnd_image=getIntFromManifest("bgnd_type",0);
     public boolean image_in_popUp=true;
-    public String add_contact_name="username@server.domen"; 
+    public String add_contact_name="@.";
     public boolean use_drawed_font=false;       
     public String drwd_fontname="no";  
     

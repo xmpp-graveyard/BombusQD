@@ -241,7 +241,12 @@ public class TranslateText implements Runnable{
                                  b.append(" "+translated_text);
                                  Msg tr=new Msg(tr_mess.messageType,tr_mess.from,tr_mess.subject,b.toString());
                                  c.msgs.insertElementAt(tr,cursor);
-                                 new ContactMessageList(c,display);
+                                 if(c.cList!=null){
+                                    display.setCurrent( c.cList );   
+                                  }else{
+                                    new ContactMessageList(c,display);  
+                                 }
+                                 //new ContactMessageList(c,display);
                              }
                     }                    
                 }else{

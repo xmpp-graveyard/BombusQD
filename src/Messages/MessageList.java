@@ -79,7 +79,8 @@ public abstract class MessageList extends VirtualList
     protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
     
     /** Creates a new instance of MessageList */
-  
+    MessageItem mi=null;  
+    
     public MessageList() {
         super();
         messages=null;
@@ -97,7 +98,6 @@ public abstract class MessageList extends VirtualList
         enableListWrapping(false);
 
         cursor=0;//activate
-
         setCommandListener(this);
     }
 
@@ -109,9 +109,9 @@ public abstract class MessageList extends VirtualList
     
     public abstract int getItemCount();
     
-    MessageItem mi=null;
     protected VirtualElement getItemRef(int index) {
-	if (messages.size()<getItemCount()) messages.setSize(getItemCount());
+      int size = messages.size();
+	if (size<getItemCount()) messages.setSize(getItemCount());
 	mi=(MessageItem)messages.elementAt(index);
 	if (mi==null) {
 	    mi=new MessageItem(getMessage(index), this, smiles);
@@ -217,23 +217,7 @@ public abstract class MessageList extends VirtualList
                 clipboard.setClipBoard("");
             } catch (Exception e) {/*no messages*/}            
        }         
-//#ifdef SMILES
-        if (keyCode=='*') {
-            try {
-                ((MessageItem)getFocusedObject()).toggleSmiles();
-                if(cf.smiles) {
-                    cf.smiles=false;
-                }else{
-                    cf.smiles=true;
-                }
-                cf.saveToStorage();
-            } catch (Exception e){}
-            System.gc();
-            try { Thread.sleep(50); } catch (InterruptedException ex) { }
-            return;
-        }
-//#endif
-        super.keyPressed(keyCode);
+       super.keyPressed(keyCode);
     }
    
 //#ifdef MENU_LISTENER

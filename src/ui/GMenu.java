@@ -190,7 +190,7 @@ public class GMenu extends Canvas {
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_MY_JABBER)>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_TOOLS)>-1                   
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SERVICE)>-1
-              //|| gm.commandslist[gm.itemCursorIndex].indexOf("BenchMark->")>-1
+              || gm.commandslist[gm.itemCursorIndex].indexOf("BenchMark->")>-1
               ){
               drawAllItems(g,gm.menuCommandsIn,gm.commandslistIn,gm.itemCursorIndexIn);
            }
@@ -211,7 +211,8 @@ public class GMenu extends Canvas {
    
    boolean eventMenu=false;
    Vector inMenuItems = new Vector();
-
+   
+   Gradient fon;
    
    private void eventOk(){
     cursorY=0;       
@@ -221,7 +222,7 @@ public class GMenu extends Canvas {
      } 
      else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_REGISTERING)>-1
         ||gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_TOOLS)>-1
-        //||gm.commandslist[gm.itemCursorIndex].indexOf("BenchMark->")>-1 )
+        ||gm.commandslist[gm.itemCursorIndex].indexOf("BenchMark->")>-1
          ){
           GMenuIn(gm.cmdsecondList); eventMenu=true; return;   
      } 
@@ -239,6 +240,7 @@ public class GMenu extends Canvas {
         fh = bm.himg_menu>fh?bm.himg_menu:fh;
 
         size = commandslist.length-1;
+        int hitem = 0;        
         int maxHeight=commandslist.length;
 
         int maxwidth=0;
@@ -260,6 +262,7 @@ public class GMenu extends Canvas {
        gm.maxHeight=mHfh;
        int w = maxwidth + bm.wimg_menu + 10;
        gm.maxWidth=w;
+       hitem=mHfh;
         int bgnd_menu=ColorTheme.getARGB(false);
         if (bgnd_menu!=-1){
           int[] pixelArray = new int[width * height];  
@@ -271,24 +274,25 @@ public class GMenu extends Canvas {
           g.drawRect(-1,-1,width+1,height+1);
         }
         
-       gm.xcoodr=(g.getClipWidth() - w)/2;
-       gm.ycoodr=(g.getClipHeight()- mHfh)/2;
+       
+       gm.xcoodr=7;//(g.getClipWidth() - w)/2;
+       gm.ycoodr= g.getClipHeight() - hitem - 10;
+       //(g.getClipHeight()- mHfh)/2;
         
        if(eventMenu){
            g.setFont(font);
            int w3 = font.stringWidth(gm.commandslist[gm.itemCursorIndex]) + 8;
-           int x3 = (g.getClipWidth() - w3)/2; 
+           int x3 = (w - w3)/2 + gm.xcoodr;
            g.setColor(0x000000);
            g.drawRect( x3 , gm.ycoodr - fh , w3 , fh);           
            g.setColor(ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_BGNG_ARGB));
            g.fillRect( x3 + 1, gm.ycoodr - fh + 1, w3 - 1, fh - 1);
            g.setColor(ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_FONT));
            g.drawString( gm.commandslist[gm.itemCursorIndex] , x3 + 4 , gm.ycoodr - fh + 1, g.LEFT|g.TOP);
-           
        }
 
        g.translate(gm.xcoodr,gm.ycoodr);
-       g.setClip(0,0,w+1,mHfh+1);
+       g.setClip(0,0,w+1,mHfh+40);//?
 
        int alpha_menu=ColorTheme.getARGB(true);
         if (alpha_menu!=-1){
@@ -307,37 +311,44 @@ public class GMenu extends Canvas {
           g.setColor(0x000000);
           g.drawRoundRect(0,0 , w, mHfh,10,10);
 
-          
-        g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
-        g.fillRoundRect(1, 1 + (cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh - 1, 10, 10);
-        
 
+          if(cf.gradient_cursor){ //Tishka17
+            int yc = 1 + (cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh);
+            fon=new Gradient(1, yc, w, yc+fh, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
+                  ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);
+            fon.paint(g);
+            g.setColor(0x000000);
+            //g.drawRect(1, 1 + (cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh - 1);
+        }else {
+            g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
+            g.fillRoundRect(1, 1 + (cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh, 8, 8);
+        }  
+          
+    
         if(!MFont.isCheck()) { g.setFont(font);  }
         if(MFont.isCheck()) { MFont.setColor(255,0x000000); }else{ g.setColor(0x000000); }
         
         g.setColor(ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_FONT));
-        int j = -1;
-        int x_start = 3 + bm.wimg_menu;
+        int x_start = 3 + bm.wimg_menu;//3
         for (int index=0; index<=size; index++) {
-           j+=1;
            if(gm.itemGrMenu!=GMenu.DEF_FORM){
              Command cmd = (Command)menuCommands.elementAt(index);
              if(bm.imageArr[0]!=null){
-               drawImage(g,cmd.getImg(),3, fh*j );
+               drawImage(g,cmd.getImg(),3, fh*index + 1 );
              }
              cmd=null;
            }            
            if(MFont.isCheck()){
                 if(Config.getInstance().executeByNum){
-                  MFont.drawString(g," ["+Integer.toString(index)+"] "+ commandslist[index], x_start, fh*j + 1);
+                  MFont.drawString(g," ["+Integer.toString(index)+"] "+ commandslist[index], x_start,fh*index + 1);
                 }else{
-                  MFont.drawString(g,commandslist[index], x_start, fh*j + 1);                    
+                  MFont.drawString(g,commandslist[index], x_start, fh*index + 1);                    
                 }
             }else{
                if(Config.getInstance().executeByNum){
-                  g.drawString(" ["+Integer.toString(index)+"] "+ commandslist[index], x_start, fh*j + 1, g.LEFT|g.TOP);
+                  g.drawString(" ["+Integer.toString(index)+"] "+ commandslist[index], x_start,fh*index + 1, g.LEFT|g.TOP);
                }else{
-                  g.drawString(commandslist[index], x_start, fh*j + 1, g.LEFT|g.TOP);                   
+                  g.drawString(commandslist[index], x_start, fh*index + 1, g.LEFT|g.TOP);                   
                }
            }
         }

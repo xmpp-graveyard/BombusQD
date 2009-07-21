@@ -122,7 +122,7 @@ public class RosterItemActions extends Menu {
             MainBar mainbar=new MainBar(contact);
             setMainBarItem(mainbar);
             
-            System.out.println(contact.getGroupType()+":"+Groups.TYPE_CONFERENCE);
+            //System.out.println(contact.getGroupType()+":"+Groups.TYPE_CONFERENCE);
             
             if (contact.getGroupType()==Groups.TYPE_CONFERENCE) {
                addItem(SR.MS_LEAVE_ROOM,902, menuIcons.ICON_LEAVE);
@@ -392,7 +392,7 @@ public class RosterItemActions extends Menu {
         if (isContact) to=(index<3)? c.getJid() : c.bareJid;
             switch (index) {
 //#ifdef CHECKERS
-//#                 
+//#                /* 
 //#                 case 220:
 //#                     sd.roster.theStream.send(new IqCheckers(c.getJid(), true));
 //#                     new Checkers(display, c, true);  //запуск wait экрана                 
@@ -410,7 +410,8 @@ public class RosterItemActions extends Menu {
 //#                     break;
 //#                 case 223: //resume:
 //#                     //new Checkers(display, c, false, false);
-//#                     break;                              
+//#                     break;  
+//#                 */                            
 //#endif                
                 case 0: // version
                     sd.roster.setQuerySign(true);

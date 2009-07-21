@@ -87,7 +87,7 @@ public class Account extends IconTextElement{
                     if(status==-1){
                       sd.roster.sendPresence(loginstatus, null);
                     }else{
-                      System.out.println(status);
+                      //System.out.println(status);
                       sd.roster.sendPresence(status, null);
                     }
                 }

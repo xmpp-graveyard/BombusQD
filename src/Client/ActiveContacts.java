@@ -129,7 +129,11 @@ public class ActiveContacts
          if(Config.getInstance().useClassicChat){
            new SimpleItemChat(display,sd.roster,(Contact)c);            
          }else{
-	   new ContactMessageList((Contact)c,display).setParentView(sd.roster);            
+           if(c.cList!=null){
+              display.setCurrent(c.cList); 
+           }else{
+	      new ContactMessageList(c,display).setParentView(sd.roster);     
+           }
          }                
     }
 

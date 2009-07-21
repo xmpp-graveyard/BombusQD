@@ -43,7 +43,8 @@ import ui.VirtualElement;
 import ui.VirtualList;
 
 public class MessageItem
-    implements VirtualElement, MessageParser.MessageParserNotify {
+    implements VirtualElement//, MessageParser.MessageParserNotify 
+{
     
     public Msg msg;
     Vector msgLines;
@@ -51,14 +52,13 @@ public class MessageItem
     private boolean even;
     private boolean smiles;
     private boolean partialParse=false;
-    Config cf = Config.getInstance();
     
     /** Creates a new instance of MessageItem */
     public MessageItem(Msg msg, VirtualList view, boolean showSmiles) {
 	this.msg=msg;
 	this.view=view;
         this.smiles=showSmiles;
-
+        partialParse = msg.itemCollapsed;
     }
 
     public int getVHeight() { 
@@ -81,7 +81,7 @@ public class MessageItem
     }     
     
     public int getColorBGnd() {
-        return cf.altern_chat_colors?
+        return Config.getInstance().altern_chat_colors?
             ((even)?ColorTheme.getColor(ColorTheme.LIST_BGND_EVEN):ColorTheme.getColor(ColorTheme.LIST_BGND))
             :
             (ColorTheme.getColor(ColorTheme.LIST_BGND));
@@ -106,7 +106,7 @@ public class MessageItem
 
             if (cy <= h && cy+g.getClipHeight()>0 ) {
               ofs=0;
-              if(cf.useLowMemory_iconmsgcollapsed==false) { 
+              if(Config.getInstance().useLowMemory_iconmsgcollapsed==false) { 
                  if(i==0 && !msg.isPresence() && !msg.MucChat){
                           if (msg.delivered) {
                              RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_DELIVERED_INDEX, 0,0);
@@ -159,17 +159,20 @@ public class MessageItem
         }
     }
     
-    byte repaintCounter;
-    public void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized) {
-        msgLines=v;
+   
+    byte repaintCounter=0;
+    
+    public void notifyRepaint() {
         updateHeight();
-        partialParse=!finalized;
-        if (!finalized && !msg.itemCollapsed) if ((--repaintCounter)>=0) return;
-        repaintCounter=15;
+        //System.out.println(repaintCounter);
+        if ((--repaintCounter)>=0) return;
+        repaintCounter=6;
+        //System.out.println("redraw..");
         view.redraw();
     }
+   
     
-    private void updateHeight() {
+    public void updateHeight() {
         int height=0;
         int size=msgLines.size();
         for(int i=0;i<size;i++){ 
@@ -214,7 +217,7 @@ public class MessageItem
     }
 
     public String getTipString() {
-        if (Time.utcTimeMillis() - msg.dateGmt> (24*60*60*1000)) return msg.getDayTime();
+        if (Time.utcTimeMillis() - msg.dateGmt> (86400000)) return msg.getDayTime();
         return msg.getTime();
     }
 //#ifdef SMILES

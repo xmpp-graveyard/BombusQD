@@ -95,6 +95,8 @@ public class ComplexString extends Vector implements VirtualElement {
     Font bold;
     Config cf = Config.getInstance();
     
+    boolean boldWord=false;
+    
     public void drawItem(Graphics g, int offset, boolean selected){
         boolean ralign=false;
 	boolean underline=false;

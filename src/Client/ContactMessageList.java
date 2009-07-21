@@ -69,6 +69,7 @@ import ui.controls.form.CheckBox;
 import net.jscience.math.MathFP;
 
 public class ContactMessageList extends MessageList {
+    
     Contact contact;
 
     Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
@@ -114,7 +115,7 @@ public class ContactMessageList extends MessageList {
 //#endif       
     private Command cmdMyService=new Command(SR.MS_SERVICE, Command.SCREEN, 31);
 
-/*    
+   
     private Command cmdHardMode=new Command("BenchMark->", Command.SCREEN, 100); 
     
     private Command cmdHardMode1=new Command("Easy Mode", Command.SCREEN, 101);
@@ -123,7 +124,7 @@ public class ContactMessageList extends MessageList {
     private Command cmdHardMode4=new Command("Very Hard Mode", Command.SCREEN, 104);
     private Command cmdHardMode5=new Command("Maniac Mode", Command.SCREEN, 105);    
     private Command cmdHardMode6=new Command("Ooo my God..", Command.SCREEN, 106);
- */
+
     
     StaticData sd=StaticData.getInstance();
     
@@ -172,7 +173,9 @@ public class ContactMessageList extends MessageList {
             contact.resetNewMsgCnt();
         }
        }
-        
+      if(contact.cList==null){
+          contact.cList=this;
+      }        
     }
     
     public int firstUnread(){
@@ -291,7 +294,7 @@ public class ContactMessageList extends MessageList {
 //#            addCommand(cmdAutoGenON);
 //#         }
 //#endif     
-/*   
+  
          addCommand(cmdHardMode);    cmdHardMode.setImg(0x11);
               addInCommand(2,cmdHardMode1); cmdHardMode1.setImg(0x11);
               addInCommand(2,cmdHardMode2); cmdHardMode2.setImg(0x11);
@@ -299,7 +302,7 @@ public class ContactMessageList extends MessageList {
               addInCommand(2,cmdHardMode4); cmdHardMode4.setImg(0x11);
               addInCommand(2,cmdHardMode5); cmdHardMode5.setImg(0x11);
               addInCommand(2,cmdHardMode6); cmdHardMode6.setImg(0x11);    
- */          
+       
     }
     
     public void showNotify(){
@@ -376,7 +379,7 @@ public class ContactMessageList extends MessageList {
         markRead(index); 
     }
     
-/*    
+  
     
     public int getMainColor(int index) {
         switch (index) {
@@ -437,26 +440,6 @@ public class ContactMessageList extends MessageList {
 
                      statistics.addElement(new CheckBox(mem_using, true, true));
 
-             long ch = MathFP.toFP(objects);//800
-             long res = MathFP.div(ch,MathFP.div(MathFP.toFP(results),MathFP.toFP(1000))); 
-             int index = 0;
-             switch(mode){
-                 case 50: index=1; break;//"Easy Mode"
-                 case 100: index=2; break;//"Normal Mode"
-                 case 200: index=3; break;//"Hard Mode"
-                 case 400: index=4; break;//"Very Hard Mode"
-                 case 800: index=5; break;//"Maniac Mode"
-                 case 1600: index=6; break;//"Ooo my God.."
-             }
-             long result = MathFP.mul(res,MathFP.toFP(index));
-             String ress = MathFP.toString(result,3);
-             
-             long i1 = MathFP.toFP(index+"." + ress.substring(0,ress.indexOf(".")));
-             long show = MathFP.mul(i1,MathFP.toFP(index));
-             
-             statistics.addElement(new CheckBox("QD Scores:" + ":%"+MathFP.toString(show,3)
-             , true, true));
-             sb.append("\nQD Scores: "+MathFP.toString(show,3));
              sd.roster.sendMessage(contact, null , sb.toString() , null , null ,true);
              new CommandForm(display,this,5,"Congratulations!",sb.toString(),statistics);
   }
@@ -504,13 +487,13 @@ public class ContactMessageList extends MessageList {
 ///////////////////////////////////////////////////////////    
     
     
- */
+
     
     public void commandAction(Command c, Displayable d){
         super.commandAction(c,d);
 	//cf.clearedGrMenu=true;	
         /** login-insensitive commands */
-/*   
+   
         if (c==cmdHardMode1) { 
            run("Easy Mode",50);
         }
@@ -534,7 +517,7 @@ public class ContactMessageList extends MessageList {
         if (c==cmdHardMode6) { 
            run("Ooo my God..",1600);
         }   
- */      
+     
 //#ifdef ARCHIVE
         if (c==cmdArch) {
             try {
@@ -843,12 +826,19 @@ public class ContactMessageList extends MessageList {
                 break;
             case KEY_NUM0:
                 int size = StaticData.getInstance().roster.hContacts.size();
+                if(Config.getInstance().savePos) {
+                  contact.setCursor(cursor);
+                }
                 Contact c;
                 synchronized (StaticData.getInstance().roster.hContacts) {
                 for(int i=0;i<size;i++){
                         c = (Contact)StaticData.getInstance().roster.hContacts.elementAt(i);
                         if (c.getNewMsgsCount()>0){
-                           new ContactMessageList(c,display);
+                           if(c.cList!=null){
+                              display.setCurrent(c.cList); 
+                           }else{
+	                      new ContactMessageList(c,display).setParentView(sd.roster);     
+                           }
                            break;
                         }
                     }

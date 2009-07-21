@@ -143,7 +143,7 @@
 //#                 Config.getInstance().moodName=moodName;
 //#                 Config.getInstance().moodText=moodText;
 //#                 
-//#                 VirtualList.setWobble(1, null, "Success Mood!\n"+locale.SR.MS_USERMOOD+": "+moodName+"("+moodText+")");        
+//#                 //VirtualList.setWobble(1, null, "Success Mood!\n"+locale.SR.MS_USERMOOD+": "+moodName+"("+moodText+")");        
 //# 
 //#         String sid="publish-mood";
 //#         JabberDataBlock setMood=new Iq(null, Iq.TYPE_SET, sid);

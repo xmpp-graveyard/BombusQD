@@ -159,18 +159,18 @@ public class Utf8IOStream {
                 recv+=z.getTotalIn()-z.getTotalOut();
                 ZOutputStream zo = (ZOutputStream) outStream;
                 sent+=zo.getTotalOut()-zo.getTotalIn();
-        //String ratio=Long.toString((10*z.getTotalOut())/z.getTotalIn());
-        /*
-        int dotpos=ratio.length()-1;                
+                String ratio=Long.toString((10*z.getTotalOut())/z.getTotalIn());
+                int dotpos=ratio.length()-1;                
                 stats.append("(");
                 stats.append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x');
                 stats.append(")");
                 ratio=null;
-         */
+            }else{
+               return "";
             }
         } catch (Exception e) {
             stats=null;
-            return "";
+            return null;
         }
         return stats.toString();       
     }
