@@ -144,7 +144,6 @@ public class Contact extends IconTextElement{
 //#ifdef LOGROTATE
 //#     public boolean redraw=false;
 //#endif
-    private final Config cf = Config.getInstance();
 
     public String j2j;
     public String lang;
@@ -299,7 +298,7 @@ public class Contact extends IconTextElement{
     public void setGroup(Group group) { this.group = group; }    
   
     public void setIncoming (int state) {
-        if (!cf.IQNotify) return;
+        if (!midlet.BombusQD.cf.IQNotify) return;
 
         short i=0;
         switch (state){
@@ -335,9 +334,9 @@ public class Contact extends IconTextElement{
                         first_replace=true;
                  }
             } else {
-                if (cf.showNickNames) {
+                if (midlet.BombusQD.cf.showNickNames) {
                     StringBuffer who=new StringBuffer();
-                    who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?StaticData.getInstance().account.getNickName():getName());
+                    who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
                         who.append(" (");
                         who.append(m.getTime());
                         who.append(")");
@@ -350,7 +349,7 @@ public class Contact extends IconTextElement{
 //#if NICK_COLORS
                     b.append("\01");
 //#endif
-                    b.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?StaticData.getInstance().account.getNickName():getName());
+                    b.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
 //#if NICK_COLORS
                     b.append("\02");
 //#endif
@@ -368,25 +367,25 @@ public class Contact extends IconTextElement{
         }
 //#if HISTORY
 //#ifdef PLUGINS
-//#     if(cf.saveHistory)
+//#     if(midlet.BombusQD.cf.saveHistory)
 //#endif
 //#         if (!m.history) {
-//#             if (!cf.msgPath.equals("") && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
+//#             if (!midlet.BombusQD.cf.msgPath.equals("") && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
 //#                 boolean allowLog=false;
 //#                 switch (m.messageType) {
 //#                     case Msg.MESSAGE_TYPE_PRESENCE:
 //#                         if (origin>=ORIGIN_GROUPCHAT) {
-//#                             if (cf.msgLogConfPresence)
+//#                             if (midlet.BombusQD.cf.msgLogConfPresence)
 //#                                 allowLog=true;
-//#                         } else  if (cf.msgLogPresence) {
+//#                         } else  if (midlet.BombusQD.cf.msgLogPresence) {
 //#                             allowLog=true;
 //#                         }
 //#                         break;
 //#                     case Msg.MESSAGE_TYPE_HISTORY:
 //#                         break;
 //#                     default:
-//#                         if (origin>=ORIGIN_GROUPCHAT && cf.msgLogConf) allowLog=true;
-//#                         if (origin<ORIGIN_GROUPCHAT && cf.msgLog) allowLog=true;
+//#                         if (origin>=ORIGIN_GROUPCHAT && midlet.BombusQD.cf.msgLogConf) allowLog=true;
+//#                         if (origin<ORIGIN_GROUPCHAT && midlet.BombusQD.cf.msgLog) allowLog=true;
 //#                 }
 //# 
 //#ifndef WMUC
@@ -395,7 +394,7 @@ public class Contact extends IconTextElement{
 //#endif
 //#                 
 //#                 if (allowLog) {
-//#                         HistoryAppend.getInstance().addMessage(m, cf.lastMessages, bareJid);
+//#                         HistoryAppend.getInstance().addMessage(m, midlet.BombusQD.cf.lastMessages, bareJid);
 //#                 }
 //#             }
 //#        }
@@ -405,7 +404,7 @@ public class Contact extends IconTextElement{
             return;
         }
 
-        if (cf.autoScroll) moveToLatest=true;
+        if (midlet.BombusQD.cf.autoScroll) moveToLatest=true;
         
         if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
             activeMessage=msgs.size()+1;
@@ -446,9 +445,8 @@ public class Contact extends IconTextElement{
         msgs=new Vector();
         lastSendedMessage=null;
         activeMessage=-1;
-        
+        cList=null;
         resetNewMsgCnt();
-        
         clearVCard();
     }
     
@@ -463,7 +461,7 @@ public class Contact extends IconTextElement{
     
 //#ifdef LOGROTATE
 //#     public final boolean deleteOldMessages() {
-//#         int limit=cf.msglistLimit;
+//#         int limit=midlet.BombusQD.cf.msglistLimit;
 //#         if (msgs.size()<limit)
 //#             return false;
 //#         
@@ -520,7 +518,7 @@ public class Contact extends IconTextElement{
 //#endif
 
     public int getVWidth(){
-        String str=(!cf.rosterStatus)?getFirstString():(getFirstLength()>getSecondLength())?getFirstString():getSecondString();
+        String str=(!midlet.BombusQD.cf.rosterStatus)?getFirstString():(getFirstLength()>getSecondLength())?getFirstString():getSecondString();
         int wft=getFont().stringWidth(str);
         str=null;
         return wft+il.getWidth()+4 +(hasClientIcon()?ClientsIcons.getInstance().getWidth():0);
@@ -541,7 +539,7 @@ public class Contact extends IconTextElement{
     }
     
     public String getFirstString() {
-        if (!cf.showResources)
+        if (!midlet.BombusQD.cf.showResources)
             return (nick==null)?getJid():nick;
         if (origin>ORIGIN_GROUPCHAT)
             return nick;
@@ -551,7 +549,7 @@ public class Contact extends IconTextElement{
     }
     
     public String getSecondString() {
-        if (cf.rosterStatus){
+        if (midlet.BombusQD.cf.rosterStatus){
             if (statusString!=null)
                 return statusString;
 //#if PEP
@@ -642,7 +640,7 @@ public class Contact extends IconTextElement{
 
         int imgH=(h-ilHeight)/2;
         
-        if(cf.drawCPhoto==false){
+        if(midlet.BombusQD.cf.drawCPhoto==false){
           img_vcard=null;  
         }
         if (getImageIndex()>-1) {
@@ -655,14 +653,14 @@ public class Contact extends IconTextElement{
            if(avatar_width==avatar_height){
              w = w-avatar_width - 4;
              g.drawImage(img_vcard,w,yy,Graphics.TOP|Graphics.LEFT);
-             if(cf.showAvatarRect){
+             if(midlet.BombusQD.cf.showAvatarRect){
                 g.setColor(0x000000);
                 g.drawRect(w,yy,avatar_width,avatar_height);     
              }
            } else {
               w = w-avatar_width - 4;
               g.drawImage(img_vcard,w,yy,Graphics.TOP|Graphics.LEFT);
-              if(cf.showAvatarRect){
+              if(midlet.BombusQD.cf.showAvatarRect){
                 g.setColor(0x000000);
                 g.drawRect(w,yy,avatar_width,avatar_height);
               }
@@ -670,14 +668,14 @@ public class Contact extends IconTextElement{
            g.setColor(def);
         }         
 //#ifdef CLIENTS_ICONS
-        if (hasClientIcon() && cf.showClientIcon ) {
+        if (hasClientIcon() && midlet.BombusQD.cf.showClientIcon ) {
              int clientImgSize=ClientsIcons.getInstance().getWidth();
-             if(cf.iconsLeft){
+             if(midlet.BombusQD.cf.iconsLeft){
                  offset+=clientImgSize;
              }else{
                  w-=clientImgSize;  
              }
-             ClientsIcons.getInstance().drawImage(g, client, cf.iconsLeft?ilHeight+2:w, (h-clientImgSize)/2); //client==index
+             ClientsIcons.getInstance().drawImage(g, client, midlet.BombusQD.cf.iconsLeft?ilHeight+2:w, (h-clientImgSize)/2); //client==index
              if (maxImgHeight<clientImgSize) maxImgHeight=clientImgSize;               
         }
 //#endif

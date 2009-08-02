@@ -364,23 +364,20 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 //#        
 //#       if(paramName==49){  
 //#          Config.getInstance().argb_bgnd=alpha;
-//#          Config.getInstance().saveToStorage();
 //#       }
 //#       else if(paramName==50){  
 //#          Config.getInstance().gmenu_bgnd=alpha;
-//#          Config.getInstance().saveToStorage();
 //#       } 
 //#       else if(paramName==40 || paramName==42){  
 //#          Config.getInstance().popup_bgnd=alpha;
-//#          Config.getInstance().saveToStorage();
 //#       }
 //#       else if(paramName==34){
 //#          Config.getInstance().cursor_bgnd=alpha;
-//#          Config.getInstance().saveToStorage();          
 //#       }
 //#       String val = ColorTheme.ColorToString(red, green, blue);
 //#       int finalColor=ColorTheme.getColorInt(val);
-//#       setValue(finalColor);         
+//#       setValue(finalColor);   
+//#       //midlet.BombusQD.cf.saveToStorage();
 //#endif
       exit = true;
     }

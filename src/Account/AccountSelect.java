@@ -65,7 +65,6 @@ public class AccountSelect
 
     public Vector accountList;
     int activeAccount;
-    boolean enableQuit;
     
     Command cmdLogin=new Command(SR.MS_SELLOGIN, Command.OK,1);
 
@@ -89,24 +88,20 @@ public class AccountSelect
    
     Command cmdEdit=new Command(SR.MS_EDIT,Command.ITEM,3);
     Command cmdDel=new Command(SR.MS_DELETE,Command.ITEM,4);
-    Command cmdConfig=new Command(SR.MS_OPTIONS,Command.ITEM,5);
+    //Command cmdConfig=new Command(SR.MS_OPTIONS,Command.ITEM,5);
     Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
     Command cmdQuit=new Command(SR.MS_APP_QUIT,Command.SCREEN,10);
     
     Command cmdRemoveAcc=new Command(SR.MS_REMOVE_ACCOUNT,Command.ITEM,90);
     Command cmdChangePass=new Command(SR.MS_CHANGE_PASSWORD,Command.ITEM,91);    
     
-    private Config cf;
     int status;
     /** Creates a new instance of AccountPicker */
     public AccountSelect(Display display, Displayable pView, boolean enableQuit,int status) {
         super();
-        this.enableQuit=enableQuit;
         this.display=display;
         this.status=status;
-        
-        cf=Config.getInstance();
-        
+
         String str = "";
         switch(status){
             case 0: str = "(online)"; break;
@@ -121,10 +116,11 @@ public class AccountSelect
 
         accountList=null;
         accountList=new Vector();
+
         Account a;
         
         int index=0;
-        activeAccount=cf.accountIndex;
+        activeAccount=midlet.BombusQD.cf.accountIndex;
         do {
             a=Account.createFromStorage(index);
             if (a!=null) {
@@ -137,11 +133,11 @@ public class AccountSelect
         if (!accountList.isEmpty()) {
             moveCursorTo(activeAccount);
         }else{
-           ColorTheme.loadSkin("/themes/default.txt", 1);
+            ColorTheme.loadSkin("/themes/default.txt", 1);
         }
         commandState();
         setCommandListener(this);
-        attachDisplay(display);
+        display.setCurrent(this);
         this.parentView=pView;
     }
     
@@ -159,8 +155,9 @@ public class AccountSelect
             addCommand(cmdDel); cmdDel.setImg(0x41);
         }
         
-        if (StaticData.getInstance().roster.isLoggedIn()){
-          if(cf.difficulty_level==2) {  
+        if(midlet.BombusQD.sd.roster!=null){
+         if (midlet.BombusQD.sd.roster.isLoggedIn()){
+          //if(cf.difficulty_level==2) {  
             addCommand(cmdRemoveAcc); cmdRemoveAcc.setImg(0x51);
             addCommand(cmdChangePass); cmdChangePass.setImg(0x52);
           }
@@ -185,7 +182,7 @@ public class AccountSelect
           
         if (accountList.isEmpty()==true) {
             addCommand(cmdQuit);  cmdQuit.setImg(0x33);
-            addCommand(cmdConfig); cmdConfig.setImg(0x03);
+            //addCommand(cmdConfig); cmdConfig.setImg(0x03);
         }        
         
 //#ifndef GRAPHICS_MENU   
@@ -252,7 +249,7 @@ public class AccountSelect
             new AccountForm(display, this, this, null);
         }
 //#endif           
-        if (c==cmdConfig) new ConfigForm(display, this);
+        //if (c==cmdConfig) new ConfigForm(display, this);
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdEdit) new AccountForm(display, this, this, (Account)getFocusedObject(),-1,false,null);
         if(c==cmdChangePass){
@@ -273,14 +270,17 @@ public class AccountSelect
           }
         }        
         if (c==cmdDel) {
-            if (cursor==cf.accountIndex && StaticData.getInstance().roster.isLoggedIn()) return;
+          if(midlet.BombusQD.sd.roster!=null){ 
+            if (cursor==midlet.BombusQD.cf.accountIndex && midlet.BombusQD.sd.roster.isLoggedIn()) return;
             new AlertBox(SR.MS_DELETE, getFocusedObject().toString(), display, this) {
                 public void yes() {
                     delAccount();
                 }
                 public void no() { }
-            };
+             };
+            }
         }
+           
     }
 
     public void touchRightPressed(){
@@ -288,15 +288,15 @@ public class AccountSelect
     }
 
     public void destroyView(){
-       display.setCurrent(StaticData.getInstance().roster);
+       display.setCurrent(midlet.BombusQD.sd.roster);
     }
 
     private void delAccount(){
         if (accountList.size()==1) 
-            cf.accountIndex=-1;
-        else if (cf.accountIndex>cursor) cf.accountIndex--;
+            midlet.BombusQD.cf.accountIndex=-1;
+        else if (midlet.BombusQD.cf.accountIndex>cursor) midlet.BombusQD.cf.accountIndex--;
 
-        cf.saveToStorage();
+        midlet.BombusQD.cf.saveToStorage();
 
         accountList.removeElement(getFocusedObject());
         rmsUpdate();
@@ -306,8 +306,8 @@ public class AccountSelect
     }
     
     private void switchAccount(boolean login){
-        cf.accountIndex=cursor;
-        cf.saveToStorage();
+        midlet.BombusQD.cf.accountIndex=cursor;
+        midlet.BombusQD.cf.saveInt();
         Account.loadAccount(login, cursor, status);
         destroyView();
     }
@@ -349,10 +349,12 @@ public class AccountSelect
         if (kHold==keyCode) return;
         kHold=keyCode;
         if (keyCode==KEY_NUM6) {
-            cf.fullscreen=!cf.fullscreen;
-            cf.saveToStorage();
-            VirtualList.fullscreen=cf.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
+            midlet.BombusQD.cf.fullscreen=!midlet.BombusQD.cf.fullscreen;
+            midlet.BombusQD.cf.saveToStorage();
+            VirtualList.fullscreen=midlet.BombusQD.cf.fullscreen;
+            if(midlet.BombusQD.sd.roster!=null){ 
+             StaticData.getInstance().roster.setFullScreenMode(midlet.BombusQD.cf.fullscreen);
+            }
         }
     }
 }

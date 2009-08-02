@@ -27,7 +27,6 @@
 //# package ui.keys;
 //# 
 //# import Client.Config;
-//# import Client.ConfigForm;
 //# import Client.StaticData;
 //#ifdef STATS
 //# import Statistic.Stats;
@@ -113,7 +112,7 @@
 //# 
 //#         switch (commandId) {
 //#             case 1: 
-//#                 new ConfigForm(display, sd.roster);
+//#                 //new ConfigForm(display, sd.roster);//?
 //#                 break;
 //#             case 2: 
 //#                 sd.roster.cmdCleanAllMessages();

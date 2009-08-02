@@ -63,20 +63,18 @@ public abstract class MessageList extends VirtualList
         MenuListener
 //#endif
     {
-    
-    private Config cf;
-    
+
     protected Vector messages;
 //#ifdef CLIPBOARD
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
+//#     private static  ClipBoard clipboard=ClipBoard.getInstance();
 //#     
-//#     protected Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
-//#     protected Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
+//#     protected static Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
+//#     protected static Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
 //#endif
-    protected Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
+    protected static Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
 
-    protected Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
-    protected Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
+    protected static Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
+    protected static Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);
     
     /** Creates a new instance of MessageList */
     MessageItem mi=null;  
@@ -88,10 +86,9 @@ public abstract class MessageList extends VirtualList
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
-        cf=Config.getInstance();
         
 //#ifdef SMILES
-        smiles=cf.smiles;
+        smiles=midlet.BombusQD.cf.smiles;
 //#else
 //#         smiles=false;
 //#endif
@@ -133,7 +130,7 @@ public abstract class MessageList extends VirtualList
 
     public void addCommands() {
 //#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
+//#         if (midlet.BombusQD.cf.useClipBoard) {
 //#             addCommand(cmdCopy); cmdCopy.setImg(0x13);
 //#             addCommand(cmdCopyPlus); cmdCopyPlus.setImg(0x23);
 //#         }
@@ -146,7 +143,7 @@ public abstract class MessageList extends VirtualList
     }
     public void removeCommands () {
 //#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
+//#         if (midlet.BombusQD.cf.useClipBoard) {
 //#             removeCommand(cmdCopy);
 //#             removeCommand(cmdCopyPlus);
 //#         }
@@ -160,7 +157,7 @@ public abstract class MessageList extends VirtualList
 
     public void commandAction(Command c, Displayable d) {
         if (c==cmdBack) {
-            StaticData.getInstance().roster.activeContact=null;
+            midlet.BombusQD.sd.roster.activeContact=null;
             destroyView();
         }
         if (c==cmdUrl) {
@@ -198,7 +195,7 @@ public abstract class MessageList extends VirtualList
         /*
         if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
             if (!reconnectWindow.getInstance().isActive() && !cf.oldSE) {
-                StaticData.getInstance().roster.activeContact=null;
+                midlet.BombusQD.sd.roster.activeContact=null;
                 destroyView();
                 return;
             }
@@ -230,7 +227,7 @@ public abstract class MessageList extends VirtualList
 //#              capt=getMainBarItem().elementAt(0).toString();
 //#          } catch (Exception ex){ }
 //#         new GMenu(display, parentView, this,  null, menuCommands);
-//#         GMenuConfig.getInstance().itemGrMenu = GMenu.MESSAGE_LIST;          
+//#         GMenuConfig.getInstance().itemGrMenu = GMenu.MESSAGE_LIST;        
 //#         return GMenu.MESSAGE_LIST;
 //#     }
 //#else

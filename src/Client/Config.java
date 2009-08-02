@@ -168,15 +168,15 @@ public class Config {
     public boolean popUps=true;
 //#endif
     public boolean showResources=true;
-    public boolean enableVersionOs=true;//Показ версии клиента
+    public boolean enableVersionOs=true;
     public boolean collapsedGroups=true;
     public int messageLimit=512;
-    public boolean eventDelivery=true;//Уведомление о доставке
-//#ifdef DETRANSLIT
-//#     public boolean transliterateFilenames=false;
-//#     public boolean autoDeTranslit=false;
-//#endif
-    public boolean rosterStatus=true;//Вторая строка контакта
+    public boolean eventDelivery=true;
+
+    public boolean transliterateFilenames=false;
+    public boolean autoDeTranslit=false;
+
+    public boolean rosterStatus=true;
 //#ifdef PEP
 //#     public boolean sndrcvmood = true;
 //#     public boolean rcvtune = true;
@@ -185,9 +185,6 @@ public class Config {
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL;//enable all
     public boolean showBalloons = true;
-//#ifdef USER_KEYS
-//#     public boolean userKeys = false;
-//#endif
 //#ifdef LOGROTATE
 //#     public int msglistLimit=500;
 //#endif
@@ -196,9 +193,9 @@ public class Config {
     public boolean notifySound=false;
     public boolean notifyPicture=false;
     public boolean useBoldFont=true;
-//#ifdef RUNNING_MESSAGE
-//#     public boolean notifyWhenMessageType = false;//Бегущая строка
-//#endif
+
+    public boolean notifyWhenMessageType = false;
+
 //#ifdef CLIPBOARD
 //#     public boolean useClipBoard = true;
 //#endif
@@ -208,15 +205,15 @@ public class Config {
     public int resolvedPort=0;
     public boolean IQNotify=false;
 //#ifdef CLIENTS_ICONS
-    public boolean showClientIcon=true;//Иконки клиентов
+    public boolean showClientIcon=true;
 //#endif
     public int reconnectCount=30;
     public int reconnectTime=10;
     public boolean executeByNum = false;
     public boolean showNickNames = true;
-    public boolean fileTransfer=true;//Передача файлов
-    public boolean adhoc=false;//Удаленное управление
-    public boolean saveHistory=true;//История
+    public boolean fileTransfer=true;
+    public boolean adhoc=false;
+    public boolean saveHistory=true;
     
     public boolean oldSE=false;    
     
@@ -225,7 +222,7 @@ public class Config {
     public boolean useLowMemory_userotator=false;   
     public boolean useLowMemory_iconmsgcollapsed=false;    
     public boolean drawCPhoto=true;
-    public boolean auto_queryPhoto=false; //Автозагрузка визиток    
+    public boolean auto_queryPhoto=false;
     
     public boolean sendMoodInMsg=false;
     public String moodText="";     
@@ -275,11 +272,8 @@ public class Config {
     public int line_count=300;    
     public boolean use_phone_theme=false;
     public boolean gradient_cursor=true;
-    public boolean altern_chat_colors=false; //чередовать цвета чата
 
-//#if BREDOGENERATOR                
-//#    public boolean bredoGen=false;
-//#endif   
+    public boolean bredoGen=false;
     
     public String langpair="ru==>en";
    
@@ -289,7 +283,7 @@ public class Config {
     public int cursor_bgnd=0;
    
     public int avatar_cashe_size=0;
-    public int difficulty_level=getIntFromManifest("difflevel",0);
+    //public int difficulty_level=getIntFromManifest("difflevel",0);
    
     public int inStanz=0;
     public int outStanz=0;
@@ -386,242 +380,12 @@ public class Config {
 	VirtualList.greenKeyCode=greenKeyCode;
     }
     
+
     protected void loadFromStorage(){
-        DataInputStream inputStream=NvStorage.ReadFileRecord("config", 0);
-	try {
-	    accountIndex = inputStream.readInt();
-	    showOfflineContacts=inputStream.readBoolean();
-	    fullscreen=inputStream.readBoolean();
-	    def_profile = inputStream.readInt()%4;
-//#ifdef SMILES
-	    smiles=inputStream.readBoolean();
-//#else
-//#             inputStream.readBoolean();
-//#endif
-	    showTransports=inputStream.readBoolean();
-	    selfContact=inputStream.readBoolean();
-	    collapsedGroups=inputStream.readBoolean();
-	    ignore=inputStream.readBoolean();
-	    eventComposing=inputStream.readBoolean();
-	    gmtOffset=inputStream.readInt();
-	    inputStream.readInt(); //locOffset
-	    autoLogin=inputStream.readBoolean();
-	    autoJoinConferences=inputStream.readBoolean();
-	    popupFromMinimized=inputStream.readBoolean();
-	    notifyBlink=inputStream.readBoolean();
-	    memMonitor=inputStream.readBoolean();
-            rosterFont=inputStream.readInt();
-            msgFont=inputStream.readInt();
-            autoFocus=inputStream.readBoolean();
-            notInListDropLevel=inputStream.readInt();
-            storeConfPresence=inputStream.readBoolean();
-            capsState=inputStream.readBoolean();
-	    textWrap=inputStream.readInt();
-            loginstatus=inputStream.readInt();
-//#ifdef HISTORY
-//#             msgPath=inputStream.readUTF();
-//#             msgAvatarPath=inputStream.readUTF();
-//#             msgLog=inputStream.readBoolean();
-//#             msgLogPresence=inputStream.readBoolean();
-//#             msgLogConfPresence=inputStream.readBoolean();
-//#             msgLogConf=inputStream.readBoolean();
-//#else
-            inputStream.readUTF();
-            inputStream.readBoolean();
-            inputStream.readBoolean();
-            inputStream.readBoolean();
-            inputStream.readBoolean();
-//#endif
-            cp1251=inputStream.readBoolean();
-//#ifdef AUTOSTATUS
-//#             autoAwayDelay=inputStream.readInt();
-//#else
-            inputStream.readInt();
-//#endif
-            defGcRoom=inputStream.readUTF();
-            firstRun=inputStream.readBoolean();
-            panelsState=inputStream.readInt();
-            confMessageCount=inputStream.readInt();
-
-            fileTransfer=inputStream.readBoolean(); //newMenu
-
-            lightState=inputStream.readBoolean();
-            notifySound=inputStream.readBoolean();
-//#ifdef HISTORY
-//#             lastMessages=inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
-//#ifdef AUTOSTATUS
-//#             setAutoStatusMessage=inputStream.readBoolean();
-//#             autoAwayType=inputStream.readInt();
-//#else
-            inputStream.readBoolean();
-            inputStream.readInt();
-//#endif
-            autoScroll=inputStream.readBoolean();
-//#ifdef POPUPS
-            popUps=inputStream.readBoolean();
-//#else
-//#             inputStream.readBoolean();
-//#endif
-            showResources=inputStream.readBoolean();
-            
-            enableVersionOs=inputStream.readBoolean();
-            messageLimit=inputStream.readInt();
-            lang=inputStream.readUTF();
-            eventDelivery=inputStream.readBoolean();
-//#ifdef DETRANSLIT
-//#             transliterateFilenames=inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
-            
-            rosterStatus=inputStream.readBoolean();
-            
-            queryExit=inputStream.readBoolean();
-            notifyPicture=inputStream.readBoolean();
-            showBalloons=inputStream.readBoolean();
-//#ifdef USER_KEYS
-//#             userKeys=inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
-//#ifdef LOGROTATE
-//#             msglistLimit=inputStream.readInt();
-//#else
-            inputStream.readInt();
-//#endif
-            useTabs=inputStream.readBoolean();
-            autoSubscribe=inputStream.readInt();
-            useBoldFont=inputStream.readBoolean();
-//#ifdef RUNNING_MESSAGE
-//#             notifyWhenMessageType = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
-            IQNotify=inputStream.readBoolean(); //IRC_LIKE
-//#ifdef PEP
-//#             sndrcvmood = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
-            inputStream.readUTF(); //scheme
-
-//#ifdef CLIPBOARD
-//#             useClipBoard = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
-//#ifdef PEP
-//#             rcvtune = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
-            barFont=inputStream.readInt();
-            baloonFont=inputStream.readInt();
-            
-            verHash=inputStream.readUTF();
-            resolvedHost=inputStream.readUTF();
-            resolvedPort=inputStream.readInt();
-            
-//#ifdef DETRANSLIT
-//#             autoDeTranslit=inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
-//#ifdef CLIENTS_ICONS
-            showClientIcon=inputStream.readBoolean();
-//#else
-//#             inputStream.readBoolean();
-//#endif
-            
-            reconnectCount=inputStream.readInt();
-            reconnectTime=inputStream.readInt();
-            
-            executeByNum=inputStream.readBoolean();
-            
-            showNickNames=inputStream.readBoolean();
-            
-            adhoc=inputStream.readBoolean();
-//#ifdef PEP
-//#             rcvactivity = inputStream.readBoolean();
-//#else
-            inputStream.readBoolean();
-//#endif
-            oldSE=inputStream.readBoolean();
-            
-            showTimeTraffic=inputStream.readBoolean();
-            useLowMemory_msgedit=inputStream.readBoolean();
-            useLowMemory_userotator=inputStream.readBoolean();
-            useLowMemory_iconmsgcollapsed=inputStream.readBoolean();
-            drawCPhoto=inputStream.readBoolean();
-            auto_queryPhoto=inputStream.readBoolean();
-            sendMoodInMsg=inputStream.readBoolean(); 
-            
-            moodText=inputStream.readUTF();
-            moodName=inputStream.readUTF();
-            
-            actText=inputStream.readUTF();
-            actDescr=inputStream.readUTF();
-            actCat=inputStream.readUTF();
-            maxAvatarHeight=inputStream.readInt();
-            bgnd_image=inputStream.readInt(); 
-            
-            use_drawed_font=inputStream.readBoolean();
-            drwd_fontname=inputStream.readUTF();
-            savePos=inputStream.readBoolean();
-            boldNicks=inputStream.readBoolean();
-
-            scrollWidth=inputStream.readInt();
-            drawScrollBgnd=inputStream.readBoolean();
-            isLegal=inputStream.readBoolean();
-            
-            iconsLeft=inputStream.readBoolean();
-            path_skin=inputStream.readUTF();
-            
-            
-            useClassicChat=inputStream.readBoolean();
-            classic_chat_height=inputStream.readInt();
-            line_count=inputStream.readInt();
-
-            use_phone_theme=inputStream.readBoolean();
-            gradient_cursor=inputStream.readBoolean();
-            altern_chat_colors=inputStream.readBoolean();
-            
-            argb_bgnd=inputStream.readInt();
-            gmenu_bgnd=inputStream.readInt();
-            popup_bgnd=inputStream.readInt();
-            cursor_bgnd=inputStream.readInt();
-            
-            avatar_cashe_size=inputStream.readInt();
-            difficulty_level=inputStream.readInt();
-            maxAvatarWidth=inputStream.readInt();
-            
-            autoSaveVcard=inputStream.readBoolean();
-            showAvatarRect=inputStream.readBoolean();  
-            autoload_FSPhoto=inputStream.readBoolean(); 
-            nokiaReconnectHack=inputStream.readBoolean(); 
-
-            timePresence=inputStream.readBoolean(); 
-            animateMenuAndRoster=inputStream.readBoolean(); 
-            
-            cursivUse=inputStream.readBoolean(); 
-            dont_loadMC=inputStream.readBoolean(); 
-   
- //#if BREDOGENERATOR                
-//#         bredoGen=inputStream.readBoolean();
-//#endif             
-	    inputStream.close();
-            inputStream=null;
-	} catch (Exception e) {
-            try {
-                if (inputStream!=null) {
-                    inputStream.close();
-                    inputStream=null;
-                }
-            } catch (IOException ex) { }
-	}
+        loadBoolean();
+        loadBoolean_();
+        loadInt();
+        loadUTF();
 	
 	lastProfile=profile=def_profile;
         if (lastProfile==AlertProfile.VIBRA) lastProfile=0;
@@ -672,7 +436,7 @@ public class Config {
             //We will use only language code from locale
             if (lang==null) lang="en"; else lang=lang.substring(0, 2).toLowerCase();
         }
-        
+
         if (lang.equals("en")) return null;  //english
 	Vector files[]=new StringLoader().stringLoader("/lang/res.txt", 3);
         for (int i=0; i<files[0].size(); i++) {
@@ -684,240 +448,427 @@ public class Config {
         //return "/lang/ru.txt"; //unknown language ->en
     }
 
+
     
-    public void saveToStorage(){
-	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-	
+    protected void loadBoolean(){
+        DataInputStream inputStream=NvStorage.ReadFileRecord("confBoolean", 0);
 	try {
-	    outputStream.writeInt(accountIndex);
-	    outputStream.writeBoolean(showOfflineContacts);
+	    showOfflineContacts=inputStream.readBoolean();     
+	    fullscreen=inputStream.readBoolean();
+	    smiles=inputStream.readBoolean();      
+	    showTransports=inputStream.readBoolean();
+	    selfContact=inputStream.readBoolean();
+	    collapsedGroups=inputStream.readBoolean();
+	    ignore=inputStream.readBoolean();
+	    eventComposing=inputStream.readBoolean();
+	    autoLogin=inputStream.readBoolean();
+	    autoJoinConferences=inputStream.readBoolean();
+            popupFromMinimized=inputStream.readBoolean();
+	    notifyBlink=inputStream.readBoolean();
+	    memMonitor=inputStream.readBoolean();
+            autoFocus=inputStream.readBoolean();
+            storeConfPresence=inputStream.readBoolean(); 
+            capsState=inputStream.readBoolean();    
+            
+            msgLog=inputStream.readBoolean();
+            msgLogPresence=inputStream.readBoolean();
+            msgLogConfPresence=inputStream.readBoolean();
+            msgLogConf=inputStream.readBoolean();
+            cp1251=inputStream.readBoolean();
+            firstRun=inputStream.readBoolean();     
+            
+            fileTransfer=inputStream.readBoolean(); //newMenu
+            lightState=inputStream.readBoolean();
+            notifySound=inputStream.readBoolean();
+
+            lastMessages=inputStream.readBoolean();
+            setAutoStatusMessage=inputStream.readBoolean();   
+            autoScroll=inputStream.readBoolean();
+            popUps=inputStream.readBoolean();
+            showResources=inputStream.readBoolean();
+            enableVersionOs=inputStream.readBoolean();  
+            eventDelivery=inputStream.readBoolean();
+            
+            transliterateFilenames=inputStream.readBoolean();
+            rosterStatus=inputStream.readBoolean();
+            queryExit=inputStream.readBoolean();
+            notifyPicture=inputStream.readBoolean();
+            showBalloons=inputStream.readBoolean();
+            userKeys=inputStream.readBoolean();  
+            useTabs=inputStream.readBoolean();
+            useBoldFont=inputStream.readBoolean();
+            
+            notifyWhenMessageType=inputStream.readBoolean();
+            IQNotify=inputStream.readBoolean(); //IRC_LIKE
+            sndrcvmood=inputStream.readBoolean(); 
+            useClipBoard=inputStream.readBoolean();
+            rcvtune=inputStream.readBoolean();  
+            autoDeTranslit=inputStream.readBoolean();
+            showClientIcon=inputStream.readBoolean();
+            executeByNum=inputStream.readBoolean();
+            showNickNames=inputStream.readBoolean();
+            adhoc=inputStream.readBoolean();
+            
+	    inputStream.close();
+            inputStream=null;
+	} catch (Exception e) {
+            try {
+                if (inputStream!=null) {
+                    inputStream.close();
+                    inputStream=null;
+                }
+            } catch (IOException ex) { }
+	}
+    }   
+    protected void loadBoolean_(){
+        DataInputStream inputStream=NvStorage.ReadFileRecord("confBoolean_", 0);
+	try {
+            rcvactivity=inputStream.readBoolean();
+            oldSE=inputStream.readBoolean();
+            showTimeTraffic=inputStream.readBoolean();
+            useLowMemory_msgedit=inputStream.readBoolean();
+            useLowMemory_userotator=inputStream.readBoolean();
+            useLowMemory_iconmsgcollapsed=inputStream.readBoolean();
+            drawCPhoto=inputStream.readBoolean();
+            auto_queryPhoto=inputStream.readBoolean();
+            sendMoodInMsg=inputStream.readBoolean();    
+            
+            use_drawed_font=inputStream.readBoolean();  
+            savePos=inputStream.readBoolean();
+            boldNicks=inputStream.readBoolean();
+            drawScrollBgnd=inputStream.readBoolean();
+            isLegal=inputStream.readBoolean();
+            iconsLeft=inputStream.readBoolean();
+            useClassicChat=inputStream.readBoolean();
+            use_phone_theme=inputStream.readBoolean();
+            gradient_cursor=inputStream.readBoolean();
+            autoSaveVcard=inputStream.readBoolean();
+            showAvatarRect=inputStream.readBoolean();         
+            
+            autoload_FSPhoto=inputStream.readBoolean();
+            nokiaReconnectHack=inputStream.readBoolean();
+            timePresence=inputStream.readBoolean();
+            animateMenuAndRoster=inputStream.readBoolean();
+            cursivUse=inputStream.readBoolean();
+            dont_loadMC=inputStream.readBoolean();
+            bredoGen=inputStream.readBoolean();
+            
+            //modules
+            module_contacts=inputStream.readBoolean();
+            module_messages=inputStream.readBoolean();
+            module_network=inputStream.readBoolean();
+            module_graphics=inputStream.readBoolean();
+            module_app=inputStream.readBoolean();
+            //userKeys=inputStream.readBoolean();
+            module_autostatus=inputStream.readBoolean();
+            module_classicchat=inputStream.readBoolean();
+            module_theme=inputStream.readBoolean();
+            module_cashe=inputStream.readBoolean();
+            module_history=inputStream.readBoolean();
+            module_fonts=inputStream.readBoolean();
+            module_ie=inputStream.readBoolean();
+            module_notify=inputStream.readBoolean();
+            module_tasks=inputStream.readBoolean();
+            module_avatars=inputStream.readBoolean();            
+            
+	    inputStream.close();
+            inputStream=null;
+	} catch (Exception e) {
+            try {
+                if (inputStream!=null) {
+                    inputStream.close();
+                    inputStream=null;
+                }
+            } catch (IOException ex) { }
+	}
+    }  
+    
+    protected void loadInt(){
+        DataInputStream inputStream=NvStorage.ReadFileRecord("confInt", 0);
+	try {
+	    accountIndex=inputStream.readInt();
+	    def_profile=inputStream.readInt();
+	    gmtOffset=inputStream.readInt();
+	    //0=inputStream.readInt(); //locOffset
+            rosterFont=inputStream.readInt();
+            msgFont=inputStream.readInt();
+            notInListDropLevel=inputStream.readInt(); 
+	    textWrap=inputStream.readInt();
+            loginstatus=inputStream.readInt();
+            autoAwayDelay=inputStream.readInt();      
+            panelsState=inputStream.readInt();
+            confMessageCount=inputStream.readInt();   
+            autoAwayType=inputStream.readInt();
+            messageLimit=inputStream.readInt();
+            //msglistLimit=inputStream.readInt();
+            autoSubscribe=inputStream.readInt();
+            barFont=inputStream.readInt();
+            baloonFont=inputStream.readInt();
+            resolvedPort=inputStream.readInt();
+            reconnectCount=inputStream.readInt();
+            reconnectTime=inputStream.readInt();     
+            maxAvatarHeight=inputStream.readInt();
+            bgnd_image=inputStream.readInt();
+            scrollWidth=inputStream.readInt();
+            classic_chat_height=inputStream.readInt();
+            line_count=inputStream.readInt(); 
+            argb_bgnd=inputStream.readInt();
+            gmenu_bgnd=inputStream.readInt();
+            popup_bgnd=inputStream.readInt();
+            cursor_bgnd=inputStream.readInt();
+            avatar_cashe_size=inputStream.readInt();
+            //difficulty_level=inputStream.readInt();
+            maxAvatarWidth=inputStream.readInt();  
+	    inputStream.close();
+            inputStream=null;
+	} catch (Exception e) {
+            try {
+                if (inputStream!=null) {
+                    inputStream.close();
+                    inputStream=null;
+                }
+            } catch (IOException ex) { }
+	}
+    }     
+   
+    protected void loadUTF(){
+        DataInputStream inputStream=NvStorage.ReadFileRecord("confUtf", 0);
+	try {
+            msgPath=inputStream.readUTF();
+            msgAvatarPath=inputStream.readUTF();	    
+            defGcRoom=inputStream.readUTF(); 
+            lang=inputStream.readUTF(); 
+            //""=inputStream.readUTF();//scheme
+            verHash=inputStream.readUTF();
+            resolvedHost=inputStream.readUTF();    
+            moodText=inputStream.readUTF();
+            moodName=inputStream.readUTF();
+            actText=inputStream.readUTF();
+            actDescr=inputStream.readUTF(); 
+            actCat=inputStream.readUTF(); 
+            drwd_fontname=inputStream.readUTF();
+            path_skin=inputStream.readUTF();
+	    inputStream.close();
+            inputStream=null;
+	} catch (Exception e) {
+            try {
+                if (inputStream!=null) {
+                    inputStream.close();
+                    inputStream=null;
+                }
+            } catch (IOException ex) { }
+	}
+    }     
+    
+        
+    public boolean module_contacts = true;
+    public boolean module_messages = true;
+    public boolean module_network = true;
+    public boolean module_graphics = true;
+    public boolean module_app = true;
+    public boolean userKeys = false;
+    public boolean module_autostatus = false;
+    public boolean module_classicchat = false;
+    public boolean module_theme = true;
+    public boolean module_cashe = false;
+    
+    public boolean module_history= false;
+    public boolean module_fonts= true;
+    public boolean module_ie= false;
+    public boolean module_notify= true;
+    public boolean module_tasks= false;
+    public boolean module_avatars= false;
+    
+    
+ 
+
+   public boolean saveBoolean(){
+       	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+	try {
+	    outputStream.writeBoolean(showOfflineContacts);//1
 	    outputStream.writeBoolean(fullscreen);
-	    outputStream.writeInt(def_profile);
-//#ifdef SMILES
-	    outputStream.writeBoolean(smiles);
-//#else
-//#             outputStream.writeBoolean(false);
-//#endif
+	    outputStream.writeBoolean(smiles);      
 	    outputStream.writeBoolean(showTransports);
 	    outputStream.writeBoolean(selfContact);
 	    outputStream.writeBoolean(collapsedGroups);
 	    outputStream.writeBoolean(ignore);
 	    outputStream.writeBoolean(eventComposing);
-	    outputStream.writeInt(gmtOffset);
-	    outputStream.writeInt(0); //locOffset
 	    outputStream.writeBoolean(autoLogin);
 	    outputStream.writeBoolean(autoJoinConferences);
             outputStream.writeBoolean(popupFromMinimized);
 	    outputStream.writeBoolean(notifyBlink);
 	    outputStream.writeBoolean(memMonitor);
-            outputStream.writeInt(rosterFont);
-            outputStream.writeInt(msgFont);
             outputStream.writeBoolean(autoFocus);
-            outputStream.writeInt(notInListDropLevel);
             outputStream.writeBoolean(storeConfPresence); 
-            outputStream.writeBoolean(capsState); 
-	    outputStream.writeInt(textWrap);
-            outputStream.writeInt(loginstatus);
-//#ifdef HISTORY
-//#             outputStream.writeUTF(msgPath);
-//#             outputStream.writeUTF(msgAvatarPath);
-//#             outputStream.writeBoolean(msgLog);
-//#             outputStream.writeBoolean(msgLogPresence);
-//#             outputStream.writeBoolean(msgLogConfPresence);
-//#             outputStream.writeBoolean(msgLogConf);
-//#else
-            outputStream.writeUTF("");
-            outputStream.writeBoolean(false);
-            outputStream.writeBoolean(false);
-            outputStream.writeBoolean(false);
-            outputStream.writeBoolean(false);
-//#endif
+            outputStream.writeBoolean(capsState);    
+            
+            outputStream.writeBoolean(msgLog);
+            outputStream.writeBoolean(msgLogPresence);
+            outputStream.writeBoolean(msgLogConfPresence);
+            outputStream.writeBoolean(msgLogConf);//20 
             outputStream.writeBoolean(cp1251);
-//#ifdef AUTOSTATUS
-//#             outputStream.writeInt(autoAwayDelay);
-//#else
-            outputStream.writeInt(5);
-//#endif
-            outputStream.writeUTF(defGcRoom);
-            outputStream.writeBoolean(firstRun);
-            outputStream.writeInt(panelsState);
-            outputStream.writeInt(confMessageCount);
-
+            outputStream.writeBoolean(firstRun);     
+            
             outputStream.writeBoolean(fileTransfer); //newMenu
-
             outputStream.writeBoolean(lightState);
             outputStream.writeBoolean(notifySound);
-//#ifdef HISTORY
-//#             outputStream.writeBoolean(lastMessages);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
-//#ifdef AUTOSTATUS
-//#             outputStream.writeBoolean(setAutoStatusMessage);
-//#             outputStream.writeInt(autoAwayType);
-//#else
-            outputStream.writeBoolean(false);
-            outputStream.writeInt(0);
-//#endif
+
+            outputStream.writeBoolean(lastMessages);
+            outputStream.writeBoolean(setAutoStatusMessage);   
             outputStream.writeBoolean(autoScroll);
-//#ifdef POPUPS
             outputStream.writeBoolean(popUps);
-//#else
-//#             outputStream.writeBoolean(false);
-//#endif
             outputStream.writeBoolean(showResources);
-
-            outputStream.writeBoolean(enableVersionOs);
-            outputStream.writeInt(messageLimit);
-            outputStream.writeUTF(lang);      
+            outputStream.writeBoolean(enableVersionOs);  
             outputStream.writeBoolean(eventDelivery);
-//#ifdef DETRANSLIT
-//#             outputStream.writeBoolean(transliterateFilenames);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
-
+            
+            outputStream.writeBoolean(transliterateFilenames);
             outputStream.writeBoolean(rosterStatus);
-
             outputStream.writeBoolean(queryExit);
             outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(showBalloons);
-//#ifdef USER_KEYS
-//#             outputStream.writeBoolean(userKeys);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
-//#ifdef LOGROTATE
-//#             outputStream.writeInt(msglistLimit);
-//#else
-            outputStream.writeInt(512);
-//#endif
+            outputStream.writeBoolean(userKeys);  
             outputStream.writeBoolean(useTabs);
-            outputStream.writeInt(autoSubscribe);
-            outputStream.writeBoolean(useBoldFont);
-//#ifdef RUNNING_MESSAGE
-//#             outputStream.writeBoolean(notifyWhenMessageType);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
+            outputStream.writeBoolean(useBoldFont);//40
+            
+            outputStream.writeBoolean(notifyWhenMessageType);
             outputStream.writeBoolean(IQNotify); //IRC_LIKE
-//#ifdef PEP
-//#             outputStream.writeBoolean(sndrcvmood);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
-            outputStream.writeUTF("");//scheme
-//#ifdef CLIPBOARD
-//#             outputStream.writeBoolean(useClipBoard);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
-//#ifdef PEP
-//#             outputStream.writeBoolean(rcvtune);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
-            outputStream.writeInt(barFont);
-            outputStream.writeInt(baloonFont);
-            
-            outputStream.writeUTF(verHash);
-            outputStream.writeUTF(resolvedHost);
-            outputStream.writeInt(resolvedPort);
-            
-//#ifdef DETRANSLIT
-//#             outputStream.writeBoolean(autoDeTranslit);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
-//#ifdef CLIENTS_ICONS
+            outputStream.writeBoolean(sndrcvmood); 
+            outputStream.writeBoolean(useClipBoard);
+            outputStream.writeBoolean(rcvtune);  
+            outputStream.writeBoolean(autoDeTranslit);
             outputStream.writeBoolean(showClientIcon);
-//#else
-//#             outputStream.writeBoolean(false);
-//#endif
-            
-            outputStream.writeInt(reconnectCount);
-            outputStream.writeInt(reconnectTime);
-            
             outputStream.writeBoolean(executeByNum);
-            
             outputStream.writeBoolean(showNickNames);
-            
             outputStream.writeBoolean(adhoc);
             
-//#ifdef PEP
-//#             outputStream.writeBoolean(rcvactivity);
-//#else
-            outputStream.writeBoolean(false);
-//#endif
+	} catch (Exception e) { }
+	return NvStorage.writeFileRecord(outputStream, "confBoolean", 0, true);      
+   }    
+    
+   public boolean saveBoolean_(){
+       	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+	try {
+            outputStream.writeBoolean(rcvactivity);
             outputStream.writeBoolean(oldSE);
-            
             outputStream.writeBoolean(showTimeTraffic);
             outputStream.writeBoolean(useLowMemory_msgedit);
             outputStream.writeBoolean(useLowMemory_userotator);
             outputStream.writeBoolean(useLowMemory_iconmsgcollapsed);
             outputStream.writeBoolean(drawCPhoto);
             outputStream.writeBoolean(auto_queryPhoto);
-            outputStream.writeBoolean(sendMoodInMsg);   
-  
+            outputStream.writeBoolean(sendMoodInMsg);    
             
-            outputStream.writeUTF(moodText);
-            outputStream.writeUTF(moodName);
-            outputStream.writeUTF(actText);
-            outputStream.writeUTF(actDescr); 
-            outputStream.writeUTF(actCat);  
-            
-            outputStream.writeInt(maxAvatarHeight);       
-            outputStream.writeInt(bgnd_image);
-            
-            outputStream.writeBoolean(use_drawed_font);     
-            outputStream.writeUTF(drwd_fontname); 
+            outputStream.writeBoolean(use_drawed_font);  
             outputStream.writeBoolean(savePos);
             outputStream.writeBoolean(boldNicks);
-
-            outputStream.writeInt(scrollWidth);
             outputStream.writeBoolean(drawScrollBgnd);
             outputStream.writeBoolean(isLegal);
             outputStream.writeBoolean(iconsLeft);
-            outputStream.writeUTF(path_skin);
-            
             outputStream.writeBoolean(useClassicChat);
-            outputStream.writeInt(classic_chat_height);
-
-            outputStream.writeInt(line_count);     
-
             outputStream.writeBoolean(use_phone_theme);
             outputStream.writeBoolean(gradient_cursor);
-            outputStream.writeBoolean(altern_chat_colors);
+            outputStream.writeBoolean(autoSaveVcard);
+            outputStream.writeBoolean(showAvatarRect);         
             
+            outputStream.writeBoolean(autoload_FSPhoto);
+            outputStream.writeBoolean(nokiaReconnectHack);
+            outputStream.writeBoolean(timePresence);
+            outputStream.writeBoolean(animateMenuAndRoster);
+            outputStream.writeBoolean(cursivUse);
+            outputStream.writeBoolean(dont_loadMC);
+            outputStream.writeBoolean(bredoGen);
+            
+            //modules
+            outputStream.writeBoolean(module_contacts);
+            outputStream.writeBoolean(module_messages);
+            outputStream.writeBoolean(module_network);
+            outputStream.writeBoolean(module_graphics);
+            outputStream.writeBoolean(module_app);
+            //outputStream.writeBoolean(userKeys);
+            outputStream.writeBoolean(module_autostatus);
+            outputStream.writeBoolean(module_classicchat);
+            outputStream.writeBoolean(module_theme);
+            outputStream.writeBoolean(module_cashe);
+            outputStream.writeBoolean(module_history);
+            outputStream.writeBoolean(module_fonts);
+            outputStream.writeBoolean(module_ie);
+            outputStream.writeBoolean(module_notify);
+            outputStream.writeBoolean(module_tasks);
+            outputStream.writeBoolean(module_avatars);          
+            
+	} catch (Exception e) { }
+	return NvStorage.writeFileRecord(outputStream, "confBoolean_", 0, true);      
+   }
+   
+
+   public boolean saveInt(){
+       	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+	try {
+	    outputStream.writeInt(accountIndex);//1
+	    outputStream.writeInt(def_profile);
+	    outputStream.writeInt(gmtOffset);
+	    //outputStream.writeInt(0); //locOffset
+            outputStream.writeInt(rosterFont);
+            outputStream.writeInt(msgFont);
+            outputStream.writeInt(notInListDropLevel); 
+	    outputStream.writeInt(textWrap);
+            outputStream.writeInt(loginstatus);
+            outputStream.writeInt(autoAwayDelay);      
+            outputStream.writeInt(panelsState);
+            outputStream.writeInt(confMessageCount);   
+            outputStream.writeInt(autoAwayType);
+            outputStream.writeInt(messageLimit);
+            //outputStream.writeInt(msglistLimit);
+            outputStream.writeInt(autoSubscribe);
+            outputStream.writeInt(barFont);
+            outputStream.writeInt(baloonFont);
+            outputStream.writeInt(resolvedPort);
+            outputStream.writeInt(reconnectCount);
+            outputStream.writeInt(reconnectTime);     
+            outputStream.writeInt(maxAvatarHeight);
+            outputStream.writeInt(bgnd_image);
+            outputStream.writeInt(scrollWidth);
+            outputStream.writeInt(classic_chat_height);
+            outputStream.writeInt(line_count); 
             outputStream.writeInt(argb_bgnd);
             outputStream.writeInt(gmenu_bgnd);
             outputStream.writeInt(popup_bgnd);
             outputStream.writeInt(cursor_bgnd);
-            
             outputStream.writeInt(avatar_cashe_size);
-            outputStream.writeInt(difficulty_level);
-            outputStream.writeInt(maxAvatarWidth);
-            
-            outputStream.writeBoolean(autoSaveVcard);
-            outputStream.writeBoolean(showAvatarRect);
-            outputStream.writeBoolean(autoload_FSPhoto);
-
-            outputStream.writeBoolean(nokiaReconnectHack);
-            outputStream.writeBoolean(timePresence);
-            outputStream.writeBoolean(animateMenuAndRoster);
-            
-            outputStream.writeBoolean(cursivUse);
-            outputStream.writeBoolean(dont_loadMC);
-//#if BREDOGENERATOR                
-//#             outputStream.writeBoolean(bredoGen);
-//#endif            
-            
-            
+            //outputStream.writeInt(difficulty_level);
+            outputStream.writeInt(maxAvatarWidth);//32          
 	} catch (Exception e) { }
-	
-	NvStorage.writeFileRecord(outputStream, "config", 0, true);
+	return NvStorage.writeFileRecord(outputStream, "confInt", 0, true);        
     }
 
+    public boolean saveUTF(){
+       	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
+	try {
+            outputStream.writeUTF(msgPath);
+            outputStream.writeUTF(msgAvatarPath);	    
+            outputStream.writeUTF(defGcRoom); 
+            outputStream.writeUTF(lang); 
+            outputStream.writeUTF("");//scheme
+            outputStream.writeUTF(verHash);
+            outputStream.writeUTF(resolvedHost);    
+            outputStream.writeUTF(moodText);
+            outputStream.writeUTF(moodName);
+            outputStream.writeUTF(actText);
+            outputStream.writeUTF(actDescr); 
+            outputStream.writeUTF(actCat); 
+            outputStream.writeUTF(drwd_fontname);
+            outputStream.writeUTF(path_skin);
+	} catch (Exception e) { }
+	return NvStorage.writeFileRecord(outputStream, "confUtf", 0, true);
+    }   
+   
+
+    public void saveToStorage(){
+        System.out.println(saveBoolean());
+        System.out.println(saveBoolean_());
+        System.out.println(saveInt());
+        System.out.println(saveUTF());
+    }
     
     public void updateTime(){
 	Time.setOffset(gmtOffset);

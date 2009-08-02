@@ -158,8 +158,8 @@ public class ColorConfigForm
        cf.gmenu_bgnd = gmenu_bgnd.getValue()*10;
        cf.popup_bgnd = popup_bgnd.getValue()*10;
        cf.cursor_bgnd = cursor_bgnd.getValue()*10;
-       cf.saveToStorage();
-        destroyView();
+       //cf.saveToStorage();
+       destroyView();
     }
 
 //#if FILE_IO

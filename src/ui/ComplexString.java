@@ -33,7 +33,6 @@ import Fonts.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
 import Colors.ColorTheme;
-import midlet.BombusQD;
 
 /**
  *
@@ -93,7 +92,6 @@ public class ComplexString extends Vector implements VirtualElement {
     
     //FontClass fc = FontClass.getInstance();
     Font bold;
-    Config cf = Config.getInstance();
     
     boolean boldWord=false;
     
@@ -112,7 +110,7 @@ public class ComplexString extends Vector implements VirtualElement {
         int imgWidth=imgWidth();
         
         //if(fc.isCheck()==false){
-        if(!cf.boldNicks){
+        if(!midlet.BombusQD.cf.boldNicks){
             g.setFont(font);
         }
         //}
@@ -123,8 +121,8 @@ public class ComplexString extends Vector implements VirtualElement {
                     if (nick) {
                         int color=g.getColor();
                         //int randColor=randomColor();
-                        bold = cf.boldNicks?FontCache.getFont(true,font.getSize()):null;    
-                        if(cf.boldNicks) {
+                        bold = midlet.BombusQD.cf.boldNicks?FontCache.getFont(true,font.getSize()):null;    
+                        if(midlet.BombusQD.cf.boldNicks) {
                             g.setFont(bold);
                         }
                         dw=0;
@@ -140,7 +138,7 @@ public class ComplexString extends Vector implements VirtualElement {
                                 p2++;
                             }
                             //g.setColor(randColor);
-                            if(cf.boldNicks) {
+                            if(midlet.BombusQD.cf.boldNicks) {
                               g.setColor(ColorTheme.strong(color));   /*(c1>255) ?*/ /* : color*/
                               dw=bold.substringWidth(((String)elementData[index]), p1, p2-p1);                                
                             }else{
@@ -156,7 +154,7 @@ public class ComplexString extends Vector implements VirtualElement {
                         g.setColor(color);
                     } else {
 //#endif
-                        if(cf.boldNicks) {  g.setFont(font); }
+                        if(midlet.BombusQD.cf.boldNicks) {  g.setFont(font); }
                         dw=font.stringWidth((String)elementData[index]);
                         if (ralign) w-=dw;
                           g.drawString((String)elementData[index],w,fontYOfs,Graphics.LEFT|Graphics.TOP);  

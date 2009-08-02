@@ -151,8 +151,8 @@ public class AlertProfile extends VirtualList implements
         if (c==cmdOk) eventOk(); 
         if (c==cmdDef) { 
             cf.def_profile=defp=cursor;
-	    cf.saveToStorage();
             redraw();
+            cf.saveToStorage();
         }
         if (c==cmdCancel) destroyView();
     }

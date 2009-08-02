@@ -139,7 +139,7 @@ public class ConfigFonts
            FontClass.getInstance().Init(cf.drwd_fontname);
         }
         
-        cf.saveToStorage();
+        //cf.saveToStorage();
         
         super.getInfoBarItem().setFont(FontCache.getFont(true, cf.barFont));
         super.getInfoBarItem().clearWHCache();

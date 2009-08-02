@@ -60,7 +60,6 @@ public class ConferenceForm
     
     private Display display;
     
-    private Config cf=Config.getInstance();
 //#ifndef MENU
     Command cmdJoin=new Command(SR.MS_JOIN, Command.SCREEN, 1);
     Command cmdAdd=new Command(SR.MS_ADD_BOOKMARK, Command.SCREEN, 5);
@@ -77,8 +76,6 @@ public class ConferenceForm
     BookmarkItem editConf;
 
     //private static boolean sndprs=false;
-    
-    private static StaticData sd=StaticData.getInstance();
 
     private int cursor;
     
@@ -136,7 +133,7 @@ public class ConferenceForm
     /** Creates a new instance of GroupChatForm */
     public ConferenceForm(Display display, Displayable pView) {
         super(display, pView, SR.MS_JOIN_CONFERENCE);
-        String room=cf.defGcRoom;
+        String room=midlet.BombusQD.cf.defGcRoom;
         String server=null;
         // trying to split string like room@server
         int roomE=room.indexOf('@');
@@ -145,7 +142,7 @@ public class ConferenceForm
             room=room.substring(0, roomE);
         }
         // default server
-        if (server==null) server="conference."+sd.account.getServer();
+        if (server==null) server="conference."+midlet.BombusQD.sd.account.getServer();
         createForm(display, pView, null, room, server, null, null, false); 
         room=null;
         server=null;
@@ -166,11 +163,11 @@ public class ConferenceForm
         hostField=new TextInput(display, SR.MS_AT_HOST, server, "muc-host", TextField.ANY);//, 64, TextField.ANY, "muc-host", display);
         itemsList.addElement(hostField);
         
-        if (nick==null) nick=sd.account.getNickName();
+        if (nick==null) nick=midlet.BombusQD.sd.account.getNickName();
         nickField=new TextInput(display, SR.MS_NICKNAME, nick, "roomnick", TextField.ANY);//, 32, TextField.ANY, "roomnick", display);
         itemsList.addElement(nickField);
 
-        msgLimitField=new NumberInput(display, SR.MS_MSG_LIMIT, Integer.toString(cf.confMessageCount), 0, 100);
+        msgLimitField=new NumberInput(display, SR.MS_MSG_LIMIT, Integer.toString(midlet.BombusQD.cf.confMessageCount), 0, 100);
         itemsList.addElement(msgLimitField);
 
         nameField=new TextInput(display, SR.MS_DESCRIPTION, name, null, TextField.ANY);//, 128, TextField.ANY);
@@ -214,19 +211,19 @@ public class ConferenceForm
         saveMsgCount(msgLimit);
             
         if (c==cmdEdit) {
-            sd.roster.bookmarks.removeElement(editConf);
-            sd.roster.bookmarks.insertElementAt(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin), cursor);
+            midlet.BombusQD.sd.roster.bookmarks.removeElement(editConf);
+            midlet.BombusQD.sd.roster.bookmarks.insertElementAt(new BookmarkItem(name, gchat.toString(), nick, pass, autojoin), cursor);
             new BookmarkQuery(BookmarkQuery.SAVE);
             display.setCurrent(parentView);
         } else if (c==cmdAdd) {
-            new Bookmarks(display, sd.roster, new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));
+            new Bookmarks(display, midlet.BombusQD.sd.roster, new BookmarkItem(name, gchat.toString(), nick, pass, autojoin));
         } else if (c==cmdJoin) {
             try {
-                cf.defGcRoom=room+"@"+host;
-                cf.saveToStorage();
+                midlet.BombusQD.cf.defGcRoom=room+"@"+host;
+                //cf.saveToStorage();//?
                 gchat.append('/').append(nick);
                 join(name, gchat.toString(),pass, msgLimit);
-                display.setCurrent(sd.roster);
+                display.setCurrent(midlet.BombusQD.sd.roster);
             } catch (Exception e) { }
         }
         gchat=null;
@@ -282,14 +279,14 @@ public class ConferenceForm
 
 
     private void saveMsgCount(int msgLimit) {
-        if (cf.confMessageCount!=msgLimit) {
-            cf.confMessageCount=msgLimit;
-            cf.saveToStorage();
+        if (midlet.BombusQD.cf.confMessageCount!=msgLimit) {
+            midlet.BombusQD.cf.confMessageCount=msgLimit;
+            midlet.BombusQD.cf.saveToStorage();
         }
     }
 
     public static void join(String name, String jid, String pass, int maxStanzas) {
-        ConferenceGroup grp=sd.roster.initMuc(jid, pass);
+        ConferenceGroup grp=midlet.BombusQD.sd.roster.initMuc(jid, pass);
         grp.desc=name;
         JabberDataBlock x=new JabberDataBlock("x", null, null);
         x.setNameSpace("http://jabber.org/protocol/muc");
@@ -307,12 +304,12 @@ public class ConferenceForm
                 history.setAttribute("seconds",String.valueOf(delay)); // todo: change to since
         } catch (Exception e) {}
         
-        int status=sd.roster.myStatus;
+        int status=midlet.BombusQD.sd.roster.myStatus;
         if (status==Presence.PRESENCE_INVISIBLE) 
             status=Presence.PRESENCE_ONLINE;
-        sd.roster.sendDirectPresence(status, jid, x);
+        midlet.BombusQD.sd.roster.sendDirectPresence(status, jid, x);
         grp.inRoom=true;
-        sd.roster.reEnumRoster();
+        midlet.BombusQD.sd.roster.reEnumRoster();
         x=null;
         grp=null;
         history=null;

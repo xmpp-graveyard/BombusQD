@@ -123,7 +123,6 @@ public abstract class VirtualList
 //#endif
     protected int getMainBarRGB() {return ColorTheme.getColor(ColorTheme.BAR_INK);}
     
-    private Config cf=Config.getInstance();
 
     boolean isSel=false;
     
@@ -314,12 +313,12 @@ public abstract class VirtualList
         
 //#ifdef BACK_IMAGE
 //#         try {
-//#             if (/*img==null && */ cf.bgnd_image==1 /*|| cf.bgnd_image==2*/ ){//img!=null
+//#             if (/*img==null && */ midlet.BombusQD.cf.bgnd_image==1 /*|| midlet.BombusQD.cf.bgnd_image==2*/ ){//img!=null
 //#                 Image img=Image.createImage("/images/back.png");
 //#                     gm.imgWidth = img.getWidth();
 //#                     gm.imgHeight = img.getHeight();  
 //#                     gm.img=img;
-//#             }else if (cf.bgnd_image==3) {
+//#             }else if (midlet.BombusQD.cf.bgnd_image==3) {
 //#                 Image bgnd=Image.createImage("/images/bgnd.png");
 //#                 ImageList il = new ImageList();
 //#                 gm.bgnd=bgnd;
@@ -332,7 +331,7 @@ public abstract class VirtualList
             setTitle("BombusQD");
         }
 
-        changeOrient(cf.panelsState);
+        changeOrient(midlet.BombusQD.cf.panelsState);
 
         setFullScreenMode(fullscreen);
 
@@ -349,7 +348,7 @@ public abstract class VirtualList
 
         stringHeight=FontCache.getFont(false, FontCache.roster).getHeight();
 //#if (USE_ROTATOR)
-       if(cf.useLowMemory_userotator==false){    TimerTaskRotate.startRotate(0, this);  }
+       if(midlet.BombusQD.cf.useLowMemory_userotator==false){    TimerTaskRotate.startRotate(0, this);  }
 //#endif
     }
 
@@ -381,7 +380,7 @@ public abstract class VirtualList
     protected void showNotify() {
 	if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
 //#if (USE_ROTATOR)
-        if(cf.useLowMemory_userotator==false){    TimerTaskRotate.startRotate(-1, this);    }
+        if(midlet.BombusQD.cf.useLowMemory_userotator==false){    TimerTaskRotate.startRotate(-1, this);    }
 //#endif
     }
 
@@ -405,7 +404,8 @@ public abstract class VirtualList
         iHeight=0;
         
         Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
-      //long s1 = System.currentTimeMillis();
+        //System.out.println("paint " + Thread.activeCount());
+        long s1 = System.currentTimeMillis();
         
 //#ifdef POPUPS
         popup.init(g, width, height);
@@ -434,7 +434,7 @@ public abstract class VirtualList
         g.fillRect(0, 0, width, height);
         
 //#ifdef BACK_IMAGE
-//#         if(cf.bgnd_image==1){
+//#         if(midlet.BombusQD.cf.bgnd_image==1){
 //#          if (gm.img!=null) {
 //# 			for (int xx = 0; xx < width; xx += gm.imgWidth){
 //# 				for (int yy = 0; yy < height; yy += gm.imgHeight){
@@ -444,12 +444,12 @@ public abstract class VirtualList
 //#                         }
 //#           }
 //#         }
-//#         else if(cf.bgnd_image==2){
+//#         else if(midlet.BombusQD.cf.bgnd_image==2){
 //#           fon=new Gradient(0, 0, width, height, ColorTheme.getColor(ColorTheme.GRADIENT_BGND_LEFT),
 //#                   ColorTheme.getColor(ColorTheme.GRADIENT_BGND_RIGHT), true);
 //#           fon.paint(g);
 //#         }
-//#         else if(cf.bgnd_image==3){
+//#         else if(midlet.BombusQD.cf.bgnd_image==3){
 //#           if(gm.bgnd!=null){
 //#             g.drawImage(gm.bgnd, 0, 0, Graphics.LEFT|Graphics.TOP);
 //#           }
@@ -527,7 +527,7 @@ public abstract class VirtualList
                 if (sel) {
                     drawCursor(g, itemMaxWidth , lh);
                 /*    
-                    if(cf.animateMenuAndRoster){
+                    if(midlet.BombusQD.cf.animateMenuAndRoster){
                       if(itemIndex==0) { 
                            drawCursor(g, itemMaxWidth , lh, true);
                       } else {
@@ -543,7 +543,7 @@ public abstract class VirtualList
                    baloon=g.getTranslateY();
                 } else {
 //#ifdef BACK_IMAGE
-//#                     if (gm.img==null && gm.bgnd==null && cf.bgnd_image!=2) {
+//#                     if (gm.img==null && gm.bgnd==null && midlet.BombusQD.cf.bgnd_image!=2) {
 //#endif
                       g.fillRect(0,0, itemMaxWidth, lh); //clear field       
                     }
@@ -589,7 +589,7 @@ public abstract class VirtualList
 
         if ( clrH>0
 //#ifdef BACK_IMAGE
-//#                 && (gm.img==null && gm.bgnd==null && cf.bgnd_image!=2)
+//#                 && (gm.img==null && gm.bgnd==null && midlet.BombusQD.cf.bgnd_image!=2)
 //#endif
                 ) {
             setAbsOrg(g, 0,displayedBottom);
@@ -637,7 +637,9 @@ public abstract class VirtualList
             }
             setAbsClip(g, width, height);
 
-            if (sd.roster.messageCount>0) drawEnvelop(g);
+            if(midlet.BombusQD.sd.roster!=null) {
+                    if (midlet.BombusQD.sd.roster.messageCount>0) drawEnvelop(g);
+            }
             if (System.currentTimeMillis()-sd.getTrafficIn()<2000) drawTraffic(g, false);
             if (System.currentTimeMillis()-sd.getTrafficOut()<2000) drawTraffic(g, true);
         }
@@ -649,7 +651,7 @@ public abstract class VirtualList
 //#         }else{
 //#             
 //#ifdef POPUPS
-//#         if(popUpshow || cf.popUps){
+//#         if(popUpshow || midlet.BombusQD.cf.popUps){
 //#             drawPopUp(g);
 //#         }
 //#endif
@@ -666,7 +668,7 @@ public abstract class VirtualList
 //#           }            
 //#         }
 //#endif  
-
+        /*
         if (reconnectWindow.getInstance().isActive()) {
             if (reconnectTimeout>reconnectPos && reconnectPos!=0) {
    
@@ -684,6 +686,7 @@ public abstract class VirtualList
                 Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, reconnectString);
             }
         }
+         */
 
         
 /*        
@@ -726,7 +729,7 @@ public abstract class VirtualList
 	private void startTimer()//,int cursorPosNew,boolean isKeyDwn)
 	{
                 posX=0;
-		if ( timer == null && cf.animateMenuAndRoster)
+		if ( timer == null && midlet.BombusQD.cf.animateMenuAndRoster)
 		{
 			timer = new Timer();
          		timer.schedule( new AnimTask(), 0, anim_time );
@@ -786,7 +789,7 @@ public abstract class VirtualList
       }
      else
      {           
-        if(cf.gradient_cursor){
+        if(midlet.BombusQD.cf.gradient_cursor){
              fon=new Gradient(0, 0, width, height, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
                   ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);
              fon.paint(g);
@@ -812,7 +815,7 @@ public abstract class VirtualList
        else
        {
         g.fillRect(0, 0, cursorX, height);
-        if(cf.gradient_cursor){
+        if(midlet.BombusQD.cf.gradient_cursor){
           fon=new Gradient(0, 0, cursorX, height, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
                   ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);
           fon.paint(g);
@@ -1275,7 +1278,7 @@ public abstract class VirtualList
         return false;
     }
     
-  
+/*  
     public void reconnectYes() {
         reconnectWindow.getInstance().reconnect();
         //reconnectDraw=false;
@@ -1287,6 +1290,7 @@ public abstract class VirtualList
         //reconnectDraw=false;
         redraw();
     }
+ */
  
     
 //#ifdef MENU_LISTENER
@@ -1366,7 +1370,7 @@ public abstract class VirtualList
 //#          repaint();
 //#      }
 //#      else{ 
-//#        if(cf.isOptionsSel){
+//#        if(midlet.BombusQD.cf.isOptionsSel){
 //#         isSel=false;   
 //#         if (keyCode==KEY_NUM5) {
 //#             eventOk();
@@ -1384,11 +1388,11 @@ public abstract class VirtualList
 //#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
 //#                    }else{
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
-//#                        if(c.cList!=null){
-//#                           display.setCurrent( c.cList );   
+//#                        if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 ){
+//#                           display.setCurrent( c.cList );
 //#                        }else{
 //#                           new ContactMessageList(c,display);  
-//#                        } 
+//#                        }
 //#                       //new ContactMessageList(sd.roster.getContact(popup.getContact(), false),display);
 //#                    }                
 //#                 popup.next();
@@ -1468,10 +1472,10 @@ public abstract class VirtualList
 //#         case KEY_NUM7:
 //# /*            
 //#             if(running_animation==true){
-//#                 cf.flagQuerySign=false;
+//#                 midlet.BombusQD.cf.flagQuerySign=false;
 //#                 at.stop();
 //#             }else{
-//#                 cf.flagQuerySign=true;
+//#                 midlet.BombusQD.cf.flagQuerySign=true;
 //#                 at.start();
 //#             }
 //#  */
@@ -1498,13 +1502,13 @@ public abstract class VirtualList
 //#                   long total = Runtime.getRuntime().totalMemory()>>10; 
 //#              mem.append("BombusQD use: "+ Long.toString(total-free)+" kb\n");
 //#              mem.append("Free/Total: "+Long.toString(free)+"/"+Long.toString(total)+"kb\n" );
-//#              mem.append("*Stanzas(in/out): "+Integer.toString(cf.inStanz)+"/"+Integer.toString(cf.outStanz));            
+//#              mem.append("*Stanzas(in/out): "+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz));            
 //#             setWobble(1, null, mem.toString());
 //#endif
 //#             break;
 //#ifdef POPUPS
 //#         case KEY_POUND:
-//#             //if (cf.popUps) {
+//#             //if (midlet.BombusQD.cf.popUps) {
 //#             popUpshow=true;
 //#                 try {
 //#                     String text=((VirtualElement)getFocusedObject()).getTipString();
@@ -1548,7 +1552,7 @@ public abstract class VirtualList
 //#         repaint();
 //#      }
 //#else
-       if(cf.isOptionsSel){
+       if(midlet.BombusQD.cf.isOptionsSel){
         isSel=false;   
         if (keyCode==KEY_NUM5) {
             eventOk();
@@ -1638,10 +1642,10 @@ public abstract class VirtualList
         case KEY_NUM7:
 /*            
             if(running_animation==true){
-                cf.flagQuerySign=false;
+                midlet.BombusQD.cf.flagQuerySign=false;
                 at.stop();
             }else{
-                cf.flagQuerySign=true;
+                midlet.BombusQD.cf.flagQuerySign=true;
                 at.start();
             }
  */
@@ -1659,7 +1663,7 @@ public abstract class VirtualList
             break;
 //#ifdef POPUPS
         case KEY_POUND:
-            //if (cf.popUps) {
+            //if (midlet.BombusQD.cf.popUps) {
             popUpshow=true;
                 try {
                     String text=((VirtualElement)getFocusedObject()).getTipString();
@@ -1799,7 +1803,7 @@ public abstract class VirtualList
     
     protected  void setRotator(){
 //#if (USE_ROTATOR)
-     if(cf.useLowMemory_userotator==false){           
+     if(midlet.BombusQD.cf.useLowMemory_userotator==false){           
         try {
             if (getItemCount()<1) return;
             focusedItem(cursor);

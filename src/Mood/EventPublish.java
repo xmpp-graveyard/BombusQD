@@ -33,7 +33,7 @@
 //# import com.alsutton.jabber.datablocks.Iq;
 //# import Mood.UserActivityResult;
 //# import Client.StaticData;
-//# import Client.Config;
+//# //import Client.Config;
 //# import ui.VirtualList;
 //# 
 //# public class EventPublish {
@@ -69,7 +69,7 @@
 //#             action=null;
 //#             item=null;
 //#          } catch (Exception e) {e.printStackTrace(); }   
-//#          Config.getInstance().saveToStorage();
+//#          //Config.getInstance().saveToStorage();//?
 //#    }              
 //#     
 //#     
@@ -98,7 +98,7 @@
 //#             action=null;
 //#             item=null;
 //#         } catch (Exception e) {e.printStackTrace(); }
-//#          Config.getInstance().saveToStorage();
+//#         //Config.getInstance().saveToStorage();//?
 //#    } 
 //# 
 //# 
@@ -142,7 +142,7 @@
 //#             action=null;
 //#             item=null;
 //#          } catch (Exception e) {e.printStackTrace(); }   
-//#          Config.getInstance().saveToStorage();         
+//#          //Config.getInstance().saveToStorage();         
 //#    }     
 //#     
 //#     
@@ -176,7 +176,7 @@
 //#             action=null;
 //#             item=null;
 //#          } catch (Exception e) {e.printStackTrace(); }   
-//#          Config.getInstance().saveToStorage();         
+//#          //Config.getInstance().saveToStorage();         
 //#    }         
 //#     
 //#     

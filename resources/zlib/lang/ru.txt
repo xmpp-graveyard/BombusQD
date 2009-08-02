@@ -608,7 +608,6 @@ Graphics menu bgnd(argb)	Графическое меню: фон(ARGB)
 Graphics menu font	Графическое меню: шрифт
 Service>	Сервис>
 My Jabber>	Мой Jabber>
-Difficulty level	Уровень сложности
 (HIGH TRAFFIC!)	(!трафик)
 Draw Rect Avatar	Рамка аватара
 AutoSave In FS	Автосохранение аватара
@@ -632,3 +631,4 @@ Checkers:start game	Начать игру
 Checkers:stop game	Остановить игру
 Checkers:resume	Возобновить игру
 Don't load conference contacts	Не загружать контакты конференции
+Modules config	Настройка модулей

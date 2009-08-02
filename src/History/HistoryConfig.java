@@ -141,7 +141,7 @@
 //#endif
 //#         cf.msgPath=historyFolder.getValue();         
 //# 
-//#         cf.saveToStorage();
+//#         //cf.saveToStorage();
 //#     }
 //# 
 //#     

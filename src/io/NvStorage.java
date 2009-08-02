@@ -61,6 +61,8 @@ public class NvStorage {
 
 
     private static ByteArrayOutputStream baos;
+    private static RecordStore recordStore;
+    
     /** Creates DataOutputStream based on ByteOutputStream  */
     static public DataOutputStream CreateDataOutputStream(){
         if (baos!=null) return null;
@@ -73,32 +75,32 @@ public class NvStorage {
             String name, int index, 
             boolean rewrite)
     {
-        ByteArrayOutputStream lbaos=baos;
-        baos=null; // освободим для следующего
-        byte[] b=lbaos.toByteArray();
-        
-
+        //ByteArrayOutputStream lbaos=baos;
+        //baos=null;
+        byte[] b=baos.toByteArray();
+        int len = b.length;
         try {
             if (rewrite) RecordStore.deleteRecordStore(name);
         } catch (Exception e) {}
 
-        RecordStore recordStore;
         try {
             recordStore = RecordStore.openRecordStore(name, true);
         } catch (Exception e) { return false;}
         
         try {
             try {
-                recordStore.setRecord(index+1, b, 0, b.length);
-            } catch (InvalidRecordIDException e) { recordStore.addRecord(b, 0, b.length); }
+                recordStore.setRecord(index+1, b, 0, len);
+            } catch (InvalidRecordIDException e) { recordStore.addRecord(b, 0, len); }
             recordStore.closeRecordStore();
             ostream.flush();
             ostream.close();
+            ostream=null;
+            recordStore=null;
+            baos=null;
         } catch (Exception e) { 
             //e.printStackTrace(); 
             return false;
         }
-
         return true;
     }
 }

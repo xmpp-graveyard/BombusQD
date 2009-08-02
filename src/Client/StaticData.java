@@ -41,7 +41,7 @@ public class StaticData {
     
     private static StaticData sd;
     
-    public Roster roster;
+    public Roster roster = null;
     
     public Account account;
 

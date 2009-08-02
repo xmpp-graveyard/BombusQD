@@ -42,37 +42,43 @@ import Colors.ColorTheme;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import locale.*;
-import ui.*;
-import Client.*;
+//import ui.*;
+import Client.Config;
+import Client.StaticData;
+import Client.Roster;
 import Info.Version;
+import ui.GMenu;
+import ui.SplashScreen;
 import java.util.Vector;
 import util.StringLoader;
 import Fonts.*;
 import util.Strconv;
 import Account.YesNoAlert;
+
 /** Entry point class
  *
  * @author  Eugene Stahov
  * @version
  */
-public class BombusQD extends MIDlet implements Runnable{
+public class BombusQD extends MIDlet implements Runnable
+{
     
-    private Display display;    // The display for this MIDlet
+    private Display display  = Display.getDisplay(this);
     private boolean isRunning;
     public boolean isMinimized;
-    StaticData sd=StaticData.getInstance();
-    ColorTheme ct=ColorTheme.getInstance();
-    public SplashScreen s;
-
-    public static Image splash;
     
-    private static BombusQD instance; 
+    public final static StaticData sd = StaticData.getInstance();
+    public final static Config cf = Config.getInstance();
+    ColorTheme ct=ColorTheme.getInstance();
+    
+    public SplashScreen s;
+    private static BombusQD instance;
+    
 
     public BombusQD() {
 	instance=this; 
-        display = Display.getDisplay(this);
         s=SplashScreen.getInstance(display);
-        s.setProgress("Loading", 3); // this message will not be localized
+        s.setProgress("Loading", 3);
     }
     
     /** Entry point  */
@@ -89,84 +95,74 @@ public class BombusQD extends MIDlet implements Runnable{
      * Pause is a no-op since there are no background activities or
      * record stores that need to be closed.
      */
-    public void pauseApp() {
-    
-    }
+    public void pauseApp() { }
 
-    public Image[] imageArr = new Image[2];
+    
+    public Image[] imageArr = null;
     public int wimg_menu;
     public int himg_menu;
     public int wimg_actions;
     public int himg_actions;    
-    
-    Config cf;    
-    public GMenuConfig gm;
-    public ImageBuffer ib;
-    
+    //public GMenuConfig gm;//
+    //public ImageBuffer ib;//
 
+    
     public void run(){
-        gm = GMenuConfig.getInstance();  
-        ib = ImageBuffer.getInstance();
-//#ifdef PLUGINS
-//#         getPlugins();
-//#endif
-        cf = Config.getInstance();
+        long s1 = System.currentTimeMillis();
+        //gm = GMenuConfig.getInstance();//
+        //ib = ImageBuffer.getInstance();//
+        AccountSelect acc = new AccountSelect(display, null , true,-1);
+
+        s.setProgress(18);
+        boolean selAccount=((cf.accountIndex<0) /*|| s.keypressed!=0*/ );
+          //if (selAccount) 
+          //display.setCurrent(sd.roster);
+          if (!selAccount && cf.autoLogin){
+            sd.roster=new Roster(display);
+            Account.loadAccount(cf.autoLogin, cf.accountIndex,-1);
+            display.setCurrent(sd.roster);
+          }
+          else {
+            display.setCurrent(acc);
+        }
+        
+        long s2 = System.currentTimeMillis();
+        System.out.println((s2-s1)+" msec");
+        
+        s.getKeys();
+        
         try {
+           imageArr = new Image[2];
            imageArr[0] = Image.createImage("/images/menu.png");
            wimg_menu = imageArr[0].getWidth()/8;
            himg_menu = imageArr[0].getHeight()/10;
-        } catch (Exception e) {
-           s.img=null;
-        }       
-        cf.path_skin="";
-        cf.animateMenuAndRoster=false;
-
-        s.setProgress(3);
-        s.getKeys();
+        } catch (Exception e) { }    
         
-        s.setProgress(7);
-        s.setProgress(Version.getVersionNumber(),10);
+        //cf.path_skin="";
         
         SR.loaded();
+        FontClass.getInstance().Init(cf.drwd_fontname);         
+        
+        
+        if(sd.roster==null){
+          sd.roster=new Roster(display);
+        }
+//#ifdef STATS
+//#         Stats.getInstance().loadFromStorage();
+//#endif         
 //#ifdef PEP        
 //#         Activity.loaded();
 //#endif                
-        s.setProgress(12);
-//#ifdef STATS
-//#         Stats.getInstance().loadFromStorage();
-//#endif        
-        s.setProgress(15);
-        
 //#ifdef AUTOTASK
 //#         sd.autoTask=new AutoTask(display);
-//#         s.setProgress(17);
-//#endif
+//#endif        
 
-        sd.roster=new Roster(display);
-        s.setProgress(18);
 
-        //cf.smiles=true;
-        FontClass.getInstance().Init(cf.drwd_fontname); 
-        /*
-        try {
-           ib.bgnd_checkers = Image.createImage("/images/games/bgnd_checkers.png");
-           ib.checkers_black = Image.createImage("/images/games/black.png");
-           ib.checkers_white = Image.createImage("/images/games/white.png");
-           System.out.println("checkers loaded!");
-         } catch (Exception e) {
-            s.img=null;
-         } 
-         */        
-
-          boolean selAccount=( (cf.accountIndex<0) || s.keypressed!=0);
-          if (selAccount) 
-            s.setProgress("Entering setup",23);   
-          //display.setCurrent(sd.roster);
-          if (!selAccount && cf.autoLogin)
-            Account.loadAccount(cf.autoLogin, cf.accountIndex,-1); // connect whithout account select
-          else {
-            new AccountSelect(display, sd.roster, true,-1);     
-        }
+        //StartApp:
+        //SE Emulator: W700  JP8-240x320    DefaultJ2ME
+        //undo -      697    643            1093-1300      msec
+        //after -     288    329            225-350        msec
+        //(use: 580kb after start)
     }
 
     public void destroyApp(boolean unconditional) { }
@@ -187,50 +183,4 @@ public class BombusQD extends MIDlet implements Runnable{
     public static BombusQD getInstance() {
         return instance;
     }
-
-//#ifdef PLUGINS
-//#     private void getPlugins () {
-//# 	Vector defs[]=new StringLoader().stringLoader("/modules.txt", 2);
-//#         if (defs!=null) {
-//#             for (int i=0; i<defs[0].size(); i++) {
-//#                 String name      =(String) defs[0].elementAt(i);
-//#                 String value     =(String) defs[1].elementAt(i);
-//# 
-//#                 boolean state=value.equals("true");
-//# 
-//#                 if (name.equals("Archive")) {
-//#                     sd.Archive=state;
-//#                 } else if(name.equals("ChangeTransport")) {
-//#                     sd.ChangeTransport=state;
-//#                 } else if(name.equals("Console")) {
-//#                     sd.Console=state;
-//#                 } else if(name.equals("FileTransfer")) {
-//#                     sd.FileTransfer=state;
-//#                 } else if(name.equals("History")) {
-//#                     sd.History=state;
-//#                 } else if(name.equals("ImageTransfer")) {
-//#                     sd.ImageTransfer=state;
-//#                 } else if(name.equals("PEP")) {
-//#                     sd.PEP=state;
-//#                 } else if(name.equals("Privacy")) {
-//#                     sd.Privacy=state;
-//#                 } else if(name.equals("IE")) {
-//#                     sd.IE=state;
-//#                 } else if(name.equals("Colors")) {
-//#                     sd.Colors=state;
-//#                 } else if(name.equals("Adhoc")) {
-//#                     sd.Adhoc=state;
-//#                 } else if(name.equals("Stats")) {
-//#                     sd.Stats=state;
-//#                 } else if (name.equals("ClientsIcons")) {
-//#                     sd.ClientsIcons=state;
-//#                 } else if (name.equals("UserKeys")) {
-//#                     sd.UserKeys=state;
-//#                 } else if (name.equals("Upgrade")) {
-//#                     sd.Upgrade=state;
-//#                 }
-//#             }
-//#         }
-//#     }
-//#endif
 }

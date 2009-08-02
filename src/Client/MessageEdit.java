@@ -66,32 +66,28 @@ public class MessageEdit
     
     private boolean composing=true;
     
-    StaticData sd = StaticData.getInstance();
-    
-    private Config cf = Config.getInstance();
-    
 //#ifdef DETRANSLIT
 //#     private boolean sendInTranslit=false;
 //#     private boolean sendInDeTranslit=false;
 //#     DeTranslit dt;
 //#endif
     
-    private Command cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
+    private static Command cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
 //#ifdef SMILES
-    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+    private static Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
 //#endif
-    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
-    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
+    private static Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
+    private static Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
 //#ifdef DETRANSLIT
-//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
-//#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
+//#     private static Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
+//#     private static Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
-    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
-    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
-    private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    private Command cmdSendEvil=new Command(SR.MS_SEND_EVIL_MSG, Command.SCREEN /*Command.SCREEN*/,229);    
-    private Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN /*Command.SCREEN*/,337);
+    private static Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
+    private static Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
+    private static Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
+    private static Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
+    private static Command cmdSendEvil=new Command(SR.MS_SEND_EVIL_MSG, Command.SCREEN /*Command.SCREEN*/,229);    
+    private static Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN /*Command.SCREEN*/,337);
     
     
     
@@ -100,13 +96,13 @@ public class MessageEdit
 //#endif
     
 //#ifdef ARCHIVE
-    protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
+    protected static Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
 //#endif
 //#if TEMPLATES
 //#     protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7); 
 //#endif  
 //#ifdef CLIPBOARD
-//#     protected Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
+//#     protected static Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
 //#endif
     
     
@@ -121,7 +117,7 @@ public class MessageEdit
        this.to=to;
        this.display=display;
        this.parentView=pView;
-       if (cf.notifyWhenMessageType)
+       if (midlet.BombusQD.cf.notifyWhenMessageType)
        {
           t=new TextBox(to.toString(), body, 4096 , TextField.ANY);
           ticker = new Ticker("BombusQD");
@@ -168,7 +164,7 @@ public class MessageEdit
         t.addCommand(cmdPaste);
 //#endif
 //#ifdef CLIPBOARD
-//#         if (cf.useClipBoard) {
+//#         if (midlet.BombusQD.cf.useClipBoard) {
 //#             clipboard=ClipBoard.getInstance();
 //#             if (!clipboard.isEmpty())
 //#                 t.addCommand(cmdPasteText);
@@ -186,7 +182,7 @@ public class MessageEdit
         t.setCommandListener(this);
 //#ifdef RUNNING_MESSAGE
 //#         /*
-//#        if(cf.useLowMemory_msgedit==false){ 
+//#        if(midlet.BombusQD.cf.useLowMemory_msgedit==false){ 
 //#          if (thread==null) (thread=new Thread(this)).start() ;
 //#        }
 //#          */
@@ -238,11 +234,11 @@ public class MessageEdit
             composing=false;
             body=null;
             thread=null;
-            if(to.cList!=null){
-              display.setCurrent( to.cList );
-            }else{
-              new ContactMessageList(to,display);  
-            }
+            //if(to.cList!=null && midlet.BombusQD.cf.module_cashe && to.msgs.size()>3){
+              display.setCurrent( parentView );
+            //}else{
+            //  new C ontactMessageList(to,display);  
+            //}
         }
         if (c==cmdSuspend) {
                 composing=false; 
@@ -284,7 +280,7 @@ public class MessageEdit
 //#ifdef RUNNING_MESSAGE
 //#        if(to.msgSuspended==null){
 //#             /*
-//#         if(cf.useLowMemory_msgedit==false){ 
+//#         if(midlet.BombusQD.cf.useLowMemory_msgedit==false){ 
 //#           if (display!=null) display.setCurrent(parentView);
 //#           new Thread(this).start();
 //#           return;            
@@ -296,7 +292,7 @@ public class MessageEdit
 //#       }
 //#endif
       thread=null;
-      System.out.println("null");
+      System.out.println("thread null");
     }
 
     
@@ -312,7 +308,7 @@ public class MessageEdit
 //#             if (subj!=null )
 //#                subj=dt.translit(subj);
 //#         }
-//#         if (sendInDeTranslit==true || cf.autoDeTranslit) {
+//#         if (sendInDeTranslit==true || midlet.BombusQD.cf.autoDeTranslit) {
 //#             if (body!=null)
 //#                body=dt.deTranslit(body);
 //#             if (subj!=null )
@@ -320,7 +316,7 @@ public class MessageEdit
 //#         }
 //#endif
         if (body!=null || subj!=null ) {
-            String from=sd.account.toString();
+            String from=midlet.BombusQD.sd.account.toString();
             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
             if(evil){
                msg.body="(!)"+msg.body;                 
@@ -332,16 +328,16 @@ public class MessageEdit
                 comp="active";
             }
         } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
-        if (!cf.eventComposing) comp=null;
+        if (!midlet.BombusQD.cf.eventComposing) comp=null;
         try { //??
             if (body!=null || subj!=null || comp!=null) {
                 to.lastSendedMessage=body;
                  if(evil){
-                  sd.roster.sendMessage(to, id, body, subj, comp,true);
+                  midlet.BombusQD.sd.roster.sendMessage(to, id, body, subj, comp,true);
                   to.msgSuspended=null;
                  }
                  else{
-                  sd.roster.sendMessage(to, id, body, subj, comp,false);
+                  midlet.BombusQD.sd.roster.sendMessage(to, id, body, subj, comp,false);
                   to.msgSuspended=null;                  
                  }                
             }
@@ -362,14 +358,14 @@ public class MessageEdit
 //#             if (subj!=null )
 //#                subj=dt.translit(subj);
 //#         }
-//#         if (sendInDeTranslit==true || cf.autoDeTranslit) {
+//#         if (sendInDeTranslit==true || midlet.BombusQD.cf.autoDeTranslit) {
 //#             if (body!=null)
 //#                body=dt.deTranslit(body);
 //#             if (subj!=null )
 //#                subj=dt.deTranslit(subj);
 //#         }
 //#endif
-             String from=sd.account.toString();
+             String from=midlet.BombusQD.sd.account.toString();
              Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,subj,body);
                 msg.id=id;
                 if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
@@ -377,16 +373,16 @@ public class MessageEdit
                     comp="active";
                 }
             } else if (to.acceptComposing) comp=(composing)? "composing":"paused";
-            if (!cf.eventComposing) comp=null;
+            if (!midlet.BombusQD.cf.eventComposing) comp=null;
             try {
                 if (body!=null || subj!=null || comp!=null) {
                     to.lastSendedMessage=body;
                  if(evil){
-                  sd.roster.sendMessage(to, id, body, subj, comp,true); 
+                  midlet.BombusQD.sd.roster.sendMessage(to, id, body, subj, comp,true); 
                   to.msgSuspended=null;
                  }
                  else{
-                  sd.roster.sendMessage(to, id, body, subj, comp,false);
+                  midlet.BombusQD.sd.roster.sendMessage(to, id, body, subj, comp,false);
                   to.msgSuspended=null;
                  } 
                 }

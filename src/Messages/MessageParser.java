@@ -118,7 +118,7 @@ public final class MessageParser // implements Runnable
     
     public void parseMsg(MessageItem messageItem,  int width) {
         //synchronized (tasks) {
-            wordsWrap=Config.getInstance().textWrap==1;
+            wordsWrap=midlet.BombusQD.cf.textWrap==1;
             messageItem.msgLines=new Vector();
 //#ifdef SMILES
             this.smileImages=SmilesIcons.getInstance();
@@ -412,7 +412,7 @@ public final class MessageParser // implements Runnable
                     if (c==0x09)
                         c=0x20;
 
-                    if(pos<=10 && !Config.getInstance().useLowMemory_iconmsgcollapsed){
+                    if(pos<=10 && !midlet.BombusQD.cf.useLowMemory_iconmsgcollapsed){
                       cw+=3;
                     }
                     

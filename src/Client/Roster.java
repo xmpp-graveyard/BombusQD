@@ -167,9 +167,9 @@ public class Roster
         LoginListener
 {
 
-    private Config cf=Config.getInstance();
-    private GMenuConfig gm=GMenuConfig.getInstance();    
-    private StaticData sd=StaticData.getInstance();
+    //private Config cf=Config.getInstance();
+    //private StaticData sd=StaticData.getInstance();
+    private GMenuConfig gm=GMenuConfig.getInstance();
     
     
     public Contact activeContact = null;
@@ -196,7 +196,7 @@ public class Roster
 //#endif
     
     private StatusList sl;
-    public int myStatus=cf.loginstatus;
+    public int myStatus=midlet.BombusQD.cf.loginstatus;
     private static String myMessage;
     public static int oldStatus=0;
     private static int lastOnlineStatus;
@@ -225,7 +225,7 @@ public class Roster
     private int blState=Integer.MAX_VALUE;
     
 //#ifdef AUTOTASK
-//#     private AutoTask at=sd.autoTask;
+//#     private AutoTask at=midlet.BombusQD.sd.autoTask;
 //#endif
     
     private final static int SOUND_FOR_ME=500;
@@ -251,7 +251,7 @@ public class Roster
          
         sl=StatusList.getInstance();
 
-        setLight(cf.lightState);
+        setLight(midlet.BombusQD.cf.lightState);
         
         MainBar mainbar=new MainBar(4, null, null, false);
         setMainBarItem(mainbar);
@@ -276,7 +276,7 @@ public class Roster
 
         splash.setExit(display, this);
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE || cf.autoAwayType==Config.AWAY_MESSAGE)
+//#         if (midlet.BombusQD.cf.autoAwayType==Config.AWAY_IDLE || midlet.BombusQD.cf.autoAwayType==Config.AWAY_MESSAGE)
 //#             autostatus=new AutoStatusTask();
 //#         
 //#         if (myStatus<2)
@@ -320,7 +320,8 @@ public class Roster
 //#ifdef GRAPHICS_MENU
 //#     private Command cmdDifficulty=new Command("Difficulty Level", Command.SCREEN, 45);//2
 //#     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 1);//2
-//#       private Command cmdOptions=new Command(SR.MS_OPTIONS, Command.SCREEN, 16);//MS_OPTIONS - основные,Tools - Настройки
+//#       private Command cmdOptions=new Command(/*SR.MS_OPTIONS*/"Plugins", Command.SCREEN, 16);//MS_OPTIONS - основные,Tools - Настройки
+//#      /*
 //#ifdef HISTORY      
 //#       private Command cmdHistory=new Command(SR.MS_HISTORY_OPTIONS, Command.SCREEN, 17);
 //#endif      
@@ -339,6 +340,8 @@ public class Roster
 //#ifdef HISTORY       
 //#       private Command cmdAvatars=new Command(SR.MS_AVATARS, Command.SCREEN, 43);
 //#endif
+//#       */
+//#       
 //#     private Command cmdMyJabber=new Command(SR.MS_MY_JABBER, Command.SCREEN, 22); //1
 //#       private Command cmdVcard=new Command(SR.MS_VCARD, Command.SCREEN, 23);
 //#       private Command cmdConference=new Command(SR.MS_CONFERENCE, Command.SCREEN, 24);
@@ -413,9 +416,9 @@ public class Roster
 //#               addInCommand(1,cmdSrvDisco); cmdSrvDisco.setImg(MenuIcons.ICON_DISCO);
 //#endif              
 //#ifdef PRIVACY              
-//#               if(cf.difficulty_level==2)  addInCommand(1,cmdPrivacy); cmdPrivacy.setImg(MenuIcons.ICON_PRIVACY);
+//#               addInCommand(1,cmdPrivacy); cmdPrivacy.setImg(MenuIcons.ICON_PRIVACY);
 //#endif                 
-//#               if (cf.fileTransfer) { addInCommand(1,cmdTransfers); cmdTransfers.setImg(MenuIcons.ICON_FT); }
+//#               if (midlet.BombusQD.cf.fileTransfer) { addInCommand(1,cmdTransfers); cmdTransfers.setImg(MenuIcons.ICON_FT); }
 //#ifdef PEP                                      
 //#               addInCommand(1,cmdMood); cmdMood.setImg(MenuIcons.ICON_MOOD);
 //#               addInCommand(1,cmdActivity); cmdActivity.setImg(MenuIcons.ICON_MOOD);
@@ -423,24 +426,26 @@ public class Roster
 //#               
 //#if SASL_XGOOGLETOKEN                
 //#              if(isLoggedIn()){
-//#                if (sd.account.isGmail()) {
+//#                if (midlet.BombusQD.sd.account.isGmail()) {
 //#                  addInCommand(1,cmdGmail); cmdGmail.setImg(MenuIcons.ICON_GMAIL);
 //#                }
 //#              }
 //#endif    
 //#               
 //#ifdef CONSOLE
-//#              if(cf.difficulty_level==2) addInCommand(3,cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);        
+//#              addInCommand(3,cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);        
 //#endif
 //#         }
-//#         addCommand(cmdTools);  cmdTools.setImg(0x03);
-//#               addInCommand(2,cmdOptions);   cmdOptions.setImg(MenuIcons.ICON_SETTINGS);
+//#         addCommand(cmdOptions);   cmdOptions.setImg(0x03);
+//#         //addCommand(cmdTools);  cmdTools.setImg(0x03);
+//#               /*addInCommand(2,cmdOptions);   cmdOptions.setImg(MenuIcons.ICON_SETTINGS);
+//#               
 //#ifdef HISTORY                 
-//#               if (cf.saveHistory){ addInCommand(2,cmdHistory);   cmdHistory.setImg(MenuIcons.ICON_HISTORY); }
+//#               if (midlet.BombusQD.cf.saveHistory){ addInCommand(2,cmdHistory);   cmdHistory.setImg(MenuIcons.ICON_HISTORY); }
 //#endif               
 //#               addInCommand(2,cmdFonts);     cmdFonts.setImg(MenuIcons.ICON_FONTS);
 //#ifdef USER_KEYS           
-//#                if (cf.userKeys){ addInCommand(2,cmdHotkeys); cmdHotkeys.setImg(MenuIcons.ICON_KEYS); }
+//#                if (midlet.BombusQD.cf.userKeys){ addInCommand(2,cmdHotkeys); cmdHotkeys.setImg(MenuIcons.ICON_KEYS); }
 //#endif              
 //#               addInCommand(2,cmdColors); cmdColors.setImg(MenuIcons.ICON_COLOR_TUNE);
 //#ifdef IMPORT_EXPORT              
@@ -448,11 +453,12 @@ public class Roster
 //#endif              
 //#               addInCommand(2,cmdNotices); cmdNotices.setImg(MenuIcons.ICON_NOTIFY);
 //#ifdef AUTOTASK               
-//#               if(cf.difficulty_level==2) addInCommand(2,cmdAtasks); cmdAtasks.setImg(MenuIcons.ICON_TASKS);
+//#               addInCommand(2,cmdAtasks); cmdAtasks.setImg(MenuIcons.ICON_TASKS);
 //#endif                           
 //#ifdef HISTORY               
 //#               addInCommand(2,cmdAvatars); cmdAvatars.setImg(0x14);
-//#endif               
+//#endif      
+//#               */
 //#         addCommand(cmdMyService); cmdMyService.setImg(MenuIcons.ICON_ITEM_ACTIONS); 
 //#               addInCommand(3,cmdFM); cmdFM.setImg(MenuIcons.ICON_FILEMAN);
 //#               addInCommand(3,cmdAlert); cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
@@ -468,7 +474,7 @@ public class Roster
 //#         addCommand(cmdInfo); cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
 //#         addCommand(cmdLatestNews); cmdLatestNews.setImg(MenuIcons.ICON_CHECK_UPD);
 //# 
-//#         if (cf.allowMinimize) 
+//#         if (midlet.BombusQD.cf.allowMinimize) 
 //#             addCommand(cmdMinimize);
 //#             cmdMinimize.setImg(MenuIcons.ICON_FILEMAN);
 //#         if (phoneManufacturer!=Config.NOKIA_9XXX)
@@ -494,7 +500,7 @@ public class Roster
         addCommand(cmdAlert);
   //#ifdef ARCHIVE
   //#ifdef PLUGINS
-  //#          if (sd.Archive)
+  //#          if (midlet.BombusQD.sd.Archive)
   //#endif
             addCommand(cmdArchive);
   //#endif
@@ -505,7 +511,7 @@ public class Roster
         addCommand(cmdAccount);
         addCommand(cmdInfo);
 
-        if (cf.allowMinimize) 
+        if (midlet.BombusQD.cf.allowMinimize) 
             addCommand(cmdMinimize);
 
         addCommand(cmdCleanAllMessages);
@@ -529,7 +535,7 @@ public class Roster
         cmdTools.setImg(MenuIcons.ICON_SETTINGS);    
         cmdAccount.setImg(MenuIcons.ICON_VCARD);
         cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
-        if (cf.allowMinimize)
+        if (midlet.BombusQD.cf.allowMinimize)
             cmdMinimize.setImg(MenuIcons.ICON_FILEMAN);
         cmdCleanAllMessages.setImg(MenuIcons.ICON_CLEAN_MESSAGES);
         cmdQuit.setImg(MenuIcons.ICON_BUILD_NEW);
@@ -547,9 +553,10 @@ public class Roster
       
 //#ifdef GRAPHICS_MENU   
 //#          if (c==cmdActions) { cmdActions(); }
-//#            else if(c==cmdOptions){ new ConfigForm(display, this); }
+//#            else if(c==cmdOptions){ new PluginsConfig(display, this);
+//#            }
 //#            else if(c==cmdVcard){ 
-//#                 Contact cs=sd.roster.selfContact();
+//#                 Contact cs=midlet.BombusQD.sd.roster.selfContact();
 //#                 if (cs.vcard!=null) {
 //#                     new VCardEdit(display, this, cs.vcard);
 //#                     return;
@@ -566,8 +573,8 @@ public class Roster
 //#ifdef PEP                
 //#            else if(c==cmdMood){ new MoodList(display);  }
 //#            else if(c==cmdActivity){ new ActivityMenu(display, this); }
-//#endif                
-//#            else if(c==cmdOptions){ new ConfigForm(display, this);  }
+//#endif           
+//#         /*
 //#ifdef HISTORY          
 //#            else if(c==cmdHistory){ new HistoryConfig(display, this);  }
 //#endif         
@@ -577,27 +584,30 @@ public class Roster
 //#endif          
 //#            else if(c==cmdColors){ new ColorConfigForm(display, this); }
 //#ifdef IMPORT_EXPORT         
-//#            else if(c==cmdBackup){ new IE.IEMenu(display, sd.roster);  }
+//#            else if(c==cmdBackup){ new IE.IEMenu(display, midlet.BombusQD.sd.roster);  }
 //#endif         
 //#            else if(c==cmdNotices){ new AlertCustomizeForm(display, this);  } 
 //#ifdef AUTOTASK         
 //#            else if(c==cmdAtasks){ new AutoTaskForm(display, this);  }
-//#endif        
+//#endif  
+//#          */ 
 //#ifdef STATS        
 //#            else if(c==cmdStats){  new StatsWindow(display, this);  }
 //#endif                        
 //#            else if(c==cmdReconnect){ 
-//#                  sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
-//#                  sd.roster.doReconnect();     
+//#                  midlet.BombusQD.sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
+//#                  midlet.BombusQD.sd.roster.doReconnect();     
 //#            }
+//#         /*
 //#ifdef HISTORY         
 //#            else if(c==cmdAvatars){
 //#              new ConfigAvatar(display,this);
 //#            }
-//#endif         
+//#endif    
+//#          */     
 //#if SASL_XGOOGLETOKEN        
 //#            else if(c==cmdGmail){ 
-//#              sd.roster.theStream.send(IqGmail.query());
+//#              midlet.BombusQD.sd.roster.theStream.send(IqGmail.query());
 //#            }
 //#endif                
 //#            else if(c==cmdFM){
@@ -715,7 +725,7 @@ public class Roster
     // establishing connection process
     public void run(){
 //#ifdef POPUPS
-        //if (cf.firstRun) setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
+        //if (midlet.BombusQD.cf.firstRun) setWobbler(1, (Contact) null, SR.MS_ENTER_SETTINGS);
 //#endif
         setQuerySign(true);
 	if (!doReconnect) {
@@ -723,7 +733,7 @@ public class Roster
             resetRoster();
         }
         try {
-            Account a=sd.account;
+            Account a=midlet.BombusQD.sd.account;
 //#if SASL_XGOOGLETOKEN
 //#             if (a.useGoogleToken()) {
 //#                 setProgress(SR.MS_TOKEN, 30);
@@ -762,8 +772,8 @@ public class Roster
             
 	    bookmarks=null;
 	}
-	setMyJid(new Jid(sd.account.getJid()));
-	updateContact(sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
+	setMyJid(new Jid(midlet.BombusQD.sd.account.getJid()));
+	updateContact(midlet.BombusQD.sd.account.getNick(), myJid.getBareJid(), SR.MS_SELF_CONTACT, "self", false);
     }
     
     public void systemGC() {
@@ -803,7 +813,7 @@ public class Roster
   
     private void updateMainBar(){
         int s=querysign?RosterIcons.ICON_PROGRESS_INDEX:myStatus;
-        int profile=cf.profile;
+        int profile=midlet.BombusQD.cf.profile;
         Object en=(profile>0)? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX+1):null;
         MainBar mainbar=(MainBar) getMainBarItem();
 
@@ -1004,7 +1014,7 @@ public class Roster
                     firstInstance=false;
 
                     if (querysign==true) {
-                        if (cf.collapsedGroups) {
+                        if (midlet.BombusQD.cf.collapsedGroups) {
                             Group g=c.group;
                             g.collapsed=true; 
                         }
@@ -1243,7 +1253,7 @@ public class Roster
         blockNotify(-111,13000);
 
         if (isLoggedIn()) {
-            if (myStatus==Presence.PRESENCE_OFFLINE  && !cf.collapsedGroups)
+            if (myStatus==Presence.PRESENCE_OFFLINE  && !midlet.BombusQD.cf.collapsedGroups)
                 groups.queryGroupState(false);
             // send presence
             ExtendedStatus es = sl.getStatus(myStatus);
@@ -1253,8 +1263,8 @@ public class Roster
 
             myMessage=StringUtils.toExtendedString(myMessage);
             int myPriority=es.getPriority();
-            Presence presence = new Presence(myStatus, myPriority, myMessage, sd.account.getNick());
-            if (!sd.account.isMucOnly() )
+            Presence presence = new Presence(myStatus, myPriority, myMessage, midlet.BombusQD.sd.account.getNick());
+            if (!midlet.BombusQD.sd.account.isMucOnly() )
 		theStream.send(presence);
                 presence=null;
 //#ifndef WMUC
@@ -1296,7 +1306,7 @@ public class Roster
         ExtendedStatus es= sl.getStatus(status);
         myMessage=es.getMessage();
         myMessage=StringUtils.toExtendedString(myMessage);
-        Presence presence = new Presence(status, es.getPriority(), myMessage, sd.account.getNick());
+        Presence presence = new Presence(status, es.getPriority(), myMessage, midlet.BombusQD.sd.account.getNick());
         presence.setTo(to);
         if (x!=null) presence.addChild(x);
         if (theStream!=null) {
@@ -1324,7 +1334,7 @@ public class Roster
 
 //#ifndef WMUC
     public void multicastConferencePresence(int myStatus, String myMessage, int myPriority) {
-         //if (!cf.autoJoinConferences) return;
+         //if (!midlet.BombusQD.cf.autoJoinConferences) return;
          //?
          if (myStatus==Presence.PRESENCE_INVISIBLE) return; //block multicasting presence invisible
          
@@ -1439,7 +1449,7 @@ public class Roster
 
 
             if (!groupchat) 
-                if (body!=null) if (cf.eventDelivery) 
+                if (body!=null) if (midlet.BombusQD.cf.eventDelivery) 
                     message.addChildNs("request", "urn:xmpp:receipts");
             
             if(evil) 
@@ -1449,25 +1459,25 @@ public class Roster
            theStream.send(message); 
            if(body!=null){
 
-               if(cf.useClassicChat){   
+               if(midlet.BombusQD.cf.useClassicChat){   
                  if(!groupchat) {
                  //forfix
                  Msg mmm = new Msg(Msg.MESSAGE_TYPE_OUT,"Me",null,"Me: " + body);
                  to.addMessage(mmm);
-                 StringUtils.addClassicChatMsg("Me: "+body,Config.getInstance().width_classic,to.scroller);
+                 StringUtils.addClassicChatMsg("Me: "+body,midlet.BombusQD.cf.width_classic,to.scroller);
                  }else
                  {
                    Msg mmm;
                    if(body.startsWith("/me")){
                      mmm = new Msg(Msg.MESSAGE_TYPE_OUT,"Me",null,"***Me " + body.substring(3,body.length()));  
-                     StringUtils.addClassicChatMsg("***Me " + body.substring(3,body.length()),Config.getInstance().width_classic,to.scroller);                 
+                     StringUtils.addClassicChatMsg("***Me " + body.substring(3,body.length()),midlet.BombusQD.cf.width_classic,to.scroller);                 
                    }else {
                      mmm = new Msg(Msg.MESSAGE_TYPE_OUT,"Me",null,"Me: " + body); 
-                     StringUtils.addClassicChatMsg("Me: " + body,Config.getInstance().width_classic,to.scroller);                 
+                     StringUtils.addClassicChatMsg("Me: " + body,midlet.BombusQD.cf.width_classic,to.scroller);                 
                     }
                     mmm=null;
                   }
-                }//cf.useClassicChat
+                }//midlet.BombusQD.cf.useClassicChat
          }
         message=null;
         to=null; 
@@ -1485,7 +1495,7 @@ public class Roster
     }
     
     private void sendDeliveryMessage(Contact c, String id) {
-        if (!cf.eventDelivery) return;
+        if (!midlet.BombusQD.cf.eventDelivery) return;
         if (myStatus==Presence.PRESENCE_INVISIBLE) return;
         Message message=new Message(c.jid.getJid());
         //xep-0184
@@ -1587,28 +1597,28 @@ public class Roster
         theStream.addBlockListener(new IqLast());
         theStream.addBlockListener(new IqTimeReply());
 //#ifdef ADHOC
-//#         if (cf.adhoc)
+//#         if (midlet.BombusQD.cf.adhoc)
 //#ifdef PLUGINS
-//#             if (sd.Adhoc)
+//#             if (midlet.BombusQD.sd.Adhoc)
 //#endif
 //#                 IQCommands.getInstance().addBlockListener();
 //#endif
 
 //#ifdef PEP
-//#         if (cf.sndrcvmood || cf.rcvtune || cf.rcvactivity)
+//#         if (midlet.BombusQD.cf.sndrcvmood || midlet.BombusQD.cf.rcvtune || midlet.BombusQD.cf.rcvactivity)
 //#ifdef PLUGINS
-//#             if (sd.PEP)
+//#             if (midlet.BombusQD.sd.PEP)
 //#endif
 //#                 PepListener.getInstance().addBlockListener();
 //#endif
 //#if SASL_XGOOGLETOKEN
-//#         if (StaticData.getInstance().account.isGmail())
+//#         if (midlet.BombusQD.sd.account.isGmail())
 //#             theStream.addBlockListener(new IqGmail());
 //#endif
 //#if FILE_TRANSFER
-        if (cf.fileTransfer) // enable File transfers
+        if (midlet.BombusQD.cf.fileTransfer) // enable File transfers
 //#ifdef PLUGINS
-//#             if (sd.FileTransfer)
+//#             if (midlet.BombusQD.sd.FileTransfer)
 //#endif
                 TransferDispatcher.getInstance().addBlockListener();
 //#endif
@@ -1628,7 +1638,7 @@ public class Roster
         theStream.enableRosterNotify(true);
         rpercent=50;
 
-        if (sd.account.isMucOnly()) {
+        if (midlet.BombusQD.sd.account.isMucOnly()) {
             setProgress(SR.MS_CONNECTED,100);
             try {
                 reEnumRoster();
@@ -1750,7 +1760,7 @@ public class Roster
 //#        nickDate=null;
 //#        OutputStream os;
 //#         try {
-//#             FileIO file=FileIO.createConnection(cf.msgAvatarPath+filename+vcard.getFileType());
+//#             FileIO file=FileIO.createConnection(midlet.BombusQD.cf.msgAvatarPath+filename+vcard.getFileType());
 //#             os = file.openOutputStream(0);
 //#             os.write(vcard.getPhoto());
 //#             os.close();
@@ -1765,7 +1775,7 @@ public class Roster
     public void setImageAvatar(ImageList il,Contact c,Image photoImg){
         int newW=photoImg.getWidth();
         int newH=photoImg.getHeight();
-        while(newW>cf.maxAvatarWidth || newH>cf.maxAvatarHeight){
+        while(newW>midlet.BombusQD.cf.maxAvatarWidth || newH>midlet.BombusQD.cf.maxAvatarHeight){
             newW-=(newW*10)/100;
             newH-=(newH*10)/100;
         }          
@@ -1807,7 +1817,7 @@ public class Roster
                         String jid=id.substring(5);
                         Contact c=getContact(jid, false); // drop unwanted vcards
 //#if FILE_IO && HISTORY
-//#                                 if(cf.autoSaveVcard) {//check img in fs?
+//#                                 if(midlet.BombusQD.cf.autoSaveVcard) {//check img in fs?
 //#                                     cashePhoto(vcard,c);
 //#                                 }
 //#endif                              
@@ -1837,7 +1847,7 @@ public class Roster
                                 Image photoImg=Image.createImage(vcard.getPhoto(), 0, length);
                                 Contact c=getContact(data.getAttribute("from"), true);
 //#if FILE_IO && HISTORY
-//#                                 if(cf.autoSaveVcard) {
+//#                                 if(midlet.BombusQD.cf.autoSaveVcard) {
 //#                                     cashePhoto(vcard,c);
 //#                                 }
 //#endif  
@@ -1949,49 +1959,49 @@ public class Roster
                         
                         processRoster(data);
 
-                        if(!cf.collapsedGroups)
+                        if(!midlet.BombusQD.cf.collapsedGroups)
                             groups.queryGroupState(true);
 
                         setProgress(SR.MS_CONNECTED,100);
                         reEnumRoster();
                         querysign=doReconnect=false;
 
-                        if(cf.isStatusFirst && firstStatus!=-1){
+                        if(midlet.BombusQD.cf.isStatusFirst && firstStatus!=-1){
                           if (firstStatus==5) {
                             sendPresence(Presence.PRESENCE_INVISIBLE, null);    
                           } else {
                             sendPresence(firstStatus, null);  
                           }                            
-                          cf.isStatusFirst=false;
+                          midlet.BombusQD.cf.isStatusFirst=false;
                           firstStatus=-1;
                         }else{
-                          if (cf.loginstatus==5) {
+                          if (midlet.BombusQD.cf.loginstatus==5) {
                             sendPresence(Presence.PRESENCE_INVISIBLE, null);    
                           } else {
-                            sendPresence(cf.loginstatus, null);
+                            sendPresence(midlet.BombusQD.cf.loginstatus, null);
                           }
                         }
 
 //#ifdef PEP       
 //#                     /*        
 //#                      StringBuffer pub = new StringBuffer();
-//#                       if(cf.actCat!=null){
-//#                        pub.append(SR.MS_ACTIVITY + ": " + locale.Activity.loadString(cf.actCat));                         
+//#                       if(midlet.BombusQD.cf.actCat!=null){
+//#                        pub.append(SR.MS_ACTIVITY + ": " + locale.Activity.loadString(midlet.BombusQD.cf.actCat));                         
 //#                       
 //#                        pub.append("(");
-//#                        if(cf.actDescr!=null){ 
-//#                           pub.append(locale.Activity.loadString(cf.actDescr));
+//#                        if(midlet.BombusQD.cf.actDescr!=null){ 
+//#                           pub.append(locale.Activity.loadString(midlet.BombusQD.cf.actDescr));
 //#                        }
-//#                         if(cf.actText!=null){
-//#                           pub.append(" : "+locale.Activity.loadString(cf.actText));                         
+//#                         if(midlet.BombusQD.cf.actText!=null){
+//#                           pub.append(" : "+locale.Activity.loadString(midlet.BombusQD.cf.actText));                         
 //#                         }
 //#                         pub.append(")\n");
 //#                      }
 //#                      
-//#                      int index = Moods.getInstance().getMoodIngex(cf.moodName);
+//#                      int index = Moods.getInstance().getMoodIngex(midlet.BombusQD.cf.moodName);
 //#                      pub.append(SR.MS_USERMOOD + ": " + Moods.getInstance().getMoodLabel(index));
-//#                        if(cf.moodText.length()>1){
-//#                           pub.append("("+cf.moodText+")");                         
+//#                        if(midlet.BombusQD.cf.moodText.length()>1){
+//#                           pub.append("("+midlet.BombusQD.cf.moodText+")");                         
 //#                        }
 //#                      
 //#                      new AlertBox("Send form", SR.MS_UP_MOODS + "\n\n" + pub.toString(), display, this) {
@@ -1999,8 +2009,8 @@ public class Roster
 //#                                try {
 //#                                   Thread.sleep(3000);
 //#                                 } catch( Exception e ) {}
-//#                           publishEvent.publishActivity(cf.actCat,cf.actDescr,cf.actText);
-//#                           publishEvent.publishMood(cf.moodText,cf.moodName);
+//#                           publishEvent.publishActivity(midlet.BombusQD.cf.actCat,midlet.BombusQD.cf.actDescr,midlet.BombusQD.cf.actText);
+//#                           publishEvent.publishMood(midlet.BombusQD.cf.moodText,midlet.BombusQD.cf.moodName);
 //#                        }
 //#                        public void no() { }
 //#                     }; 
@@ -2056,7 +2066,7 @@ public class Roster
                     if (rp>0) from=from.substring(0, rp);
                 }
                 
-                Contact c=getContact(from, (cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat));
+                Contact c=getContact(from, (midlet.BombusQD.cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat));
                 if (c==null) return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
 
                 
@@ -2066,7 +2076,7 @@ public class Roster
                 String oob=message.getOOB();
 
 //#if BREDOGENERATOR         
-//#                 if(cf.bredoGen) { bredoGEN(body); }
+//#                 if(midlet.BombusQD.cf.bredoGen) { bredoGEN(body); }
 //#endif                 
                 
                 if (oob!=null) body+=oob;
@@ -2129,7 +2139,7 @@ public class Roster
 
 //#if BREDOGENERATOR                   
 //#                 String gen="";
-//#                 if(Config.getInstance().bredoGen==true) gen = generateWord();
+//#                 if(midlet.BombusQD.cf.bredoGen==true) gen = generateWord();
 //#endif                     
                 
                 if (groupchat) {
@@ -2165,7 +2175,7 @@ public class Roster
                                 ConferenceGroup invConf=(ConferenceGroup)groups.getGroup(from);
                                 body=XmppError.decodeStanzaError(message).toString(); /*"error: invites are forbidden"*/
                             } else {
-                                String room=from+'/'+sd.account.getNickName();
+                                String room=from+'/'+midlet.BombusQD.sd.account.getNickName();
                                 String password=xmlns.getChildBlockText("password");
                                 
                                 ConferenceGroup invConf=initMuc(room, password);
@@ -2197,7 +2207,7 @@ public class Roster
                     if (start_me>=0) {
                         StringBuffer b=new StringBuffer();
 //#if NICK_COLORS
-                        if(cf.useClassicChat==false) { 
+                        if(midlet.BombusQD.cf.useClassicChat==false) { 
                             b.append("\01");
                             b.append(name);
                             b.append("\02");
@@ -2257,7 +2267,7 @@ public class Roster
                     m.dateGmt=tStamp;
 //#ifndef WMUC
                 if (m.body.indexOf(SR.MS_IS_INVITING_YOU)>-1) m.dateGmt=0;
-                if (groupchat && !cf.dont_loadMC) {
+                if (groupchat && !midlet.BombusQD.cf.dont_loadMC) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
@@ -2298,7 +2308,7 @@ public class Roster
                     m.from=name;
                     mucGrp=null;
                 }else{
-                    if (groupchat && cf.dont_loadMC){
+                    if (groupchat && midlet.BombusQD.cf.dont_loadMC){
                         String msg = message.getFrom();
                         int rp=msg.indexOf('/')+1;
                         m.from=msg.substring(rp);
@@ -2316,7 +2326,7 @@ public class Roster
                 body=null;oob=null;
                 m=null;
 //#if BREDOGENERATOR                                   
-//#                 if(Config.getInstance().bredoGen==true&&groupchat==false){
+//#                 if(midlet.BombusQD.cf.bredoGen==true&&groupchat==false){
 //#                     sendMessage(c,"bredogen", gen , null , null , false);                   
 //#                     messageStore(c, new Msg(mType, from, null, gen));
 //#                 }
@@ -2332,7 +2342,7 @@ public class Roster
                 String Prtext = pr.getText();
                 int ti=pr.getTypeIndex();
                 
-                if(cf.auto_queryPhoto)
+                if(midlet.BombusQD.cf.auto_queryPhoto)
                 {
                     Contact c = getContact(data.getAttribute("from"), true);
                     if(c.hasPhoto==false&&c.img_vcard==null){
@@ -2350,7 +2360,7 @@ public class Roster
 
                 if (xmuc!=null) {
                 
-                  if(cf.dont_loadMC){
+                  if(midlet.BombusQD.cf.dont_loadMC){
                      ///////.....
                   }
                   else
@@ -2370,9 +2380,9 @@ public class Roster
                         if (pr.getAttribute("ver")!=null) c.version=pr.getAttribute("ver"); // for bombusmod only
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#                     if (sd.ClientsIcons)
+//#                     if (midlet.BombusQD.sd.ClientsIcons)
 //#endif
-                        if (cf.showClientIcon) {
+                        if (midlet.BombusQD.cf.showClientIcon) {
                             if (pr.hasEntityCaps()) {
                                 if (pr.getEntityNode()!=null)
                                     getClientIcon(c, pr.getEntityNode());
@@ -2386,7 +2396,7 @@ public class Roster
                         lang=null;
                         c.statusString=pr.getStatus();
                         String chatPres=c.processPresence(xmuc, pr);
-                        if (cf.storeConfPresence ||chatPres.indexOf(SR.MS_WAS_BANNED)>-1 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1) {
+                        if (midlet.BombusQD.cf.storeConfPresence ||chatPres.indexOf(SR.MS_WAS_BANNED)>-1 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1) {
                             int rp=from.indexOf('/');
                             String name=from.substring(rp+1);
                             Msg chatPresence=new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, chatPres );
@@ -2413,9 +2423,9 @@ public class Roster
                          ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, Prtext );                    
                      if (ti==Presence.PRESENCE_AUTH_ASK) {
                         //processing subscriptions
-                        if (cf.autoSubscribe==Config.SUBSCR_DROP)
+                        if (midlet.BombusQD.cf.autoSubscribe==Config.SUBSCR_DROP)
                             return JabberBlockListener.BLOCK_REJECTED;
-                        if (cf.autoSubscribe==Config.SUBSCR_REJECT) {
+                        if (midlet.BombusQD.cf.autoSubscribe==Config.SUBSCR_REJECT) {
 //#if DEBUG 
 //#                             System.out.print(from); 
 //#                             System.out.println(": decline subscription");
@@ -2426,20 +2436,20 @@ public class Roster
                         c=getContact(from, true);
                         messageStore(c, m);
                         m=null;
-                        if (cf.autoSubscribe==Config.SUBSCR_AUTO) {
+                        if (midlet.BombusQD.cf.autoSubscribe==Config.SUBSCR_AUTO) {
                              doSubscribe(c);
                              messageStore(c, new Msg(Msg.MESSAGE_TYPE_AUTH, from, null, SR.MS_AUTH_AUTO));
                          }
                     } else {
                         // processing presences
-                        boolean enNIL= cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
+                        boolean enNIL= midlet.BombusQD.cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
                         c=getContact(from, enNIL);
                         if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
                         if (pr.getAttribute("ver")!=null) c.version=pr.getAttribute("ver");  // for bombusmod only
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#                             if (cf.showClientIcon)
+//#                             if (midlet.BombusQD.cf.showClientIcon)
 //#endif
                                 if (pr.hasEntityCaps()) {
                                     if (pr.getEntityNode()!=null) {
@@ -2477,12 +2487,12 @@ public class Roster
                     }
                     if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT) && notifyReady(-111)) {
 //#if USE_ROTATOR
-                     if(cf.useLowMemory_userotator==false){   
-                        if (cf.notifyBlink)
+                     if(midlet.BombusQD.cf.useLowMemory_userotator==false){   
+                        if (midlet.BombusQD.cf.notifyBlink)
                             c.setNewContact();
                      }
 //#endif
-                        if (cf.notifyPicture) {
+                        if (midlet.BombusQD.cf.notifyPicture) {
                             if (c.getGroupType()!=Groups.TYPE_TRANSP)
                                 c.setIncoming(Contact.INC_APPEARING);
                         }
@@ -2572,7 +2582,7 @@ public class Roster
 
 //#ifdef POPUPS
     boolean showWobbler(Contact c) {
-        if (cf.popUps==false)
+        if (midlet.BombusQD.cf.popUps==false)
             return false;
         if (activeContact==null)
             return true;
@@ -2601,7 +2611,7 @@ public class Roster
 //#             setTicker(c, message.body);
 //#endif
 //#ifndef WSYSTEMGC
-       // if (cf.ghostMotor) {
+       // if (midlet.BombusQD.cf.ghostMotor) {
        //     systemGC();
        // }
 //#endif
@@ -2614,15 +2624,15 @@ public class Roster
             return;    // no signalling/focus on ignore
         
 //#ifdef POPUPS
-        if (cf.popUps)
+        if (midlet.BombusQD.cf.popUps)
             if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
                 setWobbler(2, c, message.from+"\n"+message.body);
 //#endif
 
-	if (cf.popupFromMinimized)
+	if (midlet.BombusQD.cf.popupFromMinimized)
 	    BombusQD.getInstance().hideApp(false);
         
-        if (cf.autoFocus) 
+        if (midlet.BombusQD.cf.autoFocus) 
             focusToContact(c, false);
 
         if (message.highlite) {
@@ -2695,8 +2705,8 @@ public class Roster
                 
             }
         }
-        if(cf.useClassicChat){
-           StringUtils.addClassicChatMsg(message.toString(),Config.getInstance().width_classic,c.scroller);
+        if(midlet.BombusQD.cf.useClassicChat){
+           StringUtils.addClassicChatMsg(message.toString(),midlet.BombusQD.cf.width_classic,c.scroller);
         }              
     }
 
@@ -2722,14 +2732,14 @@ public class Roster
         AlertCustomize ac=AlertCustomize.getInstance();
         
         int volume=ac.soundVol;
-        int vibraLen=cf.vibraLen;
+        int vibraLen=midlet.BombusQD.cf.vibraLen;
         String type, message;
         //boolean flashBackLight=ac.flashBackLight;
 
         switch (event) {
             case 0: //online
             case 1: //chat
-                if (cf.notifySound) {
+                if (midlet.BombusQD.cf.notifySound) {
                     message=ac.soundOnline;
                     type=ac.soundOnlineType;
                 } else {
@@ -2788,7 +2798,7 @@ public class Roster
                 break;
         }
        
-        int profile=cf.profile;
+        int profile=midlet.BombusQD.cf.profile;
 
         EventNotify notify=null;
         
@@ -2816,13 +2826,13 @@ public class Roster
 
     public void beginConversation() { //todo: verify xmpp version
         if (theStream.isXmppV1())
-            new SASLAuth(sd.account, this, theStream)
+            new SASLAuth(midlet.BombusQD.sd.account, this, theStream)
 //#if SASL_XGOOGLETOKEN
 //#              .setToken(token)
 //#endif
              ;
 //#if NON_SASL_AUTH
-//#         else new NonSASLAuth(sd.account, this, theStream);
+//#         else new NonSASLAuth(midlet.BombusQD.sd.account, this, theStream);
 //#endif
     }
     
@@ -2860,14 +2870,15 @@ public class Roster
             error.append(e.getMessage());
 
         if (e instanceof SecurityException) { errorLog(error.toString()); return; }
-        if (currentReconnect>=cf.reconnectCount) { errorLog(error.toString()); return; }
+        if (currentReconnect>=midlet.BombusQD.cf.reconnectCount) { errorLog(error.toString()); return; }
         
         currentReconnect++;
         
-        String topBar="("+currentReconnect+"/"+cf.reconnectCount+") Reconnecting";
+        String topBar="("+currentReconnect+"/"+midlet.BombusQD.cf.reconnectCount+") Reconnecting";
         errorLog(topBar+"\n"+error.toString());
 
-        reconnectWindow.getInstance().startReconnect();
+        //reconnectWindow.getInstance().startReconnect();
+        new Reconnect(topBar, error.toString(), display);
      }
     
      public void doReconnect() {
@@ -2887,11 +2898,11 @@ public class Roster
        super.eventOk();
         Object e=getFocusedObject();
         if (e instanceof Contact) {
-              if(cf.useClassicChat){
+              if(midlet.BombusQD.cf.useClassicChat){
                 new SimpleItemChat(display,this,(Contact)e);
               } else{
-                if(((Contact)e).cList!=null){
-                  display.setCurrent( ((Contact)e).cList );   
+                if(((Contact)e).cList!=null && midlet.BombusQD.cf.module_cashe && ((Contact)e).msgs.size()>3){
+                  display.setCurrent( ((Contact)e).cList );  
                 }else{
                   new ContactMessageList((Contact)e,display);  
                 }
@@ -2914,7 +2925,10 @@ public class Roster
     private Displayable createMsgList(){
         Object e=getFocusedObject();
         if (e instanceof Contact) {
-	     return ((Contact)e).cList!=null? ((Contact)e).cList : new ContactMessageList((Contact)e,display);
+	     return ( ((Contact)e).cList!=null && midlet.BombusQD.cf.module_cashe && ((Contact)e).msgs.size()>3 )? 
+                 ((Contact)e).cList 
+                     : 
+                 new ContactMessageList((Contact)e,display);
         }
         return null;
     }
@@ -2925,7 +2939,7 @@ public class Roster
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
 //#ifdef RUNNING_MESSAGE
-//#                if(cf.useClassicChat){
+//#                if(midlet.BombusQD.cf.useClassicChat){
 //#                  new SimpleItemChat(display,this,c);
 //#                }else{
 //#                  new MessageEdit(display, pview, c, c.msgSuspended);
@@ -2987,7 +3001,7 @@ public class Roster
                 return;
 //#endif
             case KEY_NUM1:
-                if (cf.collapsedGroups) { //collapse all groups
+                if (midlet.BombusQD.cf.collapsedGroups) { //collapse all groups
                     groups.collapseGroups(true);
                     reEnumRoster();
                 }
@@ -3012,9 +3026,9 @@ public class Roster
 //#if DEBUG
 //#             System.out.println("Flip closed");
 //#endif
-//#                 if (cf.autoAwayType==Config.AWAY_LOCK) 
+//#                 if (midlet.BombusQD.cf.autoAwayType==Config.AWAY_LOCK) 
 //#                     if (!autoAway) 
-//#                         autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#                         autostatus.setTimeEvent(midlet.BombusQD.cf.autoAwayDelay* 60*1000);
 //#                 break;
 //#endif
                 
@@ -3054,7 +3068,9 @@ public class Roster
                 }
                 break;
                 
-            case KEY_NUM3: new ActiveContacts(display, this, null);   
+            case KEY_NUM3: {
+                new ActiveContacts(display, this, null);
+            }   
                 break;
             case KEY_NUM9:
                 if (getItemCount()==0)
@@ -3066,7 +3082,7 @@ public class Roster
                 }
                 break;
             case KEY_STAR:
-                if (cf.ghostMotor) {
+                if (midlet.BombusQD.cf.ghostMotor) {
                     // backlight management
                     blState=(blState==1)? Integer.MAX_VALUE : 1;
                     display.flashBacklight(blState);
@@ -3083,12 +3099,12 @@ public class Roster
         if (kHold==keyCode) return;
         kHold=keyCode;
         
-        if (keyCode==cf.keyLock) {
+        if (keyCode==midlet.BombusQD.cf.keyLock) {
 //#ifdef AUTOSTATUS
-//#             if (cf.autoAwayType==Config.AWAY_LOCK) {
+//#             if (midlet.BombusQD.cf.autoAwayType==Config.AWAY_LOCK) {
 //#                 if (!autoAway) {
 //#                     autoAway=true;
-//#                     if (!cf.setAutoStatusMessage) {
+//#                     if (!midlet.BombusQD.cf.setAutoStatusMessage) {
 //#                         sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
 //#                     } else {
 //#                         sendPresence(Presence.PRESENCE_AWAY, null);
@@ -3096,19 +3112,19 @@ public class Roster
 //#                 }
 //#             }
 //#endif
-            new SplashScreen(display, getMainBarItem(), cf.keyLock);
+            new SplashScreen(display, getMainBarItem(), midlet.BombusQD.cf.keyLock);
             return;
-        } else if (keyCode==cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
+        } else if (keyCode==midlet.BombusQD.cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles
-            int profile=cf.profile;
-            cf.profile=(profile==AlertProfile.VIBRA)?cf.lastProfile : AlertProfile.VIBRA;
-            cf.lastProfile=profile;
+            int profile=midlet.BombusQD.cf.profile;
+            midlet.BombusQD.cf.profile=(profile==AlertProfile.VIBRA)?midlet.BombusQD.cf.lastProfile : AlertProfile.VIBRA;
+            midlet.BombusQD.cf.lastProfile=profile;
             
             updateMainBar();
             redraw();
             return;
         } else if (keyCode==KEY_NUM0) {
-            cf.showOfflineContacts=!cf.showOfflineContacts;
+            midlet.BombusQD.cf.showOfflineContacts=!midlet.BombusQD.cf.showOfflineContacts;
             reEnumRoster();
             return;
         }
@@ -3116,19 +3132,21 @@ public class Roster
         else if (keyCode==KEY_NUM1 && isLoggedIn()) new Bookmarks(display, this, null);
 //#endif
        	//else if (keyCode==KEY_NUM3) new ActiveContacts(display, this, null);
-       	else if (keyCode==KEY_NUM4) new ConfigForm(display, this);
+       	else if (keyCode==KEY_NUM4) {
+//new ConfigForm(display, this);
+        }
         else if (keyCode==KEY_NUM6) {
-            cf.fullscreen=!cf.fullscreen;
-            cf.saveToStorage();
-            VirtualList.fullscreen=cf.fullscreen;
-            StaticData.getInstance().roster.setFullScreenMode(cf.fullscreen);
+            midlet.BombusQD.cf.fullscreen=!midlet.BombusQD.cf.fullscreen;
+            midlet.BombusQD.cf.saveToStorage();
+            VirtualList.fullscreen=midlet.BombusQD.cf.fullscreen;
+            midlet.BombusQD.sd.roster.setFullScreenMode(midlet.BombusQD.cf.fullscreen);
         }
 //#ifndef GRAPHICS_MENU                
         else if (keyCode==KEY_NUM7)
             new RosterToolsMenu(display, this);
 //#endif        
         else if (keyCode==KEY_NUM9) {
-            if (cf.allowMinimize)
+            if (midlet.BombusQD.cf.allowMinimize)
                 BombusQD.getInstance().hideApp(true);
             else if (phoneManufacturer==Config.SIEMENS2)//SIEMENS: MYMENU call. Possible Main Menu for capable phones
                  try {
@@ -3145,9 +3163,9 @@ public class Roster
 //#     private void userActivity() {
 //#         if (autostatus==null) return;
 //#         
-//#         if (cf.autoAwayType==Config.AWAY_IDLE) {
+//#         if (midlet.BombusQD.cf.autoAwayType==Config.AWAY_IDLE) {
 //#             if (!autoAway) {
-//#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#                 autostatus.setTimeEvent(midlet.BombusQD.cf.autoAwayDelay* 60*1000);
 //#                 return;
 //#             }
 //#         } else {
@@ -3160,10 +3178,10 @@ public class Roster
 //#     public void messageActivity() {
 //#         if (autostatus==null) return;
 //#         
-//#         if (cf.autoAwayType==Config.AWAY_MESSAGE) {
+//#         if (midlet.BombusQD.cf.autoAwayType==Config.AWAY_MESSAGE) {
 //#              //System.out.println("messageActivity "+myStatus.getImageIndex());
 //#              if (myStatus<2)
-//#                 autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#                 autostatus.setTimeEvent(midlet.BombusQD.cf.autoAwayDelay* 60*1000);
 //#              else if (!autoAway) 
 //#                 autostatus.setTimeEvent(0);
 //#         }
@@ -3252,7 +3270,7 @@ public class Roster
                 mess.append((cntact.j2j!=null)?"\nJ2J: "+cntact.j2j:"");
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
-//#                 if (cf.showClientIcon)
+//#                 if (midlet.BombusQD.cf.showClientIcon)
 //#endif
                     if (cntact.client>-1)
                         mess.append("\nUse: "+cntact.clientName);
@@ -3289,7 +3307,7 @@ public class Roster
         }
 //#ifdef STATS
 //#ifdef PLUGINS
-//#         if (sd.Stats)
+//#         if (midlet.BombusQD.sd.Stats)
 //#endif
 //#             Stats.getInstance().saveToStorage(false);
 //#endif
@@ -3297,7 +3315,7 @@ public class Roster
 
     public void quit() {
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType!=Config.AWAY_OFF) {
+//#         if (midlet.BombusQD.cf.autoAwayType!=Config.AWAY_OFF) {
 //#             try {
 //#                 autostatus.destroyTask();
 //#             } catch (Exception ex) {}
@@ -3310,7 +3328,7 @@ public class Roster
     }
 
     public void cmdQuit() { 
-        if (cf.queryExit) {
+        if (midlet.BombusQD.cf.queryExit) {
             new AlertBox(SR.MS_QUIT_ASK, SR.MS_SURE_QUIT, display, null) {
                 public void yes() {quit(); }
                 public void no() { }
@@ -3368,17 +3386,17 @@ public class Roster
         super.showNotify(); 
         countNewMsgs(); 
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE)
+//#         if (midlet.BombusQD.cf.autoAwayType==Config.AWAY_IDLE)
 //#             if (!autostatus.isAwayTimerSet())
 //#                 if (!autoAway) 
-//#                     autostatus.setTimeEvent(cf.autoAwayDelay* 60*1000);
+//#                     autostatus.setTimeEvent(midlet.BombusQD.cf.autoAwayDelay* 60*1000);
 //#endif
     }
     
     protected void hideNotify() {
         super.hideNotify();
 //#ifdef AUTOSTATUS
-//#         if (cf.autoAwayType==Config.AWAY_IDLE) 
+//#         if (midlet.BombusQD.cf.autoAwayType==Config.AWAY_IDLE) 
 //#             if (kHold==0) 
 //#                 autostatus.setTimeEvent(0);
 //#endif
@@ -3427,7 +3445,7 @@ public class Roster
             if (nowContact>=size) nowContact=0;
             if (currentContact==nowContact) return;
             Contact c=(Contact)activeContacts.elementAt(nowContact);
-            if(c.cList!=null){
+            if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 ){
               display.setCurrent( c.cList );   
             }else{
               new ContactMessageList(c,display);  
@@ -3484,7 +3502,7 @@ public class Roster
 //#             oldStatus=myStatus;
 //#             if (myStatus==0 || myStatus==1) {
 //#                 autoAway=true;
-//#                 if (!cf.setAutoStatusMessage) {
+//#                 if (!midlet.BombusQD.cf.setAutoStatusMessage) {
 //#                     sendPresence(Presence.PRESENCE_AWAY, SR.MS_AUTO_AWAY);
 //#                 } else {
 //#                     sendPresence(Presence.PRESENCE_AWAY, null);
@@ -3496,7 +3514,7 @@ public class Roster
 //#     public void setAutoXa() {
 //#         if (autoAway && !autoXa) {
 //#             autoXa=true;
-//#             if (!cf.setAutoStatusMessage) {
+//#             if (!midlet.BombusQD.cf.setAutoStatusMessage) {
 //#                 sendPresence(Presence.PRESENCE_XA, SR.MS_AUTO_XA);
 //#             } else {
 //#                 sendPresence(Presence.PRESENCE_XA, null);
@@ -3515,7 +3533,7 @@ public class Roster
 //#         }
 //#         if (status!=Presence.PRESENCE_ONLINE && myStatus==Presence.PRESENCE_ONLINE && !autoAway) {
 //#             autoAway=true;
-//#             if (!cf.setAutoStatusMessage) {
+//#             if (!midlet.BombusQD.cf.setAutoStatusMessage) {
 //#                 sendPresence(Presence.PRESENCE_AWAY, "Auto Status on KeyLock since %t");
 //#             } else {
 //#                 sendPresence(Presence.PRESENCE_AWAY, null);
@@ -3546,8 +3564,8 @@ public class Roster
 //#         return GMenu.MAIN_MENU_ROSTER;
 //#     }
 //#     
-//#     public String touchLeftCommand(){ return (cf.oldSE)?SR.MS_ITEM_ACTIONS:SR.MS_MENU; }
-//#     public String touchRightCommand(){ return (cf.oldSE)?SR.MS_MENU:SR.MS_ITEM_ACTIONS; }
+//#     public String touchLeftCommand(){ return (midlet.BombusQD.cf.oldSE)?SR.MS_ITEM_ACTIONS:SR.MS_MENU; }
+//#     public String touchRightCommand(){ return (midlet.BombusQD.cf.oldSE)?SR.MS_MENU:SR.MS_ITEM_ACTIONS; }
 //#     
 //#else
       public void showMenu() {
@@ -3557,11 +3575,11 @@ public class Roster
 //#endif     
 
 //#ifdef GRAPHICS_MENU        
-//#     public void touchRightPressed(){ if (cf.oldSE) showGraphicsMenu(); else cmdActions(); }
-//#     public void touchLeftPressed(){ if (cf.oldSE) cmdActions(); else showGraphicsMenu(); }
+//#     public void touchRightPressed(){ if (midlet.BombusQD.cf.oldSE) showGraphicsMenu(); else cmdActions(); }
+//#     public void touchLeftPressed(){ if (midlet.BombusQD.cf.oldSE) cmdActions(); else showGraphicsMenu(); }
 //#else
-    public void touchRightPressed(){ if (cf.oldSE) showMenu(); else cmdActions(); }    
-    public void touchLeftPressed(){ if (cf.oldSE) cmdActions(); else showMenu(); }
+    public void touchRightPressed(){ if (midlet.BombusQD.cf.oldSE) showMenu(); else cmdActions(); }    
+    public void touchLeftPressed(){ if (midlet.BombusQD.cf.oldSE) cmdActions(); else showMenu(); }
    
 //#endif     
 
@@ -3569,7 +3587,7 @@ public class Roster
     
 //#ifdef RUNNING_MESSAGE
 //#     void setTicker(Contact c, String message) {
-//#         if (cf.notifyWhenMessageType) {
+//#         if (midlet.BombusQD.cf.notifyWhenMessageType) {
 //#             if (me!=null)
 //#                 if (me.to==c){
 //#                     me.ticker.setString(message);
@@ -3617,14 +3635,14 @@ public class Roster
                     }                
                     // self-contact group
                     Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
-                    selfContactGroup.visible=(cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 );
+                    selfContactGroup.visible=(midlet.BombusQD.cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 );
                     
                     // hiddens
-                    groups.getGroup(Groups.TYPE_IGNORE).visible= cf.ignore ;
+                    groups.getGroup(Groups.TYPE_IGNORE).visible= midlet.BombusQD.cf.ignore ;
                     
                     // transports
                     Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);
-                    transpGroup.visible= (cf.showTransports || transpGroup.unreadMessages>0);
+                    transpGroup.visible= (midlet.BombusQD.cf.showTransports || transpGroup.unreadMessages>0);
                     
                     // always visible
                     groups.getGroup(Groups.TYPE_VISIBLE).visible=true;

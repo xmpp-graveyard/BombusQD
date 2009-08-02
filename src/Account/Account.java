@@ -64,31 +64,29 @@ public class Account extends IconTextElement{
     private int keepAlivePeriod=200;
     private int keepAliveType=1;
     
-    private static StaticData sd=StaticData.getInstance();
-    
     private boolean dnsResolver=false;
-    //
+    
 
     public Account() {
         super(RosterIcons.getInstance());
     }
     
     public static void loadAccount(boolean launch, int accountIndex,int status){
-	Account a=sd.account=Account.createFromStorage(accountIndex);
-	if (a!=null) {
-            if (sd.roster.isLoggedIn())
-                sd.roster.logoff(null);
-	    sd.roster.resetRoster();
+	Account a=midlet.BombusQD.sd.account=Account.createFromStorage(accountIndex);
+	if (a!=null && midlet.BombusQD.sd.roster!=null) {
+            if (midlet.BombusQD.sd.roster.isLoggedIn())
+                midlet.BombusQD.sd.roster.logoff(null);
+	    midlet.BombusQD.sd.roster.resetRoster();
             if (launch) {
                 int loginstatus=Config.getInstance().loginstatus;
                 if (loginstatus>=Presence.PRESENCE_OFFLINE) {
-                    sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);    
+                    midlet.BombusQD.sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);    
                 } else {
                     if(status==-1){
-                      sd.roster.sendPresence(loginstatus, null);
+                      midlet.BombusQD.sd.roster.sendPresence(loginstatus, null);
                     }else{
                       //System.out.println(status);
-                      sd.roster.sendPresence(status, null);
+                      midlet.BombusQD.sd.roster.sendPresence(status, null);
                     }
                 }
             }

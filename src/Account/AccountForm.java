@@ -167,9 +167,9 @@ public class AccountForm
         }
         
     	emailbox = new TextInput(display,"E-mail:",account.getEmail(),null, TextField.EMAILADDR);
-        if(Config.getInstance().difficulty_level>=1){
+        //if(Config.getInstance().difficulty_level>=1){
           itemsList.addElement(emailbox);
-        }
+        //}
 
         passbox = new TextInput(display, SR.MS_PASSWORD, password,null,TextField.ANY);     
         itemsList.addElement(passbox);
@@ -330,15 +330,15 @@ public class AccountForm
 //#elif HTTPPOLL        
 //# 	proxyHost = new TextInput(display, SR.MS_PROXY_HOST, account.getProxyHostAddr(), null, TextField.URL);
 //#endif
-        if(Config.getInstance().difficulty_level>=1){
+        //if(Config.getInstance().difficulty_level>=1){
           itemsList.addElement(ipbox);
-        }
+        //}
           itemsList.addElement(portbox);
 
-        if(Config.getInstance().difficulty_level>=1){
+        //if(Config.getInstance().difficulty_level>=1){
             itemsList.addElement(keepAlive);
             itemsList.addElement(resourcebox);
-        }
+        //}
 
 //#if HTTPCONNECT
 //# 	itemsList.addElement(proxyHost);

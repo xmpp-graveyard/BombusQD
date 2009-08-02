@@ -81,11 +81,7 @@ public class MessageItem
     }     
     
     public int getColorBGnd() {
-        return Config.getInstance().altern_chat_colors?
-            ((even)?ColorTheme.getColor(ColorTheme.LIST_BGND_EVEN):ColorTheme.getColor(ColorTheme.LIST_BGND))
-            :
-            (ColorTheme.getColor(ColorTheme.LIST_BGND));
-    }
+        return even?ColorTheme.getColor(ColorTheme.LIST_BGND_EVEN):ColorTheme.getColor(ColorTheme.LIST_BGND);    }
     
     public int getColor() { return msg.getColor(); }
     
@@ -106,7 +102,7 @@ public class MessageItem
 
             if (cy <= h && cy+g.getClipHeight()>0 ) {
               ofs=0;
-              if(Config.getInstance().useLowMemory_iconmsgcollapsed==false) { 
+              if(midlet.BombusQD.cf.useLowMemory_iconmsgcollapsed==false) { 
                  if(i==0 && !msg.isPresence() && !msg.MucChat){
                           if (msg.delivered) {
                              RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_DELIVERED_INDEX, 0,0);

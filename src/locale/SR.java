@@ -798,7 +798,7 @@ public class SR {
    public static String GAME_RESUME = loadString("Checkers:resume");
    
    public static String DONT_LOAD_MUCCONTACTS = loadString("Don't load conference contacts");
-      
+   public static String USE_CASHE = loadString("Cashe elements of app");      
   
 
    
@@ -812,7 +812,6 @@ public class SR {
    
    public static String MS_MY_JABBER = loadString("My Jabber>");
    public static String MS_SERVICE = loadString("Service>");
-   public static String MS_DIFFICULTY_LEVEL = loadString("Difficulty level");
    public static String MS_QD_NEWS = loadString("News");
 
    
@@ -823,6 +822,11 @@ public class SR {
    
    public static String MS_Bold = loadString("Bold");
    public static String MS_Italic = loadString("Italic");
+   
+   
+   
+   public static String MS_MODULES_CONFIG = loadString("Modules config");   
+   
    
     private SR() { }
     

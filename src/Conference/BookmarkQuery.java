@@ -46,11 +46,7 @@ public class BookmarkQuery implements JabberBlockListener{
 
     public final static boolean SAVE=true;
     public final static boolean LOAD=false;
-    
-    private StaticData sd = StaticData.getInstance();
-    
-    private Config cf=Config.getInstance();
-    
+
     /** Creates a new instance of BookmarkQurery */
     public BookmarkQuery(boolean saveBookmarks) {
         JabberDataBlock request=new Iq(null, (saveBookmarks)?Iq.TYPE_SET: Iq.TYPE_GET, "getbookmarks");
@@ -58,12 +54,12 @@ public class BookmarkQuery implements JabberBlockListener{
 
         JabberDataBlock storage=query.addChildNs("storage", "storage:bookmarks");
         if (saveBookmarks) {
-          int size=sd.roster.bookmarks.size();        
+          int size=midlet.BombusQD.sd.roster.bookmarks.size();        
             for(int i=0;i<size;i++){    
-                storage.addChild( ((BookmarkItem)sd.roster.bookmarks.elementAt(i)).constructBlock() );              
+                storage.addChild( ((BookmarkItem)midlet.BombusQD.sd.roster.bookmarks.elementAt(i)).constructBlock() );              
             } 
         }
-        sd.roster.theStream.send(request);
+        midlet.BombusQD.sd.roster.theStream.send(request);
         request=null;
         query=null;
         storage=null;
@@ -77,7 +73,7 @@ public class BookmarkQuery implements JabberBlockListener{
             if (data.getAttribute("id").equals("getbookmarks")) {
                 JabberDataBlock storage=data.findNamespace("query", "jabber:iq:private"). findNamespace("storage", "storage:bookmarks");
                 Vector bookmarks=new Vector();
-		boolean autojoin=cf.autoJoinConferences && sd.roster.myStatus!=Presence.PRESENCE_INVISIBLE;
+		boolean autojoin=midlet.BombusQD.cf.autoJoinConferences && midlet.BombusQD.sd.roster.myStatus!=Presence.PRESENCE_INVISIBLE;
 
                 try {
                     int size=storage.getChildBlocks().size();
@@ -85,7 +81,7 @@ public class BookmarkQuery implements JabberBlockListener{
                         BookmarkItem bm=new BookmarkItem((JabberDataBlock)storage.getChildBlocks().elementAt(i));
                         bookmarks.addElement(bm);
                         if (bm.autojoin && autojoin) {
-                            ConferenceForm.join(bm.desc, bm.getJidNick(), bm.password, cf.confMessageCount);
+                            ConferenceForm.join(bm.desc, bm.getJidNick(), bm.password, midlet.BombusQD.cf.confMessageCount);
                         }
                     }
                 } catch (Exception e) { } //no any bookmarks
@@ -93,8 +89,8 @@ public class BookmarkQuery implements JabberBlockListener{
                 if (bookmarks.isEmpty()) 
                     loadDefaults(bookmarks);
 					
-                sd.roster.bookmarks=bookmarks;
-                sd.roster.redraw();
+                midlet.BombusQD.sd.roster.bookmarks=bookmarks;
+                midlet.BombusQD.sd.roster.redraw();
                 
                 return JabberBlockListener.NO_MORE_BLOCKS;
             }
@@ -111,7 +107,7 @@ public class BookmarkQuery implements JabberBlockListener{
             String desc     =(String) defs[1].elementAt(i);
             if (desc==null) desc=jid;
             if (pass==null) pass="";
-            if (nick==null) nick=sd.account.getNickName();
+            if (nick==null) nick=midlet.BombusQD.sd.account.getNickName();
             BookmarkItem bm=new BookmarkItem(desc, jid, nick, pass, false);
             bookmarks.addElement(bm);
         }

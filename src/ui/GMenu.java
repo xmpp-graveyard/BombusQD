@@ -60,9 +60,7 @@ public class GMenu extends Canvas {
    GMenuConfig gm = GMenuConfig.getInstance(); 
    BombusQD bm = BombusQD.getInstance();
    FontClass MFont = FontClass.getInstance();
-   Config cf = Config.getInstance();
 
-   
    
    public final static int MAIN_MENU_ROSTER=1;
    public final static int ACCOUNT_SELECT_MENU=2;
@@ -190,7 +188,6 @@ public class GMenu extends Canvas {
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_MY_JABBER)>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_TOOLS)>-1                   
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SERVICE)>-1
-              || gm.commandslist[gm.itemCursorIndex].indexOf("BenchMark->")>-1
               ){
               drawAllItems(g,gm.menuCommandsIn,gm.commandslistIn,gm.itemCursorIndexIn);
            }
@@ -222,7 +219,6 @@ public class GMenu extends Canvas {
      } 
      else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_REGISTERING)>-1
         ||gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_TOOLS)>-1
-        ||gm.commandslist[gm.itemCursorIndex].indexOf("BenchMark->")>-1
          ){
           GMenuIn(gm.cmdsecondList); eventMenu=true; return;   
      } 
@@ -278,7 +274,7 @@ public class GMenu extends Canvas {
        gm.xcoodr=7;//(g.getClipWidth() - w)/2;
        gm.ycoodr= g.getClipHeight() - hitem - 10;
        //(g.getClipHeight()- mHfh)/2;
-        
+     /*   
        if(eventMenu){
            g.setFont(font);
            int w3 = font.stringWidth(gm.commandslist[gm.itemCursorIndex]) + 8;
@@ -290,6 +286,7 @@ public class GMenu extends Canvas {
            g.setColor(ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_FONT));
            g.drawString( gm.commandslist[gm.itemCursorIndex] , x3 + 4 , gm.ycoodr - fh + 1, g.LEFT|g.TOP);
        }
+      */
 
        g.translate(gm.xcoodr,gm.ycoodr);
        g.setClip(0,0,w+1,mHfh+40);//?
@@ -312,8 +309,8 @@ public class GMenu extends Canvas {
           g.drawRoundRect(0,0 , w, mHfh,10,10);
 
 
-          if(cf.gradient_cursor){ //Tishka17
-            int yc = 1 + (cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh);
+          if(midlet.BombusQD.cf.gradient_cursor){ //Tishka17
+            int yc = 1 + (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh);
             fon=new Gradient(1, yc, w, yc+fh, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
                   ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);
             fon.paint(g);
@@ -321,7 +318,7 @@ public class GMenu extends Canvas {
             //g.drawRect(1, 1 + (cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh - 1);
         }else {
             g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
-            g.fillRoundRect(1, 1 + (cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh, 8, 8);
+            g.fillRoundRect(1, 1 + (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh, 8, 8);
         }  
           
     
@@ -643,6 +640,4 @@ public class GMenu extends Canvas {
          }
        return false;
     }      
-      
-   
 }

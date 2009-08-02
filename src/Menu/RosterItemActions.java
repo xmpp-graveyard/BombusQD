@@ -160,9 +160,8 @@ public class RosterItemActions extends Menu {
              */
 
 	    addItem(SR.MS_VCARD,1, menuIcons.ICON_VCARD);
-	    if(cf.difficulty_level>=1) {
-                addItem(SR.MS_FEATURES,250,menuIcons.ICON_INFO);
-            }
+            addItem(SR.MS_FEATURES,250,menuIcons.ICON_INFO);
+
 //#ifdef POPUPS
             addItem(SR.MS_INFO,86, menuIcons.ICON_INFO);
 //#endif

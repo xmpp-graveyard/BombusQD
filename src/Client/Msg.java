@@ -49,7 +49,8 @@ public class Msg {
     public final static int MESSAGE_TYPE_AUTH=14;
     public final static int MESSAGE_TYPE_SYSTEM=15;
     public final static int MESSAGE_TYPE_EVIL=16;
-    public final static int MESSAGE_TYPE_GAME=17;
+    //public final static int MESSAGE_TYPE_GAME=17;
+    //public final static int MESSAGE_TYPE_JUICK=18;    
     
     public boolean highlite;
     public boolean history;
@@ -88,7 +89,7 @@ public class Msg {
         if (messageType==MESSAGE_TYPE_PRESENCE || messageType==MESSAGE_TYPE_HEADLINE)
             itemCollapsed=true;
         else if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
-            if (body.length()>Config.getInstance().messageLimit)
+            if (body.length()>midlet.BombusQD.cf.messageLimit)
                 itemCollapsed=true;
     }
     
@@ -118,16 +119,16 @@ public class Msg {
             case MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
             case MESSAGE_TYPE_EVIL: return 0xFF0000;
             case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
-            case MESSAGE_TYPE_GAME: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
+            //case MESSAGE_TYPE_GAME: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
         }
         return ColorTheme.getColor(ColorTheme.LIST_INK);
     }
     public String toString() {
-        if(!Config.getInstance().timePresence){
+        if(!midlet.BombusQD.cf.timePresence){
           return body;
         }else{
           StringBuffer time=new StringBuffer();
-          if (messageType==MESSAGE_TYPE_PRESENCE || !Config.getInstance().showBalloons) {
+          if (messageType==MESSAGE_TYPE_PRESENCE || !midlet.BombusQD.cf.showBalloons) {
             time.append("["+getTime()+"] ");
           }
           time.append(body);

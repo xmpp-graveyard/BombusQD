@@ -67,8 +67,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     private int kHold;
     
     private TimerTaskClock tc;
-
-    private Config cf=Config.getInstance();
     
     private static SplashScreen instance;
 
@@ -86,7 +84,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     /** Creates a new instance of SplashScreen */
     public SplashScreen(Display display) {
-        setFullScreenMode(cf.fullscreen);
+        setFullScreenMode(midlet.BombusQD.cf.fullscreen);
         display.setCurrent(this);
     }
 
@@ -107,7 +105,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         
         tc=new TimerTaskClock();
         
-        setFullScreenMode(cf.fullscreen);
+        setFullScreenMode(midlet.BombusQD.cf.fullscreen);
 
         System.gc();
         try { Thread.sleep(50); } catch (InterruptedException ex) { }
@@ -191,7 +189,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
 
     public void run() {
         try {
-            img=BombusQD.splash;
             if (img==null)
                 img=Image.createImage("/images/splash.png");
         } catch (Exception e) {}
@@ -235,21 +232,20 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         img=null;
         tc.stop();
 //#ifdef AUTOSTATUS
-//#         StaticData sd=StaticData.getInstance();
-//#         if (sd.roster.autoAway && cf.autoAwayType==Config.AWAY_LOCK) {
-//#             int newStatus=sd.roster.oldStatus;
+//#         if (midlet.BombusQD.sd.roster.autoAway && midlet.BombusQD.cf.autoAwayType==Config.AWAY_LOCK) {
+//#             int newStatus=midlet.BombusQD.sd.roster.oldStatus;
 //#             ExtendedStatus es=StatusList.getInstance().getStatus(newStatus);
 //#             String ms=es.getMessage();
-//#             sd.roster.autoAway=false;
-//#             sd.roster.autoXa=false;
-//#             sd.roster.sendPresence(newStatus, ms);
+//#             midlet.BombusQD.sd.roster.autoAway=false;
+//#             midlet.BombusQD.sd.roster.autoXa=false;
+//#             midlet.BombusQD.sd.roster.sendPresence(newStatus, ms);
 //#         }
 //#endif
         System.gc();
     }
 
     public void getKeys() {
-        int pm=cf.phoneManufacturer;
+        int pm=midlet.BombusQD.cf.phoneManufacturer;
         if (pm==Config.SIEMENS || pm==Config.SIEMENS2) {
              Config.SOFT_LEFT=-1;
              Config.SOFT_RIGHT=-4;
@@ -272,7 +268,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             return;
         } 
         try {
-            // Set Motorola specific keycodes
+            //Set Motorola specific keycodes
             Class.forName("com.motorola.phonebook.PhoneBookRecord");
             if (getKeyName(-21).toUpperCase().indexOf("SOFT")>=0) {
                 Config.SOFT_LEFT=-21;
@@ -294,11 +290,11 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
             } catch(Exception e) {}
 
             for (int i=-127;i<127;i++) {
-            // run thru all the keys
+            //run thru all the keys
                 try {
-                   if (getKeyName(i).toUpperCase().indexOf("SOFT")>=0) {         // Check for "SOFT" in name description
-                      if (getKeyName(i).indexOf("1")>=0) Config.SOFT_LEFT=i;         // check for the 1st softkey
-                      if (getKeyName(i).indexOf("2")>=0) Config.SOFT_RIGHT=i;         // check for 2nd softkey
+                   if (getKeyName(i).toUpperCase().indexOf("SOFT")>=0) {// Check for "SOFT" in name description
+                      if (getKeyName(i).indexOf("1")>=0) Config.SOFT_LEFT=i;// check for the 1st softkey
+                      if (getKeyName(i).indexOf("2")>=0) Config.SOFT_RIGHT=i;// check for 2nd softkey
                    }
                 } catch(Exception e){ }
             }

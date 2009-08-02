@@ -66,70 +66,54 @@ import io.TranslateSelect;
 //#endif
 import Colors.ColorTheme;
 import ui.controls.form.CheckBox;
-import net.jscience.math.MathFP;
 
 public class ContactMessageList extends MessageList {
     
     Contact contact;
 
-    Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
-    Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.SCREEN, 2);
-    Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,3);
-    Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
-    Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
-    Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
+    private static Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
+    private static Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.SCREEN, 2);
+    private static Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,3);
+    private static Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
+    private static Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
+    private static Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
 //#ifdef ARCHIVE
-    Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
+    private static Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
 //#endif
-    Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
-    Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 8);
-    Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,9);
-    Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);
+    private static Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
+    private static Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 8);
+    private static Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,9);
+    private static Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);
 //#if TEMPLATES
-//#     Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,11);
+//#     private static Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,11);
 //#endif
 //#ifdef FILE_IO
-    Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 12);
+    private static Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 12);
 //#endif
 //#ifdef HISTORY
 //#ifdef HISTORY_READER
-//#     Command cmdReadHistory=new Command("Read history", Command.SCREEN, 13);
+//#     private static Command cmdReadHistory=new Command("Read history", Command.SCREEN, 13);
 //#endif
-//# //        if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
+//# //        if (midlet.BombusQD.cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
 //#ifdef CLIPBOARD    
-//#     Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
+//#     private static Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
 //#endif
 
 //#ifdef CLIPBOARD    
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
-    Command cmdAddSearchQuery = new Command(SR.MS_ADD_SEARCH_QUERY, Command.SCREEN, 400);    
-    Command cmdFind_ = new Command(SR.MS_FIND_TEXT+" ["+Config.getInstance().find_text_str+"]", Command.SCREEN, 401);
+    private static Command cmdAddSearchQuery = new Command(SR.MS_ADD_SEARCH_QUERY, Command.SCREEN, 400);    
+    private static Command cmdFind_ = new Command(SR.MS_FIND_TEXT+" ["+midlet.BombusQD.cf.find_text_str+"]", Command.SCREEN, 401);
     
-    Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN,402);  
-    Command cmdClrPresences=new Command(SR.MS_DELETE_ALL_STATUSES, Command.SCREEN,403); 
+    private static Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN,402);  
+    private static Command cmdClrPresences=new Command(SR.MS_DELETE_ALL_STATUSES, Command.SCREEN,403); 
 //#if BREDOGENERATOR             
-//#     Command cmdAutoGenON=new Command(SR.MS_BREDO_ON,Command.SCREEN,87);    
-//#     Command cmdAutoGenOff=new Command(SR.MS_BREDO_OFF,Command.SCREEN,88);    
+//#     private static Command cmdAutoGenON=new Command(SR.MS_BREDO_ON,Command.SCREEN,87);    
+//#     private static Command cmdAutoGenOff=new Command(SR.MS_BREDO_OFF,Command.SCREEN,88);    
 //#endif       
-    private Command cmdMyService=new Command(SR.MS_SERVICE, Command.SCREEN, 31);
+    private static Command cmdMyService=new Command(SR.MS_SERVICE, Command.SCREEN, 31);
 
-   
-    private Command cmdHardMode=new Command("BenchMark->", Command.SCREEN, 100); 
-    
-    private Command cmdHardMode1=new Command("Easy Mode", Command.SCREEN, 101);
-    private Command cmdHardMode2=new Command("Normal Mode", Command.SCREEN, 102);
-    private Command cmdHardMode3=new Command("Hard Mode", Command.SCREEN, 103);
-    private Command cmdHardMode4=new Command("Very Hard Mode", Command.SCREEN, 104);
-    private Command cmdHardMode5=new Command("Maniac Mode", Command.SCREEN, 105);    
-    private Command cmdHardMode6=new Command("Ooo my God..", Command.SCREEN, 106);
-
-    
-    StaticData sd=StaticData.getInstance();
-    
-    private Config cf;
-    
     private boolean composing=true;
 
     private boolean startSelection;
@@ -140,12 +124,10 @@ public class ContactMessageList extends MessageList {
     public ContactMessageList(Contact contact, Display display) {
         super(display);
         this.contact=contact;
-        sd.roster.activeContact=contact;
-
-        cf=Config.getInstance();
+        midlet.BombusQD.sd.roster.activeContact=contact;
         
-        MainBar mainbar=new MainBar(contact);
-        setMainBarItem(mainbar);
+        //MainBar mainbar=new MainBar(contact);
+        setMainBarItem(new MainBar(contact));
 
         cursor=0;
         commandState();
@@ -154,7 +136,7 @@ public class ContactMessageList extends MessageList {
         contact.fileQuery=false;
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
-//#         if (cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
+//#         if (midlet.BombusQD.cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
 //#endif
         setCommandListener(this);
@@ -164,7 +146,7 @@ public class ContactMessageList extends MessageList {
         }
        else{
         if (contact.msgs.size()>0){
-          if(Config.getInstance().savePos) {
+          if(midlet.BombusQD.cf.savePos) {
             moveCursorTo(contact.getCursor(), true); 
           }
           else { 
@@ -173,7 +155,7 @@ public class ContactMessageList extends MessageList {
             contact.resetNewMsgCnt();
         }
        }
-      if(contact.cList==null){
+      if(contact.cList==null && midlet.BombusQD.cf.module_cashe && contact.msgs.size()>3){
           contact.cList=this;
       }        
     }
@@ -222,7 +204,7 @@ public class ContactMessageList extends MessageList {
 //#endif
             addCommand(cmdQuote); cmdQuote.setImg(0x63);
             addInCommand(3,cmdPurge); cmdPurge.setImg(0x33);
-         if(Config.getInstance().find_text_str.length()>0){
+         if(midlet.BombusQD.cf.find_text_str.length()>0){
             removeInCommand(3,cmdAddSearchQuery); 
             addInCommand(3,cmdFind_); cmdFind_.setImg(0x82);
          }   
@@ -247,7 +229,7 @@ public class ContactMessageList extends MessageList {
         }
             
 //#ifdef CLIPBOARD
-//#             if (cf.useClipBoard) {
+//#             if (midlet.BombusQD.cf.useClipBoard) {
 //#                 addCommand(cmdCopy); cmdCopy.setImg(0x13);
 //#                 if (!clipboard.isEmpty()) addCommand(cmdCopyPlus); cmdCopyPlus.setImg(0x23);
 //#             }
@@ -266,18 +248,18 @@ public class ContactMessageList extends MessageList {
             addCommand(cmdActions); cmdActions.setImg(0x16);
     
 //#ifdef CLIPBOARD
-//#         if (cf.useClipBoard && !clipboard.isEmpty()) {
+//#         if (midlet.BombusQD.cf.useClipBoard && !clipboard.isEmpty()) {
 //#             addInCommand(3,cmdSendBuffer); cmdSendBuffer.setImg(0x84);
 //#         }
 //#endif
 //#ifdef HISTORY
-//#         if (cf.saveHistory)
-//#             if (cf.msgPath!=null)
-//#                 if (!cf.msgPath.equals(""))
+//#         if (midlet.BombusQD.cf.saveHistory)
+//#             if (midlet.BombusQD.cf.msgPath!=null)
+//#                 if (!midlet.BombusQD.cf.msgPath.equals(""))
 //#                     if (contact.msgs.size()>0)
 //#                         addInCommand(3,cmdSaveChat);  cmdSaveChat.setImg(0x44);
 //#ifdef HISTORY_READER
-//#         if (cf.saveHistory && cf.lastMessages)
+//#         if (midlet.BombusQD.cf.saveHistory && midlet.BombusQD.cf.lastMessages)
 //#             addInCommand(3,cmdReadHistory); cmdReadHistory.setImg(0x05);
 //#endif
 //#endif
@@ -287,26 +269,17 @@ public class ContactMessageList extends MessageList {
 //#endif            
         
 //#if BREDOGENERATOR                
-//#         if(Config.getInstance().bredoGen==true){
+//#         if(midlet.BombusQD.cf.bredoGen==true){
 //#            addCommand(cmdAutoGenOff);
 //#            removeCommand(cmdAutoGenON);
 //#         }else{
 //#            addCommand(cmdAutoGenON);
 //#         }
 //#endif     
-  
-         addCommand(cmdHardMode);    cmdHardMode.setImg(0x11);
-              addInCommand(2,cmdHardMode1); cmdHardMode1.setImg(0x11);
-              addInCommand(2,cmdHardMode2); cmdHardMode2.setImg(0x11);
-              addInCommand(2,cmdHardMode3); cmdHardMode3.setImg(0x11);
-              addInCommand(2,cmdHardMode4); cmdHardMode4.setImg(0x11);
-              addInCommand(2,cmdHardMode5); cmdHardMode5.setImg(0x11);
-              addInCommand(2,cmdHardMode6); cmdHardMode6.setImg(0x11);    
-       
     }
     
     public void showNotify(){
-        sd.roster.activeContact=contact;
+        midlet.BombusQD.sd.roster.activeContact=contact;
 //#ifdef LOGROTATE
 //#         getRedraw(true);
 //#endif
@@ -351,7 +324,7 @@ public class ContactMessageList extends MessageList {
 	if (msgIndex>=getItemCount()) return;
         if (msgIndex<contact.lastUnread) return;
 
-        sd.roster.countNewMsgs();
+        midlet.BombusQD.sd.roster.countNewMsgs();
 //#ifdef LOGROTATE
 //#         getRedraw(contact.redraw);
 //#endif
@@ -379,145 +352,10 @@ public class ContactMessageList extends MessageList {
         markRead(index); 
     }
     
-  
-    
-    public int getMainColor(int index) {
-        switch (index) {
-            case 0: return ColorTheme.getColor(ColorTheme.CONTACT_CHAT);
-            case 1: return ColorTheme.getColor(ColorTheme.CONTACT_AWAY);
-            case 2: return ColorTheme.getColor(ColorTheme.CONTACT_XA);
-            case 3: return ColorTheme.getColor(ColorTheme.CONTACT_DND);
-            case 4: return ColorTheme.getColor(ColorTheme.CONTACT_DEFAULT);
-        }
-        return ColorTheme.getColor(ColorTheme.CONTACT_DEFAULT);
-    }
-    
-///////////////////////////////////////////////////////////
 
-    void run(String modeName,int mode){
-       clearReadedMessageList(); 
-             Vector statistics = new Vector();
-             StringBuffer sb = new StringBuffer();
-                long undo_free = Runtime.getRuntime().freeMemory()>>10;
-                long undo_total = Runtime.getRuntime().totalMemory()>>10; 
-                long run1 = 0;
-                long run2 = 0;
-              long s1 = System.currentTimeMillis();   
-                runBenchmark(mode,true);
-                runBenchmark(mode,false);
-              long s2 = System.currentTimeMillis();
-              long results = s2-s1;
-              
-                int objects = mode*2;
-                
-                long after_free = Runtime.getRuntime().freeMemory()>>10;
-                long after_total = Runtime.getRuntime().totalMemory()>>10;              
-                String mem_using = "MemoryUsing" +":%"+
-                     "Undo: " + Long.toString(undo_free) + "/" + Long.toString(undo_total) + " kb" + "%" +
-                     "After: "+ Long.toString(after_free)+ "/" + Long.toString(after_total) +" kb";             
-
-                     statistics.addElement(new CheckBox("Benchmark Type" +":%"+modeName, true, true));
-                       sb.append("Application: BombusQD "+Info.Version.getVersionLang());
-                       sb.append("\nQD Benchmark v0.5\nType: " +modeName);
-                       sb.append("\nRunned on: " + Config.getOs());
-                       sb.append("\nMemUsing(Free/Total):" +
-                         "\n[Undo: " + Long.toString(undo_free) + "/" + Long.toString(undo_total) + " kb]" +
-                         "\n[After: "+ Long.toString(after_free)+ "/" + Long.toString(after_total) +" kb]"); 
-                     
-                     statistics.addElement(new CheckBox("Created Objects Time: "+Integer.toString(objects)+"%" + 
-                     "Summary: " + MathFP.toString( MathFP.div(MathFP.toFP(results),MathFP.toFP(1000)),3) + " sec" , true, true));
-                      
-                       sb.append("\nCreated "+Integer.toString(objects)+" objects\nSummary Time: " + 
-                       MathFP.toString( MathFP.div(MathFP.toFP(results),MathFP.toFP(1000)) ,3)+ " sec");
-                
-                long secs = MathFP.div(MathFP.toFP(results),MathFP.toFP(1000));
-                long cc = MathFP.div(MathFP.toFP(MathFP.toString(secs)),MathFP.toFP(objects));
-                
-                     statistics.addElement(new CheckBox("Creating Speed for 1 object:%" + 
-                     MathFP.toString(cc)  + " sec", true, true));
-                        sb.append("\nCrSp01: " + MathFP.toString(cc,6)  + " sec");
-                     
-
-                     statistics.addElement(new CheckBox(mem_using, true, true));
-
-             sd.roster.sendMessage(contact, null , sb.toString() , null , null ,true);
-             new CommandForm(display,this,5,"Congratulations!",sb.toString(),statistics);
-  }
-    
-    
-    void runBenchmark(int count,boolean isMessage){
-        //long s1 = System.currentTimeMillis();
-            Random rand_isnow = new Random();
-            Random rand = new Random();
-            Random nick = new Random();
-            String[] nickname = { 
-                       "nikkey","baks","trand","journey","girls",
-                       "jimmo","silvestro","phoneIsBack","masyaN","jailfun","monkey"
-            };            
-            String[] qd_is_now = { 
-                       "chat","away","xa","dnd","default"
-            };            
-            String[] qd_offline_status = { 
-                       "simple message presence text","hello world","yayayayayaya",
-                       "this very very very very very very very very long message presence text from HZ!!",
-                       "achtung detected!"
-            };
-            int i=0;
-            try{
-              for (i=0; i<count; i++) {
-                 int k = Math.abs(rand.nextInt()) % 5;
-                 int l = Math.abs(rand_isnow.nextInt()) % 5;
-                 int n = Math.abs(nick.nextInt()) % 11;
-                 if(isMessage){
-                   Msg msg=new Msg(Msg.MESSAGE_TYPE_IN,nickname[n],null,qd_offline_status[k]);
-                   contact.addMessage(msg);                   
-                 }else{
-                   Msg msg=new Msg(Msg.MESSAGE_TYPE_PRESENCE,"random",null,nickname[n]+" is now "+qd_is_now[l]+
-                      " ("+qd_offline_status[k]+")");
-                   msg.color=getMainColor(k);
-                   contact.addMessage(msg);
-                  }
-                 moveCursorEnd();//try { Thread.sleep(100); } catch (Exception e) {}; //25*300=7.5 sec
-                }
-             } catch(OutOfMemoryError eom){
-             }            
-         //  long s2 = System.currentTimeMillis();
-         //return s2-s1;
-    }
-///////////////////////////////////////////////////////////    
-    
-    
-
-    
     public void commandAction(Command c, Displayable d){
         super.commandAction(c,d);
 	//cf.clearedGrMenu=true;	
-        /** login-insensitive commands */
-   
-        if (c==cmdHardMode1) { 
-           run("Easy Mode",50);
-        }
-        
-        if (c==cmdHardMode2) { 
-           run("Normal Mode",100);
-        }
-        
-        if (c==cmdHardMode3) { 
-           run("Hard Mode",200);
-        }  
-        
-        if (c==cmdHardMode4) { 
-           run("Very Hard Mode",400);
-        }         
-        
-        if (c==cmdHardMode5) { 
-           run("Maniac Mode",800);
-        }    
-        
-        if (c==cmdHardMode6) { 
-           run("Ooo my God..",1600);
-        }   
-     
 //#ifdef ARCHIVE
         if (c==cmdArch) {
             try {
@@ -594,7 +432,7 @@ public class ContactMessageList extends MessageList {
 //#         if (c==cmdSaveChat) saveMessages();
 //#endif
         /** login-critical section */
-        if (!sd.roster.isLoggedIn()) return;
+        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
 
         if (c==cmdMessage) { 
             contact.msgSuspended=null;
@@ -611,19 +449,19 @@ public class ContactMessageList extends MessageList {
         } 
 //#if BREDOGENERATOR                 
 //#         if (c==cmdAutoGenON) {
-//#            Config.getInstance().bredoGen=true;
-//#            display.setCurrent(StaticData.getInstance().roster);
+//#            midlet.BombusQD.cf.bredoGen=true;
+//#            display.setCurrent(midlet.BombusQD.sd.roster);
 //#            VirtualList.setWobble(3, null, SR.MS_BREDO_ON);
 //#         }
 //#         if (c==cmdAutoGenOff) {
-//#            Config.getInstance().bredoGen=false;
-//#            display.setCurrent(StaticData.getInstance().roster);
+//#            midlet.BombusQD.cf.bredoGen=false;
+//#            display.setCurrent(midlet.BombusQD.sd.roster);
 //#            VirtualList.setWobble(3, null, SR.MS_BREDO_OFF);
 //#         }  
 //#endif         
         
         if(c==cmdFind_) {
-            find_str(Config.getInstance().find_text_str);
+            find_str(midlet.BombusQD.cf.find_text_str);
         }          
         if (c==cmdActions) {
 //#ifndef WMUC
@@ -634,15 +472,17 @@ public class ContactMessageList extends MessageList {
 //#endif
                 new RosterItemActions(display, this, contact, -1);
         }
-	if (c==cmdActive) new ActiveContacts(display, this, contact);
+	if (c==cmdActive) {
+            new ActiveContacts(display, this, null); 
+        }
         
-        if (c==cmdSubscribe) sd.roster.doSubscribe(contact);
+        if (c==cmdSubscribe) midlet.BombusQD.sd.roster.doSubscribe(contact);
 		
-        if (c==cmdUnsubscribed) sd.roster.sendPresence(contact.bareJid, "unsubscribed", null, false);
+        if (c==cmdUnsubscribed) midlet.BombusQD.sd.roster.sendPresence(contact.bareJid, "unsubscribed", null, false);
 
 //#ifdef CLIPBOARD
 //#         if (c==cmdSendBuffer) {
-//#             String from=sd.account.toString();
+//#             String from=midlet.BombusQD.sd.account.toString();
 //#             String body=clipboard.getClipBoard();
 //# 
 //#             String id=String.valueOf((int) System.currentTimeMillis());
@@ -652,7 +492,7 @@ public class ContactMessageList extends MessageList {
 //#             
 //#             try {
 //#                 if (body!=null && body.length()>0) {
-//#                     sd.roster.sendMessage(contact, id, body, null, null,false);
+//#                     midlet.BombusQD.sd.roster.sendMessage(contact, id, body, null, null,false);
 //#                     if (contact.origin<Contact.ORIGIN_GROUPCHAT) contact.addMessage(msg);
 //#                 }
 //#             } catch (Exception e) {
@@ -683,9 +523,9 @@ public class ContactMessageList extends MessageList {
     }
     
     public void keyGreen(){
-        if (!sd.roster.isLoggedIn()) return;
+        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
 //#ifdef RUNNING_MESSAGE
-//#         sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended);
+//#         midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended);
 //#else
     new MessageEdit(display, this, contact, contact.msgSuspended);
 //#endif
@@ -707,11 +547,10 @@ public class ContactMessageList extends MessageList {
     Vector vectorfound = new Vector();
     int found_count=0;
     
-    
-    
+
     private void clear_results(){
                 moveCursorEnd();
-                String query = Config.getInstance().find_text_str;
+                String query = midlet.BombusQD.cf.find_text_str;
                 for (int i=0; i<(cursor+1); i++)
                 {
                   if((getMessage(i).toString().indexOf(query)>-1))  
@@ -721,8 +560,8 @@ public class ContactMessageList extends MessageList {
                     m.highlite=false;
                   }
                 }
-                display.setCurrent(StaticData.getInstance().roster);
-                Config.getInstance().find_text=false;                
+                display.setCurrent(midlet.BombusQD.sd.roster);
+                midlet.BombusQD.cf.find_text=false;                
                 moveCursorHome();
     }
     
@@ -743,12 +582,12 @@ public class ContactMessageList extends MessageList {
                 if(vectorfound.size()>0) { 
                     int cursor_index = Integer.parseInt(vectorfound.elementAt(found_count).toString());
                     moveCursorTo(cursor_index, true);
-                    Config.getInstance().find_text=true;
+                    midlet.BombusQD.cf.find_text=true;
                     VirtualList.setWobble(1, null, "Results of Search:\nword: "+query+"\ncounts: "+vectorfound.size());
                     setMainBarItem(new MainBar("    Search: "+Integer.toString(1)+"/"+Integer.toString(vectorfound.size()) + " ..6>"));  
                 }else{
-                    display.setCurrent(StaticData.getInstance().roster);
-                    Config.getInstance().find_text=false;
+                    display.setCurrent(midlet.BombusQD.sd.roster);
+                    midlet.BombusQD.cf.find_text=false;
                     VirtualList.setWobble(3, null, SR.MS_NOT_FOUND);
                     moveCursorHome();
                 }
@@ -758,12 +597,12 @@ public class ContactMessageList extends MessageList {
     
     
     public void keyPressed(int keyCode) {
-     if(Config.getInstance().savePos) { 
+     if(midlet.BombusQD.cf.savePos) { 
        if(keyCode==Config.KEY_BACK || keyCode==Config.SOFT_RIGHT || keyCode==KEY_NUM3){
          contact.setCursor(cursor);
        }
      }
-     if(Config.getInstance().find_text==false){        
+     if(midlet.BombusQD.cf.find_text==false){        
         if (keyCode==KEY_POUND) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
@@ -779,7 +618,7 @@ public class ContactMessageList extends MessageList {
    }
 
     public void userKeyPressed(int keyCode) {
-     if(Config.getInstance().find_text){
+     if(midlet.BombusQD.cf.find_text){
           String whatPress = "<[4]..[6]>";  
           switch (keyCode) {
               case KEY_NUM4: {
@@ -818,26 +657,26 @@ public class ContactMessageList extends MessageList {
        {
           switch (keyCode) {
             case KEY_NUM4:
-                if (cf.useTabs)
-                    sd.roster.searchActiveContact(-1);
+                if (midlet.BombusQD.cf.useTabs)
+                    midlet.BombusQD.sd.roster.searchActiveContact(-1);
                 else
                     super.pageLeft();
                 contact.setCursor(cursor);
                 break;
             case KEY_NUM0:
-                int size = StaticData.getInstance().roster.hContacts.size();
-                if(Config.getInstance().savePos) {
+                int size = midlet.BombusQD.sd.roster.hContacts.size();
+                if(midlet.BombusQD.cf.savePos) {
                   contact.setCursor(cursor);
                 }
                 Contact c;
-                synchronized (StaticData.getInstance().roster.hContacts) {
+                synchronized (midlet.BombusQD.sd.roster.hContacts) {
                 for(int i=0;i<size;i++){
-                        c = (Contact)StaticData.getInstance().roster.hContacts.elementAt(i);
+                        c = (Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
                         if (c.getNewMsgsCount()>0){
-                           if(c.cList!=null){
+                           if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3){
                               display.setCurrent(c.cList); 
                            }else{
-	                      new ContactMessageList(c,display).setParentView(sd.roster);     
+	                      new ContactMessageList(c,display).setParentView(midlet.BombusQD.sd.roster);     
                            }
                            break;
                         }
@@ -845,8 +684,8 @@ public class ContactMessageList extends MessageList {
                   }                
                   break;
             case KEY_NUM6:
-                if (cf.useTabs)
-                    sd.roster.searchActiveContact(1);
+                if (midlet.BombusQD.cf.useTabs)
+                    midlet.BombusQD.sd.roster.searchActiveContact(1);
                 else
                     super.pageRight();
                 contact.setCursor(cursor);
@@ -865,8 +704,8 @@ public class ContactMessageList extends MessageList {
 //#ifdef MENU_LISTENER
     
 //#ifdef GRAPHICS_MENU        
-//#     public void touchRightPressed(){ if (cf.oldSE) showGraphicsMenu(); else destroyView(); }    
-//#     public void touchLeftPressed(){ if (cf.oldSE) keyGreen(); else showGraphicsMenu(); }
+//#     public void touchRightPressed(){ if (midlet.BombusQD.cf.oldSE) showGraphicsMenu(); else destroyView(); }    
+//#     public void touchLeftPressed(){ if (midlet.BombusQD.cf.oldSE) keyGreen(); else showGraphicsMenu(); }
 //#else
     public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }    
     public void touchLeftPressed(){ if (cf.oldSE) keyGreen(); else showMenu(); }
@@ -875,7 +714,7 @@ public class ContactMessageList extends MessageList {
 //#endif
     
     private void Reply() {
-        if (!sd.roster.isLoggedIn()) return;
+        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
         
         try {
             Msg msg=getMessage(cursor);
@@ -886,7 +725,7 @@ public class ContactMessageList extends MessageList {
                 keyGreen();
             else
 //#ifdef RUNNING_MESSAGE
-//#                 sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
+//#                 midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
 //#else
             new MessageEdit(display, this, contact, msg.from+": ");
 //#endif
@@ -894,7 +733,7 @@ public class ContactMessageList extends MessageList {
     }
     
     private void Quote() {
-        if (!sd.roster.isLoggedIn()) return;
+        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
         
         try {
             String msg=new StringBuffer()
@@ -906,7 +745,7 @@ public class ContactMessageList extends MessageList {
                 .append("\n")
                 .toString();
 //#ifdef RUNNING_MESSAGE
-//#             sd.roster.me=new MessageEdit(display, this, contact, msg);
+//#             midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, msg);
 //#else
             new MessageEdit(display, this, contact, msg);
 //#endif
@@ -1018,13 +857,14 @@ public class ContactMessageList extends MessageList {
         contact.lastSendedMessage=null;
         contact.lastUnread=0;
         contact.resetNewMsgCnt();
+        contact.cList=null;
     }
 
     public void destroyView(){
 //#ifdef GRAPHICS_MENU
-//#            sd.roster.activeContact=null;
-//#            sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
-//#            if (display!=null) display.setCurrent(sd.roster);              
+//#            midlet.BombusQD.sd.roster.activeContact=null;
+//#            midlet.BombusQD.sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
+//#            if (display!=null) display.setCurrent(midlet.BombusQD.sd.roster);              
 //#else
         sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster

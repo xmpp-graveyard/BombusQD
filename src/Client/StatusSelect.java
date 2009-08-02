@@ -75,13 +75,9 @@ public class StatusSelect
     private int defp;
     private Contact to;
 
-    private Config cf;
-    private StaticData sd = StaticData.getInstance();
-    
     public StatusSelect(Display d, Displayable pView, Contact to) {
         super();
         
-        cf=Config.getInstance();
         statusList=StatusList.getInstance().statusList;
         this.to=to;
         if (to==null) { 
@@ -94,7 +90,7 @@ public class StatusSelect
         
         setCommandListener(this);
         
-        defp=cf.loginstatus;
+        defp=midlet.BombusQD.cf.loginstatus;
         moveCursorTo(defp);
         attachDisplay(d);
         
@@ -126,9 +122,9 @@ public class StatusSelect
         }
         
         if (c==cmdDef) {
-            cf.loginstatus=cursor;
-	    cf.saveToStorage();
+            midlet.BombusQD.cf.loginstatus=cursor;
             redraw();
+            midlet.BombusQD.cf.saveToStorage();
         }
 
         if (c==cmdCancel) destroyView();
@@ -142,17 +138,17 @@ public class StatusSelect
     public void run(){
         int status=getSel().getImageIndex();
 //#ifdef AUTOSTATUS
-//#         sd.roster.autoAway=false;
-//#         sd.roster.autoXa=false;
-//#         sd.roster.messageActivity();
+//#         midlet.BombusQD.sd.roster.autoAway=false;
+//#         midlet.BombusQD.sd.roster.autoXa=false;
+//#         midlet.BombusQD.sd.roster.messageActivity();
 //#endif
         try {
-            if (sd.roster.isLoggedIn()) {
-                sd.roster.sendDirectPresence(status, to, null);
+            if (midlet.BombusQD.sd.roster.isLoggedIn()) {
+                midlet.BombusQD.sd.roster.sendDirectPresence(status, to, null);
             } else {
                 //sd.roster.sendPresence(status, null);
                 new AccountSelect(display, this, false,status);
-                cf.isStatusFirst=true;
+                midlet.BombusQD.cf.isStatusFirst=true;
             }
         } catch (Exception e) { }
     }

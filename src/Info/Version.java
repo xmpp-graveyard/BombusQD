@@ -35,31 +35,25 @@ public class Version {
 
 //#ifdef GRAPHICS_MENU  
    //#ifdef  SUPER_LIGHT
-//#            public final static String version="0.8-17T_r12"
-//#                    + Config.getInstance().getStringProperty("build", "");//("+Config.getInstance().difficulty_level+")";    
+//#            public final static String version="0.8.r14"
+//#                    + Config.getInstance().getStringProperty("build", "");  
     //#else
-//#            public final static String version="0.8-17T_r12"
-//#                    + Config.getInstance().getStringProperty("build", "") ;//("+Config.getInstance().difficulty_level+")";
+//#            public final static String version="0.8.r14"
+//#                    + Config.getInstance().getStringProperty("build", "") ;
     //#endif
 //#else
-       public final static String version="0.8-15_GM"+Config.getInstance().difficulty_level+")";
+       public final static String version="0.8.r14";
 //#endif     
 
     public final static String NAME="BombusQD";
     public final static String BOMBUS_SITE_URL="http://bombusmod-qd.wen.ru";
 
-//#ifdef PLUGINS
-//#     private static String plugins="P";
-//#else
-    private static String plugins="";
-//#endif
-    
     public static String getBuildNum () {
-        String build=Config.getInstance().getStringProperty("Bombus-Build", "0");
+        String build=Config.getInstance().getStringProperty("BombusQD-Build", "0");
         return (build!="0" && build!=null)?" ["+build+"]":"";
     }
     
-    public static String getVersionLang() { return version+plugins+" ("+SR.MS_IFACELANG+")"+getBuildNum(); }
+    public static String getVersionLang() { return version+" ("+SR.MS_IFACELANG+")"+getBuildNum(); }
     
     public static String getVersionNumber() { return version; }
     public static String getName() { return NAME; }

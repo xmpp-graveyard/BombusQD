@@ -60,7 +60,8 @@ public class FontClass {
        System.gc();
       } catch (Exception e) {
           Config.getInstance().use_drawed_font=false;
-          Config.getInstance().saveToStorage();        
+          //System.out.println("error fonts loading");
+          //Config.getInstance().saveToStorage();//?        
       }     
     }      
     

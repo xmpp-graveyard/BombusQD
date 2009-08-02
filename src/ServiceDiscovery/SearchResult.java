@@ -188,11 +188,11 @@ public class SearchResult
         try {
             Contact c=(Contact)getFocusedObject();
             if (c==null) return;
-            if(c.cList!=null){//?
-                display.setCurrent( c.cList );   
+            if(c.cList!=null && Config.getInstance().module_cashe && c.msgs.size()>3){//?
+                display.setCurrent( c.cList );  
             }else{
                 new ContactMessageList(c,display);  
-            }             
+            }     
             //new ContactMessageList((Contact) getFocusedObject(), display);
         } catch (Exception e) {}
     }

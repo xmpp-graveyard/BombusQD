@@ -65,8 +65,6 @@ public class ActiveContacts
     
     Vector activeContacts;
     
-    StaticData sd = StaticData.getInstance();
-
     private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
     private Command cmdOk=new Command(SR.MS_SELECT, Command.SCREEN, 1);
     
@@ -76,9 +74,9 @@ public class ActiveContacts
         activeContacts=null;
 	activeContacts=new Vector();
         Contact c=null;
-         int size=sd.roster.getHContacts().size();        
+         int size=midlet.BombusQD.sd.roster.getHContacts().size();        
             for(int i=0;i<size;i++){    
-                c=(Contact)sd.roster.getHContacts().elementAt(i);
+                c=(Contact)midlet.BombusQD.sd.roster.getHContacts().elementAt(i);
                 if (c.active()) activeContacts.addElement(c);             
             }
 	if (getItemCount()==0) return;
@@ -127,12 +125,12 @@ public class ActiveContacts
     public void eventOk() {
 	Contact c=(Contact)getFocusedObject();
          if(Config.getInstance().useClassicChat){
-           new SimpleItemChat(display,sd.roster,(Contact)c);            
+           new SimpleItemChat(display,midlet.BombusQD.sd.roster,(Contact)c);            
          }else{
-           if(c.cList!=null){
+           if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3){
               display.setCurrent(c.cList); 
            }else{
-	      new ContactMessageList(c,display).setParentView(sd.roster);     
+	      new ContactMessageList(c,display).setParentView(midlet.BombusQD.sd.roster);     
            }
          }                
     }
@@ -191,7 +189,7 @@ public class ActiveContacts
     }
     
     public void destroyView(){
-        sd.roster.reEnumRoster();
+        midlet.BombusQD.sd.roster.reEnumRoster();
         display.setCurrent(parentView);
     }
 //#ifdef MENU_LISTENER

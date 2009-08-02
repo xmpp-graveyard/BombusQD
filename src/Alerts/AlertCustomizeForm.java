@@ -183,7 +183,7 @@ public class AlertCustomizeForm
         
         cf.IQNotify=IQNotify.getValue();
 
-        cf.saveToStorage();
+        //cf.saveToStorage();
 
         destroyView();
     }

@@ -100,10 +100,10 @@
 //#         
 //#         auto_queryPhoto = new CheckBox(SR.MS_AUTOLOAD_VCARD, cf.auto_queryPhoto);
 //#         autoload_FSPhoto = new CheckBox(SR.MS_AUTOLOAD_VCARD_FROMFS, cf.autoload_FSPhoto);          
-//#         if(cf.difficulty_level>=1){
+//#         //if(cf.difficulty_level>=1){
 //#           itemsList.addElement(auto_queryPhoto);
 //#           itemsList.addElement(autoload_FSPhoto);
-//#         }
+//#         //}
 //#         showAvatarRect = new CheckBox(SR.AVATAR_DRAW_RECT, cf.showAvatarRect);
 //#         itemsList.addElement(showAvatarRect);
 //# 
@@ -115,7 +115,7 @@
 //#         maxAvatarWidth=new NumberInput(display, SR.MS_MAX_AVATAR_WIDTH, Integer.toString(cf.maxAvatarWidth), 25, 100);
 //#         itemsList.addElement(maxAvatarWidth);    
 //#         
-//#        if(cf.difficulty_level>=1){
+//#      //  if(cf.difficulty_level>=1){
 //#         itemsList.addElement(new SpacerItem(10));        
 //#         autoSaveVcard = new CheckBox(SR.AVATAR_AUTOSAVE_FS, cf.autoSaveVcard);
 //#         itemsList.addElement(autoSaveVcard);
@@ -180,7 +180,7 @@
 //#         itemsList.addElement(applyFromFS);
 //#         itemsList.addElement(applyMucFromFS);   
 //#         itemsList.addElement(saveChanges);
-//#        }
+//#       // }
 //#         
 //#         addCommand(cmdPath); cmdPath.setImg(0x34);
 //#         addCommand(cmdOkey);  cmdOkey.setImg(0x43);
@@ -209,10 +209,10 @@
 //# 
 //#     public void cmdOk() {
 //#         cf.drawCPhoto=drawCPhoto.getValue();
-//#         if(cf.difficulty_level>=1){
+//#         //if(cf.difficulty_level>=1){
 //#             cf.auto_queryPhoto=auto_queryPhoto.getValue();
 //#             cf.autoload_FSPhoto=autoload_FSPhoto.getValue();
-//#         }
+//#        // }
 //#         cf.showAvatarRect=showAvatarRect.getValue();
 //#         int maxAvHeight=Integer.parseInt(maxAvatarHeight.getValue());
 //#         int maxAvWidth=Integer.parseInt(maxAvatarWidth.getValue());         
@@ -222,13 +222,13 @@
 //#            cf.maxAvatarWidth=maxAvWidth;   
 //#            //UpdateAvatarsOnline();
 //#         }   
-//#         if(cf.difficulty_level>=1){
+//#        // if(cf.difficulty_level>=1){
 //#          cf.autoSaveVcard=autoSaveVcard.getValue();
 //#          cf.msgAvatarPath=avatarFolder.getValue();
-//#         }
+//#        // }
 //# 
-//#         cf.updateTime();
-//#         cf.saveToStorage();
+//#         //cf.updateTime();
+//#         //cf.saveToStorage();
 //#         destroyView();
 //#     }
 //# 
