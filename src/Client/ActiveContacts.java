@@ -128,7 +128,7 @@ public class ActiveContacts
            new SimpleItemChat(display,midlet.BombusQD.sd.roster,(Contact)c);            
          }else{
            if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3){
-              display.setCurrent(c.cList); 
+              display.setCurrent((ContactMessageList)c.cList); 
            }else{
 	      new ContactMessageList(c,display).setParentView(midlet.BombusQD.sd.roster);     
            }

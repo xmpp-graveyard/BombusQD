@@ -2902,7 +2902,7 @@ public class Roster
                 new SimpleItemChat(display,this,(Contact)e);
               } else{
                 if(((Contact)e).cList!=null && midlet.BombusQD.cf.module_cashe && ((Contact)e).msgs.size()>3){
-                  display.setCurrent( ((Contact)e).cList );  
+                  display.setCurrent( (ContactMessageList)((Contact)e).cList );  
                 }else{
                   new ContactMessageList((Contact)e,display);  
                 }
@@ -2926,7 +2926,7 @@ public class Roster
         Object e=getFocusedObject();
         if (e instanceof Contact) {
 	     return ( ((Contact)e).cList!=null && midlet.BombusQD.cf.module_cashe && ((Contact)e).msgs.size()>3 )? 
-                 ((Contact)e).cList 
+                 (ContactMessageList)((Contact)e).cList 
                      : 
                  new ContactMessageList((Contact)e,display);
         }
@@ -3446,7 +3446,7 @@ public class Roster
             if (currentContact==nowContact) return;
             Contact c=(Contact)activeContacts.elementAt(nowContact);
             if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 ){
-              display.setCurrent( c.cList );   
+              display.setCurrent( (ContactMessageList)c.cList );   
             }else{
               new ContactMessageList(c,display);  
             }            

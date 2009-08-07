@@ -49,8 +49,12 @@ public class ComplexString extends Vector implements VirtualElement {
     public final static int NICK_ON   = 0x04000000;
     public final static int NICK_OFF  = 0x05000000;
 //#endif
-
+    public final static int BOLD = 0x06000000;
+    
+    
     protected Font font=FontCache.getFont(false, FontCache.msg);
+    public final static Font bfont=FontCache.getFont(true, FontCache.msg);    
+    
     private int font_height = font.getHeight();
     
     private int height;
@@ -93,15 +97,14 @@ public class ComplexString extends Vector implements VirtualElement {
     //FontClass fc = FontClass.getInstance();
     Font bold;
     
-    boolean boldWord=false;
-    
     public void drawItem(Graphics g, int offset, boolean selected){
         boolean ralign=false;
 	boolean underline=false;
-        
 //#if NICK_COLORS
 	boolean nick=false;
 //#endif
+
+	boolean boldtext=false;
         
         int w=offset;
         int dw;
@@ -114,6 +117,7 @@ public class ComplexString extends Vector implements VirtualElement {
             g.setFont(font);
         }
         //}
+
         for (int index=0; index<elementCount;index++) {
             if (elementData[index]!=null) {
                 if (elementData[index] instanceof String ){
@@ -155,14 +159,23 @@ public class ComplexString extends Vector implements VirtualElement {
                     } else {
 //#endif
                         if(midlet.BombusQD.cf.boldNicks) {  g.setFont(font); }
-                        dw=font.stringWidth((String)elementData[index]);
+                        
+                        if(boldtext){
+                           g.setFont(bfont);
+                           dw=bfont.stringWidth((String)elementData[index]);
+                           boldtext=false;
+                        }else{
+                           g.setFont(font);
+                           dw=font.stringWidth((String)elementData[index]);  
+                        }
+                         
                         if (ralign) w-=dw;
-                          g.drawString((String)elementData[index],w,fontYOfs,Graphics.LEFT|Graphics.TOP);  
-                        if (underline) {
+                          g.drawString((String)elementData[index],w,fontYOfs,Graphics.LEFT|Graphics.TOP);
+                          if (underline) {
                             int y=font_height-1;
                             g.drawLine(w, y-1, w+dw, y-1);
                             underline=false;
-                        }
+                          }
                         if (!ralign) w+=dw;
 //#if NICK_COLORS
                     }
@@ -170,7 +183,7 @@ public class ComplexString extends Vector implements VirtualElement {
 
                 } else if ((elementData[index] instanceof Integer)) {
                     // image element or color
-                    int i=((Integer)elementData[index]).intValue();
+                    int i=((Integer)elementData[index]).intValue();                           
                     switch (i&0xff000000) {
                         case IMAGE:
                             if (imageList==null) break;
@@ -180,6 +193,9 @@ public class ComplexString extends Vector implements VirtualElement {
                             break;
                         case COLOR:
                             g.setColor(0xFFFFFF&i);
+                            break;
+                        case BOLD:
+                            boldtext=true;
                             break;
                         case RALIGN:
                             ralign=true;
@@ -273,6 +289,7 @@ public class ComplexString extends Vector implements VirtualElement {
     public void addColor(int colorRGB){ addElement(new Integer(COLOR | colorRGB)); }
     public void addRAlign(){ addElement(new Integer(RALIGN)); }
     public void addUnderline(){ addElement(new Integer(UNDERLINE)); }
+    public void addBold(){ addElement(new Integer(BOLD)); }    
     
     public Font getFont() {
         return font;

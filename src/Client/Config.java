@@ -153,7 +153,7 @@ public class Config {
     public int baloonFont=0;
     public String lang;
     public boolean capsState=false;
-    public int textWrap=1;
+    public int textWrap=2;
     public int autoSubscribe=SUBSCR_ASK;
     // runtime values
     public boolean allowMinimize=false;

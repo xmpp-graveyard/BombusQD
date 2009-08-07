@@ -189,7 +189,7 @@ public class SearchResult
             Contact c=(Contact)getFocusedObject();
             if (c==null) return;
             if(c.cList!=null && Config.getInstance().module_cashe && c.msgs.size()>3){//?
-                display.setCurrent( c.cList );  
+                display.setCurrent( (ContactMessageList)c.cList );  
             }else{
                 new ContactMessageList(c,display);  
             }     

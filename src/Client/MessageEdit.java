@@ -180,6 +180,8 @@ public class MessageEdit
         }
                 
         t.setCommandListener(this);
+        if (Config.getInstance().capsState)
+            t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
 //#ifdef RUNNING_MESSAGE
 //#         /*
 //#        if(midlet.BombusQD.cf.useLowMemory_msgedit==false){ 

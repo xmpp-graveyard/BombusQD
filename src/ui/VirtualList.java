@@ -1389,7 +1389,7 @@ public abstract class VirtualList
 //#                    }else{
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
 //#                        if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 ){
-//#                           display.setCurrent( c.cList );
+//#                           display.setCurrent( (ContactMessageList)c.cList );
 //#                        }else{
 //#                           new ContactMessageList(c,display);  
 //#                        }

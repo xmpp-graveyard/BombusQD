@@ -159,7 +159,7 @@ public class Contact extends IconTextElement{
 //#endif
 //#endif
     
-   public ContactMessageList cList = null; 
+   public Object cList = null;
     
    private int fontHeight;
     

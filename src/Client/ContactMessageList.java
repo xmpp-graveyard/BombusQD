@@ -674,7 +674,7 @@ public class ContactMessageList extends MessageList {
                         c = (Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
                         if (c.getNewMsgsCount()>0){
                            if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3){
-                              display.setCurrent(c.cList); 
+                              display.setCurrent((ContactMessageList)c.cList); 
                            }else{
 	                      new ContactMessageList(c,display).setParentView(midlet.BombusQD.sd.roster);     
                            }

@@ -1,4 +1,5 @@
 ﻿qd@conference.jabber.ru	Тех. поддержка BombusQD
+bombusqd-id@conference.jabber.ru	BombusQD - Indonesia  Support
 bombus-talks@conference.jabber.ru	Поболтать о bombus здесь
 support@conference.jabber.ru	Тех.поддержка сервера Jabber.ru
 newbie@conference.jabber.ru	Помощь новичкам

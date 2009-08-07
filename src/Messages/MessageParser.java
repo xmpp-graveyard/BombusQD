@@ -43,9 +43,9 @@ import util.Strconv;
 
 public final class MessageParser // implements Runnable
 {
-    
-    private final static int URL=-2;
-    private final static int NOSMILE=-1;
+    private final static int BOLD=-3;
+    private final static byte URL=-2;
+    private final static byte NOSMILE=-1;
     //Config cf = Config.getInstance();
     private Vector smileTable;
 
@@ -64,20 +64,20 @@ public final class MessageParser // implements Runnable
     //private Thread thread;
     
     boolean wordsWrap;
-    private static String wrapSeparators=" .,-=/\\;:+*()[]<>~!@#%^_&";
+    private static String wrapSeparators=" .,-=/\\;:+()[]<>~!@#%^_&";
     
-    private static String res= "/images/smiles.txt";
     
     public static MessageParser getInstance() {
         if (instance==null) 
-            instance=new MessageParser(res);
+            instance=new MessageParser();
         return instance;
     }
 
 //#ifdef SMILES 
     public Vector getSmileTable() { return smileTable; }
 //#endif
-    private class Leaf {
+    
+    private static class Leaf {
         public int smile=NOSMILE;   // ??? ???????? ? ????
         public String smileChars;     // ??????? ?????????
         public Vector child;
@@ -139,7 +139,7 @@ public final class MessageParser // implements Runnable
             }
         }
         */
-        return;
+        //return;
     }
     
     /*
@@ -161,7 +161,7 @@ public final class MessageParser // implements Runnable
     }
      */
 
-    private MessageParser(String resource) {
+    private MessageParser() {
         smileTable=null;
         smileTable=new Vector();
         root=new Leaf();
@@ -172,7 +172,7 @@ public final class MessageParser // implements Runnable
             boolean strhaschars=false;
             boolean endline=false;
             
-            InputStream in=this.getClass().getResourceAsStream(resource);
+            InputStream in=this.getClass().getResourceAsStream("/images/smiles.txt");
             
             boolean firstSmile=true;
             
@@ -222,6 +222,7 @@ public final class MessageParser // implements Runnable
         addSmile(root, "\01", ComplexString.NICK_ON);
         addSmile(root, "\02", ComplexString.NICK_OFF);
 //#endif
+        if(midlet.BombusQD.cf.textWrap==1) addSmile(root, " *", BOLD);
         
         emptyRoot=new Leaf();
 	addSmile(emptyRoot, "http://", URL);
@@ -234,13 +235,16 @@ public final class MessageParser // implements Runnable
         addSmile(emptyRoot, "\01", ComplexString.NICK_ON);
         addSmile(emptyRoot, "\02", ComplexString.NICK_OFF);
 //#endif
+        if(midlet.BombusQD.cf.textWrap==1) addSmile(emptyRoot, " *", BOLD);
     }
     
+
     private void parseMessage(final MessageItem task) {
         Vector lines=task.msgLines;
         boolean singleLine=task.msg.itemCollapsed;
         
         boolean underline=false;
+        boolean boldtext=false;        
         
         Leaf smileRoot=(
 //#ifdef SMILES
@@ -271,6 +275,7 @@ public final class MessageParser // implements Runnable
             lines.addElement(l);
             
             Font f=getFont((task.msg.highlite || state==0));
+            
             l.setFont(f);
             
             String txt=(state==0)? task.msg.subject: task.msg.toString();
@@ -287,14 +292,17 @@ public final class MessageParser // implements Runnable
             
             int pos=0;
             int size = txt.length();
+            
+            Leaf smileLeaf;
+            char c;
             while (pos<size) {
-                Leaf smileLeaf=smileRoot;
+                smileLeaf=smileRoot;
                 int smileIndex=-1;
                 int smileStartPos=pos;
                 int smileEndPos=pos;
-                //int size2 = txt.length();
+
                 while (pos<size) {
-                    char c=txt.charAt(pos);
+                    c=txt.charAt(pos);
                     if (underline) {//УРЛ
                         switch (c) {
                             case ' ':
@@ -320,64 +328,65 @@ public final class MessageParser // implements Runnable
                     }
 
                     smileLeaf=smileLeaf.findChild(c);
-                    if (smileLeaf==null) { //этот символ c не попал в смайл
+                    if (smileLeaf==null) {
                         break;
                     }
                     if (smileLeaf.smile!=-1) {
                         smileIndex=smileLeaf.smile;
                         smileEndPos=pos;
                     }
-                  pos++;//поиск смайла
-                }
-                
-                if (smileIndex==URL) {//если УРЛ
-                    if (s.length()>0) l.addElement(s.toString());
-                    s.setLength(0);
-                    underline=true;
-                }
-//**************************
-//#ifdef SMILES
-                if (smileIndex>=0) {
-                    // есть смайл
-                    // добавим строку                    
-                    if (wordStartPos!=smileStartPos) {
-                        s.append(txt.substring(wordStartPos, smileStartPos));
-                        w+=wordWidth;
-                        wordWidth=0;
-                    }
-                    if (s.length()>0) {
-                        if (underline)
-                            l.addUnderline();
-                        l.addElement(s.toString());
-                    }
                     
-                    // очищаем
-                    s.setLength(0);
-                    // добавим смайл
-                    int iw=(smileIndex<0x01000000)? smileImages.getWidth() : 0;
-                    if (w+iw>width) {
-                        //task.notifyRepaint(lines, task.msg, false);
-                        l=new ComplexString(smileImages); // новая строка
-                        lines.addElement(l);
-                        if (singleLine) return;
-                        l.setColor(color);
-                        l.setFont(f);
-                        w=0;
-                    }
-                    l.addImage(smileIndex); 
-                    w+=iw; //ширина + ширина смайла
-                    //System.out.println("smile detected " + s.toString() + " "+smileIndex);
-                    pos=smileEndPos;
-                    wordStartPos=pos+1;
-                 } else {
-//#endif
-                    pos=smileStartPos;
-                    char c=txt.charAt(pos);
+                    if(boldtext) {
+                        if(c=='*'){
+                                boldtext=false;
+                                if (wordStartPos!=pos) {
+                                    s.append(txt.substring(wordStartPos,pos));
+                                    wordStartPos=pos+1;
+				    w+=wordWidth;
+                                    wordWidth=0;
+                                }
+                                if (s.length()>0) {
+                                    l.addBold();
+                                    l.addElement(s.toString());
+                                }
+                                s.setLength(0);
+                        }
+                    }                    
+                    
+                  pos++;
+                }
 
-                    int cw=f.charWidth(c);
-                    
+              switch(smileIndex) {    
+        
+                 case BOLD: 
+                     if (wordStartPos!=pos) {
+                        if(txt.indexOf("*",pos)>-1){
+                          boldtext=true;
+                          s.append(txt.substring(wordStartPos,pos-1));
+			  w+=wordWidth;
+                          wordWidth=0;
+                          wordStartPos=pos;                           
+                         }
+                      }                     
+                      if (s.length()>0) l.addElement(s.toString());
+                      s.setLength(0);
+                      break;
+                 
+                 case URL:
+                      if (s.length()>0) l.addElement(s.toString());
+                      s.setLength(0);
+                      underline=boldtext?false:true;    
+                      break;
+                  
+                 case -1: //text NOSMILE
+                    pos=smileStartPos;
+                    c=txt.charAt(pos);
+
+                    int cw=boldtext?l.bfont.charWidth(c):f.charWidth(c);
+
                     if (c!=0x20) { //не пробел
-                        boolean newline= ( c==0x0d || c==0x0a );
+                        boolean newline = ( c==0x0d || c==0x0a );
+                        
                         if (wordWidth+cw>width || newline) {
                             s.append(txt.substring(wordStartPos,pos));
                             w+=wordWidth;
@@ -387,6 +396,8 @@ public final class MessageParser // implements Runnable
                         }
                         if (w+wordWidth+cw>width || newline) {
                             if (underline) l.addUnderline();
+                            if(boldtext) l.addBold();  
+                            
                             l.addElement(s.toString());
                             s.setLength(0); w=0;
 
@@ -397,55 +408,94 @@ public final class MessageParser // implements Runnable
 //#                         l=new ComplexString();
 //#endif
                             lines.addElement(l);
-                            //task.notifyRepaint(lines, task.msg, false);
 
                             if (singleLine) return;
 
                             l.setColor(color);
-                            l.setFont(f);
+                            l.setFont(f);//?
                         }
                     }
 
+                    if (c==0x09) c=0x20;
 
-
-//****************************
-                    if (c==0x09)
-                        c=0x20;
 
                     if(pos<=10 && !midlet.BombusQD.cf.useLowMemory_iconmsgcollapsed){
                       cw+=3;
                     }
                     
                     if (c>0x1f)
-                        wordWidth+=cw;//ширина символа
-                        if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) { //перенос по буквам и после найденного символа
-                        if (pos>wordStartPos){
+                        wordWidth+=cw;
+
+                      if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) { //by chars
+                        if (pos>wordStartPos)
                             s.append(txt.substring(wordStartPos,pos));
-                        }
                         if (c>0x1f) s.append(c);
                         w+=wordWidth;
                         wordStartPos=pos+1;
                         wordWidth=0;
-//#ifdef SMILES
                       }
-//#endif
-                }
-		pos++;
+                    break;
+
+                 default: //smile
+                    if (wordStartPos!=smileStartPos) {
+                        s.append(txt.substring(wordStartPos, smileStartPos));
+                        w+=wordWidth;
+                        wordWidth=0;
+                    }
+                    if (s.length()>0) {
+                        if (underline){
+                          l.addUnderline();
+                        }
+                        if (boldtext){
+                          l.addBold();
+                        }                        
+                      l.addElement(s.toString());
+                    }
+                    
+                    // очищаем
+                    s.setLength(0);
+                    // добавим смайл
+                    int iw=(smileIndex<0x01000000)? smileImages.getWidth() : 0;
+                    if (w+iw>width) {
+                        l=new ComplexString(smileImages);
+                        lines.addElement(l);
+                        if (singleLine) return;
+                        l.setColor(color);
+                        l.setFont(f);
+                        w=0;
+                    }
+                    l.addImage(smileIndex); 
+                    w+=iw; //ширина + ширина смайла
+                    pos=smileEndPos;
+                    wordStartPos=pos+1; 
+                    break;
+              }
+              pos++;
             }
+            
  	    if (wordStartPos!=pos)
                 s.append(txt.substring(wordStartPos,pos));
             if (s.length()>0) {
                 if (underline) l.addUnderline();
+                if (boldtext) l.addBold();
                 l.addElement(s.toString());
             }
              
             if (l.isEmpty())
                 lines.removeElementAt(lines.size()-1);
 
-            //task.notifyRepaint(lines, task.msg, true);
             state++;
             s.setLength(0);
         }
+        lines=null;   
+      /*
+r14 Default
+Parse Speed -   76 msec         73 msec       70 msec      74 msec
+FREE Memory -  1209-->1046     322-->159    978-->815    1187-->1024   163-164kb
+       *
+Parse Speed - 69 msec           61 msec       47 msec      59 msec      +speed
+FREE Memory - 1186-->1023      959-->795     813-->649    657-->494    163-164kb
+       */
     }
     
     public Font getFont(boolean bold) {
