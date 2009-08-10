@@ -222,7 +222,7 @@ public final class MessageParser // implements Runnable
         addSmile(root, "\01", ComplexString.NICK_ON);
         addSmile(root, "\02", ComplexString.NICK_OFF);
 //#endif
-        if(midlet.BombusQD.cf.textWrap==1) addSmile(root, " *", BOLD);
+        if(midlet.BombusQD.cf.textWrap==1 && midlet.BombusQD.cf.sblockFont!=6) addSmile(root, " *", BOLD);
         
         emptyRoot=new Leaf();
 	addSmile(emptyRoot, "http://", URL);
@@ -235,7 +235,7 @@ public final class MessageParser // implements Runnable
         addSmile(emptyRoot, "\01", ComplexString.NICK_ON);
         addSmile(emptyRoot, "\02", ComplexString.NICK_OFF);
 //#endif
-        if(midlet.BombusQD.cf.textWrap==1) addSmile(emptyRoot, " *", BOLD);
+        if(midlet.BombusQD.cf.textWrap==1 && midlet.BombusQD.cf.sblockFont!=6) addSmile(emptyRoot, " *", BOLD);
     }
     
 
@@ -341,7 +341,7 @@ public final class MessageParser // implements Runnable
                                 boldtext=false;
                                 if (wordStartPos!=pos) {
                                     s.append(txt.substring(wordStartPos,pos));
-                                    wordStartPos=pos+1;
+                                    wordStartPos=pos;
 				    w+=wordWidth;
                                     wordWidth=0;
                                 }
@@ -362,7 +362,7 @@ public final class MessageParser // implements Runnable
                      if (wordStartPos!=pos) {
                         if(txt.indexOf("*",pos)>-1){
                           boldtext=true;
-                          s.append(txt.substring(wordStartPos,pos-1));
+                          s.append(txt.substring(wordStartPos,pos));
 			  w+=wordWidth;
                           wordWidth=0;
                           wordStartPos=pos;                           
@@ -382,7 +382,7 @@ public final class MessageParser // implements Runnable
                     pos=smileStartPos;
                     c=txt.charAt(pos);
 
-                    int cw=boldtext?l.bfont.charWidth(c):f.charWidth(c);
+                    int cw=boldtext?FontCache.getFont().charWidth(c):f.charWidth(c);//+fHeight
 
                     if (c!=0x20) { //не пробел
                         boolean newline = ( c==0x0d || c==0x0a );

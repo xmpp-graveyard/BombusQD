@@ -57,7 +57,6 @@ public class FontCache {
     public static int bar=0;
     public static int baloon=0;
 
-    
     public final static int face=Font.FACE_PROPORTIONAL;    
     public final static int face_system=Font.FACE_SYSTEM;
     
@@ -101,5 +100,28 @@ public class FontCache {
         return getSmallFont();
     }
 
+    
+    private final static Font bfont_small = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, Font.SIZE_SMALL);
+    private final static Font bfont_medium = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD , Font.SIZE_MEDIUM);
+    private final static Font bfont_large = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD , Font.SIZE_LARGE);
+    
+    private final static Font ibfont_small = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD|Font.STYLE_ITALIC , Font.SIZE_SMALL);
+    private final static Font ibfont_medium = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD|Font.STYLE_ITALIC , Font.SIZE_MEDIUM);
+    private final static Font ibfont_large = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_BOLD|Font.STYLE_ITALIC , Font.SIZE_LARGE);
+
+    
+    public final static Font getFont() {
+        switch (midlet.BombusQD.cf.sblockFont) {
+            case 0: return bfont_small;
+            case 1: return bfont_medium;
+            case 2: return bfont_large;
+            case 3: return ibfont_small;
+            case 4: return ibfont_medium;
+            case 5: return ibfont_large;  
+            case 6: return null;
+        }
+        return getMiddleBoldFont();
+    }
+    
     //public final static void resetCache() { roster=msg=bar=baloon=0; }
 }

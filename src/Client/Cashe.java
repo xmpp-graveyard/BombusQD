@@ -15,6 +15,8 @@ package Client;
  */
 public class Cashe {
     
+    public static PluginsConfig menu_PlaginsConfig = null;
+
     private Cashe() { }
     public static Cashe get(){
         if (cashe==null) 

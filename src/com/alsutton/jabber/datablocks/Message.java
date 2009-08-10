@@ -75,6 +75,13 @@ public class Message extends JabberDataBlock {
       return body+"Error\n"+XmppError.decodeStanzaError(error).toString();
   }
   
+  public String getUrl() {
+      StringBuffer url=new StringBuffer();
+      try {
+          url.append("( ").append(findNamespace("x", "jabber:x:oob").getChildBlockText("url")).append(" )");
+      } catch (Exception ex) { return null; }
+      return url.toString();      
+  }
   
   public String getOOB() {
       StringBuffer oob=new StringBuffer();

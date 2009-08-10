@@ -826,7 +826,33 @@ public class SR {
    
    
    public static String MS_MODULES_CONFIG = loadString("Modules config");   
+   public static String MS_config = loadString("Config");    
+   public static String MS_contactStr = loadString("Contacts");    
+   public static String MS_msgStr = loadString( "Chat");
+   public static String MS_netStr = loadString( "Network");    
+   public static String MS_grStr = loadString( "Graphics");
+   public static String MS_appStr = loadString( "Application"); 
+   public static String MS_hotkeysStr = loadString( "Hotkeys");
+   public static String MS_astatusStr = loadString( "Autostatus"); 
+   public static String MS_clchatStr = loadString( "Classic Chat");
+   public static String MS_cthemesStr = loadString( "Color Themes"); 
+   public static String MS_casheStr = loadString( "Cashe");
+   public static String MS_historyStr = loadString( "History");
+   public static String MS_fontsStr = loadString( "Fonts");
+   public static String MS_ieStr = loadString( "Import/Export");
+   public static String MS_notifyStr = loadString( "Notifications");
+   public static String MS_taskstr = loadString( "Tasks");
+   public static String MS_avatarStr = loadString( "Avatars");   
    
+   public static String MS_sblockFont = loadString( "Selected text elements font");   
+   public static String MS_sblock_bs = loadString( "Bold Font(small)");
+   public static String MS_sblock_bm = loadString( "Bold Font(middle)");
+   public static String MS_sblock_bl = loadString( "Bold Font(large)");
+   public static String MS_sblock_ibs = loadString( "Bold Font(italic/small)");
+   public static String MS_sblock_ibm = loadString( "Bold Font(italic/middle)");
+   public static String MS_sblock_ibl = loadString( "Bold Font(italic/large)");
+   public static String MS_sblock_no = loadString( "No select");  
+
    
     private SR() { }
     

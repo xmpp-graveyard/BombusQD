@@ -46,6 +46,7 @@ import locale.*;
 import Client.Config;
 import Client.StaticData;
 import Client.Roster;
+import Client.Cashe;
 import Info.Version;
 import ui.GMenu;
 import ui.SplashScreen;
@@ -69,6 +70,8 @@ public class BombusQD extends MIDlet implements Runnable
     
     public final static StaticData sd = StaticData.getInstance();
     public final static Config cf = Config.getInstance();
+    public final static Cashe cashe = Cashe.get();    
+    
     ColorTheme ct=ColorTheme.getInstance();
     
     public SplashScreen s;

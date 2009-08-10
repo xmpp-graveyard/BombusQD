@@ -136,6 +136,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     private NumberInput scrollWidth; 
     private CheckBox drawScrollBgnd;    
     private DropChoiceBox textWrap;
+    private DropChoiceBox sblockFont;    
     private DropChoiceBox langFiles;
     private DropChoiceBox bgnd_image;    
 //#ifdef AUTOSTATUS
@@ -173,74 +174,58 @@ public class PluginsConfig extends DefForm implements MenuListener
     private PluginBox notify; 
     private PluginBox tasks;
     private PluginBox avatars;      
-    
-    private final static String contactStr = "Contacts";    
-    private final static String msgStr =  "Chat";
-    private final static String netStr =  "Network";    
-    private final static String grStr =  "Graphics";
-    private final static String appStr =  "Application"; 
-    private final static String hotkeysStr =  "Hotkeys";
-    private final static String astatusStr =  "Autostatus"; 
-    private final static String clchatStr =  "Classic Chat";
-    private final static String cthemesStr =  "Color Themes"; 
-    private final static String casheStr =  "Cashe";
-    
-    private final static String historyStr =  "History";
-    private final static String fontsStr =  "Fonts";
-    private final static String ieStr =  "Import/Export";
-    private final static String notifyStr =  "Notifications";
-    private final static String taskstr =  "Tasks";
-    private final static String avatarStr =  "Avatars";
-    
-    
+
     private final Config cf = midlet.BombusQD.cf;
          
     public PluginsConfig(Display display, Displayable pView) {
         super(display, pView, SR.MS_MODULES_CONFIG);
         this.display=display;
         
-        contacts = new PluginBox(contactStr, cf.module_contacts){ public void doAction(boolean st){ cf.module_contacts=st; } };
+        contacts = new PluginBox(SR.MS_contactStr, cf.module_contacts){ public void doAction(boolean st){ cf.module_contacts=st; } };
         itemsList.addElement(contacts);
-        messages = new PluginBox(msgStr, cf.module_messages){ public void doAction(boolean st){ cf.module_messages=st; } };
+        messages = new PluginBox(SR.MS_msgStr, cf.module_messages){ public void doAction(boolean st){ cf.module_messages=st; } };
         itemsList.addElement(messages);
-        network = new PluginBox(netStr, cf.module_network){ public void doAction(boolean st){ cf.module_network=st; } };
+        network = new PluginBox(SR.MS_netStr, cf.module_network){ public void doAction(boolean st){ cf.module_network=st; } };
         itemsList.addElement(network);
-        graphics = new PluginBox(grStr, cf.module_graphics){ public void doAction(boolean st){ cf.module_graphics=st; } };
+        graphics = new PluginBox(SR.MS_grStr, cf.module_graphics){ public void doAction(boolean st){ cf.module_graphics=st; } };
         itemsList.addElement(graphics);
-        app = new PluginBox(appStr, cf.module_app){ public void doAction(boolean st){ cf.module_app=st; } };
+        app = new PluginBox(SR.MS_appStr, cf.module_app){ public void doAction(boolean st){ cf.module_app=st; } };
         itemsList.addElement(app);
-        userKeys = new PluginBox(hotkeysStr, cf.userKeys){ public void doAction(boolean st){ cf.userKeys=st; } };
+        userKeys = new PluginBox(SR.MS_hotkeysStr, cf.userKeys){ public void doAction(boolean st){ cf.userKeys=st; } };
         itemsList.addElement(userKeys);    
-        autostatus = new PluginBox(astatusStr, cf.module_autostatus){ public void doAction(boolean st){ cf.module_autostatus=st; } };
+        autostatus = new PluginBox(SR.MS_astatusStr, cf.module_autostatus){ public void doAction(boolean st){ cf.module_autostatus=st; } };
         itemsList.addElement(autostatus);
-        theme = new PluginBox(cthemesStr, cf.module_theme){ public void doAction(boolean st){ cf.module_theme=st; } };
+        theme = new PluginBox(SR.MS_cthemesStr, cf.module_theme){ public void doAction(boolean st){ cf.module_theme=st; } };
         itemsList.addElement(theme);    
 
-        history = new PluginBox(historyStr, cf.module_history){ public void doAction(boolean st){ cf.module_history=st; } };
+        history = new PluginBox(SR.MS_historyStr, cf.module_history){ public void doAction(boolean st){ cf.module_history=st; } };
         itemsList.addElement(history);    
-        fonts = new PluginBox(fontsStr, cf.module_fonts){ public void doAction(boolean st){ cf.module_fonts=st; } };
+        fonts = new PluginBox(SR.MS_fontsStr, cf.module_fonts){ public void doAction(boolean st){ cf.module_fonts=st; } };
         itemsList.addElement(fonts);
-        notify = new PluginBox(notifyStr, cf.module_notify){ public void doAction(boolean st){ cf.module_notify=st; } };
+        notify = new PluginBox(SR.MS_notifyStr, cf.module_notify){ public void doAction(boolean st){ cf.module_notify=st; } };
         itemsList.addElement(notify);      
-        avatars = new PluginBox(avatarStr, cf.module_avatars){ public void doAction(boolean st){ cf.module_avatars=st; } };
+        avatars = new PluginBox(SR.MS_avatarStr, cf.module_avatars){ public void doAction(boolean st){ cf.module_avatars=st; } };
         itemsList.addElement(avatars);  
         
         itemsList.addElement(new SpacerItem(3));
-        itemsList.addElement(new SimpleString("Advanced", true));  
+        itemsList.addElement(new SimpleString(SR.MS_ADVANCED_OPT, true));
         itemsList.addElement(new SpacerItem(3));
         
-        cashe = new PluginBox(casheStr, cf.module_cashe){ public void doAction(boolean st){ cf.module_cashe=st; } };
+        cashe = new PluginBox(SR.MS_casheStr, cf.module_cashe){ public void doAction(boolean st){ cf.module_cashe=st; } };
         itemsList.addElement(cashe); 
-        ie = new PluginBox(ieStr, cf.module_ie){ public void doAction(boolean st){ cf.module_ie=st; } };
+        ie = new PluginBox(SR.MS_ieStr, cf.module_ie){ public void doAction(boolean st){ cf.module_ie=st; } };
         itemsList.addElement(ie);  
-        tasks = new PluginBox(taskstr, cf.module_tasks){ public void doAction(boolean st){ cf.module_tasks=st; } };
+        tasks = new PluginBox(SR.MS_taskstr, cf.module_tasks){ public void doAction(boolean st){ cf.module_tasks=st; } };
         itemsList.addElement(tasks); 
-        classicchat = new PluginBox(clchatStr, cf.module_classicchat){ public void doAction(boolean st){ cf.module_classicchat=st; } };
+        classicchat = new PluginBox(SR.MS_clchatStr, cf.module_classicchat){ public void doAction(boolean st){ cf.module_classicchat=st; } };
         itemsList.addElement(classicchat);        
         
 
         setCommandListener(this);
         attachDisplay(display);
+        if(midlet.BombusQD.cashe.get().menu_PlaginsConfig==null && midlet.BombusQD.cf.module_cashe ){
+          midlet.BombusQD.cashe.get().menu_PlaginsConfig=this;
+        }
         this.parentView=pView;        
     }
     
@@ -253,23 +238,23 @@ public class PluginsConfig extends DefForm implements MenuListener
     public String touchLeftCommand(){ 
          try {
              String text=getFocusedObject().toString();
-             if(text==contactStr){ return cf.module_contacts?"Config":""; }
-             else if(text==msgStr){ return cf.module_messages?"Config":""; }
-             else if(text==netStr){ return cf.module_network?"Config":""; } 
-             else if(text==grStr){ return cf.module_graphics?"Config":""; }
-             else if(text==appStr){ return cf.module_app?"Config":""; }
-             else if(text==hotkeysStr){ return cf.userKeys?"Config":""; }
-             else if(text==astatusStr){ return cf.module_autostatus?"Config":""; } 
-             else if(text==clchatStr){ return cf.module_classicchat?"Config":""; } 
-             else if(text==cthemesStr){ return cf.module_theme?"Config":""; }
+             if(text==SR.MS_contactStr){ return cf.module_contacts?SR.MS_config:""; }
+             else if(text==SR.MS_msgStr){ return cf.module_messages?SR.MS_config:""; }
+             else if(text==SR.MS_netStr){ return cf.module_network?SR.MS_config:""; } 
+             else if(text==SR.MS_grStr){ return cf.module_graphics?SR.MS_config:""; }
+             else if(text==SR.MS_appStr){ return cf.module_app?SR.MS_config:""; }
+             else if(text==SR.MS_hotkeysStr){ return cf.userKeys?SR.MS_config:""; }
+             else if(text==SR.MS_astatusStr){ return cf.module_autostatus?SR.MS_config:""; } 
+             else if(text==SR.MS_clchatStr){ return cf.module_classicchat?SR.MS_config:""; } 
+             else if(text==SR.MS_cthemesStr){ return cf.module_theme?SR.MS_config:""; }
              
-             else if(text==casheStr){ return cf.module_cashe?"Clear":""; }
-             else if(text==historyStr){ return cf.module_history?"Config":""; }
-             else if(text==fontsStr){ return cf.module_fonts?"Config":""; }
-             else if(text==ieStr){ return cf.module_ie?"Config":""; } 
-             else if(text==notifyStr){ return cf.module_notify?"Config":""; } 
-             else if(text==taskstr){ return cf.module_tasks?"Config":""; }
-             else if(text==avatarStr){ return cf.module_avatars?"Config":""; }
+             else if(text==SR.MS_casheStr){ return cf.module_cashe?SR.MS_config:""; }
+             else if(text==SR.MS_historyStr){ return cf.module_history?SR.MS_config:""; }
+             else if(text==SR.MS_fontsStr){ return cf.module_fonts?SR.MS_config:""; }
+             else if(text==SR.MS_ieStr){ return cf.module_ie?SR.MS_config:""; } 
+             else if(text==SR.MS_notifyStr){ return cf.module_notify?SR.MS_config:""; } 
+             else if(text==SR.MS_taskstr){ return cf.module_tasks?SR.MS_config:""; }
+             else if(text==SR.MS_avatarStr){ return cf.module_avatars?SR.MS_config:""; }
              
         } catch (Exception e) { } 
       return "";
@@ -280,31 +265,31 @@ public class PluginsConfig extends DefForm implements MenuListener
           //String type = touchLeftCommand();
           String type=getFocusedObject().toString();
           if(touchLeftCommand()=="") return;
-          if(type==hotkeysStr){
+          if(type==SR.MS_hotkeysStr){
            display.setCurrent(new ui.keys.userKeysList(display));
           }
-          else if(type==cthemesStr){
+          else if(type==SR.MS_cthemesStr){
            display.setCurrent(new Colors.ColorConfigForm(display, this));
           }         
-          else if(type==historyStr){
+          else if(type==SR.MS_historyStr){
            display.setCurrent(new History.HistoryConfig(display, this));
           }
-          else if(type==fontsStr){
+          else if(type==SR.MS_fontsStr){
            display.setCurrent(new Fonts.ConfigFonts(display, this));
           }
-          else if(type==ieStr){
+          else if(type==SR.MS_ieStr){
            display.setCurrent(new IE.IEMenu(display, this));
           }  
-          else if(type==notifyStr){
+          else if(type==SR.MS_notifyStr){
            display.setCurrent(new Alerts.AlertCustomizeForm(display, this));
           }
-          else if(type==taskstr){
+          else if(type==SR.MS_taskstr){
            display.setCurrent(new AutoTasks.AutoTaskForm(display, this));
           }
-          else if(type==avatarStr){
+          else if(type==SR.MS_avatarStr){
            display.setCurrent(new ConfigAvatar(display,this));
           }  
-          else if(type==casheStr){
+          else if(type==SR.MS_casheStr){
             if(cf.module_cashe){
                 new ConfigModule(display, this, "Clear");
             }   
@@ -338,7 +323,7 @@ public class PluginsConfig extends DefForm implements MenuListener
         super(display, pView, type);
         this.display=display;
         this.type=type;
-         if(type==contactStr){//
+         if(type==SR.MS_contactStr){//
            showOfflineContacts = new CheckBox(SR.MS_OFFLINE_CONTACTS, cf.showOfflineContacts);
            itemsList.addElement(showOfflineContacts);
              selfContact = new CheckBox(SR.MS_SELF_CONTACT, cf.selfContact); 
@@ -376,7 +361,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                        ignore = new CheckBox(SR.MS_IGNORE_LIST, cf.ignore);
                        itemsList.addElement(ignore);
          }
-         else if(type==msgStr){//or chat
+         else if(type==SR.MS_msgStr){//or chat
            storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); 
            itemsList.addElement(storeConfPresence);
              autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll);
@@ -407,12 +392,24 @@ public class PluginsConfig extends DefForm implements MenuListener
                                      textWrap.append(SR.MS_TEXTWRAP_WORD);
 	                             textWrap.setSelectedIndex(cf.textWrap);
                                      itemsList.addElement(textWrap);
+                                     
+                                      sblockFont=new DropChoiceBox(display, SR.MS_sblockFont);
+                                      sblockFont.append(SR.MS_sblock_bs);//0
+                                      sblockFont.append(SR.MS_sblock_bm);
+                                      sblockFont.append(SR.MS_sblock_bl);
+                                      sblockFont.append(SR.MS_sblock_ibs);
+                                      sblockFont.append(SR.MS_sblock_ibm);
+                                      sblockFont.append(SR.MS_sblock_ibl);
+                                      sblockFont.append(SR.MS_sblock_no);
+	                              sblockFont.setSelectedIndex(cf.sblockFont);
+                                      itemsList.addElement(sblockFont);                                     
+
                                         useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); 
                                         itemsList.addElement(useTabs);
                                           useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); 
                                           itemsList.addElement(useClipBoard);
          }
-         else if(type==netStr){//
+         else if(type==SR.MS_netStr){//
 //#ifdef PEP        
 //#             itemsList.addElement(new SimpleString(SR.MS_PEP, true));
 //#               sndrcvmood = new CheckBox(SR.MS_USERMOOD, cf.sndrcvmood);
@@ -448,7 +445,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                          itemsList.addElement(adhoc);
 
          } 
-         else if(type==grStr){
+         else if(type==SR.MS_grStr){
              useLowMemory_userotator = new CheckBox(SR.MS_ANIMATION, cf.useLowMemory_userotator);
              itemsList.addElement(useLowMemory_userotator);
               gradient_cursor  = new CheckBox(SR.MS_GRADIENT_CURSOR,cf.gradient_cursor); 
@@ -488,7 +485,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                          showBaloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); 
                          itemsList.addElement(showBaloons);
          }
-         else if(type==appStr){
+         else if(type==SR.MS_appStr){
            itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
            autoLogin = new CheckBox(SR.MS_AUTOLOGIN, cf.autoLogin); 
            itemsList.addElement(autoLogin);
@@ -540,7 +537,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                                executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); 
                                itemsList.addElement(executeByNum);
          }
-         else if(type==astatusStr){
+         else if(type==SR.MS_astatusStr){
            autoAwayType=new DropChoiceBox(display, SR.MS_AWAY_TYPE);
            autoAwayType.append(SR.MS_AWAY_OFF);
            autoAwayType.append(SR.MS_AWAY_LOCK);
@@ -554,7 +551,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                itemsList.addElement(awayStatus);            
 
          } 
-         else if(type==clchatStr){
+         else if(type==SR.MS_clchatStr){
            itemsList.addElement(new SimpleString(SR.MS_CLCHAT_ON, true));
              useClassicChat = new CheckBox(SR.MS_CLCHAT_ON, cf.useClassicChat);
              itemsList.addElement(useClassicChat);
@@ -569,6 +566,7 @@ public class PluginsConfig extends DefForm implements MenuListener
          else if(type=="Clear"){//?
             int size = StaticData.getInstance().roster.hContacts.size(); 
             System.gc();
+            midlet.BombusQD.cashe.get().menu_PlaginsConfig=null;            
             long free = Runtime.getRuntime().freeMemory()>>10;
             long total = Runtime.getRuntime().totalMemory()>>10;
             itemsList.addElement(new SimpleString("Undo:"+Long.toString(free)+"/"+Long.toString(total), true));
@@ -582,6 +580,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                             System.gc();
                         }
              }
+
             long free_ = Runtime.getRuntime().freeMemory()>>10;
             long total_ = Runtime.getRuntime().totalMemory()>>10;
             itemsList.addElement(new SimpleString("After:"+Long.toString(free_)+"/"+Long.toString(total_), true));            
@@ -608,7 +607,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     }
     
     public void cmdOk() {
-         if(type==contactStr){
+         if(type==SR.MS_contactStr){
             cf.showOfflineContacts=showOfflineContacts.getValue();
             cf.selfContact=selfContact.getValue();
             cf.showTransports=showTransports.getValue();
@@ -624,7 +623,7 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.ignore=ignore.getValue();
             
          }
-         else if(type==msgStr){
+         else if(type==SR.MS_msgStr){
             cf.storeConfPresence=storeConfPresence.getValue();
             cf.autoScroll=autoScroll.getValue();
             cf.timePresence=timePresence.getValue();
@@ -638,10 +637,11 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.smiles=smiles.getValue(); 
             cf.capsState=capsState.getValue(); 
             cf.textWrap=textWrap.getSelectedIndex();
+            cf.sblockFont=sblockFont.getSelectedIndex();
             cf.useTabs=useTabs.getValue();
             cf.useClipBoard=useClipBoard.getValue();
          }
-         else if(type==netStr){
+         else if(type==SR.MS_netStr){
 //#ifdef PEP             
 //#             cf.sndrcvmood=sndrcvmood.getValue();
 //#             cf.rcvtune=rcvtune.getValue();
@@ -657,7 +657,7 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.fileTransfer=fileTransfer.getValue();
             cf.adhoc=adhoc.getValue(); 
          } 
-         else if(type==grStr){
+         else if(type==SR.MS_grStr){
            cf.useLowMemory_userotator=useLowMemory_userotator.getValue();
            cf.gradient_cursor=gradient_cursor.getValue();
            ui.VirtualList.memMonitor=cf.memMonitor=memMon.getValue();
@@ -688,7 +688,7 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#            } catch (Exception e) { }
 //#endif   
          }
-         else if(type==appStr){
+         else if(type==SR.MS_appStr){
             cf.autoLogin=autoLogin.getValue();
             cf.autoJoinConferences=autoJoinConferences.getValue();
             cf.collapsedGroups=collapsedGroups.getValue();
@@ -705,15 +705,15 @@ public class PluginsConfig extends DefForm implements MenuListener
             }        
             cf.executeByNum=executeByNum.getValue();
          }
-         else if(type==hotkeysStr){
+         else if(type==SR.MS_hotkeysStr){
  
          }
-         else if(type==astatusStr){
+         else if(type==SR.MS_astatusStr){
             cf.autoAwayType=autoAwayType.getSelectedIndex();
             cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
             cf.setAutoStatusMessage=awayStatus.getValue();
          } 
-         else if(type==clchatStr){
+         else if(type==SR.MS_clchatStr){
             cf.useClassicChat=useClassicChat.getValue();
             cf.use_phone_theme=use_phone_theme.getValue();
             cf.classic_chat_height=Integer.parseInt(classic_chat_height.getValue());

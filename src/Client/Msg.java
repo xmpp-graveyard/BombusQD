@@ -50,7 +50,9 @@ public class Msg {
     public final static int MESSAGE_TYPE_SYSTEM=15;
     public final static int MESSAGE_TYPE_EVIL=16;
     //public final static int MESSAGE_TYPE_GAME=17;
-    //public final static int MESSAGE_TYPE_JUICK=18;    
+//#ifdef JUICK.COM    
+//#     public final static int MESSAGE_TYPE_JUICK=18;   
+//#endif                                   
     
     public boolean highlite;
     public boolean history;
@@ -119,7 +121,9 @@ public class Msg {
             case MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
             case MESSAGE_TYPE_EVIL: return 0xFF0000;
             case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
-            //case MESSAGE_TYPE_GAME: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
+//#ifdef JUICK.COM    
+//#             case MESSAGE_TYPE_JUICK: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+//#endif
         }
         return ColorTheme.getColor(ColorTheme.LIST_INK);
     }

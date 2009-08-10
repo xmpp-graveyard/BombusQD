@@ -320,7 +320,7 @@ public class Roster
 //#ifdef GRAPHICS_MENU
 //#     private Command cmdDifficulty=new Command("Difficulty Level", Command.SCREEN, 45);//2
 //#     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 1);//2
-//#       private Command cmdOptions=new Command(/*SR.MS_OPTIONS*/"Plugins", Command.SCREEN, 16);//MS_OPTIONS - основные,Tools - Настройки
+//#       private Command cmdOptions=new Command(SR.MS_OPTIONS, Command.SCREEN, 16);
 //#      /*
 //#ifdef HISTORY      
 //#       private Command cmdHistory=new Command(SR.MS_HISTORY_OPTIONS, Command.SCREEN, 17);
@@ -553,7 +553,12 @@ public class Roster
       
 //#ifdef GRAPHICS_MENU   
 //#          if (c==cmdActions) { cmdActions(); }
-//#            else if(c==cmdOptions){ new PluginsConfig(display, this);
+//#            else if(c==cmdOptions){ 
+//#             if(midlet.BombusQD.cashe.get().menu_PlaginsConfig==null){
+//#                 new PluginsConfig(display, this);
+//#               }else{
+//#                 display.setCurrent(midlet.BombusQD.cashe.get().menu_PlaginsConfig);
+//#              }
 //#            }
 //#            else if(c==cmdVcard){ 
 //#                 Contact cs=midlet.BombusQD.sd.roster.selfContact();
@@ -2039,9 +2044,7 @@ public class Roster
                 Message message = (Message) data;
                 
                 String from=message.getFrom();
-                
-                //System.out.println("data msg "+data);
-                
+
                 if (myJid.equals(new Jid(from), false)) //Enable forwarding only from self-jids
                     from=message.getXFrom();
                 
@@ -2260,8 +2263,67 @@ public class Roster
                 if (body==null) 
                     return JabberBlockListener.BLOCK_REJECTED;
      
+                
+                
+                
                 Msg m=new Msg(mType, from, subj, body);    
                 m.MucChat = groupchat;
+                
+          
+//#ifdef JUICK.COM
+//# 
+//#                  //JabberDataBlock juickUnameNs = data.findNamespace("nick", "http://jabber.org/protocol/nick");
+//#                  //if (juickUnameNs!=null) juickUnameNs.getText();
+//#                 
+//#                  JabberDataBlock juickNs = data.findNamespace("juick","http://juick.com/message");
+//# 
+//#                  if(juickNs!=null){
+//# 
+//#                        StringBuffer sb = new StringBuffer();   
+//#                        String rid = juickNs.getAttribute("rid");
+//#                        String mid = juickNs.getAttribute("mid");
+//#                        String bodyAnsw = "";
+//#                        boolean photo = (juickNs.getAttribute("photo")==null)?false:true;                    
+//#                         JabberDataBlock child = null; 
+//#                         
+//#                          sb.append('@');
+//#                          sb.append(juickNs.getAttribute("uname")).append(" ");
+//#                          sb.append('(');
+//#                          sb.append("#").append(juickNs.getAttribute("mid"));
+//#                            if(rid!=null) sb.append("/").append(rid);
+//#                            if(photo) sb.append("+photo");
+//#                          sb.append(')');
+//#                          
+//#                         
+//#                         int size=juickNs.getChildBlocks().size();
+//#                         for(int i=0;i<size;i++){  
+//#                           child =(JabberDataBlock)juickNs.getChildBlocks().elementAt(i);
+//#                           if (child.getTagName().equals("tag")) {
+//#                             sb.append("\n *"+child.getText()+"* ");//+tagName with select
+//#                           }
+//#                           if (child.getTagName().equals("body")) {
+//#                             bodyAnsw = child.getText();
+//#                           }                          
+//#                         }
+//#                         sb.append("\n").append(bodyAnsw);
+//#                         if(message.getUrl()!=null) sb.append("\n").append(oob);
+//#                         m.body=sb.toString();
+//#                         sb.setLength(0);
+//#                       
+//#                         sb.append("#").append(mid);
+//#                         if(rid!=null) sb.append("/").append(rid);
+//#                         sb.append(" ");
+//#                         m.messageType=Msg.MESSAGE_TYPE_JUICK;
+//#                         m.id=sb.toString(); // #id/num || #id
+//#                         sb=null;
+//#                         bodyAnsw=null;
+//#                         mid=null;
+//#                         rid=null;
+//#                         
+//#                   }
+//#                 juickNs=null;
+//# 
+//#endif                               
 
                 if (tStamp!=0) 
                     m.dateGmt=tStamp;

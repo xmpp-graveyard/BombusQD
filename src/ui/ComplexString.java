@@ -53,8 +53,7 @@ public class ComplexString extends Vector implements VirtualElement {
     
     
     protected Font font=FontCache.getFont(false, FontCache.msg);
-    public final static Font bfont=FontCache.getFont(true, FontCache.msg);    
-    
+
     private int font_height = font.getHeight();
     
     private int height;
@@ -161,8 +160,8 @@ public class ComplexString extends Vector implements VirtualElement {
                         if(midlet.BombusQD.cf.boldNicks) {  g.setFont(font); }
                         
                         if(boldtext){
-                           g.setFont(bfont);
-                           dw=bfont.stringWidth((String)elementData[index]);
+                           g.setFont(FontCache.getFont());
+                           dw=FontCache.getFont().stringWidth((String)elementData[index]);
                            boldtext=false;
                         }else{
                            g.setFont(font);

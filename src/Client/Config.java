@@ -153,7 +153,7 @@ public class Config {
     public int baloonFont=0;
     public String lang;
     public boolean capsState=false;
-    public int textWrap=2;
+    public int textWrap=1;
     public int autoSubscribe=SUBSCR_ASK;
     // runtime values
     public boolean allowMinimize=false;
@@ -299,8 +299,9 @@ public class Config {
     public boolean isStatusFirst=false;
     
     public boolean dont_loadMC=false;
-   
-   
+    public int sblockFont=1;
+
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -618,7 +619,8 @@ public class Config {
             cursor_bgnd=inputStream.readInt();
             avatar_cashe_size=inputStream.readInt();
             //difficulty_level=inputStream.readInt();
-            maxAvatarWidth=inputStream.readInt();  
+            maxAvatarWidth=inputStream.readInt();
+            sblockFont=inputStream.readInt();
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -836,7 +838,8 @@ public class Config {
             outputStream.writeInt(cursor_bgnd);
             outputStream.writeInt(avatar_cashe_size);
             //outputStream.writeInt(difficulty_level);
-            outputStream.writeInt(maxAvatarWidth);//32          
+            outputStream.writeInt(maxAvatarWidth);//32     
+            outputStream.writeInt(sblockFont);
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confInt", 0, true);        
     }

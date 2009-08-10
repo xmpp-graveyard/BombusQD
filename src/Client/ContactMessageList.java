@@ -606,9 +606,17 @@ public class ContactMessageList extends MessageList {
         if (keyCode==KEY_POUND) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-                Reply();
-                return;
+                Reply(); return;
             }
+    
+//#ifdef JUICK.COM
+//#             else{
+//#               if(contact.getJid().indexOf("juick@juick.com")>-1){
+//#                 Reply(); return;                  
+//#               }
+//#             }
+//#endif             
+            
 //#endif
             keyGreen();
             return;
@@ -723,9 +731,18 @@ public class ContactMessageList extends MessageList {
                 msg.messageType == Msg.MESSAGE_TYPE_OUT ||
                 msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
                 keyGreen();
-            else
+            else{
 //#ifdef RUNNING_MESSAGE
-//#                 midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, msg.from+": ");
+//#                 
+//#                String messg = msg.from+": "; 
+//#ifdef JUICK.COM                
+//#                if(msg.messageType==Msg.MESSAGE_TYPE_JUICK){
+//#                     messg=msg.id;
+//#                }
+//#endif               
+//#                midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg);
+//#             }
+//#             
 //#else
             new MessageEdit(display, this, contact, msg.from+": ");
 //#endif

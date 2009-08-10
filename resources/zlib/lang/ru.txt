@@ -550,7 +550,6 @@ Add Search Query	Запрос поиска
 Find Text	Найти!
 End search!	Поиск окончен!
 Send Mood in Msg	Отсылать Настроение в сообщении
-Advanced Options	Дополнительные настройки
 new MessageEdit	Экономить память%Заменяет старое окно ввода сообщения на альтернативное
 Turn OFF Animation	Выключить анимацию%Отключает анимацию прокрутки элементов ростера,превосходящих ширину экрана и анимацию появления баллунов
 Turn OFF Message Icon	Убрать иконки сообщения
@@ -632,3 +631,29 @@ Checkers:stop game	Остановить игру
 Checkers:resume	Возобновить игру
 Don't load conference contacts	Не загружать контакты конференции
 Modules config	Настройка модулей
+Advanced Options	Дополнительные настройки
+Contacts	Контакты
+Chat	Окно чата и сообщений
+Network	Настройки сети
+Graphics	Графика
+Application	Приложение
+Hotkeys	Горячие клавиши
+Autostatus	Автостатус
+Classic Chat	Классический чат
+Color Themes	Цветовые схемы
+Cashe	Кэш
+History	История сообщений
+Fonts	Шрифты
+Import/Export	Импорт/Экспорт данных
+Notifications	Звуки и Уведомления
+Tasks	Планировщик
+Avatars	Аватары
+Selected text elements font	Шрифт выделенных сообщений
+Bold Font(small)	Жирный(мелкий)
+Bold Font(middle)	Жирный(средний)
+Bold Font(large)	Жирный(крупный)
+Bold Font(italic/small)	Жирный+Курсив(мелкий)
+Bold Font(italic/middle)	Жирный+Курсив(средний)
+Bold Font(italic/large)	Жирный+Курсив(крупный)
+No select	Без выделения
+Config	Настроить
