@@ -657,3 +657,4 @@ Bold Font(italic/middle)	Жирный+Курсив(средний)
 Bold Font(italic/large)	Жирный+Курсив(крупный)
 No select	Без выделения
 Config	Настроить
+Use animated smiles	Анимированные смайлы

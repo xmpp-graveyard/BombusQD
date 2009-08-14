@@ -4,6 +4,7 @@
  * Created on 31.01.2005, 0:06
  *
  * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
+ * Copyright (c) 2009, Alexej Kotov (aqent), http://bombusmod-qd.wen.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,7 +28,7 @@
  
 /**
  *
- * @author Eugene Stahov
+ * @author Eugene Stahov,aqent
  */
 
 package ui;
@@ -63,10 +64,21 @@ public class ImageList {
             width = resImage.getWidth()/columns;
             height = (rows==0)? width : resImage.getHeight()/rows;
         } catch (Exception e) { 
-            System.out.print("Can't load ");
+            System.out.print("Can't load ImgList ");
             System.out.println(resource);
         }
     }
+    
+    public ImageList(String s)
+    {
+        try {
+            resImage = Image.createImage(s);
+            width = height = 20;
+        } catch (Exception e) { 
+            System.out.print("Can't load smile: ");
+            System.out.println(resource);
+        }
+    }     
     
    public static Image resize(Image image, int w, int h) {
         int w0 = image.getWidth(); //Ширина 200

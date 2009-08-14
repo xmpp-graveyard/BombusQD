@@ -95,6 +95,7 @@ public class SmilePicker
 
          this.t=tbox;
          
+         setMainBarItem(new MainBar(locale.SR.MS_SELECT));         
          il = SmilesIcons.getInstance();
 //#ifdef SMILES 
         smileTable=MessageParser.getInstance().getSmileTable();

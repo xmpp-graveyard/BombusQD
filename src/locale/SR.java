@@ -852,6 +852,8 @@ public class SR {
    public static String MS_sblock_ibm = loadString( "Bold Font(italic/middle)");
    public static String MS_sblock_ibl = loadString( "Bold Font(italic/large)");
    public static String MS_sblock_no = loadString( "No select");  
+   
+   public static String MS_ANI_SMILES = loadString( "Use animated smiles");     
 
    
     private SR() { }

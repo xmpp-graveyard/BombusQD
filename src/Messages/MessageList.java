@@ -93,6 +93,8 @@ public abstract class MessageList extends VirtualList
 //#         smiles=false;
 //#endif
         enableListWrapping(false);
+        
+        //if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
 
         cursor=0;//activate
         setCommandListener(this);

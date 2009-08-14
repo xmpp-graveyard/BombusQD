@@ -49,6 +49,8 @@ import Menu.MyMenu;
 import util.StringLoader;
 import java.util.Vector;
 import net.jscience.math.MathFP;
+import images.SmilesIcons;
+import ui.ImageList;
 /**
  *
  * @author aqent
@@ -93,7 +95,8 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#ifdef POPUPS
     private CheckBox popUps;
 //#endif
-    private CheckBox showBaloons;     
+    private CheckBox showBaloons;
+    private CheckBox animatedSmiles;
     private CheckBox eventDelivery;
     private CheckBox executeByNum;
     private CheckBox sendMoodInMsg;
@@ -484,6 +487,8 @@ public class PluginsConfig extends DefForm implements MenuListener
                        itemsList.addElement(popUps);
                          showBaloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); 
                          itemsList.addElement(showBaloons);
+                           animatedSmiles = new CheckBox(SR.MS_ANI_SMILES, cf.animatedSmiles); 
+                           itemsList.addElement(animatedSmiles);
          }
          else if(type==SR.MS_appStr){
            itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
@@ -670,6 +675,10 @@ public class PluginsConfig extends DefForm implements MenuListener
            
            cf.popUps=popUps.getValue();
            cf.showBalloons=showBaloons.getValue();
+           cf.animatedSmiles=animatedSmiles.getValue();
+           if(!cf.animatedSmiles){
+              SmilesIcons.stopTimer();
+           }
 //#ifdef BACK_IMAGE
 //#            try {
 //#             if (/*img==null && */ cf.bgnd_image==1 /*|| cf.bgnd_image==2*/ ){

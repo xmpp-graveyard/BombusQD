@@ -171,9 +171,9 @@ public final class MessageParser // implements Runnable
             int strnumber=0;
             boolean strhaschars=false;
             boolean endline=false;
-            
-            InputStream in=this.getClass().getResourceAsStream("/images/smiles.txt");
-            
+
+            InputStream in=this.getClass().getResourceAsStream("/images/smiles/smiles.txt");
+
             boolean firstSmile=true;
             
             int c;
@@ -222,7 +222,7 @@ public final class MessageParser // implements Runnable
         addSmile(root, "\01", ComplexString.NICK_ON);
         addSmile(root, "\02", ComplexString.NICK_OFF);
 //#endif
-        if(midlet.BombusQD.cf.textWrap==1 && midlet.BombusQD.cf.sblockFont!=6) addSmile(root, " *", BOLD);
+        addSmile(root, " *", BOLD);
         
         emptyRoot=new Leaf();
 	addSmile(emptyRoot, "http://", URL);
@@ -235,7 +235,7 @@ public final class MessageParser // implements Runnable
         addSmile(emptyRoot, "\01", ComplexString.NICK_ON);
         addSmile(emptyRoot, "\02", ComplexString.NICK_OFF);
 //#endif
-        if(midlet.BombusQD.cf.textWrap==1 && midlet.BombusQD.cf.sblockFont!=6) addSmile(emptyRoot, " *", BOLD);
+        addSmile(emptyRoot, " *", BOLD);
     }
     
 
@@ -359,18 +359,21 @@ public final class MessageParser // implements Runnable
               switch(smileIndex) {    
         
                  case BOLD: 
-                     if (wordStartPos!=pos) {
+                     if(midlet.BombusQD.cf.textWrap==1 && midlet.BombusQD.cf.sblockFont!=6){
+                       if (wordStartPos!=pos) {
                         if(txt.indexOf("*",pos)>-1){
                           boldtext=true;
                           s.append(txt.substring(wordStartPos,pos));
-			  w+=wordWidth;
+                          w+=wordWidth;
                           wordWidth=0;
                           wordStartPos=pos;                           
                          }
-                      }                     
-                      if (s.length()>0) l.addElement(s.toString());
-                      s.setLength(0);
+                       }                     
+                       if (s.length()>0) l.addElement(s.toString());
+                       s.setLength(0);
+                      }
                       break;
+                     
                  
                  case URL:
                       if (s.length()>0) l.addElement(s.toString());

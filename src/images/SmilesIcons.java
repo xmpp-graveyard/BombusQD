@@ -3,7 +3,9 @@
  *
  * Created on 21.05.2008, 22:24
  *
+ * Copyright (c) 2005-2008, Eugene Stahov (evgs), http://bombus-im.org
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2009, Alexej Kotov (aqent), http://bombusmod-qd.wen.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,33 +31,97 @@ package images;
 
 import Messages.MessageParser;
 import ui.ImageList;
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Canvas;
+import javax.microedition.lcdui.Displayable;
+import java.util.*;
 
 /**
  *
- * @author EvgS
+ * @author EvgS,aqent
  */
 public class SmilesIcons extends ImageList {
+
+    private final static String res = "/images/smiles/smiles.png";
+    private final static String restxt = "/images/smiles/smiles.txt";
+    private final static String path = "/images/smiles/";
+
+    private static Timer timer;
+    private static Vector anismiles;
+    private static int indexPos = 0;    
+    private static int interval=195;
     
-    private static String res= "/images/smiles.png";
-    private static String restxt= "/images/smiles.txt";
+    private static int smilesCount;
+    private static int cols; 
+    private static int SMILES_IN_ROW=16;    
     
-    private final static int SMILES_IN_ROW=16;
-    private static int cols;
-    /** Creates a new instance of SmilesIcons */
-    private SmilesIcons() {
-	super(res, cols, SMILES_IN_ROW);
+    
+    private SmilesIcons()
+    {
+      super(res, cols, SMILES_IN_ROW);
+      if(anismiles==null){
+         anismiles = new Vector(smilesCount);
+           for(int i=1; i<=smilesCount; i++){
+             try {
+                ImageList setSmile = new ImageList(path + Integer.toString(i) + ".png");
+                anismiles.addElement(setSmile);
+             } catch(Exception e) {
+                System.out.println("Err: " + i);
+             }
+           }
+         if(timer==null) startTimer();
+      }
+    }    
+
+
+    public final static void startTimer(){
+        //System.out.println("start");
+        if(timer==null){
+          timer = new Timer();
+          timer.schedule(new Counter(), 200 , interval);
+        }
     }
     
-    private static ImageList instance;
+    
+    public final static void stopTimer(){
+        //System.out.println("stop");
+        if(timer!=null){
+          timer.cancel();
+          timer=null;
+        }
+    }    
+    
+
+    private final static class Counter extends TimerTask {
+        private int pause=0;
+        public Counter(){}
+	public void run () {
+              //System.out.println(indexPos);
+              indexPos++;
+              if(indexPos == 10 ) indexPos = 0;
+              Displayable displayable=midlet.BombusQD.getInstance().display.getCurrent();
+              if (displayable instanceof Canvas) ((Canvas)displayable).repaint();
+  	}
+    }  
+    
+
+    public final void drawImage(Graphics g, int index, int x, int y) {
+      if(midlet.BombusQD.cf.animatedSmiles){
+          ((ImageList)anismiles.elementAt(index)).drawImage(g, indexPos , x, y);
+      }else super.drawImage(g,index,x,y);
+    }       
+    
+    
+    public static ImageList instance;
+
     public static ImageList getInstance() {
 	if (instance==null){
 //#ifdef SMILES
             try {
-                int smilesCount=MessageParser.getInstance().getSmileTable().size();
+                smilesCount=MessageParser.getInstance().getSmileTable().size();
                 cols=ceil(SMILES_IN_ROW, smilesCount);
             } catch (Exception e) {
-                System.out.print("Can't load ");
-                System.out.println(restxt);
+                System.out.println("Exception SmilesIcons: "+restxt);
             }
 //#endif
             instance=new SmilesIcons();

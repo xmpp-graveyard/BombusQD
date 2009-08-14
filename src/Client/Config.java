@@ -299,6 +299,7 @@ public class Config {
     public boolean isStatusFirst=false;
     
     public boolean dont_loadMC=false;
+    public boolean animatedSmiles=true;    
     public int sblockFont=1;
 
     
@@ -570,7 +571,9 @@ public class Config {
             module_ie=inputStream.readBoolean();
             module_notify=inputStream.readBoolean();
             module_tasks=inputStream.readBoolean();
-            module_avatars=inputStream.readBoolean();            
+            module_avatars=inputStream.readBoolean();   
+            
+            animatedSmiles=inputStream.readBoolean(); 
             
 	    inputStream.close();
             inputStream=null;
@@ -796,7 +799,9 @@ public class Config {
             outputStream.writeBoolean(module_ie);
             outputStream.writeBoolean(module_notify);
             outputStream.writeBoolean(module_tasks);
-            outputStream.writeBoolean(module_avatars);          
+            outputStream.writeBoolean(module_avatars);  
+            
+            outputStream.writeBoolean(animatedSmiles);       
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean_", 0, true);      

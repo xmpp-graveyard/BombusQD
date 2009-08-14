@@ -105,14 +105,19 @@ public class InfoWindow
         itemsList.addElement(description);
         
         thanks = new MultiLine("Thanks to:","Testing: zaetz,demon(Dmitry Krylov),magnit,Sniffy,NNn\n" +
-                "Color-Themes,Clients Images: Xa\n" +
+                "Graphics && Animated-smiles Pack: Xa\n" +
                 "Actions icons: Rederick Asher\n" +
                 "Site managment: BiLLy\n" +
                 "Jimm Dev's for back.png ;)\n" +
                 "Windows Fonts: magdelphi(mobilab.ru)" +
-                "\nMathFP library",super.superWidth);
+                "\nMathFP library" +
+                "\nSmiles Author: Copyright (c) Aiwan. Kolobok smiles",super.superWidth);
         thanks.selectable=false;
         itemsList.addElement(thanks);
+        itemsList.addElement(new LinkString("http://www.kolobok.us")
+                { public void doAction() { try { BombusQD.getInstance().platformRequest("http://www.kolobok.us"); } 
+                  catch (ConnectionNotFoundException ex) { }}}
+        );           
         
         itemsList.addElement(new LinkString("http://bombusmod-qd.wen.ru")
                 { public void doAction() { try { BombusQD.getInstance().platformRequest("http://bombusmod-qd.wen.ru"); } 
