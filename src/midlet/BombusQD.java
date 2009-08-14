@@ -64,7 +64,7 @@ import Account.YesNoAlert;
 public class BombusQD extends MIDlet implements Runnable
 {
     
-    private Display display  = Display.getDisplay(this);
+    public Display display  = Display.getDisplay(this);
     private boolean isRunning;
     public boolean isMinimized;
     

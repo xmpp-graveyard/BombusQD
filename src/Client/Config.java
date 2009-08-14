@@ -871,11 +871,32 @@ public class Config {
     }   
    
 
+    private Timer timer=null;
+    private int count=0;
+
+    private class Saver extends TimerTask {
+	public void run () {
+          count++;
+          //System.out.println("save..");          
+          switch(count){
+              case 1: break;
+              case 2: saveBoolean();  break;
+              case 3: saveBoolean_(); break;
+              case 4: saveUTF(); break;
+              case 5: saveInt(); break;
+              case 6: timer.cancel(); timer = null; count = 0; break;
+          }
+  	}
+    }        
+
+    
     public void saveToStorage(){
-        System.out.println(saveBoolean());
-        System.out.println(saveBoolean_());
-        System.out.println(saveInt());
-        System.out.println(saveUTF());
+        if(timer==null){
+          timer = new Timer();
+          timer.schedule(new Saver() , 10 , 100);
+        }else{
+          timer.cancel();
+        }        
     }
     
     public void updateTime(){

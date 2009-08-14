@@ -51,6 +51,7 @@ import java.util.Vector;
 import net.jscience.math.MathFP;
 import images.SmilesIcons;
 import ui.ImageList;
+import java.util.*;
 /**
  *
  * @author aqent
@@ -59,124 +60,124 @@ public class PluginsConfig extends DefForm implements MenuListener
 {
     private Display display;
     
-    private CheckBox showOfflineContacts;
-    private CheckBox selfContact;
-    private CheckBox showTransports;
-    private CheckBox ignore;
-    private CheckBox collapsedGroups;
-    private CheckBox autoFocus;
-    private CheckBox showResources;
-    private CheckBox useBoldFont;
-    private CheckBox rosterStatus;
+    private static CheckBox showOfflineContacts;
+    private static CheckBox selfContact;
+    private static CheckBox showTransports;
+    private static CheckBox ignore;
+    private static CheckBox collapsedGroups;
+    private static CheckBox autoFocus;
+    private static CheckBox showResources;
+    private static CheckBox useBoldFont;
+    private static CheckBox rosterStatus;
 //#ifdef CLIENTS_ICONS
-    private CheckBox showClientIcon;
+    private static CheckBox showClientIcon;
 //#endif
-    private CheckBox dont_loadMC;
-    private CheckBox gradient_cursor;    
-    private DropChoiceBox subscr;
-    private DropChoiceBox nil;
+    private static CheckBox dont_loadMC;
+    private static CheckBox gradient_cursor;    
+    private static DropChoiceBox subscr;
+    private static DropChoiceBox nil;
 //#ifdef SMILES
-    private CheckBox smiles;
+    private static CheckBox smiles;
 //#endif
-    private CheckBox eventComposing;
-    private CheckBox capsState;
-    private CheckBox storeConfPresence;
-    private CheckBox timePresence;
-    private CheckBox autoScroll;
-    private CheckBox useTabs;
+    private static CheckBox eventComposing;
+    private static CheckBox capsState;
+    private static CheckBox storeConfPresence;
+    private static CheckBox timePresence;
+    private static CheckBox autoScroll;
+    private static CheckBox useTabs;
 //#ifdef PEP
-//#     private CheckBox sndrcvmood;
-//#     private CheckBox rcvtune;
-//#     private CheckBox rcvactivity;
+//#     private static CheckBox sndrcvmood;
+//#     private static CheckBox rcvtune;
+//#     private static CheckBox rcvactivity;
 //#endif
 //#ifdef RUNNING_MESSAGE
-//#     private CheckBox notifyWhenMessageType;
+//#     private static CheckBox notifyWhenMessageType;
 //#endif
 //#ifdef POPUPS
-    private CheckBox popUps;
+    private static CheckBox popUps;
 //#endif
-    private CheckBox showBaloons;
-    private CheckBox animatedSmiles;
-    private CheckBox eventDelivery;
-    private CheckBox executeByNum;
-    private CheckBox sendMoodInMsg;
-    private CheckBox savePos;
-    private CheckBox boldNicks;    
+    private static CheckBox showBaloons;
+    private static CheckBox animatedSmiles;
+    private static CheckBox eventDelivery;
+    private static CheckBox executeByNum;
+    private static CheckBox sendMoodInMsg;
+    private static CheckBox savePos;
+    private static CheckBox boldNicks;    
 //#ifdef DETRANSLIT
-//#     private CheckBox autoDetranslit;
+//#     private static CheckBox autoDetranslit;
 //#endif
 //#ifdef CLIPBOARD
-//#     private CheckBox useClipBoard;
+//#     private static CheckBox useClipBoard;
 //#endif
 //#if LOGROTATE
-//#     private NumberInput messageCountLimit;
+//#     private static NumberInput messageCountLimit;
 //#endif
-    private NumberInput messageLimit;
-    private CheckBox autoLogin;
-    private CheckBox useLowMemory_msgedit;
-    private CheckBox useLowMemory_userotator;  
-  //private CheckBox animateMenuAndRoster;
-    private CheckBox useLowMemory_iconmsgcollapsed;
-    private CheckBox iconsLeft;    
-    private CheckBox autoJoinConferences;
-    private NumberInput reconnectCount;
-    private NumberInput reconnectTime;
-    private CheckBox nokiaReconnectHack;
+    private static NumberInput messageLimit;
+    private static CheckBox autoLogin;
+    private static CheckBox useLowMemory_msgedit;
+    private static CheckBox useLowMemory_userotator;  
+  //private static CheckBox animateMenuAndRoster;
+    private static CheckBox useLowMemory_iconmsgcollapsed;
+    private static CheckBox iconsLeft;    
+    private static CheckBox autoJoinConferences;
+    private static NumberInput reconnectCount;
+    private static NumberInput reconnectTime;
+    private static CheckBox nokiaReconnectHack;
 //#ifdef FILE_TRANSFER
-    private CheckBox fileTransfer;
+    private static CheckBox fileTransfer;
 //#endif
 //#ifdef ADHOC
-//#     private CheckBox adhoc;
+//#     private static CheckBox adhoc;
 //#endif
-    private CheckBox fullscr;
-    private CheckBox memMon;
-    private CheckBox enableVersionOs;
-    private CheckBox queryExit;
+    private static CheckBox fullscr;
+    private static CheckBox memMon;
+    private static CheckBox enableVersionOs;
+    private static CheckBox queryExit;
 
-    private CheckBox lightState;
-    private CheckBox popupFromMinimized;
-    private NumberInput fieldGmt; 
-    private NumberInput scrollWidth; 
-    private CheckBox drawScrollBgnd;    
-    private DropChoiceBox textWrap;
-    private DropChoiceBox sblockFont;    
-    private DropChoiceBox langFiles;
-    private DropChoiceBox bgnd_image;    
+    private static CheckBox lightState;
+    private static CheckBox popupFromMinimized;
+    private static NumberInput fieldGmt; 
+    private static NumberInput scrollWidth; 
+    private static CheckBox drawScrollBgnd;    
+    private static DropChoiceBox textWrap;
+    private static DropChoiceBox sblockFont;    
+    private static DropChoiceBox langFiles;
+    private static DropChoiceBox bgnd_image;    
 //#ifdef AUTOSTATUS
-//#     private DropChoiceBox autoAwayType;
-//#     private NumberInput fieldAwayDelay; 
-//#     private CheckBox awayStatus;
+//#     private static DropChoiceBox autoAwayType;
+//#     private static NumberInput fieldAwayDelay; 
+//#     private static CheckBox awayStatus;
 //#endif
-    private DropChoiceBox panels;
-    private CheckBox drawMenuCommand;
-    private CheckBox showNickNames;
-    private CheckBox oldSE;
+    private static DropChoiceBox panels;
+    private static CheckBox drawMenuCommand;
+    private static CheckBox showNickNames;
+    private static CheckBox oldSE;
     
-    private CheckBox useClassicChat; 
-    private CheckBox use_phone_theme;
-    private NumberInput classic_chat_height;     
-    private NumberInput line_count;    
+    private static CheckBox useClassicChat; 
+    private static CheckBox use_phone_theme;
+    private static NumberInput classic_chat_height;     
+    private static NumberInput line_count;    
     
-    private Vector langs[];
+    private static Vector langs[];
     
 
-    private PluginBox contacts;    
-    private PluginBox messages;    
-    private PluginBox network;
-    private PluginBox graphics;    
-    private PluginBox app;
-    private PluginBox userKeys;    
-    private PluginBox autostatus;
-    private PluginBox classicchat; 
-    private PluginBox theme;  
-    private PluginBox cashe;  
+    private static PluginBox contacts;    
+    private static PluginBox messages;    
+    private static PluginBox network;
+    private static PluginBox graphics;    
+    private static PluginBox app;
+    private static PluginBox userKeys;    
+    private static PluginBox autostatus;
+    private static PluginBox classicchat; 
+    private static PluginBox theme;  
+    private static PluginBox cashe;  
     
-    private PluginBox history;
-    private PluginBox fonts; 
-    private PluginBox ie;  
-    private PluginBox notify; 
-    private PluginBox tasks;
-    private PluginBox avatars;      
+    private static PluginBox history;
+    private static PluginBox fonts; 
+    private static PluginBox ie;  
+    private static PluginBox notify; 
+    private static PluginBox tasks;
+    private static PluginBox avatars;      
 
     private final Config cf = midlet.BombusQD.cf;
          
@@ -304,15 +305,11 @@ public class PluginsConfig extends DefForm implements MenuListener
         
     }
     
+    
+
     public void destroyView(){
-        long s1 = System.currentTimeMillis();        
-        cf.updateTime();
-        cf.saveToStorage();//save and exit
-        long s2 = System.currentTimeMillis();
-        System.out.println((s2-s1)+" msec");
-        display.setCurrent(parentView);        
-        //62 - new
-        //100msec - old
+       display.setCurrent(parentView);
+       cf.saveToStorage();
     }
     
     

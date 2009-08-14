@@ -3197,7 +3197,11 @@ public class Roster
 //#endif
        	//else if (keyCode==KEY_NUM3) new ActiveContacts(display, this, null);
        	else if (keyCode==KEY_NUM4) {
-//new ConfigForm(display, this);
+            if(midlet.BombusQD.cashe.get().menu_PlaginsConfig==null){
+                new PluginsConfig(display, this);
+              }else{
+                display.setCurrent(midlet.BombusQD.cashe.get().menu_PlaginsConfig);
+             }
         }
         else if (keyCode==KEY_NUM6) {
             midlet.BombusQD.cf.fullscreen=!midlet.BombusQD.cf.fullscreen;

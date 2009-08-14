@@ -142,7 +142,7 @@ public class SmilePicker
     public void onSelect(){
         try {
 //#ifdef RUNNING_MESSAGE
-//#                 t.insert(getTipString() , caretPos);
+//#                 t.insert(" "+getTipString()+" ", caretPos);
 //#else
             t.insert(getTipString() , caretPos);
 //#endif
