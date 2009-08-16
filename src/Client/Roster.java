@@ -873,6 +873,21 @@ public class Roster
         reEnumRoster();
     }
     
+    public void leaveAllMUCs() {//Tishka17
+         Contact c=null;
+         ConferenceGroup confGroup=null;
+         int size=hContacts.size();
+         synchronized (hContacts) {
+             for(int i=0;i<size;i++){
+                c =(Contact) hContacts.elementAt(i);
+                if (c.origin!=Contact.ORIGIN_GROUPCHAT) continue;
+                if (!((MucContact)c).commonPresence) continue; // stop if room left manually
+                confGroup =(ConferenceGroup)c.group;
+                leaveRoom(confGroup);
+           }
+         }
+    }    
+    
     public void cmdCleanAllMessages(){
         if (messageCount>0) {
            new AlertBox(SR.MS_UNREAD_MESSAGES+": "+messageCount, SR.MS_SURE_DELETE, display, this) {

@@ -300,7 +300,6 @@ public final class MessageParser // implements Runnable
                 int smileIndex=-1;
                 int smileStartPos=pos;
                 int smileEndPos=pos;
-
                 while (pos<size) {
                     c=txt.charAt(pos);
                     if (underline) {//ÓÐË
@@ -356,7 +355,7 @@ public final class MessageParser // implements Runnable
                   pos++;
                 }
 
-              switch(smileIndex) {    
+              switch(smileIndex) {
         
                  case BOLD: 
                      if(midlet.BombusQD.cf.textWrap==1 && midlet.BombusQD.cf.sblockFont!=6){
@@ -376,9 +375,10 @@ public final class MessageParser // implements Runnable
                      
                  
                  case URL:
-                      if (s.length()>0) l.addElement(s.toString());
-                      s.setLength(0);
-                      underline=boldtext?false:true;    
+                       w+=50;//hardfix
+                       if (s.length()>0) l.addElement(s.toString());
+                       s.setLength(0);
+                       underline=boldtext?false:true;
                       break;
                   
                  case -1: //text NOSMILE
@@ -387,6 +387,8 @@ public final class MessageParser // implements Runnable
 
                     int cw=boldtext?FontCache.getFont().charWidth(c):f.charWidth(c);//+fHeight
 
+                    if (c>0x1f) wordWidth+=cw;
+                    
                     if (c!=0x20) { //םו ןנמבוכ
                         boolean newline = ( c==0x0d || c==0x0a );
                         
@@ -425,9 +427,6 @@ public final class MessageParser // implements Runnable
                     if(pos<=10 && !midlet.BombusQD.cf.useLowMemory_iconmsgcollapsed){
                       cw+=3;
                     }
-                    
-                    if (c>0x1f)
-                        wordWidth+=cw;
 
                       if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) { //by chars
                         if (pos>wordStartPos)

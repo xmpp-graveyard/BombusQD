@@ -117,7 +117,8 @@ public class TextInput
         return font.stringWidth(text);
     }
     
-    public String toString() { return (getCaptionLength()>getTextLength())?caption:getValue(); }
+    //public String toString() { return (getCaptionLength()>getTextLength())?caption:getValue(); }
+    public String toString() { return (0==getTextLength())?caption:getValue(); }//Tishka17
     
     public void onSelect(){ 
         new EditBox(display, caption, text, this, boxType);
@@ -158,7 +159,8 @@ public class TextInput
         g.fillRect(0, y, width-1, height-1);
 
         g.setColor((sel)?colorBorder:colorItem);
-        g.drawRect(0, y, width-1, height-1);
+        //g.drawRect(0, y, width-1, height-1);
+        g.drawRoundRect(0, y, width-1, height-1,7,7);//Tishka17
 
         g.setColor(oldColor);
         
