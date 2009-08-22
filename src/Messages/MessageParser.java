@@ -361,7 +361,7 @@ public final class MessageParser // implements Runnable
                      if(midlet.BombusQD.cf.textWrap==1 && midlet.BombusQD.cf.sblockFont!=6){
                        if (wordStartPos!=pos) {
                         if(txt.indexOf("*",pos)>-1){
-                          boldtext=true;
+                          boldtext=task.smilesEnabled();
                           s.append(txt.substring(wordStartPos,pos));
                           w+=wordWidth;
                           wordWidth=0;

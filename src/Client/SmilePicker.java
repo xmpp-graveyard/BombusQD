@@ -46,6 +46,7 @@ import Menu.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.TextField;
 import javax.microedition.lcdui.TextBox;
 //#ifdef GRAPHICS_MENU        
 //# import ui.GMenu;
@@ -86,14 +87,19 @@ public class SmilePicker
      
     private Vector smileTable;
 
-    private TextBox t;
- 
+    private TextField tf;
+    private TextBox tb;
+    
      /** Creates a new instance of SmilePicker */
-    public SmilePicker(Display display, Displayable pView, int caretPos, TextBox tbox) {
+    public SmilePicker(Display display, Displayable pView, int caretPos, TextField tf, TextBox tb) {
          super(display);
          this.caretPos=caretPos;
-
-         this.t=tbox;
+         
+         if(midlet.BombusQD.cf.msgEditType>0){
+           this.tf=tf;
+         }else{
+           this.tb=tb;
+         };
          
          setMainBarItem(new MainBar(locale.SR.MS_SELECT));         
          il = SmilesIcons.getInstance();
@@ -142,7 +148,11 @@ public class SmilePicker
     public void onSelect(){
         try {
 //#ifdef RUNNING_MESSAGE
-//#                 t.insert(" "+getTipString()+" ", caretPos);
+//#            if(midlet.BombusQD.cf.msgEditType>0){
+//#              tf.insert(" "+getTipString()+" ", caretPos);
+//#            }else{
+//#              tb.insert(" "+getTipString()+" ", caretPos);
+//#            };            
 //#else
             t.insert(getTipString() , caretPos);
 //#endif

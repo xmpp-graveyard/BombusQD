@@ -30,6 +30,7 @@ package Archive;
 
 import Client.Msg;
 import javax.microedition.lcdui.TextBox;
+import javax.microedition.lcdui.TextField;
 import ui.MainBar;
 import Messages.MessageList;
 import java.util.Vector;
@@ -69,15 +70,20 @@ public class ArchiveList
     
     private int where=1;
 
-    private TextBox t;
+    private TextField tf;
+    private TextBox tb;
+    
     Contact cc;
     /** Creates a new instance of ArchiveList */
-    public ArchiveList(Display display, TextBox textBox , int caretPos, int where, TextBox t,Contact cc) {
+    public ArchiveList(Display display, int caretPos, int where, TextField tf, TextBox tb, Contact cc) {
  	super ();
         this.where=where;
         this.caretPos=caretPos;
-        this.t=textBox;
-
+        if(midlet.BombusQD.cf.msgEditType>0){
+           this.tf=tf;
+        }else{
+           this.tb=tb;
+        };
         this.cc=cc;
         archive=new MessageArchive(where);
 	MainBar mainbar=new MainBar(
@@ -95,6 +101,8 @@ public class ArchiveList
         addCommands();
         setCommandListener(this);
         
+        if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
+        
         attachDisplay(display);
     }
 
@@ -104,11 +112,19 @@ public class ArchiveList
 //#endif
 
         if (getItemCount()>0) {
-            if (t!=null) {
+            if(midlet.BombusQD.cf.msgEditType>0){
+             if (tf!=null) {
                 addCommand(cmdPaste); cmdPaste.setImg(0x13);
                 addCommand(cmdJid); cmdJid.setImg(0x60);
                 addCommand(cmdSubj); cmdSubj.setImg(0x81);
-            }
+              }
+            }else{
+              if (tb!=null) {
+                addCommand(cmdPaste); cmdPaste.setImg(0x13);
+                addCommand(cmdJid); cmdJid.setImg(0x60);
+                addCommand(cmdSubj); cmdSubj.setImg(0x81);
+              }
+            };            
             addCommand(cmdEdit); cmdEdit.setImg(0x40);
             
             addCommand(cmdDelete); cmdDelete.setImg(0x41);
@@ -190,7 +206,11 @@ public class ArchiveList
     }
     
     private void pasteData(int field) {
-	if (t==null) return;
+        if(midlet.BombusQD.cf.msgEditType>0){
+           if (tf==null) return;
+        }else{
+           if (tb==null) return;
+        };        
 	Msg m=getMessage(cursor);
 	if (m==null) return;
 	String data;
@@ -204,7 +224,11 @@ public class ArchiveList
 	default:
 	    data=m.quoteString();
 	}
-	t.insert(data, caretPos);
+        if(midlet.BombusQD.cf.msgEditType>0){
+           tf.insert(data, caretPos);
+        }else{
+           tb.insert(data, caretPos);
+        };        
 	destroyView();
     }
     

@@ -53,7 +53,7 @@ public class ConfigFonts
     Config cf;
     
     private Vector[] files;
-    private DropChoiceBox drawedfonts;   
+    //private DropChoiceBox drawedfonts;   
     MultiLine item=null;  
     
 
@@ -96,10 +96,11 @@ public class ConfigFonts
         itemsList.addElement(font4);
         
         cursivUse = new CheckBox(SR.MS_Italic, cf.cursivUse); itemsList.addElement(cursivUse); 
-        
+         /*
         item=new MultiLine(SR.MS_DRAWED_FONT+":", (cf.use_drawed_font)?cf.drwd_fontname:"<..>", super.superWidth); 
         item.selectable=true;
-        itemsList.addElement(item);        
+        itemsList.addElement(item);    
+       
         try {
             files=new StringLoader().stringLoader("/images/fonts/fonts.txt",2);
             if (files[0].size()>0) {
@@ -111,8 +112,7 @@ public class ConfigFonts
                 itemsList.addElement(drawedfonts);
             }
         } catch (Exception e) {}  
-        
-        
+         */
 
         attachDisplay(display);
         this.parentView=pView;
@@ -125,12 +125,13 @@ public class ConfigFonts
         FontCache.baloon=cf.baloonFont=font4.getValue()*8; //balloon
 
         cf.cursivUse=cursivUse.getValue();
-        
+        /*
         try {
             if (drawedfonts.getSelectedIndex()>-1) {
                 cf.drwd_fontname = (String)files[0].elementAt(drawedfonts.getSelectedIndex());
             }
         } catch (Exception ex) {}
+         
 
         if(cf.drwd_fontname.equals("no")==true){
            cf.use_drawed_font = false;
@@ -138,6 +139,7 @@ public class ConfigFonts
            cf.use_drawed_font = true;
            FontClass.getInstance().Init(cf.drwd_fontname);
         }
+        */
         
         //cf.saveToStorage();
         

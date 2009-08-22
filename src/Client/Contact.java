@@ -646,7 +646,7 @@ public class Contact extends IconTextElement{
         if (getImageIndex()>-1) {
             offset+=ilHeight;
             il.drawImage(g, getImageIndex(), 
-                    2 +((ofs>0)?ofs:0), //Tishka17
+                    2, 
                     imgH);
         }
         if(img_vcard!=null){
@@ -677,8 +677,8 @@ public class Contact extends IconTextElement{
              }else{
                  w-=clientImgSize;  
              }
-             ClientsIcons.getInstance().drawImage(g, client, midlet.BombusQD.cf.iconsLeft?ilHeight+2+
-                     ((ofs>0)?ofs:0):w //Tishka17
+             ClientsIcons.getInstance().drawImage(g, client, midlet.BombusQD.cf.iconsLeft?ilHeight+2
+                     :w 
                      , (h-clientImgSize)/2);
              //client==index
              if (maxImgHeight<clientImgSize) maxImgHeight=clientImgSize;               
@@ -719,22 +719,21 @@ public class Contact extends IconTextElement{
         int thisOfs=0;
         
         g.setClip(offset, yo, w-offset, h);
-        thisOfs=(getFirstLength()>w)?+ofs+offset:offset;
+        thisOfs=(getFirstLength()>w)?-ofs+offset:offset;
         if ((thisOfs+getFirstLength())<0) thisOfs=offset;
         g.setFont(getFont());
         
         if (getSecondString()==null) {
             int y = (h - fontHeight)/2;
-            g.drawString(getFirstString(), thisOfs +ofs , y, Graphics.TOP|Graphics.LEFT);   
+            g.drawString(getFirstString(), thisOfs , y, Graphics.TOP|Graphics.LEFT);   
         }        
         else {
             int y = (h - fontHeight*2)/2;
-            g.drawString(getFirstString(), thisOfs +ofs, y , Graphics.TOP|Graphics.LEFT);
+            g.drawString(getFirstString(), thisOfs , y , Graphics.TOP|Graphics.LEFT);
             thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
-            g.drawString(getSecondString(),thisOfs +ofs, y + fontHeight - 3 , Graphics.TOP|Graphics.LEFT);
+            g.drawString(getSecondString(),thisOfs , y + fontHeight - 3 , Graphics.TOP|Graphics.LEFT);
         }
-        //+ofs by Tishka17
         g.setClip(xo, yo, w, h);
     }
     

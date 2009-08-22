@@ -23,7 +23,7 @@ public abstract class PluginBox extends IconTextElement {
     private String text="";
     private boolean selectable=true;
     private int colorItem;
-    private Font font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD|Font.STYLE_ITALIC,Font.SIZE_SMALL);
+    private Font font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD ,Font.SIZE_SMALL);
     int fH = font.getHeight();
 
 

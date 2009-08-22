@@ -24,6 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */ 
+/*
 package ui.controls;
 
 import Client.Config;
@@ -44,7 +45,7 @@ import Client.StaticData;
 /**
  *
  * @author ad
- */
+ 
 public class ExTextBox
     //extends TextBox 
 {
@@ -73,11 +74,11 @@ public class ExTextBox
     
     int maxSize=500;
     
-    public TextBox t;            
-    /** Creates a new instance of UniTextEdit */
+    public TextField t;
+
     public ExTextBox(Display display, Displayable pView, String body, String subj, int type) {
         //super(subj, "", 500, type);
-        t=new TextBox(subj,"", 500, TextField.ANY);
+        t=new TextField(subj,"", 500, TextField.ANY);
         
         this.display=display;
         this.t=t;
@@ -190,3 +191,4 @@ public class ExTextBox
        t.setConstraints(state?TextField.INITIAL_CAPS_SENTENCE:TextField.ANY);
     }
 }
+*/

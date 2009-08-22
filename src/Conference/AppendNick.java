@@ -74,14 +74,18 @@ public class AppendNick
     Command cmdOk=new Command(SR.MS_APPEND, Command.OK, 1);
     Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
 
-    private TextBox t;
+    private TextField tf;
+    private TextBox tb;
     
-    private TextField tf;    
     private boolean classic_chat=false;        
-    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextField tf,boolean classic_chat) {
+    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextField t,TextBox tb,boolean classic_chat){
         super(display);
         this.caretPos=caretPos;
-        this.tf=tf;
+        if(midlet.BombusQD.cf.msgEditType>0){
+           this.tf=tf;
+        }else{
+           this.tb=tb;
+        };
         this.classic_chat=classic_chat;
         setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         nicknames=null;
@@ -96,11 +100,15 @@ public class AppendNick
         this.parentView=pView;        
     }
     
-    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextBox t) {
+    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextField t,TextBox tb) {
         super(display);
         this.caretPos=caretPos;
         
-        this.t=t;
+        if(midlet.BombusQD.cf.msgEditType>0){
+           this.tf=tf;
+        }else{
+           this.tb=tb;
+        };
         
         setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         
@@ -147,9 +155,9 @@ public class AppendNick
             if (caretPos==0) b.append(": ");
 //#ifdef RUNNING_MESSAGE
 //#              if(classic_chat==true){
-//#                tf.setString(b.toString());
+//#                if(midlet.BombusQD.cf.msgEditType>0){ tf.setString(b.toString()); }else { tb.setString(b.toString()); };
 //#              }else{
-//#                StaticData.getInstance().roster.me.t.insert(b.toString(), caretPos);
+//#                if(midlet.BombusQD.cf.msgEditType>0){ tf.insert(b.toString(), caretPos); }else { tb.insert(b.toString(), caretPos); };
 //#              }
 //#else
             t.insert(b.toString(), caretPos);

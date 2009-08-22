@@ -72,6 +72,9 @@ public class BombusQD extends MIDlet implements Runnable
     public final static Config cf = Config.getInstance();
     public final static Cashe cashe = Cashe.get();    
     
+    public int width = 0;
+    public int height = 0;
+    
     ColorTheme ct=ColorTheme.getInstance();
     
     public SplashScreen s;
@@ -133,6 +136,8 @@ public class BombusQD extends MIDlet implements Runnable
         System.out.println((s2-s1)+" msec");
         
         s.getKeys();
+        width=s.width;
+        height=s.height;
         
         try {
            imageArr = new Image[2];

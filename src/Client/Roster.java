@@ -674,7 +674,7 @@ public class Roster
     public void cmdStatus() { currentReconnect=0; new StatusSelect(display, this, null); }
     public void cmdAlert() { new AlertProfile(display, this); }
 //#ifdef ARCHIVE
-    public void cmdArchive() { new ArchiveList(display, null , -1, 1, null,null); }
+    public void cmdArchive() { new ArchiveList(display , -1, 1, null, null, null); }
 //#endif
     public void cmdInfo() { new Info.InfoWindow(display, this); }
     
@@ -2254,14 +2254,14 @@ public class Roster
                         c.acceptComposing=true;
                         c.showComposing=false;
 //#ifdef RUNNING_MESSAGE
-//#                         setTicker(c, "");
+//#                         setTicker(c, "","");
 //#endif
                     }
                     if (message.findNamespace("paused", "http://jabber.org/protocol/chatstates")!=null) {
                         c.acceptComposing=true;
                         c.showComposing=false;
 //#ifdef RUNNING_MESSAGE
-//#                         setTicker(c, "");
+//#                         setTicker(c, "","");
 //#endif
                     }
                     if (message.findNamespace("composing", "http://jabber.org/protocol/chatstates")!=null) {
@@ -2269,7 +2269,7 @@ public class Roster
                         c.acceptComposing=true;
                         c.showComposing=true;
 //#ifdef RUNNING_MESSAGE
-//#                         setTicker(c, SR.MS_COMPOSING_NOTIFY);
+//#                         setTicker(c, SR.MS_COMPOSING_NOTIFY,"");
 //#endif
                     }
                 }
@@ -2591,9 +2591,9 @@ public class Roster
                     if (ti>=0) {
 //#ifdef RUNNING_MESSAGE
 //#                         if (ti==Presence.PRESENCE_OFFLINE)
-//#                             setTicker(c, SR.getPresence(Presence.PRS_OFFLINE));
+//#                             setTicker(c, SR.getPresence(Presence.PRS_OFFLINE), m.getTime());
 //#                         else if (ti==Presence.PRESENCE_ONLINE)
-//#                             setTicker(c, SR.getPresence(Presence.PRS_ONLINE));
+//#                             setTicker(c, SR.getPresence(Presence.PRS_ONLINE), m.getTime());
 //#endif
                         if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT
                                 || ti==Presence.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
@@ -2685,7 +2685,7 @@ public class Roster
         boolean autorespond = false;
 //#ifdef RUNNING_MESSAGE
 //#         if (message.messageType==Msg.MESSAGE_TYPE_IN)
-//#             setTicker(c, message.body);
+//#             setTicker(c, message.toString(), message.getTime());
 //#endif
 //#ifndef WSYSTEMGC
        // if (midlet.BombusQD.cf.ghostMotor) {
@@ -3021,7 +3021,11 @@ public class Roster
 //#                if(midlet.BombusQD.cf.useClassicChat){
 //#                  new SimpleItemChat(display,this,c);
 //#                }else{
-//#                  new MessageEdit(display, pview, c, c.msgSuspended);
+//#                  switch(midlet.BombusQD.cf.msgEditType){
+//#                      case 0: me = new MessageEdit(display, pview, c, c.msgSuspended); break;
+//#                      case 1: me = new MessageEdit(display, pview, c, c.msgSuspended, true); break;
+//#                      case 2: me = new MessageEdit(display, pview, c, c.msgSuspended, true); break;
+//#                  }
 //#                }                
 //# 
 //#else
@@ -3669,13 +3673,36 @@ public class Roster
 
 //#endif
     
+
 //#ifdef RUNNING_MESSAGE
-//#     void setTicker(Contact c, String message) {
-//#         if (midlet.BombusQD.cf.notifyWhenMessageType) {
-//#             if (me!=null)
+//#     void setTicker(Contact c, String message,String msgTime) {
+//#        if (midlet.BombusQD.cf.runningMessage || midlet.BombusQD.cf.notifyWhenMessageType) {
+//#             if (me!=null){
 //#                 if (me.to==c){
-//#                     me.ticker.setString(message);
+//#                    if (midlet.BombusQD.cf.runningMessage) me.ticker.setString(message);
+//#                    //Runned Message
+//#                    if(message.length()>100) message = message.substring(0,100) + "..";
+//#                    if(midlet.BombusQD.cf.msgEditType==1) {
+//#                       me.messageItem = new javax.microedition.lcdui.StringItem(msgTime, message);
+//#                       if(me.form.get(0)!=null){//!null-default
+//#                         if(me.form.get(0) instanceof javax.microedition.lcdui.StringItem){
+//#                           me.form.delete(0);
+//#                           me.form.delete(0);
+//#                           me.form.insert(0,me.messageItem);
+//#                           me.form.insert(1,me.textField);
+//#                         }
+//#                         else{
+//#                           me.form.delete(0);
+//#                           me.form.insert(0,me.messageItem);
+//#                           me.form.insert(1,me.textField);
+//#                         }
+//#                       }
+//#                    }
+//#                    else if(midlet.BombusQD.cf.msgEditType==2) {
+//#                       me.informWindow.storeMessage(message);//gui panel
+//#                    }                   
 //#                 }
+//#             }
 //#         }
 //#     }
 //#endif

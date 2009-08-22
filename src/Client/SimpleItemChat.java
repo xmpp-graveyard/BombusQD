@@ -110,7 +110,7 @@ public class SimpleItemChat implements CommandListener {
       }
     }
     if (c == cmdInsNick){
-         new AppendNick(display, display.getCurrent(), contact, msgTF.getCaretPosition() , msgTF, true); return;
+         new AppendNick(display, display.getCurrent(), contact, msgTF.getCaretPosition() , msgTF, null, true); return;
     }
     if (c == cmdInsMe){
         msgTF.setString("/me ");

@@ -56,8 +56,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     private String capt;
     private int pos=-1;
     
-    private int width;
-    private int height;
+    public int width;
+    public int height;
     
     public Image img;
     

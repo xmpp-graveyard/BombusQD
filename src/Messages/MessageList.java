@@ -215,7 +215,15 @@ public abstract class MessageList extends VirtualList
             try {
                 clipboard.setClipBoard("");
             } catch (Exception e) {/*no messages*/}            
-       }         
+       }        
+//#ifdef SMILES
+        if (keyCode=='*') {
+            try {
+                ((MessageItem)getFocusedObject()).toggleSmiles();
+            } catch (Exception e){}
+            return;
+        }
+//#endif       
        super.keyPressed(keyCode);
     }
    

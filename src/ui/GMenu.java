@@ -363,7 +363,7 @@ public class GMenu extends Canvas {
 	private void startTimer (boolean isdownpress)
 	{
             /*temp closed
-		if ( timer == null && cf.animateMenuAndRoster )
+		if ( timer == null && midlet.BombusQD.cf.animateMenuAndRoster )
 		{
                         isDown=isdownpress;
                         cursorY = 
@@ -376,6 +376,7 @@ public class GMenu extends Canvas {
 			timer.schedule( new anTask(), 0, ani_msed );
 		}
              */
+             
 	}
 	private void stopTimer ()
 	{

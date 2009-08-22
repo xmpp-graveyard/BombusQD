@@ -571,6 +571,14 @@ public class SR {
 //2008-02-03
     public static String MS_BOLD_FONT=loadString("bold font for contacts");
     public static String MS_RUNNING_MESSAGE=loadString("running message");
+    
+    public static String MS_NOTIFY_MSGEDIT=loadString("Show latest message in alt message edit");
+    public static String MS_MSG_EDIT_TYPE=loadString("Message Edit Type");
+    public static String MS_MES_EDIT_OLD=loadString("Old");    
+    public static String MS_MES_EDIT_ALT=loadString("Alternative");    
+    public static String MS_MES_EDIT_ALT_GUI=loadString("Alternative with GUI panels");        
+    
+    
     public static String MS_COMPOSING_NOTIFY=loadString("Composing message to you");
     public static String MS_COMPRESSION = loadString( "compression" );
     public static String MS_NEW_ROOM_CREATED = loadString( "New room created" );
@@ -717,7 +725,6 @@ public class SR {
     
     public static String MS_MOOD_IN_MSG = loadString( "Send Mood in Msg" );
     public static String MS_ADVANCED_OPT = loadString( "Advanced Options" );
-    public static String MS_NEW_MSG_EDIT = loadString( "new MessageEdit"); 
     public static String MS_ANIMATION = loadString( "Turn OFF Animation"); 
     public static String MS_ANIMATION_MENU_ROSTER = loadString( "Animation of Graphics Menu&Roster"); 
     public static String MS_ICON_COLP = loadString( "Turn OFF Message Icon");

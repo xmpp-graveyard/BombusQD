@@ -31,7 +31,7 @@
 //# import java.io.IOException;
 //# import javax.microedition.lcdui.*;
 //# import locale.SR;
-//# import ui.controls.ExTextBox;
+//# //import ui.controls.ExTextBox;
 //# 
 //# /**
 //#  *

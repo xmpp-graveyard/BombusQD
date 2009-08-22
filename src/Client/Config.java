@@ -301,7 +301,9 @@ public class Config {
     public boolean dont_loadMC=false;
     public boolean animatedSmiles=true;    
     public int sblockFont=1;
-
+    
+    public int msgEditType=0;
+    public boolean runningMessage=false;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -398,13 +400,6 @@ public class Config {
         VirtualList.panelsState=panelsState;
         VirtualList.showTimeTraffic=showTimeTraffic;
 
-//#ifdef USER_KEYS
-//#ifdef PLUGINS
-//#         if(!sd.UserKeys) userKeys=false;
-//#endif
-//#         VirtualList.userKeys=userKeys;
-//#endif
-        
 //#ifdef PLUGINS
 //#ifdef FILE_TRANSFER
 //#         if(!sd.FileTransfer) fileTransfer=false;
@@ -496,7 +491,7 @@ public class Config {
             queryExit=inputStream.readBoolean();
             notifyPicture=inputStream.readBoolean();
             showBalloons=inputStream.readBoolean();
-            userKeys=inputStream.readBoolean();  
+            //user-Keys=inputStream.readBoolean();  
             useTabs=inputStream.readBoolean();
             useBoldFont=inputStream.readBoolean();
             
@@ -561,7 +556,7 @@ public class Config {
             module_network=inputStream.readBoolean();
             module_graphics=inputStream.readBoolean();
             module_app=inputStream.readBoolean();
-            //userKeys=inputStream.readBoolean();
+            userKeys=inputStream.readBoolean();
             module_autostatus=inputStream.readBoolean();
             module_classicchat=inputStream.readBoolean();
             module_theme=inputStream.readBoolean();
@@ -574,6 +569,7 @@ public class Config {
             module_avatars=inputStream.readBoolean();   
             
             animatedSmiles=inputStream.readBoolean(); 
+            runningMessage=inputStream.readBoolean(); 
             
 	    inputStream.close();
             inputStream=null;
@@ -624,6 +620,7 @@ public class Config {
             //difficulty_level=inputStream.readInt();
             maxAvatarWidth=inputStream.readInt();
             sblockFont=inputStream.readInt();
+            msgEditType=inputStream.readInt();             
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -731,7 +728,7 @@ public class Config {
             outputStream.writeBoolean(queryExit);
             outputStream.writeBoolean(notifyPicture);
             outputStream.writeBoolean(showBalloons);
-            outputStream.writeBoolean(userKeys);  
+            //outputStream.writeBoolean(user-Keys);  
             outputStream.writeBoolean(useTabs);
             outputStream.writeBoolean(useBoldFont);//40
             
@@ -789,7 +786,7 @@ public class Config {
             outputStream.writeBoolean(module_network);
             outputStream.writeBoolean(module_graphics);
             outputStream.writeBoolean(module_app);
-            //outputStream.writeBoolean(userKeys);
+            outputStream.writeBoolean(userKeys);
             outputStream.writeBoolean(module_autostatus);
             outputStream.writeBoolean(module_classicchat);
             outputStream.writeBoolean(module_theme);
@@ -801,7 +798,8 @@ public class Config {
             outputStream.writeBoolean(module_tasks);
             outputStream.writeBoolean(module_avatars);  
             
-            outputStream.writeBoolean(animatedSmiles);       
+            outputStream.writeBoolean(animatedSmiles);
+            outputStream.writeBoolean(runningMessage);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean_", 0, true);      
@@ -845,6 +843,7 @@ public class Config {
             //outputStream.writeInt(difficulty_level);
             outputStream.writeInt(maxAvatarWidth);//32     
             outputStream.writeInt(sblockFont);
+            outputStream.writeInt(msgEditType);
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confInt", 0, true);        
     }
@@ -896,7 +895,13 @@ public class Config {
           timer.schedule(new Saver() , 10 , 100);
         }else{
           timer.cancel();
-        }        
+        }   
+//#ifdef USER_KEYS
+//#ifdef PLUGINS
+//#         if(!sd.UserKeys) userKeys=false;
+//#endif
+//#         VirtualList.userKeys=userKeys;
+//#endif        
     }
     
     public void updateTime(){

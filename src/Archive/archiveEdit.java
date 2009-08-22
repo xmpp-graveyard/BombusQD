@@ -30,7 +30,7 @@ package Archive;
 import Client.Msg;
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.controls.ExTextBox;
+//import ui.controls.ExTextBox;
 
 /**
  *

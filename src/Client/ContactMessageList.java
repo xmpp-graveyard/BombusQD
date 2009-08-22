@@ -523,9 +523,13 @@ public class ContactMessageList extends MessageList {
     }
     
     public void keyGreen(){
-        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
+        //if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
 //#ifdef RUNNING_MESSAGE
-//#         midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended);
+//#         switch(midlet.BombusQD.cf.msgEditType){
+//#            case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended); break;
+//#            case 1: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended, true); break;
+//#            case 2: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended, true); break;
+//#         }        
 //#else
     new MessageEdit(display, this, contact, contact.msgSuspended);
 //#endif
@@ -740,7 +744,12 @@ public class ContactMessageList extends MessageList {
 //#                     messg=msg.id;
 //#                }
 //#endif               
-//#                midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg);
+//#              switch(midlet.BombusQD.cf.msgEditType){
+//#                  case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg); break;
+//#                  case 1: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg, true); break;
+//#                  case 2: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg, true); break;
+//#              }                
+//#              //midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg);
 //#             }
 //#             
 //#else
@@ -762,7 +771,12 @@ public class ContactMessageList extends MessageList {
                 .append("\n")
                 .toString();
 //#ifdef RUNNING_MESSAGE
-//#             midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, msg);
+//#              switch(midlet.BombusQD.cf.msgEditType){
+//#                  case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, msg); break;
+//#                  case 1: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, msg, true); break;
+//#                  case 2: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, msg, true); break;
+//#              }             
+//#             //midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, msg);
 //#else
             new MessageEdit(display, this, contact, msg);
 //#endif

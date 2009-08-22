@@ -48,7 +48,6 @@ import Menu.Command;
 import Menu.MyMenu;
 import util.StringLoader;
 import java.util.Vector;
-import net.jscience.math.MathFP;
 import images.SmilesIcons;
 import ui.ImageList;
 import java.util.*;
@@ -92,6 +91,7 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#endif
 //#ifdef RUNNING_MESSAGE
 //#     private static CheckBox notifyWhenMessageType;
+//#     private static CheckBox runningMessage;
 //#endif
 //#ifdef POPUPS
     private static CheckBox popUps;
@@ -103,6 +103,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     private static CheckBox sendMoodInMsg;
     private static CheckBox savePos;
     private static CheckBox boldNicks;    
+    private static DropChoiceBox msgEditType;
 //#ifdef DETRANSLIT
 //#     private static CheckBox autoDetranslit;
 //#endif
@@ -252,7 +253,7 @@ public class PluginsConfig extends DefForm implements MenuListener
              else if(text==SR.MS_clchatStr){ return cf.module_classicchat?SR.MS_config:""; } 
              else if(text==SR.MS_cthemesStr){ return cf.module_theme?SR.MS_config:""; }
              
-             else if(text==SR.MS_casheStr){ return cf.module_cashe?SR.MS_config:""; }
+             else if(text==SR.MS_casheStr){ return cf.module_cashe?"Clear":""; }
              else if(text==SR.MS_historyStr){ return cf.module_history?SR.MS_config:""; }
              else if(text==SR.MS_fontsStr){ return cf.module_fonts?SR.MS_config:""; }
              else if(text==SR.MS_ieStr){ return cf.module_ie?SR.MS_config:""; } 
@@ -324,6 +325,23 @@ public class PluginsConfig extends DefForm implements MenuListener
         this.display=display;
         this.type=type;
          if(type==SR.MS_contactStr){//
+          subscr=new DropChoiceBox(display, SR.MS_AUTH_NEW);
+          subscr.append(SR.MS_SUBSCR_AUTO);
+          subscr.append(SR.MS_SUBSCR_ASK);
+          subscr.append(SR.MS_SUBSCR_DROP);
+          subscr.append(SR.MS_SUBSCR_REJECT);
+          subscr.setSelectedIndex(cf.autoSubscribe);
+          itemsList.addElement(subscr);
+
+          itemsList.addElement(new SpacerItem(2));
+          nil=new DropChoiceBox(display, SR.MS_NOT_IN_LIST);
+          nil.append(SR.MS_NIL_DROP_MP);
+          nil.append(SR.MS_NIL_DROP_P);
+          nil.append(SR.MS_NIL_ALLOW_ALL);
+          nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel);
+          itemsList.addElement(nil);
+          itemsList.addElement(new SpacerItem(2));
+          
            showOfflineContacts = new CheckBox(SR.MS_OFFLINE_CONTACTS, cf.showOfflineContacts);
            itemsList.addElement(showOfflineContacts);
              selfContact = new CheckBox(SR.MS_SELF_CONTACT, cf.selfContact); 
@@ -338,38 +356,52 @@ public class PluginsConfig extends DefForm implements MenuListener
                      itemsList.addElement(iconsLeft);
                        autoFocus = new CheckBox(SR.MS_AUTOFOCUS, cf.autoFocus);
                        itemsList.addElement(autoFocus);
-                     
-                       itemsList.addElement(new SpacerItem(10));
-                       subscr=new DropChoiceBox(display, SR.MS_AUTH_NEW);
-                       subscr.append(SR.MS_SUBSCR_AUTO);
-                       subscr.append(SR.MS_SUBSCR_ASK);
-                       subscr.append(SR.MS_SUBSCR_DROP);
-                       subscr.append(SR.MS_SUBSCR_REJECT);
-                       subscr.setSelectedIndex(cf.autoSubscribe);
-                       itemsList.addElement(subscr);
-
-                       itemsList.addElement(new SpacerItem(10));
-                       nil=new DropChoiceBox(display, SR.MS_NOT_IN_LIST);
-                       nil.append(SR.MS_NIL_DROP_MP);
-                       nil.append(SR.MS_NIL_DROP_P);
-                       nil.append(SR.MS_NIL_ALLOW_ALL);
-                       nil.setSelectedIndex((cf.notInListDropLevel>NotInListFilter.ALLOW_ALL)? NotInListFilter.ALLOW_ALL: cf.notInListDropLevel);
-                       itemsList.addElement(nil);
-            
+                       
                        rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus);
                        itemsList.addElement(rosterStatus);
                        ignore = new CheckBox(SR.MS_IGNORE_LIST, cf.ignore);
                        itemsList.addElement(ignore);
          }
          else if(type==SR.MS_msgStr){//or chat
+            msgEditType=new DropChoiceBox(display, SR.MS_MSG_EDIT_TYPE);
+            msgEditType.append(SR.MS_MES_EDIT_OLD);//0
+            msgEditType.append(SR.MS_MES_EDIT_ALT);//1
+            msgEditType.append(SR.MS_MES_EDIT_ALT_GUI);//2                         
+	    msgEditType.setSelectedIndex(cf.msgEditType);
+            itemsList.addElement(msgEditType);
+            itemsList.addElement(new SpacerItem(3));  
+               runningMessage = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.runningMessage);//ticker obj
+               itemsList.addElement(runningMessage);                               
+               notifyWhenMessageType = new CheckBox(SR.MS_NOTIFY_MSGEDIT, cf.notifyWhenMessageType); 
+               itemsList.addElement(notifyWhenMessageType);                               
+                  itemsList.addElement(new SpacerItem(3));
+                  textWrap=new DropChoiceBox(display, SR.MS_TEXTWRAP);
+                  textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
+                  textWrap.append(SR.MS_TEXTWRAP_WORD);
+	          textWrap.setSelectedIndex(cf.textWrap);
+                  itemsList.addElement(textWrap);
+                  itemsList.addElement(new SpacerItem(3));
+                    sblockFont=new DropChoiceBox(display, SR.MS_sblockFont);
+                    sblockFont.append(SR.MS_sblock_bs);//0
+                    sblockFont.append(SR.MS_sblock_bm);
+                    sblockFont.append(SR.MS_sblock_bl);
+                    sblockFont.append(SR.MS_sblock_ibs);
+                    sblockFont.append(SR.MS_sblock_ibm);
+                    sblockFont.append(SR.MS_sblock_ibl);
+                    sblockFont.append(SR.MS_sblock_no);
+                    sblockFont.setSelectedIndex(cf.sblockFont);
+                    itemsList.addElement(sblockFont); 
+                    itemsList.addElement(new SpacerItem(3));
+                      messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
+                      itemsList.addElement(messageLimit);
+                      itemsList.addElement(new SpacerItem(3));
+                  
            storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); 
            itemsList.addElement(storeConfPresence);
              autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll);
              itemsList.addElement(autoScroll);
                timePresence = new CheckBox(SR.MS_SHOW_PRS_TIME, cf.timePresence);
                itemsList.addElement(timePresence);
-                 notifyWhenMessageType = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.notifyWhenMessageType); 
-                 itemsList.addElement(notifyWhenMessageType);
                    autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); 
                    itemsList.addElement(autoDetranslit);
                      showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); 
@@ -378,31 +410,15 @@ public class PluginsConfig extends DefForm implements MenuListener
                        itemsList.addElement(savePos); 
                         boldNicks = new CheckBox(SR.MS_BOLD_AND_COLORS_NICKS, cf.boldNicks); 
                          itemsList.addElement(boldNicks);
-                            messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
-                            itemsList.addElement(messageLimit);
+
                               useLowMemory_iconmsgcollapsed = new CheckBox(SR.MS_ICON_COLP, cf.useLowMemory_iconmsgcollapsed);
                               itemsList.addElement(useLowMemory_iconmsgcollapsed);
                                 smiles = new CheckBox(SR.MS_SMILES, cf.smiles);
                                 itemsList.addElement(smiles);
+                                  animatedSmiles = new CheckBox(SR.MS_ANI_SMILES, cf.animatedSmiles); 
+                                  itemsList.addElement(animatedSmiles);                                
                                    capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); 
                                    itemsList.addElement(capsState);
-                                     itemsList.addElement(new SpacerItem(10));
-                                     textWrap=new DropChoiceBox(display, SR.MS_TEXTWRAP);
-                                     textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
-                                     textWrap.append(SR.MS_TEXTWRAP_WORD);
-	                             textWrap.setSelectedIndex(cf.textWrap);
-                                     itemsList.addElement(textWrap);
-                                     
-                                      sblockFont=new DropChoiceBox(display, SR.MS_sblockFont);
-                                      sblockFont.append(SR.MS_sblock_bs);//0
-                                      sblockFont.append(SR.MS_sblock_bm);
-                                      sblockFont.append(SR.MS_sblock_bl);
-                                      sblockFont.append(SR.MS_sblock_ibs);
-                                      sblockFont.append(SR.MS_sblock_ibm);
-                                      sblockFont.append(SR.MS_sblock_ibl);
-                                      sblockFont.append(SR.MS_sblock_no);
-	                              sblockFont.setSelectedIndex(cf.sblockFont);
-                                      itemsList.addElement(sblockFont);                                     
 
                                         useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); 
                                         itemsList.addElement(useTabs);
@@ -446,46 +462,44 @@ public class PluginsConfig extends DefForm implements MenuListener
 
          } 
          else if(type==SR.MS_grStr){
+          panels=new DropChoiceBox(display, SR.MS_PANELS);
+          panels.append(SR.MS_NO_BAR+" : "+SR.MS_NO_BAR);
+          panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_NO_BAR);
+          panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_INFO_BAR);
+          panels.append(SR.MS_NO_BAR+" : "+SR.MS_INFO_BAR);
+          panels.append(SR.MS_INFO_BAR+" : "+SR.MS_NO_BAR);
+          panels.append(SR.MS_INFO_BAR+" : "+SR.MS_MAIN_BAR);
+          panels.append(SR.MS_NO_BAR+" : "+SR.MS_MAIN_BAR);
+    	  panels.setSelectedIndex(cf.panelsState);
+          itemsList.addElement(panels);
+          
+           itemsList.addElement(new SpacerItem(3));
+           bgnd_image=new DropChoiceBox(display, "*"+SR.MS_TYPE_BACKGROUND);
+           bgnd_image.append(SR.MS_BGND_NONE); //0
+           bgnd_image.append(SR.MS_BGND_IMAGE);//1
+           bgnd_image.append(SR.MS_BGND_GRADIENT);//2
+           bgnd_image.append(SR.MS_MY_BGND_IMAGE);//3
+           bgnd_image.setSelectedIndex(cf.bgnd_image);
+           itemsList.addElement(bgnd_image);                     
+           itemsList.addElement(new SpacerItem(3));                   
+	         scrollWidth=new NumberInput(display, SR.MS_SCROLL_WIDTH, Integer.toString(cf.scrollWidth), 4, 20); 
+                 itemsList.addElement(scrollWidth);   
+                 itemsList.addElement(new SpacerItem(3));
+                 
              useLowMemory_userotator = new CheckBox(SR.MS_ANIMATION, cf.useLowMemory_userotator);
              itemsList.addElement(useLowMemory_userotator);
               gradient_cursor  = new CheckBox(SR.MS_GRADIENT_CURSOR,cf.gradient_cursor); 
               itemsList.addElement(gradient_cursor);
                memMon = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor);
                itemsList.addElement(memMon);
-                 itemsList.addElement(new SpacerItem(5));
-                 itemsList.addElement(new SimpleString(SR.MS_SCROLL_OPTIONS, true));
-	         scrollWidth=new NumberInput(display, SR.MS_SCROLL_WIDTH, Integer.toString(cf.scrollWidth), 4, 20); 
-                 itemsList.addElement(scrollWidth);
-                 //itemsList.addElement(new SimpleString("Scroll Options", true));
                  drawScrollBgnd = new CheckBox(SR.MS_BGND_SCROLL,cf.drawScrollBgnd); 
                  itemsList.addElement(drawScrollBgnd);  
-                   itemsList.addElement(new SpacerItem(5));
-                   panels=new DropChoiceBox(display, SR.MS_PANELS);
-                   panels.append(SR.MS_NO_BAR+" : "+SR.MS_NO_BAR);
-                   panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_NO_BAR);
-                   panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_INFO_BAR);
-                   panels.append(SR.MS_NO_BAR+" : "+SR.MS_INFO_BAR);
-                   panels.append(SR.MS_INFO_BAR+" : "+SR.MS_NO_BAR);
-                   panels.append(SR.MS_INFO_BAR+" : "+SR.MS_MAIN_BAR);
-                   panels.append(SR.MS_NO_BAR+" : "+SR.MS_MAIN_BAR);
-           	   panels.setSelectedIndex(cf.panelsState);
-                   itemsList.addElement(panels);
                    drawMenuCommand = new CheckBox(SR.MS_SHOW_TIME_TRAFFIC, cf.showTimeTraffic); 
                    itemsList.addElement(drawMenuCommand);
-                   itemsList.addElement(new SpacerItem(5));
-                     bgnd_image=new DropChoiceBox(display, "*"+SR.MS_TYPE_BACKGROUND);
-                     bgnd_image.append(SR.MS_BGND_NONE); //0
-                     bgnd_image.append(SR.MS_BGND_IMAGE);//1
-                     bgnd_image.append(SR.MS_BGND_GRADIENT);//2
-                     bgnd_image.append(SR.MS_MY_BGND_IMAGE);//3
-                     bgnd_image.setSelectedIndex(cf.bgnd_image);
-                     itemsList.addElement(bgnd_image);  
                        popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); 
                        itemsList.addElement(popUps);
                          showBaloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); 
                          itemsList.addElement(showBaloons);
-                           animatedSmiles = new CheckBox(SR.MS_ANI_SMILES, cf.animatedSmiles); 
-                           itemsList.addElement(animatedSmiles);
          }
          else if(type==SR.MS_appStr){
            itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
@@ -510,6 +524,9 @@ public class PluginsConfig extends DefForm implements MenuListener
                                    popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
                                    itemsList.addElement(popupFromMinimized);
                                }
+                               executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); 
+                               itemsList.addElement(executeByNum);
+                               
                                itemsList.addElement(new SpacerItem(10));
                                itemsList.addElement(new SimpleString(SR.MS_TIME_SETTINGS, true));
 	                       fieldGmt=new NumberInput(display, SR.MS_GMT_OFFSET, Integer.toString(cf.gmtOffset), -12, 12); 
@@ -536,8 +553,6 @@ public class PluginsConfig extends DefForm implements MenuListener
                                    }
                                    itemsList.addElement(langFiles);
                                }
-                               executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); 
-                               itemsList.addElement(executeByNum);
          }
          else if(type==SR.MS_astatusStr){
            autoAwayType=new DropChoiceBox(display, SR.MS_AWAY_TYPE);
@@ -566,15 +581,21 @@ public class PluginsConfig extends DefForm implements MenuListener
                    itemsList.addElement(new SpacerItem(10));            
          } 
          else if(type=="Clear"){//?
+            clearCache(true);         
+         }
+      setCommandListener(this);
+      attachDisplay(display);    
+      this.parentView=pView;
+    }
+    
+    
+    private void clearCache(boolean itemList){
             int size = StaticData.getInstance().roster.hContacts.size(); 
             System.gc();
-            midlet.BombusQD.cashe.get().menu_PlaginsConfig=null;            
-            long free = Runtime.getRuntime().freeMemory()>>10;
-            long total = Runtime.getRuntime().totalMemory()>>10;
-            itemsList.addElement(new SimpleString("Undo:"+Long.toString(free)+"/"+Long.toString(total), true));
+            midlet.BombusQD.cashe.get().menu_PlaginsConfig=null;
             Contact c = null;
             int count =0;
-             for(int i=0;i<size;i++){                          
+             for(int i=0;i<size;i++){
                         c =(Contact)StaticData.getInstance().roster.hContacts.elementAt(i);
                         if(c.cList!=null){
                             count+=1;
@@ -582,31 +603,12 @@ public class PluginsConfig extends DefForm implements MenuListener
                             System.gc();
                         }
              }
-
-            long free_ = Runtime.getRuntime().freeMemory()>>10;
-            long total_ = Runtime.getRuntime().totalMemory()>>10;
-            itemsList.addElement(new SimpleString("After:"+Long.toString(free_)+"/"+Long.toString(total_), true));            
-            
-            if(free_>free){
-               long calc = MathFP.div(MathFP.toFP(free_ - free),MathFP.toFP(free_));
-               long calc2 = MathFP.mul(calc,MathFP.toFP(100));
-               itemsList.addElement(new SimpleString("Free Memory Level: +"+MathFP.toString(calc2,1)+"%", true));  
+            if(itemList) {
+                itemsList.addElement(new SimpleString("Cashe cleared.", true));
+                itemsList.addElement(new SimpleString("Chats: "+Integer.toString(count), true));    
             }
-            else if(free_==free){
-               itemsList.addElement(new SimpleString("Free Memory Level: 0%", true));
-            }
-            else{
-               long calc = MathFP.div(MathFP.toFP(free - free_),MathFP.toFP(free));
-               long calc2 = MathFP.mul(calc,MathFP.toFP(100));
-               itemsList.addElement(new SimpleString("Free Memory Level: -"+MathFP.toString(calc2,1)+"%", true));                 
-            }
-            itemsList.addElement(new SimpleString("Cashe cleared.", true));
-            itemsList.addElement(new SimpleString("Chats: "+Integer.toString(count), true));            
-         }
-      setCommandListener(this);
-      attachDisplay(display);    
-      this.parentView=pView;
     }
+    
     
     public void cmdOk() {
          if(type==SR.MS_contactStr){
@@ -626,20 +628,33 @@ public class PluginsConfig extends DefForm implements MenuListener
             
          }
          else if(type==SR.MS_msgStr){
+            cf.msgEditType=msgEditType.getSelectedIndex();
+            cf.runningMessage=runningMessage.getValue();
+            cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
+            cf.textWrap=textWrap.getSelectedIndex();                              
+            cf.sblockFont=sblockFont.getSelectedIndex();
+            cf.messageLimit=Integer.parseInt(messageLimit.getValue());
+      
             cf.storeConfPresence=storeConfPresence.getValue();
             cf.autoScroll=autoScroll.getValue();
             cf.timePresence=timePresence.getValue();
-            cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
             cf.autoDeTranslit=autoDetranslit.getValue();
             cf.showNickNames=showNickNames.getValue();
             cf.savePos=savePos.getValue();
             cf.boldNicks=boldNicks.getValue();
-            cf.messageLimit=Integer.parseInt(messageLimit.getValue());
+     
             cf.useLowMemory_iconmsgcollapsed=useLowMemory_iconmsgcollapsed.getValue();
             cf.smiles=smiles.getValue(); 
+            cf.animatedSmiles=animatedSmiles.getValue();
+            if(!cf.smiles){
+              SmilesIcons.stopTimer();
+              clearCache(false);
+            }
+            if(!cf.animatedSmiles){
+              SmilesIcons.stopTimer();
+            }            
             cf.capsState=capsState.getValue(); 
-            cf.textWrap=textWrap.getSelectedIndex();
-            cf.sblockFont=sblockFont.getSelectedIndex();
+
             cf.useTabs=useTabs.getValue();
             cf.useClipBoard=useClipBoard.getValue();
          }
@@ -660,22 +675,20 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.adhoc=adhoc.getValue(); 
          } 
          else if(type==SR.MS_grStr){
+           cf.panelsState=panels.getSelectedIndex();             
+           cf.bgnd_image=bgnd_image.getSelectedIndex();
+           cf.scrollWidth=Integer.parseInt(scrollWidth.getValue());
+           
            cf.useLowMemory_userotator=useLowMemory_userotator.getValue();
            cf.gradient_cursor=gradient_cursor.getValue();
            ui.VirtualList.memMonitor=cf.memMonitor=memMon.getValue();
-           cf.scrollWidth=Integer.parseInt(scrollWidth.getValue());
            cf.drawScrollBgnd=drawScrollBgnd.getValue();      
-           cf.panelsState=panels.getSelectedIndex();
            ui.VirtualList.changeOrient(cf.panelsState);   
            ui.VirtualList.showTimeTraffic=cf.showTimeTraffic=drawMenuCommand.getValue();
-           cf.bgnd_image=bgnd_image.getSelectedIndex();
+
            
            cf.popUps=popUps.getValue();
            cf.showBalloons=showBaloons.getValue();
-           cf.animatedSmiles=animatedSmiles.getValue();
-           if(!cf.animatedSmiles){
-              SmilesIcons.stopTimer();
-           }
 //#ifdef BACK_IMAGE
 //#            try {
 //#             if (/*img==null && */ cf.bgnd_image==1 /*|| cf.bgnd_image==2*/ ){
@@ -705,11 +718,11 @@ public class PluginsConfig extends DefForm implements MenuListener
             if (phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
             cf.lightState=lightState.getValue();
             if (cf.allowMinimize) cf.popupFromMinimized=popupFromMinimized.getValue();
+            cf.executeByNum=executeByNum.getValue();
             cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());
             if (langs[0].size()>1) {
               cf.lang=(String) langs[0].elementAt( langFiles.getSelectedIndex() );
             }        
-            cf.executeByNum=executeByNum.getValue();
          }
          else if(type==SR.MS_hotkeysStr){
  
