@@ -399,7 +399,13 @@ public class Config {
         VirtualList.showBalloons=showBalloons;
         VirtualList.panelsState=panelsState;
         VirtualList.showTimeTraffic=showTimeTraffic;
-
+//#ifdef USER_KEYS
+//#ifdef PLUGINS
+//#         if(!sd.UserKeys) userKeys=false;
+//#endif
+//#         VirtualList.userKeys=userKeys;
+//#endif 
+        
 //#ifdef PLUGINS
 //#ifdef FILE_TRANSFER
 //#         if(!sd.FileTransfer) fileTransfer=false;

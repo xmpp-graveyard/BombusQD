@@ -78,7 +78,8 @@ public class AppendNick
     private TextBox tb;
     
     private boolean classic_chat=false;        
-    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextField t,TextBox tb,boolean classic_chat){
+    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextField tf,TextBox tb,boolean classic_chat)
+    {
         super(display);
         this.caretPos=caretPos;
         if(midlet.BombusQD.cf.msgEditType>0){
@@ -100,7 +101,7 @@ public class AppendNick
         this.parentView=pView;        
     }
     
-    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextField t,TextBox tb) {
+    public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextField tf,TextBox tb) {
         super(display);
         this.caretPos=caretPos;
         

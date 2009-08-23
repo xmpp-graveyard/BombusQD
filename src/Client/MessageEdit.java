@@ -69,24 +69,23 @@ public final class MessageEdit
 //#     private boolean sendInDeTranslit=false;
 //#     DeTranslit dt;
 //#endif
-    private static Command cmdSend=new Command(SR.MS_SEND,
-           (midlet.BombusQD.cf.phoneManufacturer==midlet.BombusQD.cf.SONYE) ? Command.SCREEN:Command.BACK , 1);
     
-    private static Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.SCREEN,2);    
-    private static Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
+    private static Command cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
 //#ifdef SMILES
-    private static Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,4);
-//#endif    
-    private static Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 90); ; // /me
+    private static Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+//#endif
+    private static Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
+    private static Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
 //#ifdef DETRANSLIT
 //#     private static Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
 //#     private static Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
     private static Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
-    private static Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);    
+    private static Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
+    private static Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
     private static Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    private static Command cmdSendEvil=new Command(SR.MS_SEND_EVIL_MSG, Command.SCREEN /*Command.SCREEN*/,98);    
-    private static Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN /*Command.SCREEN*/,97);
+    private static Command cmdSendEvil=new Command(SR.MS_SEND_EVIL_MSG, Command.SCREEN /*Command.SCREEN*/,229);    
+    private static Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN /*Command.SCREEN*/,337);    
 //#ifdef CLIPBOARD
 //#     private ClipBoard clipboard;
 //#endif
@@ -99,7 +98,7 @@ public final class MessageEdit
 //#endif  
 //#ifdef CLIPBOARD
 //#     protected static Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
-//#endif
+//#endif    
 
     
  //************OLD MsgEdit************   
@@ -318,6 +317,9 @@ public final class MessageEdit
        } 
         
        this.textField = textField;  
+       
+       if (Config.getInstance().capsState)
+           textField.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
        
        form.addCommand(cmdSend);
        form.addCommand(cmdInsMe);

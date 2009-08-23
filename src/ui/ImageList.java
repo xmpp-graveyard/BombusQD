@@ -73,7 +73,7 @@ public class ImageList {
     {
         try {
             resImage = Image.createImage(s);
-            width = height = 20;
+            width = height = resImage.getWidth()/10;
         } catch (Exception e) { 
             System.out.print("Can't load smile: ");
             System.out.println(resource);

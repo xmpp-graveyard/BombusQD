@@ -523,7 +523,7 @@ public class ContactMessageList extends MessageList {
     }
     
     public void keyGreen(){
-        //if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
+        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
 //#ifdef RUNNING_MESSAGE
 //#         switch(midlet.BombusQD.cf.msgEditType){
 //#            case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, contact.msgSuspended); break;
