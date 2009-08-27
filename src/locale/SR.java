@@ -686,7 +686,7 @@ public class SR {
     
     public static String MS_SHOW_TIME_TRAFFIC=loadString("show time and traffic");
     
-    public static String MS_KEYS_FOR_OLD_SE=loadString("keys for old SE");
+    public static String MS_KEYS_FOR_OLD_SE=loadString("change softkeys");
 
     public static String MS_USERS_SEARCH=loadString("Users search");
     

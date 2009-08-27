@@ -341,7 +341,6 @@ public class Config {
                 try { Thread.sleep(50); } catch (InterruptedException e){}
                 allowMinimize=true;
                 greenKeyCode=-10;
-                fullscreen=false;
                 break;
             case SONYE_M600:
                 KEY_BACK=-11;

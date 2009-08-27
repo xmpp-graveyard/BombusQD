@@ -240,6 +240,7 @@ public class PluginsConfig extends DefForm implements MenuListener
         } else super.commandAction(command, displayable);
     }
     
+    public String touchRightCommand(){ return SR.MS_BACK; }    
     public String touchLeftCommand(){ 
          try {
              String text=getFocusedObject().toString();

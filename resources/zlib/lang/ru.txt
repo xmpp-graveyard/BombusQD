@@ -94,7 +94,7 @@ Nicknames	Ники
 to Archive	В архив
 Back	Назад
 heap monitor	монитор памяти(heap)
-keys for old SE	поменять местами софт-кнопки
+change softkeys	поменять местами софт-кнопки
 Message	Сообщение
 <Other>	<Другой>
 history -	Включить историю

@@ -1877,9 +1877,8 @@ public abstract class VirtualList
         return StringUtils.getSizeString((traffic>0)?traffic:0);
     }   
 
-    public String touchLeftCommand(){ return SR.MS_MENU; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
-    
+    public String touchLeftCommand(){ return (midlet.BombusQD.cf.oldSE)?SR.MS_BACK:SR.MS_MENU; }
+    public String touchRightCommand(){ return (midlet.BombusQD.cf.oldSE)?SR.MS_MENU:SR.MS_BACK; }
     public void cmdCancel() {  destroyView();  }
 }
 

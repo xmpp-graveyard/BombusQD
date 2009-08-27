@@ -53,7 +53,7 @@ import java.util.*;
  *
  * @author Eugene Stahov,aqent
  */
-public final class MessageEdit 
+public class MessageEdit 
         implements CommandListener//, Runnable
 {
     private Display display;

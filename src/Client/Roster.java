@@ -2286,7 +2286,7 @@ public class Roster
                 
           
 //#ifdef JUICK.COM
-//# 
+//#                 if(from.indexOf("juick@")>-1){
 //#                  //JabberDataBlock juickUnameNs = data.findNamespace("nick", "http://jabber.org/protocol/nick");
 //#                  //if (juickUnameNs!=null) juickUnameNs.getText();
 //#                 
@@ -2304,7 +2304,8 @@ public class Roster
 //#                          sb.append('@');
 //#                          sb.append(juickNs.getAttribute("uname")).append(" ");
 //#                          sb.append('(');
-//#                          sb.append("#").append(juickNs.getAttribute("mid"));
+//#                          sb.append("#").append(mid);
+//#                            //PrivateMsg:mid==null
 //#                            if(rid!=null) sb.append("/").append(rid);
 //#                            if(photo) sb.append("+photo");
 //#                          sb.append(')');
@@ -2336,7 +2337,8 @@ public class Roster
 //#                         rid=null;
 //#                         
 //#                   }
-//#                 juickNs=null;
+//#                  juickNs=null;
+//#                 }
 //# 
 //#endif                               
 
