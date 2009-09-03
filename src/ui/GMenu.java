@@ -243,8 +243,8 @@ public class GMenu extends Canvas {
         int len_str=0;
         for (int index=size; index>=0; index--) {
              if(Config.getInstance().executeByNum){
-                  len_str  = MFont.isCheck()?MFont.stringWidth(" ["+index+"] "+commandslist[index]):
-                  font.stringWidth(" ["+index+"] "+commandslist[index]);
+                  len_str  = MFont.isCheck()?MFont.stringWidth(+index+"-"+commandslist[index]):
+                  font.stringWidth(index+"-"+commandslist[index]);
              }else{
                   len_str  = MFont.isCheck()?MFont.stringWidth(commandslist[index]):
                   font.stringWidth(commandslist[index]);
@@ -337,13 +337,13 @@ public class GMenu extends Canvas {
            }            
            if(MFont.isCheck()){
                 if(Config.getInstance().executeByNum){
-                  MFont.drawString(g," ["+Integer.toString(index)+"] "+ commandslist[index], x_start,fh*index + 1);
+                  MFont.drawString(g,Integer.toString(index)+"-"+ commandslist[index], x_start,fh*index + 1);
                 }else{
                   MFont.drawString(g,commandslist[index], x_start, fh*index + 1);                    
                 }
             }else{
                if(Config.getInstance().executeByNum){
-                  g.drawString(" ["+Integer.toString(index)+"] "+ commandslist[index], x_start,fh*index + 1, g.LEFT|g.TOP);
+                  g.drawString(Integer.toString(index)+"-"+ commandslist[index], x_start,fh*index + 1, g.LEFT|g.TOP);
                }else{
                   g.drawString(commandslist[index], x_start, fh*index + 1, g.LEFT|g.TOP);                   
                }

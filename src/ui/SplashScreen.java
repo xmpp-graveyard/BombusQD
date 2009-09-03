@@ -257,7 +257,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
              Config.SOFT_RIGHT=41;
              return;     
         }
-        if (pm==Config.NOKIA || pm==Config.SONYE) {
+        if (pm==Config.NOKIA || pm==Config.SONYE || pm==Config.SAMSUNG) {
             Config.SOFT_LEFT=-6;
             Config.SOFT_RIGHT=-7;
             return;
@@ -289,7 +289,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
                 }
             } catch(Exception e) {}
 
-            for (int i=-127;i<127;i++) {
+            for (int i=-210;i<127;i++) {//LG-?
             //run thru all the keys
                 try {
                    if (getKeyName(i).toUpperCase().indexOf("SOFT")>=0) {// Check for "SOFT" in name description

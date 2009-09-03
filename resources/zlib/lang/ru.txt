@@ -525,7 +525,7 @@ Panels	Панели
 [main bar]	[основная]
 [info bar]	[инфо]
 Flash backlight	Мигать подсветкой
-execute menu by numkey	выполнение команд меню цифровыми кнопоками
+execute menu by numkey	выполнение команд меню цифровыми кнопками
 show nicknames	показывать ник отправителя%Отображение ника в чате поверх текста сообщения
 Send photo	Отправить фото
 enable autorespond	включить автоответчик
@@ -544,7 +544,7 @@ Contact Helper	Контакт-помощник
 Change password	Сменить пароль
 Remove from server	Удалить с сервера
 New password	Новый пароль
-Send Evil Message	Послать злостное сообщение
+Send Evil Message	Послать злобное сообщение
 BredoGEN On	(вкл)Бредогенератор
 BredoGEN Off	(выкл)Бредогенератор
 deselect all	Снять выделение

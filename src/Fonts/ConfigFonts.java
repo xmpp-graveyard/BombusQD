@@ -141,10 +141,7 @@ public class ConfigFonts
         }
         */
         
-        //cf.saveToStorage();
-        
-        super.getInfoBarItem().setFont(FontCache.getFont(true, cf.barFont));
-        super.getInfoBarItem().clearWHCache();
+        sd.roster.updateBarsFont();
         sd.roster.reEnumRoster();
         destroyView();
     }

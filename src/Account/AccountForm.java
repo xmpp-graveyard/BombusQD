@@ -89,7 +89,8 @@ public class AccountForm
     boolean showExtended;
     
     LinkString link_genPass; 
-    LinkString link_genServer;     
+    LinkString link_genServer;   
+    LinkString insertpass;
 
     private int type_profile = -1; 
     boolean register=false;
@@ -174,6 +175,18 @@ public class AccountForm
         passbox = new TextInput(display, SR.MS_PASSWORD, password,null,TextField.ANY);     
         itemsList.addElement(passbox);
         
+        if(midlet.BombusQD.clipboard.getClipBoard()!=null){
+            if(midlet.BombusQD.clipboard.getClipBoard().startsWith("!")){
+              insertpass = new LinkString("Insert New Password") { public void doAction() { 
+                passbox.setValue(midlet.BombusQD.clipboard.getClipBoard().substring(1));
+                itemsList.removeElement(insertpass);
+                midlet.BombusQD.clipboard.setClipBoard("");
+              } };
+              itemsList.addElement(new SpacerItem(3));              
+              itemsList.addElement(insertpass);
+            }
+        }
+
         link_genPass = new LinkString(SR.MS_GENERATE+" "+SR.MS_PASSWORD) { public void doAction() { 
          passbox.setValue(generate(1));
         } };

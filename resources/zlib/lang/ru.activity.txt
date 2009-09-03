@@ -33,8 +33,8 @@ brushing_teeth	Чищу зубы
 getting_a_haircut	Делаю прическу
 shaving	Бреюсь
 taking_a_bath	Принимаю ванну
-taking_a_shower Принимаю душ
-having_appointment Встреча
+taking_a_shower	Принимаю душ
+having_appointment	Встреча
 inactive	Неактивен
 day_off	Выходной день
 hanging_out	Гуляю

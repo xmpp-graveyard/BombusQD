@@ -54,27 +54,17 @@ import ui.MainBar;
 //#endif
 
 public class CommandForm extends DefForm
-        implements 
-//#ifndef MENU_LISTENER
-//#         CommandListener
-//#else
-        MenuListener
-//#endif 
 {
     private Display display;
     private Displayable parentView;
-    private TextInput reason;
+    private TextInput textbox;
     
     
     private Object obj;
     private Object res;  
     private int type=-1;
-    AccountSelect accountSelect;
-    Account acc;   
-    Roster r = StaticData.getInstance().roster;
     
-    public Command cmdOk = new Command(SR.MS_COPY, Command.OK, 1);
-    private ClipBoard clipboard=ClipBoard.getInstance();    
+    public Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
     private static final int DESTROY_ROOM=0;
     private static final int DELETE_ACCOUNT=1;    
     private static final int CHANGE_PASS_ACC=2; 
@@ -86,7 +76,7 @@ public class CommandForm extends DefForm
     public CommandForm(){};
     
     public CommandForm(Display display, Displayable pView,int type,String title,Object obj,Object res) {
-        super(display, pView,title);
+        super(display, pView, title);
         
         this.display=display;
         this.obj=obj;
@@ -100,7 +90,7 @@ public class CommandForm extends DefForm
                 break;
             }
             case DELETE_ACCOUNT:{
-                itemsList.addElement(new SimpleString(SR.MS_REMOVE_ACCOUNT+"?", true));                
+                itemsList.addElement(new SimpleString(SR.MS_REMOVE_ACCOUNT+"?", true));
                 break;
             } 
             case CHANGE_PASS_ACC:{
@@ -113,7 +103,8 @@ public class CommandForm extends DefForm
                 info.append((String)obj);
                 info.append("New Password:%"+(String)res);
                 itemsList.addElement(new CheckBox(info.toString(), true, true));
-                itemsList.addElement(new SimpleString("Confirm New password?", true));
+                itemsList.addElement(new SimpleString("Sended to Clipboard?", true));
+                itemsList.addElement(new SimpleString("Please,edit this account!", true));                
                 break;
             }
             case _DEL_ACCOUNT_FROM_RMS:{
@@ -134,51 +125,14 @@ public class CommandForm extends DefForm
         }
         
         if(field_text.length()>0){
-         reason=new TextInput(display,field_text, "",null,TextField.ANY);  
-         itemsList.addElement(reason);    
+         textbox=new TextInput(display,field_text, "",null,TextField.ANY);  
+         itemsList.addElement(textbox);    
         }
-        commandState();
         setMainBarItem(new MainBar(title));
-        setCommandListener(this);
         attachDisplay(display);
         this.parentView=pView;
     }
-    
 
-    public void commandState(){
-//#ifdef MENU_LISTENER
-        menuCommands.removeAllElements();
-//#endif
-    }    
-    
-    public void commandAction(Command c, Displayable displayable) {
-        if (c==cmdCancel) {
-            destroyView();
-            return;
-        }
-        if (c==cmdOk) { cmdOk(); }
-    }    
-    
-//#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_COPY; }
-    
-//#ifdef GRAPHICS_MENU        
-//#     public int showGraphicsMenu() {
-//#          commandState();
-//#          new GMenu(display, parentView, this, null, menuCommands);
-//#          GMenuConfig.getInstance().itemGrMenu = -1;        
-//#          eventOk();
-//#          return -1;
-//#     }
-//#else
-    public void showMenu() {
-        commandState();
-        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
-    } 
-//#endif
-
-//#endif        
-    
     
     public void cmdOk() {
           switch(type){
@@ -190,8 +144,9 @@ public class CommandForm extends DefForm
                   x.setNameSpace("http://jabber.org/protocol/muc#owner");       
                   JabberDataBlock destroy=x.addChild("destroy",null);
                   destroy.setAttribute("jid", g.getName()); 
-                  destroy.addChild("reason",reason.getValue());
-                  r.theStream.send(first);
+                  destroy.addChild("reason",textbox.getValue());
+                  midlet.BombusQD.sd.roster.theStream.send(first);
+                  destroyView();
                   break;
              }
             case DELETE_ACCOUNT://FIX
@@ -200,53 +155,48 @@ public class CommandForm extends DefForm
                   Iq iqdel=new Iq(acc.getServer(), Iq.TYPE_SET,"delacc");
                   JabberDataBlock qB = iqdel.addChildNs("query", "jabber:iq:register" );
                   qB.addChild("remove",null);
-                  r.theStream.send(iqdel);
-                  //r.transfer((Vector)res,acc);
+                  midlet.BombusQD.sd.roster.theStream.send(iqdel);
                   iqdel=null;
                   qB=null;
+                  destroyView();
                   break;                
             }
             case CHANGE_PASS_ACC://FIX
             {
                  Account acc = (Account) obj;
-                 String pass = reason.getValue();
+                 String pass = textbox.getValue();
                  Iq iqdel=new Iq(acc.getServer(), Iq.TYPE_SET,"changemypass");
                  JabberDataBlock qB = iqdel.addChildNs("query", "jabber:iq:register" );
                   qB.addChild("username",acc.getUserName());
                   qB.addChild("password",pass);            
-                  r.theStream.send(iqdel);
-                  //r.transfer((AccountSelect)res,acc);
+                  midlet.BombusQD.sd.roster.theStream.send(iqdel);
                   iqdel=null;
                   qB=null;
+                  destroyView();
                   break;                
             }  
             case _CHANGE_PASS_RMS://FIX
             {
-                  //r.getAccount().setPassword((String)res);
-                  //new AccountForm(display, parentView, r.getAccountSelect(), r.getAccount(),-1,false,null);
-                  //r.closeTransfer();
+                  midlet.BombusQD.clipboard.setClipBoard("");
+                  midlet.BombusQD.clipboard.setClipBoard("!"+(String)res);
+                  new AccountSelect(display, parentView, false,-1);
                   break;
             }
             case _DEL_ACCOUNT_FROM_RMS:
             {
                   new AccountSelect(display, parentView, false,-1);
-                  //r.closeTransfer();
                   break;
             }
             case STATS_ITEM:
-              {
+            {
                   try {
-                      clipboard.add(new Msg(Msg.MESSAGE_TYPE_EVIL,"bechmark",null,(String)obj));
+                      midlet.BombusQD.clipboard.add(new Msg(Msg.MESSAGE_TYPE_EVIL,"bechmark",null,(String)obj));
                   } catch (Exception e) {/*no messages*/}
+                  destroyView();
                   break;
-              }
+            }
                
           }
-       destroyView();
     }
-        
-    public void destroyView(){
-        if (display!=null)
-            display.setCurrent(parentView);
-    }
+
   } 

@@ -124,14 +124,18 @@ public class VCardView
             itemsList.addElement(refresh);
         } else {
             setPhoto();
-            for (int index=0; index<vcard.getCount(); index++) {
-                String data=vcard.getVCardData(index);
-                String name=(String)VCard.vCardLabels.elementAt(index);
+            int count = vcard.getCount();
+            String data="";
+            String name="";
+            for (int index=0; index<count; index++) {
+                data = vcard.getVCardData(index);
+                name=(String)VCard.vCardLabels.elementAt(index);
                 if (data!=null && name!=null) {
                     if (!VCard.vCardFields.elementAt(index).equals("URL")) {
                         MultiLine nData=new MultiLine(name, data, super.superWidth);
                         nData.selectable=true;
                         itemsList.addElement(nData);
+                        nData=null;
                     } else {
                         url=data;
                         LinkString nData=new LinkString(url) { public void doAction() {
@@ -140,6 +144,7 @@ public class VCardView
                                     ex.printStackTrace();
                                 } } };
                         itemsList.addElement(nData);
+                        nData=null;
                     }
                 }
             }
@@ -153,9 +158,8 @@ public class VCardView
         this.parentView=pView;
     }
 
-    Config cf = Config.getInstance();
-
      private void setPhoto() {
+        c.hasPhoto = vcard.hasPhoto;         
         try {
             itemsList.removeElement(noPhoto);
             itemsList.removeElement(badFormat);
@@ -188,7 +192,6 @@ public class VCardView
         } else {
             itemsList.addElement(noPhoto);
         }
-       c.hasPhoto = vcard.hasPhoto;
      }
      
      

@@ -442,8 +442,8 @@ public class PluginsConfig extends DefForm implements MenuListener
                      itemsList.addElement(eventComposing);
                          eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); 
                          itemsList.addElement(eventDelivery);
-                           sendMoodInMsg = new CheckBox(SR.MS_MOOD_IN_MSG, cf.sendMoodInMsg);
-                           itemsList.addElement(sendMoodInMsg);
+                           //sendMoodInMsg = new CheckBox(SR.MS_MOOD_IN_MSG, cf.sendMoodInMsg);
+                           //itemsList.addElement(sendMoodInMsg);
                           
                          itemsList.addElement(new SpacerItem(10));
                          itemsList.addElement(new SimpleString(SR.MS_RECONNECT, true));//сеть

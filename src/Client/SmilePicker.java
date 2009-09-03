@@ -131,7 +131,7 @@ public class SmilePicker
         menuCommands.removeAllElements();
 //#endif
         addCommand(cmdOk); cmdOk.setImg(0x43);
-        addCommand(cmdCancel);
+        //addCommand(cmdCancel);
         
         setCommandListener(this);
     }

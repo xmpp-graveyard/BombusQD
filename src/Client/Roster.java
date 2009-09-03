@@ -242,6 +242,26 @@ public class Roster
 //#endif    
     static String hashcheck = StringUtils.calcHash();
     
+    
+    public void updateBarsFont() {
+        MainBar mainbar=new MainBar(4, null, null, false);
+        MainBar secondBar=new MainBar("", true);
+        setMainBarItem(mainbar);
+        setInfoBarItem(secondBar);  
+        
+        mainbar.addRAlign();
+        mainbar.addElement(null);
+        mainbar.addElement(null);
+        mainbar.addElement(null);
+
+        secondBar.addElement(null);
+        secondBar.addRAlign();
+        secondBar.addElement(null);
+        
+        updateMainBar();
+    }
+    
+    
     public Roster(Display display) {
         super();
 
@@ -1804,21 +1824,29 @@ public class Roster
         c.img_vcard=il.resize(photoImg,newW,newH);
     } 
 
-    
-    
-    public int blockArrived( JabberDataBlock data ) {
+   
+   private String from = "";
+   private String type = "";
+   private String id = "";
+   
+   private VCard vc = null;
+   private Message message = null;
+   private Presence pr = null;
+   
+
+   public int blockArrived( JabberDataBlock data ) { //fix
         try {
             if( data instanceof Iq ) {
                 
-                String from=data.getAttribute("from");
-                String type = (String) data.getTypeAttribute();
-                String id=(String) data.getAttribute("id");
+                from=data.getAttribute("from");
+                type = (String) data.getTypeAttribute();
+                id=(String) data.getAttribute("id");
                 
                 if (id!=null) {
                     if (id.startsWith("nickvc")) {
                         if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
                         
-                        VCard vc=new VCard(data);//.getNickName();
+                        vc=new VCard(data);//.getNickName();
                         String nick=vc.getNickName();
                         
                         Contact c=findContact(new Jid(from), false);
@@ -1826,6 +1854,7 @@ public class Roster
                         String group=(c.getGroupType()==Groups.TYPE_NO_GROUP)? null: c.group.name;
                         if (nick!=null)  storeContact(from,nick,group, false);
                         sendVCardReq();
+                        vc=null;
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
                     
@@ -1833,51 +1862,52 @@ public class Roster
                         if (type.equals("get") || type.equals("set") || type.equals("error") ) return JabberBlockListener.BLOCK_REJECTED;
                         
                         setQuerySign(false);
-                        VCard vcard=new VCard(data);
+                        vc=new VCard(data);
                         String jid=id.substring(5);
                         Contact c=getContact(jid, false); // drop unwanted vcards
 //#if FILE_IO && HISTORY
 //#                                 if(midlet.BombusQD.cf.autoSaveVcard) {//check img in fs?
-//#                                     cashePhoto(vcard,c);
+//#                                     cashePhoto(vc,c);
 //#                                 }
 //#endif                              
                         if (c!=null) {
-                            c.vcard=vcard;
+                            c.vcard=vc;
                             if (display.getCurrent() instanceof VirtualList) {
                                 if (c.getGroupType()==Groups.TYPE_SELF)
-                                    new VCardEdit(display, this, vcard);
+                                    new VCardEdit(display, this, vc);
                                 else
                                     new VCardView(display, this, c);
                             }
                         } else {
                             new VCardView(display, this, c);
                         }
+                        vc=null;
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
  
                     if (id.startsWith("avcard_get")) {
                        Thread.sleep(100);
-                        VCard vcard=new VCard(data);
+                        vc=new VCard(data);
                         try {
-                            int length=vcard.getPhoto().length;
+                            int length=vc.getPhoto().length;
                             if (length==1) {
-                                vcard.setPhoto(null);
+                                vc.setPhoto(null);
                             } else {
                                 ImageList il = new ImageList();
-                                Image photoImg=Image.createImage(vcard.getPhoto(), 0, length);
+                                Image photoImg=Image.createImage(vc.getPhoto(), 0, length);
                                 Contact c=getContact(data.getAttribute("from"), true);
 //#if FILE_IO && HISTORY
 //#                                 if(midlet.BombusQD.cf.autoSaveVcard) {
-//#                                     cashePhoto(vcard,c);
+//#                                     cashePhoto(vc,c);
 //#                                 }
 //#endif  
                                 c.hasPhoto=true;
                                 setImageAvatar(il,c,photoImg);
-                                vcard.hasPhoto=true;
-                                c.vcard=vcard;
+                                vc.hasPhoto=true;
+                                c.vcard=vc;
                             }
                         } catch(OutOfMemoryError eom){
-                              System.out.println("OutOfMemoryError onload "+vcard.getJid());
+                              System.out.println("OutOfMemoryError onload "+vc.getJid());
                         }  catch (Exception e) {}   
                         
                        return JabberBlockListener.BLOCK_PROCESSED;                        
@@ -1921,8 +1951,7 @@ public class Roster
                     if(id.equals("changemypass")) { 
                          JabberDataBlock reg=data.findNamespace("query","jabber:iq:register");
                          redraw();
-                         new CommandForm(display,parentView,3,"Alert",SR.MS_ACCOUNT_NAME + ": " + reg.getChildBlockText("username"),
-                                 reg.getChildBlockText("password"));
+                         new CommandForm(display,parentView,3,"Change Password","", reg.getChildBlockText("password"));
                     }  
                     
                   
@@ -2056,14 +2085,14 @@ public class Roster
                 }
             } else if( data instanceof Message ) { // If we've received a message
                 querysign=false;
-                Message message = (Message) data;
+                message = (Message) data;
                 
-                String from=message.getFrom();
+                from=message.getFrom();
 
                 if (myJid.equals(new Jid(from), false)) //Enable forwarding only from self-jids
                     from=message.getXFrom();
                 
-                String type=message.getTypeAttribute();
+                type=message.getTypeAttribute();
 
                 boolean groupchat=false;
                 
@@ -2235,9 +2264,8 @@ public class Roster
 //#endif
                         if (start_me==0){
                             b.append(": ");
-                        }
-                        else 
-                            b.insert(0,'*');
+                        } else b.insert(0,'*');
+                        
                         b.append(body.substring(start_me));
                         body=b.toString();
                         b=null;
@@ -2415,9 +2443,9 @@ public class Roster
                 if (myStatus==Presence.PRESENCE_OFFLINE) 
                     return JabberBlockListener.BLOCK_REJECTED;
 
-                Presence pr = (Presence) data;
+                pr = (Presence) data;
 
-                String from=pr.getFrom();
+                from=pr.getFrom();
                 String Prtext = pr.getText();
                 int ti=pr.getTypeIndex();
                 

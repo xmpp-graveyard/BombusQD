@@ -34,6 +34,7 @@ public class MainBar extends ComplexString{
         this (size);
         if (first!=null) setElementAt(first,0);
         if (second!=null) setElementAt(second,1);
+        font = FontCache.getFont(bold, midlet.BombusQD.cf.barFont);
     }
     
     public MainBar(Object obj) {

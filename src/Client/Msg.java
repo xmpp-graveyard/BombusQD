@@ -127,17 +127,17 @@ public class Msg {
         }
         return ColorTheme.getColor(ColorTheme.LIST_INK);
     }
+    
     public String toString() {
-        if(!midlet.BombusQD.cf.timePresence){
-          return body;
-        }else{
-          StringBuffer time=new StringBuffer();
-          if (messageType==MESSAGE_TYPE_PRESENCE || !midlet.BombusQD.cf.showBalloons) {
-            time.append("["+getTime()+"] ");
-          }
-          time.append(body);
-          return time.toString(); 
-        }
+       if (messageType==MESSAGE_TYPE_PRESENCE && midlet.BombusQD.cf.timePresence) {
+         StringBuffer time=new StringBuffer();
+         time.append(getTime());
+         time.append(" ");
+         time.append(body);
+         return time.toString(); 
+       }else{
+         return body;
+       }
     }
 
     public boolean isPresence() { return messageType==MESSAGE_TYPE_PRESENCE; }

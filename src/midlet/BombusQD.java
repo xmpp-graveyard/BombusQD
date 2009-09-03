@@ -55,6 +55,9 @@ import util.StringLoader;
 import Fonts.*;
 import util.Strconv;
 import Account.YesNoAlert;
+//#ifdef CLIPBOARD
+//# import util.ClipBoard;
+//#endif
 
 /** Entry point class
  *
@@ -70,7 +73,8 @@ public class BombusQD extends MIDlet implements Runnable
     
     public final static StaticData sd = StaticData.getInstance();
     public final static Config cf = Config.getInstance();
-    public final static Cashe cashe = Cashe.get();    
+    public final static Cashe cashe = Cashe.get();  
+    public final static ClipBoard clipboard=ClipBoard.getInstance();
     
     public int width = 0;
     public int height = 0;

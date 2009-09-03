@@ -167,9 +167,7 @@ public class DropChoiceBox
     public int getVHeight(){
         return itemHeight;
     }
-    public int getVWidth(){ 
-        return -1;
-    }
+    
     public boolean handleEvent(int keyCode) {
         if (items.size()<1) return false;
         

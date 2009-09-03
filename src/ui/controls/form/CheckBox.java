@@ -101,7 +101,7 @@ public class CheckBox
        if (toString()!=null){
         Vector lines=(Vector)checkBox.elementAt(0);   
         int size=lines.size(); 
-        g.clipRect(0, 0, g.getClipWidth(), getVHeight());
+        g.clipRect(offset, 0, g.getClipWidth(), getVHeight());
         int y = 0;
          if(state){
               int helpHeight=0;
@@ -123,11 +123,7 @@ public class CheckBox
                    y += fontHeight;
                  }
               }else{
-               // if(toString().indexOf("%")>-1){
-               //    g.drawString(text_undo, offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);  
-               // }else{
                    g.drawString(toString(), offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
-               // }
               }
          } else{
               if(toString().indexOf("%")>-1){
@@ -139,10 +135,6 @@ public class CheckBox
        }       
     }    
 
-    public int getVWidth(){ 
-        return -1;
-    }
-    
     public int getVHeight(){ 
         Vector str=(Vector)checkBox.elementAt(0);
         if(state){
