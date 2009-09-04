@@ -118,7 +118,7 @@
 //#     }
 //#     
 //#     public static long getCurrentTraffic() {
-//#         return StaticData.getInstance().traffic*2;
+//#         return StaticData.getInstance().traffic;
 //#     }
 //# }
 //#endif

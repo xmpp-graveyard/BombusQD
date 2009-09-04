@@ -667,7 +667,7 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#endif            
             cf.eventComposing=eventComposing.getValue();
             cf.eventDelivery=eventDelivery.getValue();
-            cf.sendMoodInMsg=sendMoodInMsg.getValue();
+            //cf.sendMoodInMsg=sendMoodInMsg.getValue();
             
             cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
             cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());

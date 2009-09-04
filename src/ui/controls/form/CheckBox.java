@@ -110,15 +110,15 @@ public class CheckBox
                     helpHeight += fontHeight*(size-1);
                     g.drawString(text_undo, offset-ofs, y, Graphics.TOP|Graphics.LEFT);                    
                     g.setColor(0xffffff);
-                    g.fillRoundRect(15,fontHeight+2,gm.phoneWidth-30,helpHeight,9,9);
+                    g.fillRoundRect(20,fontHeight+2,gm.phoneWidth-30,helpHeight,9,9);
                     g.setColor(0x000000);
-                    g.drawRoundRect(15,fontHeight+2,gm.phoneWidth-30,helpHeight,9,9);  
+                    g.drawRoundRect(20,fontHeight+2,gm.phoneWidth-30,helpHeight,9,9);  
                     g.setColor(0x000000);
                  for(int i=0;i<size;i++){ 
                    if(i==0){
                       g.drawString((String)lines.elementAt(i),3, y, Graphics.TOP|Graphics.LEFT);
                    }else{
-                      g.drawString((String)lines.elementAt(i),18 , y + 2, Graphics.TOP|Graphics.LEFT);   
+                      g.drawString((String)lines.elementAt(i),23 , y + 2, Graphics.TOP|Graphics.LEFT);   
                    }
                    y += fontHeight;
                  }

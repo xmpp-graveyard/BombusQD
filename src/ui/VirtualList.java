@@ -306,9 +306,9 @@ public abstract class VirtualList
         
 //#ifdef GRAPHICS_MENU     
 //#         GMenu = new GMenu();
-//#         gm.phoneWidth = width;
-//#         gm.phoneHeight = height;
-//#endif        
+//#endif       
+         gm.phoneWidth = width;
+         gm.phoneHeight = height;        
 
         
 //#ifdef BACK_IMAGE
@@ -644,30 +644,31 @@ public abstract class VirtualList
             if (System.currentTimeMillis()-sd.getTrafficOut()<2000) drawTraffic(g, true);
         }
   
-//#ifdef GRAPHICS_MENU   
-//#         if(gm.itemGrMenu>0){
-//#           //showBalloon=false;
+        if(gm.itemGrMenu>0){
+          //showBalloon=false;
+//#ifdef GRAPHICS_MENU              
 //#           drawGraphicsMenu(g);
-//#         }else{
-//#             
+//#endif           
+        }else{
+            
 //#ifdef POPUPS
-//#         if(popUpshow || midlet.BombusQD.cf.popUps){
-//#             drawPopUp(g);
-//#         }
+        if(popUpshow || midlet.BombusQD.cf.popUps){
+            drawPopUp(g);
+        }
 //#endif
-//#         
-//#           if (showBalloon) {
-//#             if (showBalloons) {
-//#                 String text=null;
-//#                 try {
-//#                     text=((VirtualElement)getFocusedObject()).getTipString();
-//#                 } catch (Exception e) { }
-//#                 if (text!=null)
-//#                     drawBalloon(g, baloon, text);
-//#             }
-//#           }            
-//#         }
-//#endif  
+        
+          if (showBalloon) {
+            if (showBalloons) {
+                String text=null;
+                try {
+                    text=((VirtualElement)getFocusedObject()).getTipString();
+                } catch (Exception e) { }
+                if (text!=null)
+                    drawBalloon(g, baloon, text);
+            }
+          }            
+        }
+
         /*
         if (reconnectWindow.getInstance().isActive()) {
             if (reconnectTimeout>reconnectPos && reconnectPos!=0) {
@@ -1123,7 +1124,7 @@ public abstract class VirtualList
     protected void keyPressed(int keyCode) { kHold=0; key(keyCode); }
     
     protected void pointerPressed(int x, int y) {
-        //System.out.println("pointerPressed("+x+", "+y+")");
+        System.out.println("pointerPressed("+x+", "+y+")");
 //#ifdef POPUPS
         popup.next();
 //#endif        
@@ -1658,9 +1659,6 @@ public abstract class VirtualList
         case KEY_STAR:
             System.gc();
             try { Thread.sleep(50); } catch (InterruptedException ex) { }
-//#ifdef POPUPS
-            ...
-//#endif
             break;
 //#ifdef POPUPS
         case KEY_POUND:
@@ -1919,14 +1917,14 @@ class TimerTaskRotate extends Thread{
             instance.scrollLen=max;
             instance.scrollline=(max>0);
             instance.attachedList=list;
-            instance.balloon  = 8;
-            instance.scroll   = 4;
+            instance.balloon  = 20;
+            instance.scroll   = 10;
         }
     }
     
     public void run() {
         while (true) {
-            try {  sleep(250);  } catch (Exception e) { instance=null; break; }
+            try {  sleep(100);  } catch (Exception e) { instance=null; break; }
 
             synchronized (this) {
                 if (scroll==0) {
@@ -1952,7 +1950,7 @@ class TimerTaskRotate extends Thread{
             if (attachedList.offset>=scrollLen) {
                 scrollLen=-1; attachedList.offset=0; scrollline = false;
             } else 
-                attachedList.offset+=14;
+                attachedList.offset+=6;
 
             return true;
         }
@@ -1963,7 +1961,7 @@ class TimerTaskRotate extends Thread{
             if (attachedList==null || balloon<0)
                 return false;
             balloon--;
-            attachedList.showBalloon=(balloon<8 && balloon>0);
+            attachedList.showBalloon=(balloon<20 && balloon>0);
             return true;
         }
     }
