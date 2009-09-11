@@ -850,18 +850,9 @@ public class SR {
    public static String MS_notifyStr = loadString( "Notifications");
    public static String MS_taskstr = loadString( "Tasks");
    public static String MS_avatarStr = loadString( "Avatars");   
-   
-   public static String MS_sblockFont = loadString( "Selected text elements font");   
-   public static String MS_sblock_bs = loadString( "Bold Font(small)");
-   public static String MS_sblock_bm = loadString( "Bold Font(middle)");
-   public static String MS_sblock_bl = loadString( "Bold Font(large)");
-   public static String MS_sblock_ibs = loadString( "Bold Font(italic/small)");
-   public static String MS_sblock_ibm = loadString( "Bold Font(italic/middle)");
-   public static String MS_sblock_ibl = loadString( "Bold Font(italic/large)");
-   public static String MS_sblock_no = loadString( "No select");  
-   
-   public static String MS_ANI_SMILES = loadString( "Use animated smiles");     
 
+   public static String MS_ANI_SMILES = loadString( "Use animated smiles");     
+   public static String MS_NOKIA_RECONNECT_HACK = loadString( "Nokia Reconnect Hack" );     
    
     private SR() { }
     

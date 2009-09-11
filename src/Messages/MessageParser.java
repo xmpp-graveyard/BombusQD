@@ -78,8 +78,8 @@ public final class MessageParser // implements Runnable
 //#endif
     
     private static class Leaf {
-        public int smile=NOSMILE;   // ??? ???????? ? ????
-        public String smileChars;     // ??????? ?????????
+        public int smile=NOSMILE;
+        public String smileChars;
         public Vector child;
 
         public Leaf() {
@@ -222,7 +222,6 @@ public final class MessageParser // implements Runnable
         addSmile(root, "\01", ComplexString.NICK_ON);
         addSmile(root, "\02", ComplexString.NICK_OFF);
 //#endif
-        addSmile(root, " *", BOLD);
         
         emptyRoot=new Leaf();
 	addSmile(emptyRoot, "http://", URL);
@@ -235,7 +234,6 @@ public final class MessageParser // implements Runnable
         addSmile(emptyRoot, "\01", ComplexString.NICK_ON);
         addSmile(emptyRoot, "\02", ComplexString.NICK_OFF);
 //#endif
-        addSmile(emptyRoot, " *", BOLD);
     }
     
 
@@ -244,7 +242,6 @@ public final class MessageParser // implements Runnable
         boolean singleLine=task.msg.itemCollapsed;
         
         boolean underline=false;
-        boolean boldtext=false;        
         
         Leaf smileRoot=(
 //#ifdef SMILES
@@ -334,58 +331,23 @@ public final class MessageParser // implements Runnable
                         smileIndex=smileLeaf.smile;
                         smileEndPos=pos;
                     }
-                    
-                    if(boldtext) {
-                        if(c=='*'){
-                                boldtext=false;
-                                if (wordStartPos!=pos) {
-                                    s.append(txt.substring(wordStartPos,pos));
-                                    wordStartPos=pos;
-				    w+=wordWidth;
-                                    wordWidth=0;
-                                }
-                                if (s.length()>0) {
-                                    l.addBold();
-                                    l.addElement(s.toString());
-                                }
-                                s.setLength(0);
-                        }
-                    }                    
-                    
                   pos++;
                 }
 
               switch(smileIndex) {
-        
-                 case BOLD: 
-                     if(midlet.BombusQD.cf.textWrap==1 && midlet.BombusQD.cf.sblockFont!=6){
-                       if (wordStartPos!=pos) {
-                        if(txt.indexOf("*",pos)>-1){
-                          boldtext=task.smilesEnabled();
-                          s.append(txt.substring(wordStartPos,pos));
-                          w+=wordWidth;
-                          wordWidth=0;
-                          wordStartPos=pos;                           
-                         }
-                       }                     
-                       if (s.length()>0) l.addElement(s.toString());
-                       s.setLength(0);
-                      }
-                      break;
-                     
-                 
+
                  case URL:
                        w+=50;//hardfix
                        if (s.length()>0) l.addElement(s.toString());
                        s.setLength(0);
-                       underline=boldtext?false:true;
+                       underline=true;
                       break;
                   
                  case -1: //text NOSMILE
                     pos=smileStartPos;
                     c=txt.charAt(pos);
 
-                    int cw=boldtext?FontCache.getFont().charWidth(c):f.charWidth(c);//+fHeight
+                    int cw=f.charWidth(c);//+fHeight
 
                     if (c>0x1f) wordWidth+=cw;
                     
@@ -401,7 +363,6 @@ public final class MessageParser // implements Runnable
                         }
                         if (w+wordWidth+cw>width || newline) {
                             if (underline) l.addUnderline();
-                            if(boldtext) l.addBold();  
                             
                             l.addElement(s.toString());
                             s.setLength(0); w=0;
@@ -447,10 +408,7 @@ public final class MessageParser // implements Runnable
                     if (s.length()>0) {
                         if (underline){
                           l.addUnderline();
-                        }
-                        if (boldtext){
-                          l.addBold();
-                        }                        
+                        }                    
                       l.addElement(s.toString());
                     }
                     
@@ -479,7 +437,6 @@ public final class MessageParser // implements Runnable
                 s.append(txt.substring(wordStartPos,pos));
             if (s.length()>0) {
                 if (underline) l.addUnderline();
-                if (boldtext) l.addBold();
                 l.addElement(s.toString());
             }
              
@@ -489,25 +446,11 @@ public final class MessageParser // implements Runnable
             state++;
             s.setLength(0);
         }
-        lines=null;   
-      /*
-r14 Default
-Parse Speed -   76 msec         73 msec       70 msec      74 msec
-FREE Memory -  1209-->1046     322-->159    978-->815    1187-->1024   163-164kb
-       *
-Parse Speed - 69 msec           61 msec       47 msec      59 msec      +speed
-FREE Memory - 1186-->1023      959-->795     813-->649    657-->494    163-164kb
-       */
+        lines=null;
     }
     
     public Font getFont(boolean bold) {
         return FontCache.getFont(bold, FontCache.msg);
     }
-    
-    /*
-     public interface MessageParserNotify {
-        void notifyRepaint(Vector v, Msg parsedMsg, boolean finalized);
-     }
-    */
- 
+
 }

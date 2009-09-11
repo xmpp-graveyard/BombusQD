@@ -90,9 +90,7 @@ import com.alsutton.jabber.*;
 public class RosterItemActions extends Menu {
 
     Object item;
-//#ifdef CLIPBOARD
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
-//#endif
+
     private int action;
     
     StaticData sd=StaticData.getInstance();
@@ -172,7 +170,7 @@ public class RosterItemActions extends Menu {
 //#endif
 //#ifdef CLIPBOARD
 //#             if (cf.useClipBoard) {
-//#                 if (!clipboard.isEmpty())
+//#                 if (!midlet.BombusQD.clipboard.isEmpty())
 //#                     addItem(SR.MS_SEND_BUFFER,914, menuIcons.ICON_SEND_BUFFER);
 //#                 if (contact.getGroupType()!=Groups.TYPE_SELF)
 //#                     addItem(SR.MS_COPY_JID,892, menuIcons.ICON_COPY_JID);
@@ -531,7 +529,7 @@ public class RosterItemActions extends Menu {
 //#endif
 //#                         try {
 //#                             if (c.bareJid!=null)
-//#                                 clipboard.setClipBoard(c.bareJid);
+//#                                 midlet.BombusQD.clipboard.setClipBoard(c.bareJid);
 //#                         } catch (Exception e) {/*no messages*/}
 //#ifndef WMUC
 //#                     }
@@ -560,7 +558,7 @@ public class RosterItemActions extends Menu {
                 break;
 //#ifdef CLIPBOARD
 //#                 case 914: //send message from buffer
-//#                     String body2=clipboard.getClipBoard();
+//#                     String body2=midlet.BombusQD.clipboard.getClipBoard();
 //#                     if (body2.length()==0)
 //#                         return;
 //# 
@@ -690,7 +688,7 @@ public class RosterItemActions extends Menu {
 //#                     case 892: //Copy JID
 //#                         try {
 //#                             if (mc.realJid!=null)
-//#                                 clipboard.setClipBoard(mc.realJid);
+//#                                 midlet.BombusQD.clipboard.setClipBoard(mc.realJid);
 //#                         } catch (Exception e) {}
 //#                         break;
 //#endif

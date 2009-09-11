@@ -102,9 +102,6 @@ public class ComplexString extends Vector implements VirtualElement {
 //#if NICK_COLORS
 	boolean nick=false;
 //#endif
-
-	boolean boldtext=false;
-        
         int w=offset;
         int dw;
         int imageYOfs=(( getVHeight()-imgHeight() )>>1);
@@ -158,20 +155,11 @@ public class ComplexString extends Vector implements VirtualElement {
                     } else {
 //#endif
                         if(midlet.BombusQD.cf.boldNicks) {  g.setFont(font); }
-                        
-                        if(boldtext){
-                           g.setFont(FontCache.getFont());
-                           dw=FontCache.getFont().stringWidth((String)elementData[index]);
-                           boldtext=false;
-                        }else{
-                           g.setFont(font);
-                           dw=font.stringWidth((String)elementData[index]);  
-                        }
-                         
+                        dw=font.stringWidth((String)elementData[index]);  
                         if (ralign) w-=dw;
                           g.drawString((String)elementData[index],w,fontYOfs,Graphics.LEFT|Graphics.TOP);
                           if (underline) {
-                            int y=font_height-1;
+                            int y=getVHeight()-1;
                             g.drawLine(w, y-1, w+dw, y-1);
                             underline=false;
                           }
@@ -192,9 +180,6 @@ public class ComplexString extends Vector implements VirtualElement {
                             break;
                         case COLOR:
                             g.setColor(0xFFFFFF&i);
-                            break;
-                        case BOLD:
-                            boldtext=true;
                             break;
                         case RALIGN:
                             ralign=true;

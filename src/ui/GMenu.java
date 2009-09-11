@@ -41,7 +41,7 @@ public class GMenu extends Canvas {
        
    public GMenu() {};
    private Image offscreen = null;
-   VirtualList view;
+   private VirtualList view;
    
    public void init(Graphics g, int width, int height,VirtualList view) {
         this.height=height;
@@ -59,7 +59,6 @@ public class GMenu extends Canvas {
    Displayable parentView;
    GMenuConfig gm = GMenuConfig.getInstance(); 
    BombusQD bm = BombusQD.getInstance();
-   FontClass MFont = FontClass.getInstance();
 
    
    public final static int MAIN_MENU_ROSTER=1;
@@ -98,7 +97,7 @@ public class GMenu extends Canvas {
    private int width;
    private int height;
    protected Font font = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_SMALL);
-   private int fh = MFont.isCheck()?MFont.getFontHeight():font.getHeight();
+   private int fh = font.getHeight();
    private int size;  
    private Vector menuCommands = new Vector();
    
@@ -243,11 +242,9 @@ public class GMenu extends Canvas {
         int len_str=0;
         for (int index=size; index>=0; index--) {
              if(Config.getInstance().executeByNum){
-                  len_str  = MFont.isCheck()?MFont.stringWidth(+index+"-"+commandslist[index]):
-                  font.stringWidth(index+"-"+commandslist[index]);
+                  len_str  = font.stringWidth(index+"-"+commandslist[index]);
              }else{
-                  len_str  = MFont.isCheck()?MFont.stringWidth(commandslist[index]):
-                  font.stringWidth(commandslist[index]);
+                  len_str  = font.stringWidth(commandslist[index]);
              }
              if(len_str>maxwidth){
                maxwidth=len_str; 
@@ -321,11 +318,9 @@ public class GMenu extends Canvas {
             g.fillRoundRect(1, 1 + (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh, 8, 8);
         }  
           
-    
-        if(!MFont.isCheck()) { g.setFont(font);  }
-        if(MFont.isCheck()) { MFont.setColor(255,0x000000); }else{ g.setColor(0x000000); }
-        
+        g.setFont(font);
         g.setColor(ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_FONT));
+        
         int x_start = 3 + bm.wimg_menu;//3
         for (int index=0; index<=size; index++) {
            if(gm.itemGrMenu!=GMenu.DEF_FORM){
@@ -335,19 +330,11 @@ public class GMenu extends Canvas {
              }
              cmd=null;
            }            
-           if(MFont.isCheck()){
-                if(Config.getInstance().executeByNum){
-                  MFont.drawString(g,Integer.toString(index)+"-"+ commandslist[index], x_start,fh*index + 1);
-                }else{
-                  MFont.drawString(g,commandslist[index], x_start, fh*index + 1);                    
-                }
+            if(Config.getInstance().executeByNum){
+                g.drawString(Integer.toString(index)+"-"+ commandslist[index], x_start,fh*index + 1, g.LEFT|g.TOP);
             }else{
-               if(Config.getInstance().executeByNum){
-                  g.drawString(Integer.toString(index)+"-"+ commandslist[index], x_start,fh*index + 1, g.LEFT|g.TOP);
-               }else{
-                  g.drawString(commandslist[index], x_start, fh*index + 1, g.LEFT|g.TOP);                   
-               }
-           }
+                g.drawString(commandslist[index], x_start, fh*index + 1, g.LEFT|g.TOP);                   
+            }
         }
    }
    

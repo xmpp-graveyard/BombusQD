@@ -41,9 +41,6 @@ import io.TranslateSelect;
 //#ifdef STATS
 //# import Statistic.Stats;
 //#endif
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
@@ -69,36 +66,36 @@ public class MessageEdit
 //#     private boolean sendInDeTranslit=false;
 //#     DeTranslit dt;
 //#endif
-    
-    private static Command cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
+
+    private Command cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
 //#ifdef SMILES
-    private static Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
 //#endif
-    private static Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
-    private static Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
+    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
+    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
 //#ifdef DETRANSLIT
-//#     private static Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
-//#     private static Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
+//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
+//#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
 //#endif
-    private static Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
-    private static Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
-    private static Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
-    private static Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    private static Command cmdSendEvil=new Command(SR.MS_SEND_EVIL_MSG, Command.SCREEN /*Command.SCREEN*/,229);    
-    private static Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN /*Command.SCREEN*/,337);    
-//#ifdef CLIPBOARD
-//#     private ClipBoard clipboard;
-//#endif
-    
+    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
+    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
+    private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
+    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
+    private Command cmdSendEvil=new Command(SR.MS_SEND_EVIL_MSG, Command.SCREEN /*Command.SCREEN*/,229);    
+    private Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN /*Command.SCREEN*/,337);
+
 //#ifdef ARCHIVE
     protected static Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
-//#endif
+//#endif    
+//#ifdef CLIPBOARD
+//#     protected static Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
+//#endif  
+        
+    
 //#if TEMPLATES
 //#     protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7); 
 //#endif  
-//#ifdef CLIPBOARD
-//#     protected static Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
-//#endif    
+  
 
     
  //************OLD MsgEdit************   
@@ -155,8 +152,7 @@ public class MessageEdit
 //#endif
 //#ifdef CLIPBOARD
 //#         if (midlet.BombusQD.cf.useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             if (!clipboard.isEmpty())
+//#             if (!midlet.BombusQD.clipboard.isEmpty())
 //#                 t.addCommand(cmdPasteText);
 //#         }
 //#endif        
@@ -189,17 +185,15 @@ public class MessageEdit
     
     
     
-    
     private boolean evil=false;
     public Form form;
     public Ticker ticker = null; 
     public TextField textField = null;//default msgEdit
-    
     public StringItem messageItem = null; //show latest message for default msgEdit
-    public static InformWindow informWindow = null;
+    public InformWindow informWindow = null;
     
 
-    public final class InformWindow extends CustomItem {
+    public class InformWindow extends CustomItem {
         
       public InformWindow(boolean upperBlock) { 
           super(""); 
@@ -208,7 +202,7 @@ public class MessageEdit
       
       private String latestMessage="Message Editing";
       private boolean upperBlock=false;
-      private final Font font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD ,Font.SIZE_SMALL);
+      private Font font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD ,Font.SIZE_SMALL);
       private int msgLength = 0;
       private int msgSymbols = 0;
       private int maxWidth = 0;  
@@ -346,8 +340,7 @@ public class MessageEdit
 //#endif
 //#ifdef CLIPBOARD
 //#        if (midlet.BombusQD.cf.useClipBoard) {
-//#             clipboard=ClipBoard.getInstance();
-//#             if (!clipboard.isEmpty())
+//#             if (!midlet.BombusQD.clipboard.isEmpty())
 //#                 form.addCommand(cmdPasteText);
 //#        }
 //#endif        
@@ -359,7 +352,7 @@ public class MessageEdit
        }
        form.setCommandListener(this);
       
-      display.setCurrent(form);        
+      display.setCurrent(form);
       this.parentView=pView;
     }
     
@@ -390,9 +383,9 @@ public class MessageEdit
 //#ifdef CLIPBOARD
 //#         if (c==cmdPasteText) { 
 //#             if(midlet.BombusQD.cf.msgEditType>0){
-//#               textField.insert(clipboard.getClipBoard(), textField.getCaretPosition() ); 
+//#               textField.insert(midlet.BombusQD.clipboard.getClipBoard(), textField.getCaretPosition() ); 
 //#             }else{
-//#               t.insert(clipboard.getClipBoard(), t.getCaretPosition() );                 
+//#               t.insert(midlet.BombusQD.clipboard.getClipBoard(), t.getCaretPosition() );                 
 //#             }
 //#             return;
 //#         }
@@ -544,7 +537,13 @@ public class MessageEdit
                  else{
                   midlet.BombusQD.sd.roster.sendMessage(to, id, body, subj, comp,false);
                   to.msgSuspended=null;                  
-                 }                
+                 }
+                if(informWindow!=null) informWindow=null;
+                if(textField!=null) textField=null;
+                if(ticker!=null) ticker=null;
+                if(messageItem!=null) messageItem=null;
+                if(t!=null) t=null;
+                if(form!=null) form=null;
             }
         } catch (Exception e) { }
     }    

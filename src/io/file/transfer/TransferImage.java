@@ -98,7 +98,7 @@ public class TransferImage
             //switch to file transfer manager
             (new io.file.transfer.TransferManager(display)).setParentView(parentView);
             photo=null;
-            return;
+            //return;
         } catch (Exception e) { photo=null; }
     }
 }

@@ -53,9 +53,6 @@ import ui.VirtualList;
 //#else
 import Menu.Command;
 //#endif
-//#ifdef CLIPBOARD
-//# import util.ClipBoard;
-//#endif
 //#ifdef ARCHIVE
 import Archive.MessageArchive;
 //#endif
@@ -71,51 +68,9 @@ public class ContactMessageList extends MessageList {
     
     Contact contact;
 
-    private static Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
-    private static Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.SCREEN, 2);
-    private static Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,3);
-    private static Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
-    private static Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
-    private static Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
-//#ifdef ARCHIVE
-    private static Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
-//#endif
-    private static Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
-    private static Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 8);
-    private static Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,9);
-    private static Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);
-//#if TEMPLATES
-//#     private static Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,11);
-//#endif
-//#ifdef FILE_IO
-    private static Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 12);
-//#endif
-//#ifdef HISTORY
-//#ifdef HISTORY_READER
-//#     private static Command cmdReadHistory=new Command("Read history", Command.SCREEN, 13);
-//#endif
-//# //        if (midlet.BombusQD.cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
-//#endif
-//#ifdef CLIPBOARD    
-//#     private static Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
-//#endif
-
-//#ifdef CLIPBOARD    
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
-//#endif
-    private static Command cmdAddSearchQuery = new Command(SR.MS_ADD_SEARCH_QUERY, Command.SCREEN, 400);    
-    private static Command cmdFind_ = new Command(SR.MS_FIND_TEXT+" ["+midlet.BombusQD.cf.find_text_str+"]", Command.SCREEN, 401);
-    
-    private static Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN,402);  
-    private static Command cmdClrPresences=new Command(SR.MS_DELETE_ALL_STATUSES, Command.SCREEN,403); 
-//#if BREDOGENERATOR             
-//#     private static Command cmdAutoGenON=new Command(SR.MS_BREDO_ON,Command.SCREEN,87);    
-//#     private static Command cmdAutoGenOff=new Command(SR.MS_BREDO_OFF,Command.SCREEN,88);    
-//#endif       
-    private static Command cmdMyService=new Command(SR.MS_SERVICE, Command.SCREEN, 31);
+    private Command cmdFind_ = new Command(SR.MS_FIND_TEXT+" ["+midlet.BombusQD.cf.find_text_str+"]", Command.SCREEN, 401);
 
     private boolean composing=true;
-
     private boolean startSelection;
     private boolean tr = false;
 
@@ -178,78 +133,78 @@ public class ContactMessageList extends MessageList {
         cmdsecondList.removeAllElements();
         cmdThirdList.removeAllElements();
 //#endif
-        if (startSelection) addCommand(cmdSelect); cmdSelect.setImg(0x60);
-        if (contact.msgSuspended!=null) addCommand(cmdResume); cmdResume.setImg(0x80);
+        if (startSelection) addCommand(midlet.BombusQD.commands.cmdSelect); 
+        if (contact.msgSuspended!=null) addCommand(midlet.BombusQD.commands.cmdResume); 
         
-        if (cmdSubscribe==null) return;
+        if (midlet.BombusQD.commands.cmdSubscribe==null) return;
         
         try {
             Msg msg=(Msg) contact.msgs.elementAt(cursor);
             if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
-                addCommand(cmdSubscribe); cmdSubscribe.setImg(0x43);
-                addCommand(cmdUnsubscribed); cmdUnsubscribed.setImg(0x41);
+                addCommand(midlet.BombusQD.commands.cmdSubscribe); 
+                addCommand(midlet.BombusQD.commands.cmdUnsubscribed); 
             }
         } catch (Exception e) {}
         
-        addCommand(cmdMessage); cmdMessage.setImg(0x81);
+        addCommand(midlet.BombusQD.commands.cmdMessage); 
         
-          addInCommand(3,cmdTranslate); cmdTranslate.setImg(0x73);
-          addInCommand(3,cmdClrPresences); cmdClrPresences.setImg(0x76);
+          addInCommand(3,midlet.BombusQD.commands.cmdTranslate); 
+          addInCommand(3,midlet.BombusQD.commands.cmdClrPresences); 
 
         if (contact.msgs.size()>0) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-                addCommand(cmdReply); cmdReply.setImg(0x72);
+                addCommand(midlet.BombusQD.commands.cmdReply); 
             }
 //#endif
-            addCommand(cmdQuote); cmdQuote.setImg(0x63);
-            addInCommand(3,cmdPurge); cmdPurge.setImg(0x33);
+            addCommand(midlet.BombusQD.commands.cmdQuote); 
+            addInCommand(3,midlet.BombusQD.commands.cmdPurge); 
          if(midlet.BombusQD.cf.find_text_str.length()>0){
-            removeInCommand(3,cmdAddSearchQuery); 
+            removeInCommand(3,midlet.BombusQD.commands.cmdAddSearchQuery); 
             addInCommand(3,cmdFind_); cmdFind_.setImg(0x82);
          }   
-            addInCommand(3,cmdAddSearchQuery); cmdAddSearchQuery.setImg(0x83);
+            addInCommand(3,midlet.BombusQD.commands.cmdAddSearchQuery); 
             
             
-            if (!startSelection) addInCommand(3,cmdSelect); cmdSelect.setImg(0x60);
+            if (!startSelection) addInCommand(3,midlet.BombusQD.commands.cmdSelect); 
         
         if (contact.msgs.size()>0) {
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
 //#          if (sd.Archive)
 //#endif
-            addCommand(cmdArch); cmdArch.setImg(0x64);
+            addCommand(midlet.BombusQD.commands.cmdArch); 
 //#endif
 //#if TEMPLATES
 //#ifdef PLUGINS         
 //#          if (sd.Archive)
 //#endif
-//#             addCommand(cmdTemplate);
+//#             addCommand(midlet.BombusQD.commands.cmdTemplate);
 //#endif
         }
             
 //#ifdef CLIPBOARD
 //#             if (midlet.BombusQD.cf.useClipBoard) {
-//#                 addCommand(cmdCopy); cmdCopy.setImg(0x13);
-//#                 if (!clipboard.isEmpty()) addCommand(cmdCopyPlus); cmdCopyPlus.setImg(0x23);
+//#                 addCommand(midlet.BombusQD.commands.cmdCopy); 
+//#                 if (!midlet.BombusQD.clipboard.isEmpty()) addCommand(midlet.BombusQD.commands.cmdCopyPlus); 
 //#             }
 //#endif
 //#ifdef MENU_LISTENER
             if (isHasScheme()) 
 //#endif
-                addInCommand(3,cmdxmlSkin); cmdxmlSkin.setImg(0x07);
+                addInCommand(3,midlet.BombusQD.commands.cmdxmlSkin); 
 //#ifdef MENU_LISTENER
             if (isHasUrl()) 
 //#endif
-                addCommand(cmdUrl); cmdUrl.setImg(0x15);
+                addCommand(midlet.BombusQD.commands.cmdUrl); 
         }
         
         if (contact.origin!=Contact.ORIGIN_GROUPCHAT)
-            addCommand(cmdActions); cmdActions.setImg(0x16);
+            addCommand(midlet.BombusQD.commands.cmdActions); 
     
 //#ifdef CLIPBOARD
-//#         if (midlet.BombusQD.cf.useClipBoard && !clipboard.isEmpty()) {
-//#             addInCommand(3,cmdSendBuffer); cmdSendBuffer.setImg(0x84);
+//#         if (midlet.BombusQD.cf.useClipBoard && !midlet.BombusQD.clipboard.isEmpty()) {
+//#             addInCommand(3,midlet.BombusQD.commands.cmdSendBuffer); 
 //#         }
 //#endif
 //#ifdef HISTORY
@@ -257,23 +212,23 @@ public class ContactMessageList extends MessageList {
 //#             if (midlet.BombusQD.cf.msgPath!=null)
 //#                 if (!midlet.BombusQD.cf.msgPath.equals(""))
 //#                     if (contact.msgs.size()>0)
-//#                         addInCommand(3,cmdSaveChat);  cmdSaveChat.setImg(0x44);
+//#                         addInCommand(3,midlet.BombusQD.commands.cmdSaveChat);  
 //#ifdef HISTORY_READER
 //#         if (midlet.BombusQD.cf.saveHistory && midlet.BombusQD.cf.lastMessages)
-//#             addInCommand(3,cmdReadHistory); cmdReadHistory.setImg(0x05);
+//#             addInCommand(3,midlet.BombusQD.commands.cmdReadHistory); 
 //#endif
 //#endif
-        addCommand(cmdMyService); cmdMyService.setImg(0x27); 
+        addCommand(midlet.BombusQD.commands.cmdMyService); 
 //#ifndef GRAPHICS_MENU        
-     addCommdand(cmdBack);
+     addCommdand(midlet.BombusQD.commands.cmdBack);
 //#endif            
         
 //#if BREDOGENERATOR                
 //#         if(midlet.BombusQD.cf.bredoGen==true){
-//#            addCommand(cmdAutoGenOff);
-//#            removeCommand(cmdAutoGenON);
+//#            addCommand(midlet.BombusQD.commands.cmdAutoGenOff);
+//#            removeCommand(midlet.BombusQD.commands.cmdAutoGenON);
 //#         }else{
-//#            addCommand(cmdAutoGenON);
+//#            addCommand(midlet.BombusQD.commands.cmdAutoGenON);
 //#         }
 //#endif     
     }
@@ -285,22 +240,22 @@ public class ContactMessageList extends MessageList {
 //#endif
         super.showNotify();
 //#ifndef MENU_LISTENER
-//#         if (cmdResume==null) return;
+//#         if (midlet.BombusQD.commands.cmdResume==null) return;
 //#         if (contact.msgSuspended==null)
-//#             removeCommand(cmdResume);
+//#             removeCommand(midlet.BombusQD.commands.cmdResume);
 //#         else
-//#             addCommand(cmdResume);
+//#             addCommand(midlet.BombusQD.commands.cmdResume);
 //#         
-//#         if (cmdSubscribe==null) return;
+//#         if (midlet.BombusQD.commands.cmdSubscribe==null) return;
 //#         try {
 //#             Msg msg=(Msg) contact.msgs.elementAt(cursor); 
 //#             if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
-//#                 addCommand(cmdSubscribe);
-//#                 addCommand(cmdUnsubscribed);
+//#                 addCommand(midlet.BombusQD.commands.cmdSubscribe);
+//#                 addCommand(midlet.BombusQD.commands.cmdUnsubscribed);
 //#             }
 //#             else {
-//#                 removeCommand(cmdSubscribe);
-//#                 removeCommand(cmdUnsubscribed);
+//#                 removeCommand(midlet.BombusQD.commands.cmdSubscribe);
+//#                 removeCommand(midlet.BombusQD.commands.cmdUnsubscribed);
 //#             }
 //#         } catch (Exception e) {}
 //#endif
@@ -357,20 +312,20 @@ public class ContactMessageList extends MessageList {
         super.commandAction(c,d);
 	//cf.clearedGrMenu=true;	
 //#ifdef ARCHIVE
-        if (c==cmdArch) {
+        if (c==midlet.BombusQD.commands.cmdArch) {
             try {
                 MessageArchive.store(getMessage(cursor),1);
             } catch (Exception e) {/*no messages*/}
         }
 //#endif
 //#if TEMPLATES
-//#         if (c==cmdTemplate) {
+//#         if (c==midlet.BombusQD.commands.cmdTemplate) {
 //#             try {
 //#                 MessageArchive.store(getMessage(cursor),2);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
-        if(c==cmdClrPresences){
+        if(c==midlet.BombusQD.commands.cmdClrPresences){
             for (Enumeration select=contact.msgs.elements(); select.hasMoreElements();) {
                     Msg msg=(Msg) select.nextElement();
                     if (msg.isPresence()) {
@@ -380,7 +335,7 @@ public class ContactMessageList extends MessageList {
             }            
         }
         
-        if(c==cmdTranslate){
+        if(c==midlet.BombusQD.commands.cmdTranslate){
             String body = getMessage(cursor).body.toString();
             if(body.indexOf(">")>-1){
               String nick = body.substring(0,body.indexOf(">"));
@@ -395,7 +350,7 @@ public class ContactMessageList extends MessageList {
             contact.setCursor(cursor);
         }
 
-        if (c==cmdPurge) {
+        if (c==midlet.BombusQD.commands.cmdPurge) {
             if (messages.isEmpty()) return;
             
             if (startSelection) {
@@ -412,7 +367,7 @@ public class ContactMessageList extends MessageList {
                 clearReadedMessageList();
             }
         }
-        if (c==cmdSelect) {
+        if (c==midlet.BombusQD.commands.cmdSelect) {
             startSelection=true;
             Msg mess=((Msg) contact.msgs.elementAt(cursor));
             mess.selected = !mess.selected;
@@ -422,38 +377,38 @@ public class ContactMessageList extends MessageList {
         }
 //#ifdef HISTORY
 //#ifdef HISTORY_READER
-//#         if (c==cmdReadHistory) {
+//#         if (c==midlet.BombusQD.commands.cmdReadHistory) {
 //#             new HistoryReader(display,contact);
 //#             return;
 //#         }
 //#endif
 //#endif
 //#if (FILE_IO && HISTORY)
-//#         if (c==cmdSaveChat) saveMessages();
+//#         if (c==midlet.BombusQD.commands.cmdSaveChat) saveMessages();
 //#endif
         /** login-critical section */
         if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
 
-        if (c==cmdMessage) { 
+        if (c==midlet.BombusQD.commands.cmdMessage) { 
             contact.msgSuspended=null;
             keyGreen(); 
         }
-        if (c==cmdResume) {
+        if (c==midlet.BombusQD.commands.cmdResume) {
             keyGreen();
         }
-        if (c==cmdQuote) Quote();
-        if (c==cmdReply) Reply();
-        if(c==cmdAddSearchQuery) {
+        if (c==midlet.BombusQD.commands.cmdQuote) Quote();
+        if (c==midlet.BombusQD.commands.cmdReply) Reply();
+        if(c==midlet.BombusQD.commands.cmdAddSearchQuery) {
              new SearchText(display,d,contact);
              return;
         } 
 //#if BREDOGENERATOR                 
-//#         if (c==cmdAutoGenON) {
+//#         if (c==midlet.BombusQD.commands.cmdAutoGenON) {
 //#            midlet.BombusQD.cf.bredoGen=true;
 //#            display.setCurrent(midlet.BombusQD.sd.roster);
 //#            VirtualList.setWobble(3, null, SR.MS_BREDO_ON);
 //#         }
-//#         if (c==cmdAutoGenOff) {
+//#         if (c==midlet.BombusQD.commands.cmdAutoGenOff) {
 //#            midlet.BombusQD.cf.bredoGen=false;
 //#            display.setCurrent(midlet.BombusQD.sd.roster);
 //#            VirtualList.setWobble(3, null, SR.MS_BREDO_OFF);
@@ -463,7 +418,7 @@ public class ContactMessageList extends MessageList {
         if(c==cmdFind_) {
             find_str(midlet.BombusQD.cf.find_text_str);
         }          
-        if (c==cmdActions) {
+        if (c==midlet.BombusQD.commands.cmdActions) {
 //#ifndef WMUC
             if (contact instanceof MucContact) {
                 MucContact mc=(MucContact) contact;
@@ -472,18 +427,18 @@ public class ContactMessageList extends MessageList {
 //#endif
                 new RosterItemActions(display, this, contact, -1);
         }
-	if (c==cmdActive) {
+	if (c==midlet.BombusQD.commands.cmdActive) {
             new ActiveContacts(display, this, null); 
         }
         
-        if (c==cmdSubscribe) midlet.BombusQD.sd.roster.doSubscribe(contact);
+        if (c==midlet.BombusQD.commands.cmdSubscribe) midlet.BombusQD.sd.roster.doSubscribe(contact);
 		
-        if (c==cmdUnsubscribed) midlet.BombusQD.sd.roster.sendPresence(contact.bareJid, "unsubscribed", null, false);
+        if (c==midlet.BombusQD.commands.cmdUnsubscribed) midlet.BombusQD.sd.roster.sendPresence(contact.bareJid, "unsubscribed", null, false);
 
 //#ifdef CLIPBOARD
-//#         if (c==cmdSendBuffer) {
+//#         if (c==midlet.BombusQD.commands.cmdSendBuffer) {
 //#             String from=midlet.BombusQD.sd.account.toString();
-//#             String body=clipboard.getClipBoard();
+//#             String body=midlet.BombusQD.clipboard.getClipBoard();
 //# 
 //#             String id=String.valueOf((int) System.currentTimeMillis());
 //#             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,body);
@@ -763,7 +718,7 @@ public class ContactMessageList extends MessageList {
         
         try {
             String msg=new StringBuffer()
-                .append("Quote:\n")
+                //.append("Quote:\n")
                 .append((char)0xab) //
                 .append("")
                 .append(getMessage(cursor).quoteString())
@@ -889,6 +844,7 @@ public class ContactMessageList extends MessageList {
         contact.lastUnread=0;
         contact.resetNewMsgCnt();
         contact.cList=null;
+        msgs=null;
     }
 
     public void destroyView(){

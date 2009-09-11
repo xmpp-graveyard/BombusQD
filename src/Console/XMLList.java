@@ -107,8 +107,8 @@
 //#         addCommand(cmdDebugLog); cmdDebugLog.setImg(0x44);
 //#ifdef CLIPBOARD
 //#             if (Config.getInstance().useClipBoard) {
-//#                 addCommand(cmdCopy); cmdCopy.setImg(0x13);
-//#                 if (!clipboard.isEmpty()) addCommand(cmdCopyPlus); cmdCopyPlus.setImg(0x23);
+//#                 addCommand(midlet.BombusQD.commands.cmdCopy);
+//#                 if (!clipboard.isEmpty()) addCommand(midlet.BombusQD.commands.cmdCopyPlus);
 //#             }
 //#endif
 //#         addCommand(cmdEnableDisable); cmdEnableDisable.setImg(0x26);

@@ -652,13 +652,6 @@ Import/Export	Импорт/Экспорт данных
 Notifications	Звуки и Уведомления
 Tasks	Планировщик
 Avatars	Аватары
-Selected text elements font	Шрифт выделенных сообщений
-Bold Font(small)	Жирный(мелкий)
-Bold Font(middle)	Жирный(средний)
-Bold Font(large)	Жирный(крупный)
-Bold Font(italic/small)	Жирный+Курсив(мелкий)
-Bold Font(italic/middle)	Жирный+Курсив(средний)
-Bold Font(italic/large)	Жирный+Курсив(крупный)
-No select	Без выделения
 Config	Настроить
 Use animated smiles	Анимированные смайлы
+Nokia Reconnect Hack	Nokia Reconnect Hack%Исключает проблему зависания после переподключения и ускоряет работу приложения на некоторых телефонах Nokia

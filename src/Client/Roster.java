@@ -451,12 +451,7 @@ public class Roster
 //#                }
 //#              }
 //#endif    
-//#               
-//#ifdef CONSOLE
-//#              addInCommand(3,cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);        
-//#endif
 //#         }
-//#         addCommand(cmdOptions);   cmdOptions.setImg(0x03);
 //#         //addCommand(cmdTools);  cmdTools.setImg(0x03);
 //#               /*addInCommand(2,cmdOptions);   cmdOptions.setImg(MenuIcons.ICON_SETTINGS);
 //#               
@@ -480,17 +475,21 @@ public class Roster
 //#endif      
 //#               */
 //#         addCommand(cmdMyService); cmdMyService.setImg(MenuIcons.ICON_ITEM_ACTIONS); 
-//#               addInCommand(3,cmdFM); cmdFM.setImg(MenuIcons.ICON_FILEMAN);
 //#               addInCommand(3,cmdAlert); cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
 //#               addInCommand(3,cmdArchive); cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
+//#               addInCommand(3,cmdQDHelp); cmdQDHelp.setImg(0x05);              
+//#               addInCommand(3,cmdClrAllChats); cmdClrAllChats.setImg(MenuIcons.ICON_CLEAN_MESSAGES);
 //#ifdef STATS                      
 //#               addInCommand(3,cmdStats); cmdStats.setImg(MenuIcons.ICON_STAT);
-//#endif              
-//#               addInCommand(3,cmdClrAllChats); cmdClrAllChats.setImg(MenuIcons.ICON_CLEAN_MESSAGES);      
+//#endif                    
+//#               addInCommand(3,cmdFM); cmdFM.setImg(MenuIcons.ICON_FILEMAN);        
 //#               addInCommand(3,cmdReconnect); cmdReconnect.setImg(MenuIcons.ICON_RECONNECT);
-//#               addInCommand(3,cmdQDHelp); cmdQDHelp.setImg(0x05);
-//#               
-//#         addCommand(cmdAccount); cmdAccount.setImg(MenuIcons.ICON_VCARD);
+//#ifdef CONSOLE
+//#               if (isLoggedIn()) addInCommand(3,cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);        
+//#endif   
+//#         addCommand(cmdAccount); cmdAccount.setImg(MenuIcons.ICON_VCARD);              
+//#         addCommand(cmdOptions);   cmdOptions.setImg(0x03);              
+//# 
 //#         addCommand(cmdInfo); cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
 //#         addCommand(cmdLatestNews); cmdLatestNews.setImg(MenuIcons.ICON_CHECK_UPD);
 //# 

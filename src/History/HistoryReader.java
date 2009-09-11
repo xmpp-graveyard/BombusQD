@@ -71,7 +71,7 @@
 //#         
 //#         setCommandListener(this);
 //#         
-//# 	addCommand(cmdBack);
+//# 	addCommand(midlet.BombusQD.commands.cmdBack);
 //#         
 //#         attachDisplay(display);
 //#     }

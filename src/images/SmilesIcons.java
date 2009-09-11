@@ -66,6 +66,8 @@ public class SmilesIcons extends ImageList {
                 ImageList setSmile = new ImageList(path + Integer.toString(i) + ".png");
                 anismiles.addElement(setSmile);
              } catch(Exception e) {
+                i=smilesCount;
+                midlet.BombusQD.cf.animatedSmiles=false;
                 System.out.println("Err: " + i);
              }
            }

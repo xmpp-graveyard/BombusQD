@@ -75,6 +75,7 @@ public class BombusQD extends MIDlet implements Runnable
     public final static Config cf = Config.getInstance();
     public final static Cashe cashe = Cashe.get();  
     public final static ClipBoard clipboard=ClipBoard.getInstance();
+    public final static Commands commands=Commands.get();    
     
     public int width = 0;
     public int height = 0;

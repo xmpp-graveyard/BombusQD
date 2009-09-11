@@ -141,7 +141,6 @@ public class PluginsConfig extends DefForm implements MenuListener
     private static NumberInput scrollWidth; 
     private static CheckBox drawScrollBgnd;    
     private static DropChoiceBox textWrap;
-    private static DropChoiceBox sblockFont;    
     private static DropChoiceBox langFiles;
     private static DropChoiceBox bgnd_image;    
 //#ifdef AUTOSTATUS
@@ -186,32 +185,39 @@ public class PluginsConfig extends DefForm implements MenuListener
         super(display, pView, SR.MS_MODULES_CONFIG);
         this.display=display;
         
+        itemsList.addElement(new SimpleString("Graphics", true));
+        itemsList.addElement(new SpacerItem(3));        
+        
+        graphics = new PluginBox(SR.MS_grStr, cf.module_graphics){ public void doAction(boolean st){ cf.module_graphics=st; } };
+        itemsList.addElement(graphics);
+        theme = new PluginBox(SR.MS_cthemesStr, cf.module_theme){ public void doAction(boolean st){ cf.module_theme=st; } };
+        itemsList.addElement(theme);
+        fonts = new PluginBox(SR.MS_fontsStr, cf.module_fonts){ public void doAction(boolean st){ cf.module_fonts=st; } };
+        itemsList.addElement(fonts);        
+        avatars = new PluginBox(SR.MS_avatarStr, cf.module_avatars){ public void doAction(boolean st){ cf.module_avatars=st; } };
+        itemsList.addElement(avatars);         
+        
+        itemsList.addElement(new SpacerItem(3));
+        itemsList.addElement(new SimpleString("Application", true));
+        itemsList.addElement(new SpacerItem(3)); 
+        
+        app = new PluginBox(SR.MS_appStr, cf.module_app){ public void doAction(boolean st){ cf.module_app=st; } };
+        itemsList.addElement(app);        
+        notify = new PluginBox(SR.MS_notifyStr, cf.module_notify){ public void doAction(boolean st){ cf.module_notify=st; } };
+        itemsList.addElement(notify);          
         contacts = new PluginBox(SR.MS_contactStr, cf.module_contacts){ public void doAction(boolean st){ cf.module_contacts=st; } };
         itemsList.addElement(contacts);
         messages = new PluginBox(SR.MS_msgStr, cf.module_messages){ public void doAction(boolean st){ cf.module_messages=st; } };
         itemsList.addElement(messages);
         network = new PluginBox(SR.MS_netStr, cf.module_network){ public void doAction(boolean st){ cf.module_network=st; } };
         itemsList.addElement(network);
-        graphics = new PluginBox(SR.MS_grStr, cf.module_graphics){ public void doAction(boolean st){ cf.module_graphics=st; } };
-        itemsList.addElement(graphics);
-        app = new PluginBox(SR.MS_appStr, cf.module_app){ public void doAction(boolean st){ cf.module_app=st; } };
-        itemsList.addElement(app);
-        userKeys = new PluginBox(SR.MS_hotkeysStr, cf.userKeys){ public void doAction(boolean st){ cf.userKeys=st; } };
-        itemsList.addElement(userKeys);    
         autostatus = new PluginBox(SR.MS_astatusStr, cf.module_autostatus){ public void doAction(boolean st){ cf.module_autostatus=st; } };
-        itemsList.addElement(autostatus);
-        theme = new PluginBox(SR.MS_cthemesStr, cf.module_theme){ public void doAction(boolean st){ cf.module_theme=st; } };
-        itemsList.addElement(theme);    
-
+        itemsList.addElement(autostatus);        
+        userKeys = new PluginBox(SR.MS_hotkeysStr, cf.userKeys){ public void doAction(boolean st){ cf.userKeys=st; } };
+        itemsList.addElement(userKeys);     
         history = new PluginBox(SR.MS_historyStr, cf.module_history){ public void doAction(boolean st){ cf.module_history=st; } };
-        itemsList.addElement(history);    
-        fonts = new PluginBox(SR.MS_fontsStr, cf.module_fonts){ public void doAction(boolean st){ cf.module_fonts=st; } };
-        itemsList.addElement(fonts);
-        notify = new PluginBox(SR.MS_notifyStr, cf.module_notify){ public void doAction(boolean st){ cf.module_notify=st; } };
-        itemsList.addElement(notify);      
-        avatars = new PluginBox(SR.MS_avatarStr, cf.module_avatars){ public void doAction(boolean st){ cf.module_avatars=st; } };
-        itemsList.addElement(avatars);  
-        
+        itemsList.addElement(history);         
+
         itemsList.addElement(new SpacerItem(3));
         itemsList.addElement(new SimpleString(SR.MS_ADVANCED_OPT, true));
         itemsList.addElement(new SpacerItem(3));
@@ -382,17 +388,6 @@ public class PluginsConfig extends DefForm implements MenuListener
 	          textWrap.setSelectedIndex(cf.textWrap);
                   itemsList.addElement(textWrap);
                   itemsList.addElement(new SpacerItem(3));
-                    sblockFont=new DropChoiceBox(display, SR.MS_sblockFont);
-                    sblockFont.append(SR.MS_sblock_bs);//0
-                    sblockFont.append(SR.MS_sblock_bm);
-                    sblockFont.append(SR.MS_sblock_bl);
-                    sblockFont.append(SR.MS_sblock_ibs);
-                    sblockFont.append(SR.MS_sblock_ibm);
-                    sblockFont.append(SR.MS_sblock_ibl);
-                    sblockFont.append(SR.MS_sblock_no);
-                    sblockFont.setSelectedIndex(cf.sblockFont);
-                    itemsList.addElement(sblockFont); 
-                    itemsList.addElement(new SpacerItem(3));
                       messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
                       itemsList.addElement(messageLimit);
                       itemsList.addElement(new SpacerItem(3));
@@ -452,8 +447,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                          itemsList.addElement(reconnectCount);
                          reconnectTime=new NumberInput(display, SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); 
                          itemsList.addElement(reconnectTime);
-                         nokiaReconnectHack = new CheckBox("Nokia Reconnect Hack" +
-                                 "%Solves the reconnection problem on Nokia smartphones", cf.nokiaReconnectHack);
+                         nokiaReconnectHack = new CheckBox(SR.MS_NOKIA_RECONNECT_HACK, cf.nokiaReconnectHack);
                          itemsList.addElement(nokiaReconnectHack);
             
                          fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
@@ -633,7 +627,6 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.runningMessage=runningMessage.getValue();
             cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
             cf.textWrap=textWrap.getSelectedIndex();                              
-            cf.sblockFont=sblockFont.getSelectedIndex();
             cf.messageLimit=Integer.parseInt(messageLimit.getValue());
       
             cf.storeConfPresence=storeConfPresence.getValue();

@@ -300,7 +300,6 @@ public class Config {
     
     public boolean dont_loadMC=false;
     public boolean animatedSmiles=true;    
-    public int sblockFont=1;
     
     public int msgEditType=0;
     public boolean runningMessage=false;
@@ -352,6 +351,7 @@ public class Config {
                 KEY_BACK=VirtualList.NOKIA_PEN;
                 greenKeyCode=-10;
                 allowMinimize=true;
+                nokiaReconnectHack=true;
                 break;
             case SIEMENS:
             case SIEMENS2:
@@ -624,7 +624,6 @@ public class Config {
             avatar_cashe_size=inputStream.readInt();
             //difficulty_level=inputStream.readInt();
             maxAvatarWidth=inputStream.readInt();
-            sblockFont=inputStream.readInt();
             msgEditType=inputStream.readInt();             
 	    inputStream.close();
             inputStream=null;
@@ -847,7 +846,6 @@ public class Config {
             outputStream.writeInt(avatar_cashe_size);
             //outputStream.writeInt(difficulty_level);
             outputStream.writeInt(maxAvatarWidth);//32     
-            outputStream.writeInt(sblockFont);
             outputStream.writeInt(msgEditType);
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confInt", 0, true);        
