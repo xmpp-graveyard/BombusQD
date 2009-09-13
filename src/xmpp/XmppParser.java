@@ -38,8 +38,8 @@ public abstract class XmppParser implements XMLEventListener {
     
     public void tagEnd(String name) throws XMLException {
         
-        Vector childs=currentBlock.getChildBlocks();
-        if (childs!=null) childs.trimToSize();
+        //Vector childs=currentBlock.getChildBlocks();
+        //if (childs!=null) childs.trimToSize();
 
         JabberDataBlock parent = currentBlock.getParent();
         if (parent == null) {
@@ -50,6 +50,9 @@ public abstract class XmppParser implements XMLEventListener {
             parent.addChild( currentBlock );
         }
         currentBlock = parent;
+        parent=null;
+
+        //childs=null;
     }
 
     

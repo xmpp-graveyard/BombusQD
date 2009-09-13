@@ -1823,29 +1823,20 @@ public class Roster
         c.img_vcard=il.resize(photoImg,newW,newH);
     } 
 
-   
-   private String from = "";
-   private String type = "";
-   private String id = "";
-   
-   private VCard vc = null;
-   private Message message = null;
-   private Presence pr = null;
-   
 
    public int blockArrived( JabberDataBlock data ) { //fix
         try {
             if( data instanceof Iq ) {
                 
-                from=data.getAttribute("from");
-                type = (String) data.getTypeAttribute();
-                id=(String) data.getAttribute("id");
+                String from=data.getAttribute("from");
+                String type = (String) data.getTypeAttribute();
+                String id=(String) data.getAttribute("id");
                 
                 if (id!=null) {
                     if (id.startsWith("nickvc")) {
                         if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
                         
-                        vc=new VCard(data);//.getNickName();
+                        VCard vc=new VCard(data);//.getNickName();
                         String nick=vc.getNickName();
                         
                         Contact c=findContact(new Jid(from), false);
@@ -1861,7 +1852,7 @@ public class Roster
                         if (type.equals("get") || type.equals("set") || type.equals("error") ) return JabberBlockListener.BLOCK_REJECTED;
                         
                         setQuerySign(false);
-                        vc=new VCard(data);
+                        VCard vc=new VCard(data);
                         String jid=id.substring(5);
                         Contact c=getContact(jid, false); // drop unwanted vcards
 //#if FILE_IO && HISTORY
@@ -1886,7 +1877,7 @@ public class Roster
  
                     if (id.startsWith("avcard_get")) {
                        Thread.sleep(100);
-                        vc=new VCard(data);
+                        VCard vc=new VCard(data);
                         try {
                             int length=vc.getPhoto().length;
                             if (length==1) {
@@ -2084,14 +2075,14 @@ public class Roster
                 }
             } else if( data instanceof Message ) { // If we've received a message
                 querysign=false;
-                message = (Message) data;
+                Message message = (Message) data;
                 
-                from=message.getFrom();
+                String from=message.getFrom();
 
                 if (myJid.equals(new Jid(from), false)) //Enable forwarding only from self-jids
                     from=message.getXFrom();
                 
-                type=message.getTypeAttribute();
+                String type=message.getTypeAttribute();
 
                 boolean groupchat=false;
                 
@@ -2442,9 +2433,9 @@ public class Roster
                 if (myStatus==Presence.PRESENCE_OFFLINE) 
                     return JabberBlockListener.BLOCK_REJECTED;
 
-                pr = (Presence) data;
+                Presence pr = (Presence) data;
 
-                from=pr.getFrom();
+                String from=pr.getFrom();
                 String Prtext = pr.getText();
                 int ti=pr.getTypeIndex();
                 
@@ -2708,7 +2699,22 @@ public class Roster
     
     public void messageStore(Contact c, Msg message) {
         if (c==null) return;
-
+       
+        boolean active=true;
+        if(message.messageType==message.MESSAGE_TYPE_PRESENCE){
+           int size = hContacts.size();
+           Contact search;
+           for(int i=0;i<size;i++) {
+             search = (Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
+             if(c==search){
+                active = search.active();
+             }
+           }
+          search=null;
+        }
+        if(active==false) return;
+        
+        
         c.addMessage(message);
 
         boolean autorespond = false;
@@ -3159,7 +3165,6 @@ public class Roster
                       }
                 }
                 redraw();
-
                 if (messageCount==0) return;
                 Object atcursor=getFocusedObject();
                 
@@ -3173,11 +3178,11 @@ public class Roster
                     Contact p=(Contact)i.nextElement();
                     if (pass==1) if (p.getNewMsgsCount()>0) { 
                         focusToContact(p, true);
-                        setRotator();
                         break; 
                     }
                     if (p==c) pass++;
                 }
+                i=null;
                 break;
                 
             case KEY_NUM3: {
@@ -3484,17 +3489,43 @@ public class Roster
 	Contact myself=confGroup.selfContact;
 	confGroup.confContact.commonPresence=false; //disable reenter after reconnect
         sendPresence(myself.getJid(), "unavailable", null, true);
-        
+
         confGroup.inRoom=false;
 	roomOffline(group);
     }
     
     public void roomOffline(final Group group) {
-         for (Enumeration e=hContacts.elements(); e.hasMoreElements();) {
-            Contact contact=(Contact)e.nextElement();
-            if (contact.group==group) {
-                contact.setStatus(Presence.PRESENCE_OFFLINE);
-            }
+         int size = hContacts.size();
+         Contact c;
+         for(int i=0;i<size;i++){
+            c = (Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
+            if (c.group==group) {
+                c.setStatus(Presence.PRESENCE_OFFLINE);
+                if(c.msgs!=null){
+                    c.msgs.removeAllElements();
+                    c.msgs=null;
+                    c.msgs=new Vector();
+                }
+                hContacts.removeElement(c);
+                for(int j=0;j<size;j++){
+                  c = (Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
+                  if(c instanceof MucContact){
+                    if(c.inGroup(group)){
+                        c.clientName="-";
+                        c.client=-1;
+                        if(c.msgs!=null){
+                            c.msgs.removeAllElements();
+                            c.msgs=null;
+                            c.msgs=new Vector();
+                        }
+                        hContacts.removeElement(c);
+                        c=null;
+                    }
+                  }
+                }
+               redraw();
+               reEnumRoster();
+            }                
          }
     }
 //#endif
@@ -3541,8 +3572,10 @@ public class Roster
 	Vector activeContacts=new Vector();
         int nowContact = -1, contacts=-1, currentContact=-1;
         synchronized (hContacts) {
-            for (Enumeration r=hContacts.elements(); r.hasMoreElements(); ){
-                Contact c=(Contact)r.nextElement();
+         int size = hContacts.size();
+         Contact c;
+         for(int i=0;i<size;i++) {
+                c = (Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
                 if (c.active()) {
                     activeContacts.addElement(c);
                     contacts=contacts+1;
@@ -3561,6 +3594,7 @@ public class Roster
             if (nowContact>=size) nowContact=0;
             if (currentContact==nowContact) return;
             Contact c=(Contact)activeContacts.elementAt(nowContact);
+            activeContacts=null;
             if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
             if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 ){
               display.setCurrent( (ContactMessageList)c.cList );   

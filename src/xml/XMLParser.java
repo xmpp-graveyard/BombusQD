@@ -62,7 +62,11 @@ public class XMLParser {
     public XMLParser(XMLEventListener eventListener) {
         this.eventListener=eventListener;
         state=PLAIN_TEXT;
+        
+        sbuf=null;
         sbuf=new StringBuffer();
+        
+        tagName=null;
         tagName=new StringBuffer();
     }
  
@@ -117,6 +121,7 @@ public class XMLParser {
                         String tn=tagName.toString();
                         eventListener.tagStart(tn, attr); 
                         sbuf.append(tn);
+                        tn=null;
                     }
                     continue; 
                 }
@@ -250,8 +255,9 @@ public class XMLParser {
         int ipos=0;
         int opos=0;
         int lenn = sb.length();
+        char c;
         while (ipos<lenn) {
-            char c=sb.charAt(ipos++);
+            c=sb.charAt(ipos++);
             if (c=='&') { 
                 StringBuffer xmlChar=new StringBuffer(6);
                 while (true) {

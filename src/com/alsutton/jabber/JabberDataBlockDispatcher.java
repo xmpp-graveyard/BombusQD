@@ -122,14 +122,12 @@ public class JabberDataBlockDispatcher extends Thread
    * The thread loop that handles dispatching any waiting datablocks
    */
 
-  Config cf = Config.getInstance();
-  
     public void run(){
         dispatcherActive = true;
         while( dispatcherActive ) {
             while( waitingQueue.size() == 0 ) {
                 try {
-                    Thread.sleep( 100L );
+                    Thread.sleep(200);
                 } catch( InterruptedException e ) { }
             }
 
@@ -171,7 +169,7 @@ public class JabberDataBlockDispatcher extends Thread
                 }
 //#ifdef CONSOLE
 //#                 stream.addLog(dataBlock.toString(), 10);
-//#                 cf.inStanz+=1;
+//#                 midlet.BombusQD.cf.inStanz+=1;
 //#endif
             } catch (Exception e) { }
         }

@@ -130,12 +130,7 @@ public class PrivacyItem extends IconTextElement {
 	
     public String getTipString() {
         StringBuffer tip=new StringBuffer(actions[action]);
-        tip.append(" if ").append(types[type]);
-        if (type!=ITEM_ANY) {
-            tip.append('=').append(value);
-        }
-        tip.append(' ');
-        
+        tip.append(": ");        
         if (messageStz && presenceInStz && presenceOutStz && iqStz) {
             tip.append("all stanzas"); 
         } else if (!messageStz && !presenceInStz && !presenceOutStz && !iqStz) { 
@@ -146,6 +141,12 @@ public class PrivacyItem extends IconTextElement {
             if (presenceOutStz) { tip.append(stanzas[STANZA_PRESENCE_OUT]); tip.append(" "); }
             if (iqStz) { tip.append(stanzas[STANZA_IQ]); tip.append(" "); }
         }
+        
+        tip.append("\nif ").append(types[type]);
+        if (type!=ITEM_ANY) {
+            tip.append('=').append(value);
+        }
+
         return tip.toString();
     }
 }

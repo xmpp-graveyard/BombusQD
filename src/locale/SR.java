@@ -574,7 +574,7 @@ public class SR {
     
     public static String MS_NOTIFY_MSGEDIT=loadString("Show latest message in alt message edit");
     public static String MS_MSG_EDIT_TYPE=loadString("Message Edit Type");
-    public static String MS_MES_EDIT_OLD=loadString("Old");    
+    public static String MS_MES_EDIT_OLD=loadString("Standart");    
     public static String MS_MES_EDIT_ALT=loadString("Alternative");    
     public static String MS_MES_EDIT_ALT_GUI=loadString("Alternative with GUI panels");        
     

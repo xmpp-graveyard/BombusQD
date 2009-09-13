@@ -4,7 +4,7 @@
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
- */
+ 
   
 package com.alsutton.jabber.datablocks;
 
@@ -28,3 +28,4 @@ public class IqCheckers extends Iq {
         addChildNs("query", "checkers").setAttribute("state", (answer)?"start":"cancel");
     }
 }
+*/

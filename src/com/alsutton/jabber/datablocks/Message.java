@@ -68,11 +68,11 @@ public class Message extends JabberDataBlock {
   }
 
   public String getBody() { 
-      String body=getChildBlockText( "body" ); 
+      //String body=getChildBlockText( "body" ); 
       
       JabberDataBlock error=getChildBlock("error");
-      if (error==null) return body;
-      return body+"Error\n"+XmppError.decodeStanzaError(error).toString();
+      if (error==null) return getChildBlockText("body");
+      return getChildBlockText("body") + "Error\n" + XmppError.decodeStanzaError(error).toString();
   }
   
   public String getUrl() {

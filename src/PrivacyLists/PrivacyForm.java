@@ -124,6 +124,7 @@ public class PrivacyForm
                     textValue.setValue(((rfocus instanceof Group)?(Group)rfocus:((Contact)rfocus).group).getName());
                 itemsList.addElement(textValue);
                 break;
+            /*
             case 2: //subscription
                 choiceSubscr=new DropChoiceBox(display, SR.MS_SUBSCRIPTION);
                 for(int i=0; i<PrivacyItem.subscrs.length; i++){
@@ -137,6 +138,7 @@ public class PrivacyForm
                 }
                 itemsList.addElement(choiceSubscr);
                 break;
+             */
         }
 
         itemsList.addElement(new SimpleString(SR.MS_STANZAS, true));
@@ -151,7 +153,7 @@ public class PrivacyForm
         try {
             int type=choiceType.getSelectedIndex();
             String value=textValue.getValue();
-            if (type==2) value=PrivacyItem.subscrs[choiceSubscr.getSelectedIndex()];
+            //if (type==2) value=PrivacyItem.subscrs[choiceSubscr.getSelectedIndex()];
             if (type!=PrivacyItem.ITEM_ANY) 
             if (value.length()==0) return;
 
