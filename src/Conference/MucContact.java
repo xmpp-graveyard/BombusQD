@@ -39,7 +39,6 @@ import Client.Msg;
 import util.StringUtils;
 import xmpp.XmppError;
 import ui.VirtualList;
-import Client.Config;
 
 /**
  *
@@ -80,6 +79,8 @@ public class MucContact extends Contact {
         offline_type=Presence.PRESENCE_OFFLINE;
     }
     
+    private StringBuffer b = new StringBuffer(0);//FIX
+    
     public String processPresence(JabberDataBlock xmuc, Presence presence) {
         String from=jid.getJid();
        
@@ -104,6 +105,9 @@ public class MucContact extends Contact {
         boolean affiliationChanged=!tempAffiliation.equals(affiliation);
         role=tempRole;
         affiliation=tempAffiliation;
+        
+        tempRole=null;
+        tempAffiliation=null;
 
         setSortKey(nick);
 
@@ -127,7 +131,7 @@ public class MucContact extends Contact {
             statusCode=Integer.parseInt( statusBlock.getAttribute("code") ); 
         } catch (Exception e) { }
         
-        StringBuffer b=new StringBuffer();
+        b.setLength(0);
         appendL(b,nick);
         
         String statusText=presence.getChildBlockText("status");
@@ -136,12 +140,14 @@ public class MucContact extends Contact {
  //#if ZLIB        
         try{       
              JabberDataBlock destroy=xmuc.getChildBlock("destroy");
+             if(destroy!=null){
                  if(destroy.getChildBlockText("reason")!=null)
                   {
                         VirtualList.setWobble(1,null,"Groupchat " + destroy.getAttribute("jid")
                          + " was destroyed!(reason: "+destroy.getChildBlockText("reason")+")"); 
 
                    }
+             }
         }catch (Exception e) { /* not muc#user case*/ }    
 //#endif          
         
@@ -169,7 +175,7 @@ public class MucContact extends Contact {
                     b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
 //#ifdef POPUPS
                     if (((ConferenceGroup)group).selfContact == this ) {
-                        Roster.setWobble(3, null, ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
+                        midlet.BombusQD.sd.roster.setWobble(3, null, ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
                     }
 //#endif
                     if (!reason.equals(""))
@@ -230,6 +236,12 @@ public class MucContact extends Contact {
             }
         }
         
+        from=null;
+        item=null;
+        
+        statusText=null;
+        tempRealJid=null;
+        
         setStatus(presenceType);
         return b.toString();
     }
@@ -255,9 +267,9 @@ public class MucContact extends Contact {
     
     private void appendL(StringBuffer sb, String append){
 //#if NICK_COLORS
-        if(Config.getInstance().useClassicChat) {  }
+        if(midlet.BombusQD.cf.useClassicChat) {  }
         
-                        if(!Config.getInstance().useClassicChat) { 
+                        if(!midlet.BombusQD.cf.useClassicChat) { 
                             sb.append((char)1);
                             sb.append(append);
                             sb.append((char)2); 
@@ -268,8 +280,10 @@ public class MucContact extends Contact {
 //#endif
     }
     
+    private StringBuffer tip = new StringBuffer(0);
+    
     public String getTipString() {
-        StringBuffer tip=new StringBuffer();
+        tip.setLength(0);
         int nm=getNewMsgsCount();
         
         if (nm!=0) tip.append(nm);

@@ -36,7 +36,8 @@ public class StringLoader {
     int afterEol;
     
     public Vector[] stringLoader(String resource, int columns) {
-	StringBuffer buf = new StringBuffer();
+	//StringBuffer buf = new StringBuffer();
+        buf.setLength(0);
 	Vector table[] = new Vector[columns];
 	for (int i = 0; i<columns; i++) {
             table[i]=null;
@@ -76,13 +77,13 @@ public class StringLoader {
 	} catch (Exception e)	{
             //e.printStackTrace();
         }
-        buf=null;
 	return table;
     }
     
     public Vector[] stringLoader(final InputStream in, final int columns) {
 
-        StringBuffer buf = new StringBuffer();
+        //StringBuffer buf = new StringBuffer();
+        buf.setLength(0);
         Vector table[] = new Vector[columns];
         for (int i = 0; i<columns; i++) {
             table[i]=null;
@@ -177,8 +178,10 @@ public class StringLoader {
 	return hash;
     }
     
-    String readLine(String source) throws IOException {
-	StringBuffer buf=new StringBuffer();
+    
+    private StringBuffer buf=new StringBuffer(0);
+    String readLine(String source) throws IOException {//multiple calls
+	buf.setLength(0);
         int pos=0;
 	try {
             boolean eol=false;
@@ -234,8 +237,7 @@ public class StringLoader {
     }
     
     String readLine(InputStream inputstream) throws IOException {
-	StringBuffer buf=new StringBuffer();
-
+	buf.setLength(0);
 	try {
             if (afterEol>0) {
                 buf.append(afterEol);

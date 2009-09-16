@@ -116,12 +116,14 @@ public class StringUtils {
     }    
    
    
-    public static String getSizeString(long number) {
-        StringBuffer suffix = new StringBuffer();
-        
+    private static StringBuffer suffix = new StringBuffer(0);
+    private static String ratio="";
+  
+    public static String getSizeString(long number) { //multiple calls
+        suffix.setLength(0);
         try {
             if ( number > 1024000 ) {
-                String ratio=Long.toString(number/100000);
+                ratio=Long.toString(number/100000);
 
                 int dotpos=ratio.length()-1;
 
@@ -131,7 +133,7 @@ public class StringUtils {
                       
                       .append(" mb");
             } else if ( number > 1024 ) {
-                String ratio=Long.toString(number/100);
+                ratio=Long.toString(number/100);
 
                 int dotpos=ratio.length()-1;
 
@@ -216,7 +218,7 @@ public class StringUtils {
         return lines;
     }
     
-    
+  
     public static Vector parseMessage(String value, int availWidth, Font font) {
         StringBuffer out=new StringBuffer(value);
         int vi = 0;
@@ -233,8 +235,9 @@ public class StringUtils {
         int lastSpacePosLength = 0;
         int currentLineWidth = 0;
         int len = valueChars.length;
+        char c;
         for (int i = 0; i < len; i++) {
-            char c = valueChars[i];
+            c = valueChars[i];
             currentLineWidth += font.charWidth(c);
             if (c == '\n') {
                 lines.addElement( new String( valueChars, startPos, i - startPos ) );
@@ -261,7 +264,8 @@ public class StringUtils {
         } 
         // last string
         lines.addElement( new String( valueChars, startPos, valueChars.length - startPos ) );
-
+        valueChars=null;
+        out=null;
         return lines;
     }
 

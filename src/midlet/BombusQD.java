@@ -55,6 +55,7 @@ import util.StringLoader;
 import Fonts.*;
 import util.Strconv;
 import Account.YesNoAlert;
+import Console.DebugList;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
@@ -73,9 +74,12 @@ public class BombusQD extends MIDlet implements Runnable
     
     public final static StaticData sd = StaticData.getInstance();
     public final static Config cf = Config.getInstance();
-    public final static Cashe cashe = Cashe.get();  
     public final static ClipBoard clipboard=ClipBoard.getInstance();
+    
+    public final static Cashe cashe = Cashe.get();  
     public final static Commands commands=Commands.get();    
+    public final static DebugList debug = DebugList.get();
+    
     
     public int width = 0;
     public int height = 0;
@@ -118,16 +122,12 @@ public class BombusQD extends MIDlet implements Runnable
     //public ImageBuffer ib;//
 
     
-    public void run(){
+    public void run(){  
         long s1 = System.currentTimeMillis();
-        //gm = GMenuConfig.getInstance();//
-        //ib = ImageBuffer.getInstance();//
         AccountSelect acc = new AccountSelect(display, null , true,-1);
 
         s.setProgress(18);
         boolean selAccount=((cf.accountIndex<0) /*|| s.keypressed!=0*/ );
-          //if (selAccount) 
-          //display.setCurrent(sd.roster);
           if (!selAccount && cf.autoLogin){
             sd.roster=new Roster(display);
             Account.loadAccount(cf.autoLogin, cf.accountIndex,-1);
@@ -138,7 +138,13 @@ public class BombusQD extends MIDlet implements Runnable
         }
         
         long s2 = System.currentTimeMillis();
-        System.out.println((s2-s1)+" msec");
+        
+        if(cf.debug){      
+            debug.add("::start "+(s2-s1)+" msec",10);
+            debug.add("::startmem free/total "+ 
+                    Long.toString(Runtime.getRuntime().freeMemory()>>10) + "/" + 
+                    Long.toString(Runtime.getRuntime().totalMemory()>>10), 10) ;
+        }
         
         s.getKeys();
         width=s.width;

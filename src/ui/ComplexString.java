@@ -95,6 +95,7 @@ public class ComplexString extends Vector implements VirtualElement {
     
     //FontClass fc = FontClass.getInstance();
     Font bold;
+    char c1,c2;
     
     public void drawItem(Graphics g, int offset, boolean selected){
         boolean ralign=false;
@@ -113,7 +114,7 @@ public class ComplexString extends Vector implements VirtualElement {
             g.setFont(font);
         }
         //}
-
+        
         for (int index=0; index<elementCount;index++) {
             if (elementData[index]!=null) {
                 if (elementData[index] instanceof String ){
@@ -130,10 +131,10 @@ public class ComplexString extends Vector implements VirtualElement {
                         int len = ((String)elementData[index]).length();
                         while (p1<len) {
                             int p2=p1;
-                            char c1=((String)elementData[index]).charAt(p1);
+                            c1=((String)elementData[index]).charAt(p1);
                             //processing the same cp
                             while (p2<len) {
-                                char c2=((String)elementData[index]).charAt(p2);
+                                c2=((String)elementData[index]).charAt(p2);
                                 if ( (c1&0xff00) != (c2 &0xff00) ) break;
                                 p2++;
                             }

@@ -32,7 +32,6 @@ import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZInputStream;
 import com.jcraft.jzlib.ZOutputStream;
 //#endif
-import Client.StaticData;
 import java.io.IOException;
 import java.io.InputStream; 
 import java.io.OutputStream;
@@ -87,7 +86,7 @@ public class Utf8IOStream {
 	countPocketsSend++;
 //#endif          
 	synchronized (outStream) {
-            StaticData.getInstance().updateTrafficOut();
+            midlet.BombusQD.sd.updateTrafficOut();
             StringBuffer outbuf=Strconv.toUTFSb(data);
             int outLen=outbuf.length();
             byte bytes[]=new byte[outLen];
@@ -109,13 +108,18 @@ public class Utf8IOStream {
     byte cbuf[]=new byte[512];
     int length;
     int pbyte;
+    
+    int avail=0;
+    int lenbuf=0;
 
     public int read(byte buf[]) throws IOException {
-        int avail=inpStream.available();
+        avail=inpStream.available();
 
         if (avail==0) return 0;
 
-        if (avail>buf.length) avail=buf.length;
+        lenbuf=buf.length;
+        
+        if (avail>lenbuf) avail=lenbuf;
         
         avail=inpStream.read(buf, 0, avail);
 //#if (XML_STREAM_DEBUG)
@@ -127,8 +131,9 @@ public class Utf8IOStream {
     }
 
     private void updateTraffic() {
-        StaticData.getInstance().traffic=getBytes();
+        midlet.BombusQD.sd.traffic=getBytes();
     }
+    
     
     private void setRecv(long bytes) {
         bytesRecv=bytes;
@@ -144,13 +149,14 @@ public class Utf8IOStream {
     }
 
 //#if ZLIB
+    private StringBuffer stats = new StringBuffer(0);
 
     public String getPocketsStats() {
         return Long.toString(countPocketsSend);
     }    
   
     public String getStreamStatsBar() {
-       StringBuffer stats=new StringBuffer();
+        stats.setLength(0);
         try {
             long sent=bytesSent;
             long recv=bytesRecv;
@@ -176,7 +182,7 @@ public class Utf8IOStream {
     }
 
     public String getStreamStats() {
-        StringBuffer stats=new StringBuffer();
+        stats.setLength(0);
         try {
             long sent=bytesSent;
             long recv=bytesRecv;
@@ -208,7 +214,7 @@ public class Utf8IOStream {
         
     
     public String getConnectionData() {
-        StringBuffer stats=new StringBuffer();
+        stats.setLength(0);
         try {
             stats.append(((SocketConnection)connection).getLocalAddress())
                  .append(":")
@@ -236,9 +242,9 @@ public class Utf8IOStream {
         return 0;
     }
 //#else
-//#     
+//#      private StringBuffer stats = new StringBuffer(0);
 //#      public String getStreamStats() {
-//#          StringBuffer stats=new StringBuffer();
+//#          stats.setLength(0);
 //#          try {
 //#              long sent=bytesSent;
 //#              long recv=bytesRecv;

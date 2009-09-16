@@ -147,6 +147,7 @@ import ui.controls.form.CheckBox;
 //#endif
 //#ifdef CONSOLE
 //# import Console.XMLList;
+//# import Console.DebugXMLList;
 //#endif
 //#else
 import Menu.RosterToolsMenu;
@@ -389,6 +390,7 @@ public class Roster
 //#       private Command cmdReconnect=new Command(SR.MS_BREAK_CONECTION, Command.SCREEN, 36);
 //#ifdef CONSOLE      
 //#       private Command cmdXMLConsole=new Command(SR.MS_XML_CONSOLE, Command.SCREEN, 37);
+//#       private Command cmdDebugConsole=new Command("DEBUG CONSOLE", Command.SCREEN, 39);      
 //#endif            
 //#       private Command cmdQDHelp=new Command(SR.MS_SUPPORT, Command.SCREEN, 38);
 //#if SASL_XGOOGLETOKEN      
@@ -485,7 +487,8 @@ public class Roster
 //#               addInCommand(3,cmdFM); cmdFM.setImg(MenuIcons.ICON_FILEMAN);        
 //#               addInCommand(3,cmdReconnect); cmdReconnect.setImg(MenuIcons.ICON_RECONNECT);
 //#ifdef CONSOLE
-//#               if (isLoggedIn()) addInCommand(3,cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);        
+//#               if (isLoggedIn()) addInCommand(3,cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);
+//#               addInCommand(3,cmdDebugConsole); cmdDebugConsole.setImg(MenuIcons.ICON_CONCOLE);
 //#endif   
 //#         addCommand(cmdAccount); cmdAccount.setImg(MenuIcons.ICON_VCARD);              
 //#         addCommand(cmdOptions);   cmdOptions.setImg(0x03);              
@@ -639,6 +642,7 @@ public class Roster
 //#            }
 //#ifdef CONSOLE        
 //#            else if(c==cmdXMLConsole){ new XMLList(display, this);  }
+//#            else if(c==cmdDebugConsole){ new DebugXMLList(display, this);  }
 //#endif        
 //#            else if(c==cmdQDHelp){ new ConferenceForm(display, this, "BombusQD@", "qd@conference.jabber.ru", null, false);  }  
 //# 
@@ -809,6 +813,7 @@ public class Roster
         if (s==null) return;
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", "Info", s);
         messageStore(selfContact(), m);
+        if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add(s,10);
     }
     
     
@@ -3327,9 +3332,10 @@ public class Roster
         catch(OutOfMemoryError eom){ errorLog("error Roster::5"); } catch (Exception e) { e.printStackTrace(); }        
     }
 
+    private StringBuffer mess=new StringBuffer(0);
+    
     public void setWobbler(int type, Contact contact, String info) {
         if (info==null) {
-            StringBuffer mess=new StringBuffer();
             boolean isContact=(getFocusedObject() instanceof Contact);
             Contact cntact=(Contact)getFocusedObject();
 //#ifndef WMUC
@@ -3410,7 +3416,7 @@ public class Roster
             }
             
             VirtualList.setWobble(1, null, mess.toString());
-            mess=null;
+            mess.setLength(0);
         } else {
             VirtualList.setWobble(type, contact.getJid(), info);
         }
@@ -3495,6 +3501,17 @@ public class Roster
     }
     
     public void roomOffline(final Group group) {
+        Contact c;
+        int size = hContacts.size();        
+        for(int i=0;i<size;i++){
+            c = (Contact)hContacts.elementAt(i);
+            if (c.group==group) {
+                c.setStatus(Presence.PRESENCE_OFFLINE);
+            }
+        }
+    }    
+  /*  
+    public void roomOffline(final Group group) {
          int size = hContacts.size();
          Contact c;
          for(int i=0;i<size;i++){
@@ -3528,6 +3545,7 @@ public class Roster
             }                
          }
     }
+   */
 //#endif
     protected void showNotify() { 
         super.showNotify(); 
@@ -3770,6 +3788,8 @@ public class Roster
 //#     }
 //#endif
 
+    private StringBuffer onl=new StringBuffer(0);
+    
     private class ReEnumerator {
         int pendingRepaints=0;
 	boolean force;
@@ -3831,14 +3851,16 @@ public class Roster
                     
                     vContacts=tContacts;
                     tContacts=null;
-                    StringBuffer onl=new StringBuffer()
+                    onl.setLength(0);
+                    onl
                     .append("(")
                     .append(groups.getRosterOnline())
                     .append("/")
                     .append(groups.getRosterContacts())
-                    .append(")");
+                    .append(")")
+                    .append("  *"+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz))
+                    ;
                     setRosterMainBar(onl.toString());
-                    onl=null;
                     
                     if (cursor<0) cursor=0;
 

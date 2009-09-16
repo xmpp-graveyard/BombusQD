@@ -23,13 +23,13 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- */
+ 
 package ui; 
 import javax.microedition.lcdui.Image;
 
 public class ImageBuffer {
     
-    /** Creates a new instance of ImageBuffer */
+
     public ImageBuffer() { }
     
     public Image bgnd_checkers=null;
@@ -47,3 +47,4 @@ public class ImageBuffer {
     }      
     
 }
+ */

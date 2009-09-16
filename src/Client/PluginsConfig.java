@@ -168,7 +168,8 @@ public class PluginsConfig extends DefForm implements MenuListener
     private static PluginBox app;
     private static PluginBox userKeys;    
     private static PluginBox autostatus;
-    private static PluginBox classicchat; 
+    private static PluginBox classicchat;
+    private static PluginBox debug;     
     private static PluginBox theme;  
     private static PluginBox cashe;  
     
@@ -229,8 +230,10 @@ public class PluginsConfig extends DefForm implements MenuListener
         tasks = new PluginBox(SR.MS_taskstr, cf.module_tasks){ public void doAction(boolean st){ cf.module_tasks=st; } };
         itemsList.addElement(tasks); 
         classicchat = new PluginBox(SR.MS_clchatStr, cf.module_classicchat){ public void doAction(boolean st){ cf.module_classicchat=st; } };
-        itemsList.addElement(classicchat);        
-        
+        itemsList.addElement(classicchat); 
+
+        debug = new PluginBox("Debug Menu", cf.debug){ public void doAction(boolean st){ cf.debug=st; } };
+        itemsList.addElement(debug);
 
         setCommandListener(this);
         attachDisplay(display);
@@ -257,7 +260,8 @@ public class PluginsConfig extends DefForm implements MenuListener
              else if(text==SR.MS_appStr){ return cf.module_app?SR.MS_config:""; }
              else if(text==SR.MS_hotkeysStr){ return cf.userKeys?SR.MS_config:""; }
              else if(text==SR.MS_astatusStr){ return cf.module_autostatus?SR.MS_config:""; } 
-             else if(text==SR.MS_clchatStr){ return cf.module_classicchat?SR.MS_config:""; } 
+             else if(text==SR.MS_clchatStr){ return cf.module_classicchat?SR.MS_config:""; }
+             else if(text=="Debug Menu"){ return ""; }             
              else if(text==SR.MS_cthemesStr){ return cf.module_theme?SR.MS_config:""; }
              
              else if(text==SR.MS_casheStr){ return cf.module_cashe?"Clear":""; }

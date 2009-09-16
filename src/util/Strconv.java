@@ -135,8 +135,9 @@ public class Strconv {
     public static StringBuffer toUTFSb(StringBuffer str) {
         int srcLen = str.length();
         StringBuffer outbuf=new StringBuffer( srcLen );
+        int c = 0;
          for(int i=0; i < srcLen; i++) {
-             int c = (int)str.charAt(i);
+            c = (int)str.charAt(i);
 
             //TODO: ескэйпить коды <0x20
             if ((c >= 1) && (c <= 0x7f)) {
@@ -200,8 +201,9 @@ public class Strconv {
     public static String toLowerCase(String src){
         StringBuffer dst=new StringBuffer(src);
         int len=dst.length();
+        char c;
         for (int i=0; i<len; i++) {
-            char c=dst.charAt(i);
+            c=dst.charAt(i);
             if (c>'A'-1 && c<'Z'+1) c+='a'-'A';         // default latin chars
             if (c>0x40f && c<0x430) c+=0x430-0x410;     // cyrillic chars
             // TODO: other schemes by request

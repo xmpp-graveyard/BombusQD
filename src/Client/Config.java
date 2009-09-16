@@ -303,6 +303,7 @@ public class Config {
     
     public int msgEditType=0;
     public boolean runningMessage=false;
+    public boolean debug=true;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -574,7 +575,9 @@ public class Config {
             module_avatars=inputStream.readBoolean();   
             
             animatedSmiles=inputStream.readBoolean(); 
-            runningMessage=inputStream.readBoolean(); 
+            runningMessage=inputStream.readBoolean();
+            
+            debug=inputStream.readBoolean();
             
 	    inputStream.close();
             inputStream=null;
@@ -804,6 +807,8 @@ public class Config {
             
             outputStream.writeBoolean(animatedSmiles);
             outputStream.writeBoolean(runningMessage);
+            
+            outputStream.writeBoolean(debug);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean_", 0, true);      

@@ -763,7 +763,6 @@ public abstract class VirtualList
              
     
     private int getARGB() {
-      StringBuffer color=new StringBuffer(10);
       int ccolor = ColorTheme.getColor(ColorTheme.CURSOR_BGND);
       int red, green, blue,alpha;
       long tmp; 
@@ -772,7 +771,6 @@ public abstract class VirtualList
       green = ColorTheme.getGreen(ccolor);
       blue = ColorTheme.getBlue(ccolor);
       tmp = (alpha_ << 24) | (red << 16) | (green << 8) | blue;
-      color=null;
       return (int)tmp;
     }    
     
@@ -1007,10 +1005,10 @@ public abstract class VirtualList
 
     private void drawHeapMonitor(final Graphics g, int y) {
         if (memMonitor) {
-            int ram=(int)(((long)Runtime.getRuntime().freeMemory()*width)/(long)Runtime.getRuntime().totalMemory());
-            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
-            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
-        }
+            int ram=(int)((Runtime.getRuntime().freeMemory()*48)/Runtime.getRuntime().totalMemory());
+            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(width-50,0,50,4);
+            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));   g.fillRect(width-49,1,ram,3);
+        }        
     }
 //#ifndef MENU
     private void drawInfoPanel (final Graphics g) {
@@ -1363,7 +1361,9 @@ public abstract class VirtualList
     
     
     private boolean popUpshow=false;
-
+    private StringBuffer mem = new StringBuffer(0);
+    
+    
     private void key(int keyCode) {
 //#ifdef GRAPHICS_MENU    
 //#      if(gm.itemGrMenu>0){ //Активное меню
@@ -1491,7 +1491,7 @@ public abstract class VirtualList
 //#             System.gc();
 //#             try { Thread.sleep(50); } catch (InterruptedException ex) { }
 //#ifdef POPUPS
-//#             StringBuffer mem = new StringBuffer();
+//#             mem.setLength(0);
 //#             mem.append("Time: ")
 //#                 .append(Time.getTimeWeekDay())
 //#                 .append("\nTraffic: ")
@@ -1897,6 +1897,7 @@ class TimerTaskRotate extends Thread{
     }
     
     public static void startRotate(int max, VirtualList list){
+        if(list==null) return;
         //Windows mobile J9 hanging test
         if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
             list.showBalloon=true;

@@ -42,6 +42,8 @@ public class JabberDataBlock
 
   private String tagName;
 
+  private StringBuffer data = new StringBuffer(0);
+
   /**
    * The list of child blocks inside this block
    */
@@ -306,8 +308,8 @@ public class JabberDataBlock
   public String getChildBlockText( String blockname )
   {
       try {
-        JabberDataBlock child=getChildBlock(blockname);
-        return child.getText();
+        //JabberDataBlock child=getChildBlock(blockname);
+        return getChildBlock(blockname).getText();
       } catch (Exception e) {}
       return "";
   }
@@ -336,7 +338,7 @@ public class JabberDataBlock
 
   public String toString()
   {
-    StringBuffer data = new StringBuffer();
+    data.setLength(0);
     constructXML(data);
     return data.toString();
   }

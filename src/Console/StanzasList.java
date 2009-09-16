@@ -61,13 +61,14 @@
 //#     }
 //# 
 //#     public void add(String msg, int type) {
-//# 	try {
-//#             if (enabled) {
-//#                 Msg stanza=new Msg(type, "local", null, msg.toString());
-//#                 stanza.itemCollapsed=true;
-//#                 stanzas.addElement(stanza);
-//#             }
-//# 	} catch (Exception e) {}
+//#       if (enabled) {
+//# 	  try {
+//#             Msg stanza=new Msg(type, "local", null, msg.toString());
+//#             stanza.itemCollapsed=true;
+//#             stanzas.addElement(stanza);
+//#             stanza=null;
+//# 	  } catch (Exception e) {}
+//#        }
 //#     }
 //# 
 //#     public int size(){

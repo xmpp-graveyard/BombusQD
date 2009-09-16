@@ -129,7 +129,7 @@ public class JabberStream extends XmppParser implements Runnable {
             if (name.equals( "stream:stream" ) ) {
                 dispatcher.halt();
                 iostream.close();
-                if(!cf.nokiaReconnectHack) {
+                if(!midlet.BombusQD.cf.nokiaReconnectHack) {
                     iostream=null;
                 }
                 throw new XMLException("Normal stream shutdown");
@@ -142,7 +142,7 @@ public class JabberStream extends XmppParser implements Runnable {
                 XmppError xe = XmppError.decodeStreamError(currentBlock);
                 dispatcher.halt();
                 iostream.close();
-                 if(!cf.nokiaReconnectHack) {
+                 if(!midlet.BombusQD.cf.nokiaReconnectHack) {
                    iostream=null;
                  }
                 throw new XMLException("Stream error: "+xe.toString());
@@ -223,7 +223,7 @@ public class JabberStream extends XmppParser implements Runnable {
         } finally {
             dispatcher.halt();
 	    iostream.close();
-             if(!cf.nokiaReconnectHack) {
+             if(!midlet.BombusQD.cf.nokiaReconnectHack) {
                iostream=null;
              }
         }
@@ -279,7 +279,6 @@ public class JabberStream extends XmppParser implements Runnable {
         new SendJabberDataBlock(block);
     }
     
-    Config cf = Config.getInstance();
     
 //#ifdef CONSOLE
 //#     private int canLog=0;
@@ -296,7 +295,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#         }
 //#endif
 //#         StanzasList.getInstance().add(data, type);
-//#         cf.outStanz+=1;
+//#         midlet.BombusQD.cf.outStanz+=1;
 //#    }
 //#endif
 
@@ -355,25 +354,21 @@ public class JabberStream extends XmppParser implements Runnable {
 
      private class TimerTaskKeepAlive extends TimerTask{
         private Timer t;
-        //private int verifyCtr;
-        // int period;
+
         private int type;
         public TimerTaskKeepAlive(int periodSeconds, int type){
             t=new Timer();
             this.type=type;
-            //this.period=periodSeconds;
             long periodRun=periodSeconds*1000; // milliseconds
             t.schedule(this, periodRun, periodRun);
         }
         
         public void run() {
             try {
-                 //System.out.println("Keep-Alive");
                  if (loggedIn)
                      sendKeepAlive(type);
             } catch (Exception e) { 
                 dispatcher.broadcastTerminatedConnection(e);
-                //e.printStackTrace(); 
             }
         }
 	
@@ -385,23 +380,39 @@ public class JabberStream extends XmppParser implements Runnable {
             }
         }
     }
-    
+     
+
     private class SendJabberDataBlock implements Runnable {
         private JabberDataBlock data;
+        private Thread thread = null;
+        private StringBuffer buf=new StringBuffer(0);
+        
         public SendJabberDataBlock(JabberDataBlock data) {
             this.data=data;
-            new Thread(this).start();
+            if (thread==null) {
+                thread=new Thread(this);
+                thread.setPriority(Thread.MAX_PRIORITY);
+                thread.start();
+            }else{
+              sendData(data);
+            }
         }
 
         public void run(){
             try {
-                Thread.sleep(100);
-                StringBuffer buf=new StringBuffer();
-                data.constructXML(buf);
-                sendBuf( buf );
-                buf=null;
+                sendData(data);
             } catch (Exception e) { }
         }
+        
+        
+        private void sendData(JabberDataBlock data){
+            try {
+                data.constructXML(buf);
+                sendBuf( buf );
+                thread=null;
+            } catch (Exception e) { }            
+        }
+        
     }
 }
 

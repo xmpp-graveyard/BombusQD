@@ -230,7 +230,6 @@ public class PopUp {
     }
 
     private int getARGB() {
-      StringBuffer color=new StringBuffer(10);
       int ccolor = getColorBgnd();
       int red, green, blue,alpha;
       long tmp; 
@@ -239,7 +238,6 @@ public class PopUp {
       green = ColorTheme.getGreen(ccolor);
       blue = ColorTheme.getBlue(ccolor);
       tmp = (alpha_ << 24) | (red << 16) | (green << 8) | blue;
-      color=null;
       return (int)tmp;
     }     
     

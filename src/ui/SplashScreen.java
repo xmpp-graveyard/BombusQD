@@ -59,7 +59,7 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     public int width;
     public int height;
     
-    public Image img;
+    private static Image img;
     
     private ComplexString status;
     
@@ -85,6 +85,14 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     /** Creates a new instance of SplashScreen */
     public SplashScreen(Display display) {
         setFullScreenMode(midlet.BombusQD.cf.fullscreen);
+        try {
+            if (img==null) {
+                img=Image.createImage("/images/splash.png");
+                this.img=img;
+            }
+        } catch (Exception e) {
+           System.out.println("splash NOT created ");
+        }        
         display.setCurrent(this);
     }
 
@@ -96,15 +104,14 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         kHold=exitKey;
         
         parentView=display.getCurrent();
-
+        
+        
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         repaint();
         //serviceRepaints();
-
         new Thread(this).start();
         
         tc=new TimerTaskClock();
-        
         setFullScreenMode(midlet.BombusQD.cf.fullscreen);
 
         System.gc();
@@ -118,12 +125,9 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
         g.fillRect(0,0, width, height);
         
-        try {
-           img = Image.createImage("/images/splash.png");
-           g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);           
-        } catch (Exception e) {
-            System.out.println("splash error");
-        }   
+        if(img!=null){
+           g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);  
+        }
 
         if (pos==-1) {
             g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
@@ -182,17 +186,11 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     
     public void close(){
         display.setCurrent(StaticData.getInstance().roster);
-        img=null;
         instance=null;
         System.gc();
     }
 
     public void run() {
-        try {
-            if (img==null)
-                img=Image.createImage("/images/splash.png");
-        } catch (Exception e) {}
-        
         display.setCurrent(this);
     }
 
@@ -229,7 +227,6 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         status.setElementAt(null,6);
         if (display!=null) 
             display.setCurrent(parentView);
-        img=null;
         tc.stop();
 //#ifdef AUTOSTATUS
 //#         if (midlet.BombusQD.sd.roster.autoAway && midlet.BombusQD.cf.autoAwayType==Config.AWAY_LOCK) {

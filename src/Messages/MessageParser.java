@@ -236,6 +236,7 @@ public final class MessageParser // implements Runnable
 //#endif
     }
     
+    private StringBuffer s = new StringBuffer(0);
 
     private void parseMessage(final MessageItem task) {
         Vector lines=task.msgLines;
@@ -261,7 +262,8 @@ public final class MessageParser // implements Runnable
 //#             smileRoot=emptyRoot;
 //#endif
             int w=0;
-            StringBuffer s=new StringBuffer();
+            s.setLength(0);
+            
 	    int wordWidth=0;
 	    int wordStartPos=0;
 //#ifdef SMILES

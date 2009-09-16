@@ -48,9 +48,9 @@ public class XMLParser {
     
     private XMLEventListener eventListener;
     
-    private StringBuffer sbuf;
+    private StringBuffer sbuf=new StringBuffer(0);
+    private StringBuffer tagName=new StringBuffer(0);
     
-    private StringBuffer tagName;
     private Vector attr;
     private String atrName;
     
@@ -62,19 +62,18 @@ public class XMLParser {
     public XMLParser(XMLEventListener eventListener) {
         this.eventListener=eventListener;
         state=PLAIN_TEXT;
+
+        sbuf.setLength(0);
+        tagName.setLength(0);
         
-        sbuf=null;
-        sbuf=new StringBuffer();
-        
-        tagName=null;
-        tagName=new StringBuffer();
     }
  
     public void parse(byte indata[], int size) throws XMLException{
         int dptr=0;
+        char c;
         while (size>0) {
             size--;
-            char c=(char)(indata[dptr++] &0xff);
+            c=(char)(indata[dptr++] &0xff);
             switch (state) {
                 case PLAIN_TEXT: {
                     //parsing plain text
@@ -86,6 +85,7 @@ public class XMLParser {
                         
                         sbuf.setLength(0);
                         tagName.setLength(0);
+                        
                         attr=null;
                         attr=new Vector();
                         
@@ -256,10 +256,11 @@ public class XMLParser {
         int opos=0;
         int lenn = sb.length();
         char c;
+        StringBuffer xmlChar=new StringBuffer(6);
         while (ipos<lenn) {
             c=sb.charAt(ipos++);
             if (c=='&') { 
-                StringBuffer xmlChar=new StringBuffer(6);
+                xmlChar.setLength(0);
                 while (true) {
                     c=sb.charAt(ipos++);
                     if (c==';') break;
@@ -275,7 +276,8 @@ public class XMLParser {
                     xmlChar.deleteCharAt(0);
                     c=(char)Integer.parseInt(xmlChar.toString());
                 }
-                sb.setCharAt(opos++, c); 
+                sb.setCharAt(opos++, c);
+                s=null;
                 continue;
             }
             if (c<0x80) { 
@@ -309,6 +311,7 @@ public class XMLParser {
             continue;
             
         }
+        xmlChar=null;
         sb.setLength(opos);
         return sb.toString();
     }

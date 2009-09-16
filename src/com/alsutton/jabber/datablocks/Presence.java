@@ -82,53 +82,64 @@ public class Presence extends JabberDataBlock {
     }
 
     private int presenceCode;
+    
+    private StringBuffer presenseText = new StringBuffer(0);
   
     public String getText(){
         String errText=null;
-        StringBuffer text=new StringBuffer();
+        presenseText.setLength(0);
         String type=getTypeAttribute();
         presenceCode=PRESENCE_AUTH;
         if (type!=null) {
           if (type.equals(PRS_OFFLINE)) { 
               presenceCode=PRESENCE_OFFLINE;
-              text.append(SR.MS_OFFLINE);
+              presenseText.append(SR.MS_OFFLINE);
           }
           if (type.equals("subscribe")) {
               presenceCode=PRESENCE_AUTH_ASK;
-              text.append(SR.MS_SUBSCRIPTION_REQUEST_FROM_USER);
+              presenseText.append(SR.MS_SUBSCRIPTION_REQUEST_FROM_USER);
           } 
-          if (type.equals("subscribed")) text.append(SR.MS_SUBSCRIPTION_RECEIVED);
-          if (type.equals("unsubscribed")) text.append(SR.MS_SUBSCRIPTION_DELETED);
+          if (type.equals("subscribed")) presenseText.append(SR.MS_SUBSCRIPTION_RECEIVED);
+          if (type.equals("unsubscribed")) presenseText.append(SR.MS_SUBSCRIPTION_DELETED);
 
           if (type.equals(PRS_ERROR)) {
               presenceCode=PRESENCE_ERROR;
-              text.append(PRS_ERROR);
+              presenseText.append(PRS_ERROR);
               errText=XmppError.findInStanza(this).toString();
           }
 
           if (type.length()==0) {
               presenceCode=PRESENCE_UNKNOWN;
-              text.append("UNKNOWN presence stanza");
+              presenseText.append("UNKNOWN presence stanza");
           }
         } else {
             String show=getShow(); 
-            text.append(SR.getPresence(show));
+            presenseText.append(SR.getPresence(show));
             presenceCode=PRESENCE_ONLINE;
             if (show.equals(PRS_AWAY)) presenceCode=PRESENCE_AWAY;
             else if (show.equals(PRS_DND)) presenceCode=PRESENCE_DND;
             else if (show.equals(PRS_XA)) presenceCode=PRESENCE_XA;
             else if (show.equals(PRS_CHAT)) presenceCode=PRESENCE_CHAT;
+            show=null;
         }
 
         String status=(errText==null)? getChildBlockText("status"):errText;
         if (status!=null)
             if (status.length()>0)
-                text.append(" (").append( status ).append(')');
+                presenseText
+                .append(" (")
+                .append( status )
+                .append(')');
         int priority=getPriority();
         if (priority!=0)
-            text.append(" [").append(getPriority()).append(']');
+            presenseText
+                .append(" [")
+                .append(getPriority())
+                .append(']');
+        errText=null;
+        type=null;
 
-        return text.toString();
+        return presenseText.toString();
     }
     
 
