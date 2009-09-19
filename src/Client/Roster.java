@@ -340,7 +340,7 @@ public class Roster
     
 //#ifdef GRAPHICS_MENU
 //#     private Command cmdDifficulty=new Command("Difficulty Level", Command.SCREEN, 45);//2
-//#     private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 1);//2
+//#     //private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 1);//2
 //#       private Command cmdOptions=new Command(SR.MS_OPTIONS, Command.SCREEN, 16);
 //#      /*
 //#ifdef HISTORY      

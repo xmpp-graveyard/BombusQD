@@ -173,7 +173,6 @@ Add Profile	Добавить Профиль>
 self-contact	свои контакты
 vCard	Визитка
 Set Subject	Установить тему
-Options>	Настройки
 Port	Порт
 Resume Message	Черновик
 Are You sure want to discard 	Вы действительно собираетесь понизить у 

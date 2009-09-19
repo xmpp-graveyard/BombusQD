@@ -100,7 +100,7 @@ public class InfoWindow
 
         description=new MultiLine("Copyright (c) 2005-2009", 
                 "Eugene Stahov (evgs,Bombus);\nDaniel Apatin (ad,BombusMod);\nAlexej Kotov(aqent,BombusQD);\n" +
-                "Andrej Tichonov(Tishka17,BombusQD)\n" +
+                "Andrey Tikhonov(Tishka17,BombusQD)\n" +
                 "Distributed under GPL v2 License \n", super.superWidth);
         description.selectable=true;
         itemsList.addElement(description);

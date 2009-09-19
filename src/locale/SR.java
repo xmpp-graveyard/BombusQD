@@ -201,7 +201,7 @@ public class SR {
     public   static String MS_SELF_CONTACT = loadString( "self-contact" );
     public   static String MS_VCARD = loadString( "vCard" );
     public   static String MS_SET_SUBJECT = loadString( "Set Subject" );
-    public   static String MS_TOOLS = loadString( "Options>" );
+    //public   static String MS_TOOLS = loadString( "Options>" );
     public   static String MS_PORT = loadString( "Port" );
     public   static String MS_RESUME = loadString( "Resume Message" );
     public   static String MS_ARE_YOU_SURE_WANT_TO_DISCARD = loadString( "Are You sure want to discard " );
