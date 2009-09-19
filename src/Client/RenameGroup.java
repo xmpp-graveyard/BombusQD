@@ -92,7 +92,7 @@ public class RenameGroup
                     item.setAttribute("jid", cr.bareJid);
                     item.setAttribute("name", cr.nick);
                     item.setAttribute("subscription", null);
-                    if (destGroup!=null) {
+                    if (destGroup!=null && destGroup.length()>0) {//patch by Tishka17
                         item.addChild("group",destGroup);
                     }
                 }

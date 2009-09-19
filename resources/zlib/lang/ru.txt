@@ -76,7 +76,6 @@ conferences only	только конференции
 Client Version	Версия клиента
 Discard Search	Сбросить результаты
 Search Results	Результаты поиска
-General	General
 Members	Члены
 Add Contact	Добавить контакт
 Subscription	Подписка
@@ -86,7 +85,7 @@ Startup actions	Действия при запуске
 Server	Сервер
 Admins	Администраторы
 Make Ignore-List	Создать Ignore-List
-General	Основные
+General	Настройки
 Delete	Удалить
 Delete contact?	Удалить контакт?
 Authorize	Авторизовать
@@ -174,7 +173,7 @@ Add Profile	Добавить Профиль>
 self-contact	свои контакты
 vCard	Визитка
 Set Subject	Установить тему
-Options>	Настройки>
+Options>	Настройки
 Port	Порт
 Resume Message	Черновик
 Are You sure want to discard 	Вы действительно собираетесь понизить у 
@@ -655,3 +654,7 @@ Avatars	Аватары
 Config	Настроить
 Use animated smiles	Анимированные смайлы
 Nokia Reconnect Hack	Nokia Reconnect Hack%Исключает проблему зависания после переподключения и ускоряет работу приложения на некоторых телефонах Nokia
+Debug Menu	Консоль отладки
+Please,edit this account to save new password!	Откройте форму редактирования аккаунта для сохранения пароля!
+Account deleted!	Аккаунт удален!
+Insert New Password	Вставить пароль из буфера

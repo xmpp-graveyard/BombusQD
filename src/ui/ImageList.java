@@ -66,7 +66,8 @@ public class ImageList {
         } catch (Exception e) { 
             System.out.print("Can't load ImgList ");
             System.out.println(resource);
-            if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("error Can't load ImgList "+resource,10);
+            //if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("error Can't load ImgList "+resource,10);
+            //SE crashes on start with OutOfMem here
         }
     }
     
@@ -78,7 +79,8 @@ public class ImageList {
         } catch (Exception e) { 
             System.out.print("Can't load smile: ");
             System.out.println(resource);
-            if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("error Can't load smile: "+resource,10);
+            //if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("error Can't load smile: "+resource,10);
+            //SE crashes on start with OutOfMem here
         }
     }     
     

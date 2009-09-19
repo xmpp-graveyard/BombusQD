@@ -390,7 +390,7 @@ public class Roster
 //#       private Command cmdReconnect=new Command(SR.MS_BREAK_CONECTION, Command.SCREEN, 36);
 //#ifdef CONSOLE      
 //#       private Command cmdXMLConsole=new Command(SR.MS_XML_CONSOLE, Command.SCREEN, 37);
-//#       private Command cmdDebugConsole=new Command("DEBUG CONSOLE", Command.SCREEN, 39);      
+//#       private Command cmdDebugConsole=new Command(SR.MS_DEBUG_MENU, Command.SCREEN, 39);      
 //#endif            
 //#       private Command cmdQDHelp=new Command(SR.MS_SUPPORT, Command.SCREEN, 38);
 //#if SASL_XGOOGLETOKEN      
@@ -1937,7 +1937,7 @@ public class Roster
                         JabberDataBlock reg=data.findNamespace("query","jabber:iq:register");
                         JabberDataBlock remove=reg.getChildBlock("remove");
                         if(remove!=null){
-                          new CommandForm(display,parentView,4,"Account deleted",from + " removed.",null);
+                          new CommandForm(display,parentView,4,SR.MS_ACCOUNT_DELETED,from,null);
                         }
                        redraw();
                     }  
@@ -1946,12 +1946,12 @@ public class Roster
                     if(id.equals("changemypass")) { 
                          JabberDataBlock reg=data.findNamespace("query","jabber:iq:register");
                          redraw();
-                         new CommandForm(display,parentView,3,"Change Password","", reg.getChildBlockText("password"));
+                         new CommandForm(display,parentView,3,SR.MS_CHANGE_PASSWORD,"", reg.getChildBlockText("password"));
                     }  
                     
                   
                     if(id.equals("destroyroom"))   {
-                         VirtualList.setWobble(1,null,"Groupchat " + from + " was succesfully deleted");
+                         VirtualList.setWobble(1,null,from + " deleted!");
                          redraw();          
                     }      
                   
@@ -2498,10 +2498,16 @@ public class Roster
                         lang=null;
                         c.statusString=pr.getStatus();
                         String chatPres=c.processPresence(xmuc, pr);
-                        if (midlet.BombusQD.cf.storeConfPresence ||chatPres.indexOf(SR.MS_WAS_BANNED)>-1 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1) {
+                        if (midlet.BombusQD.cf.storeConfPresence) {
                             int rp=from.indexOf('/');
                             String name=from.substring(rp+1);
-                            Msg chatPresence=new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, chatPres );
+                            Msg chatPresence;
+                             if(chatPres.indexOf(SR.MS_WAS_BANNED)>-1 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1
+                                || chatPres.indexOf(SR.MS_NEW_ROOM_CREATED)>-1){
+                                chatPresence = new Msg(Msg.MESSAGE_TYPE_ERROR, name, null, chatPres );
+                             }else{
+                                chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, chatPres );                                
+                             }
                             chatPresence.color=c.getMainColor();
                             messageStore(getContact(from.substring(0, rp), false), chatPresence);
                             name=null;
@@ -2635,6 +2641,7 @@ public class Roster
                 return JabberBlockListener.BLOCK_PROCESSED;  
             }
         } catch( Exception e ) {
+                //if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("error RosterJDB:: "+data.toString(),10);
 //#if DEBUG
 //#             e.printStackTrace();
 //#endif
@@ -3760,10 +3767,15 @@ public class Roster
 //#        if (midlet.BombusQD.cf.runningMessage || midlet.BombusQD.cf.notifyWhenMessageType) {
 //#             if (me!=null){
 //#                 if (me.to==c){
-//#                    if (midlet.BombusQD.cf.runningMessage) me.ticker.setString(message);
+//#                    
+//#                    if (midlet.BombusQD.cf.runningMessage) {
+//#                        if(me.ticker==null) return;
+//#                        me.ticker.setString(message);
+//#                    }
 //#                    //Runned Message
 //#                    if(message.length()>100) message = message.substring(0,100) + "..";
 //#                    if(midlet.BombusQD.cf.msgEditType==1) {
+//#                       if(me.form==null) return;
 //#                       me.messageItem = new javax.microedition.lcdui.StringItem(msgTime, message);
 //#                       if(me.form.get(0)!=null){//!null-default
 //#                         if(me.form.get(0) instanceof javax.microedition.lcdui.StringItem){
@@ -3780,8 +3792,10 @@ public class Roster
 //#                       }
 //#                    }
 //#                    else if(midlet.BombusQD.cf.msgEditType==2) {
+//#                       if(me.informWindow==null) return;                       
 //#                       me.informWindow.storeMessage(message);//gui panel
-//#                    }                   
+//#                    }    
+//#                    
 //#                 }
 //#             }
 //#         }
@@ -3858,7 +3872,7 @@ public class Roster
                     .append("/")
                     .append(groups.getRosterContacts())
                     .append(")")
-                    .append("  *"+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz))
+                    //.append("  *"+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz))
                     ;
                     setRosterMainBar(onl.toString());
                     

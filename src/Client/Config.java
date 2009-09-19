@@ -303,7 +303,7 @@ public class Config {
     
     public int msgEditType=0;
     public boolean runningMessage=false;
-    public boolean debug=true;
+    public boolean debug=false;
     
     public static Config getInstance(){
 	if (instance==null) {

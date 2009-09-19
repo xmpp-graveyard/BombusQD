@@ -1005,10 +1005,10 @@ public abstract class VirtualList
 
     private void drawHeapMonitor(final Graphics g, int y) {
         if (memMonitor) {
-            int ram=(int)((Runtime.getRuntime().freeMemory()*48)/Runtime.getRuntime().totalMemory());
-            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(width-50,0,50,4);
-            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));   g.fillRect(width-49,1,ram,3);
-        }        
+            int ram=(int)(((long)Runtime.getRuntime().freeMemory()*width)/(long)Runtime.getRuntime().totalMemory());
+            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
+            g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
+        }
     }
 //#ifndef MENU
     private void drawInfoPanel (final Graphics g) {

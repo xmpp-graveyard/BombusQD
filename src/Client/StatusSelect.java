@@ -62,9 +62,10 @@ public class StatusSelect
 //#ifndef MENU_LISTENER
 //#         CommandListener,
 //#else
-        MenuListener,
+        MenuListener//,
 //#endif
-        Runnable{
+        //Runnable
+{
     
     private Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
     private Command cmdEdit=new Command(SR.MS_EDIT,Command.SCREEN,2);
@@ -132,10 +133,11 @@ public class StatusSelect
     
     public void eventOk(){
         destroyView();
-        new Thread(this).start();
+        send();
+        //new Thread(this).start();
     }
     
-    public void run(){
+    public void send(){
         int status=getSel().getImageIndex();
 //#ifdef AUTOSTATUS
 //#         midlet.BombusQD.sd.roster.autoAway=false;

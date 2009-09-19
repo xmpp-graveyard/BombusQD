@@ -57,7 +57,7 @@ public class IqQueryRoster extends Iq
     if (name!=null)
         item.setAttribute("name", name);
     item.setAttribute("subscription", subscription);
-    if (group!=null)
+    if (group!=null && group.length()>0) //patch by Tishka17
         item.addChild("group",group);
   }
 }

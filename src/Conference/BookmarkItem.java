@@ -55,7 +55,13 @@ public class BookmarkItem extends IconTextElement{
         
         return (nick==null)? jid: jid+'/'+nick;
     }
-    public String getJidNick() { return jid+'/'+ nick; }
+    
+    public String getJidNick() { //patch by Tishka17
+        if (nick==null || nick.length()==0) return jid+'/'+ midlet.BombusQD.sd.account.getNickName();
+        return jid+'/'+ nick;
+    }
+
+    //public String getJidNick() { return jid+'/'+ nick; }
     public String getJid() { return jid; }
     
     /** Creates a new instance of BookmarkItem */

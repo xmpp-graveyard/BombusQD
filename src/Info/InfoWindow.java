@@ -99,13 +99,14 @@ public class InfoWindow
         
 
         description=new MultiLine("Copyright (c) 2005-2009", 
-                "Eugene Stahov (evgs,Bombus);\nDaniel Apatin (ad,BombusMod);\nAlexej Kotov(aqent,BombusQD)\n" +
+                "Eugene Stahov (evgs,Bombus);\nDaniel Apatin (ad,BombusMod);\nAlexej Kotov(aqent,BombusQD);\n" +
+                "Andrej Tichonov(Tishka17,BombusQD)\n" +
                 "Distributed under GPL v2 License \n", super.superWidth);
         description.selectable=true;
         itemsList.addElement(description);
         
-        thanks = new MultiLine("Thanks to:","Testing: zaetz,demon(Dmitry Krylov),magnit,Sniffy,NNn\n" +
-                "Graphics && Animated-smiles Pack: Xa\n" +
+        thanks = new MultiLine("Thanks to:","Testing: zaetz,demon(Dmitry Krylov),magnit,Sniffy,NNn,DsXack and many others\n" +
+                "Graphics: Xa,Makasim\n" +
                 "Actions icons: Rederick Asher\n" +
                 "Site managment: BiLLy\n" +
                 "Jimm Dev's for back.png ;)\n" +

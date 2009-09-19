@@ -852,7 +852,11 @@ public class SR {
    public static String MS_avatarStr = loadString( "Avatars");   
 
    public static String MS_ANI_SMILES = loadString( "Use animated smiles");     
-   public static String MS_NOKIA_RECONNECT_HACK = loadString( "Nokia Reconnect Hack" );     
+   public static String MS_NOKIA_RECONNECT_HACK = loadString( "Nokia Reconnect Hack" );    
+   public static String MS_DEBUG_MENU = loadString("Debug Menu");
+   public static String MS_EDIT_ACCOUNT_MSG = loadString("Please,edit this account to save new password!");
+   public static String MS_ACCOUNT_DELETED = loadString("Account deleted!");
+   public static String MS_INSERT_NEW_PASSWORD = loadString("Insert New Password");
    
     private SR() { }
     

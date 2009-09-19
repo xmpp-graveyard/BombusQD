@@ -94,22 +94,22 @@ public class CommandForm extends DefForm
                 break;
             } 
             case CHANGE_PASS_ACC:{
-                field_text = "Password";
+                field_text = SR.MS_PASSWORD;
                 itemsList.addElement(new SimpleString(SR.MS_CHANGE_PASSWORD+"?", true));                
                 break;
             }    
             case _CHANGE_PASS_RMS:{
                 StringBuffer info = new StringBuffer();
                 info.append((String)obj);
-                info.append("New Password:%"+(String)res);
+                info.append(SR.MS_NEW_PASSWORD+":%"+(String)res);
                 itemsList.addElement(new CheckBox(info.toString(), true, true));
-                itemsList.addElement(new SimpleString("Sended to Clipboard?", true));
-                itemsList.addElement(new SimpleString("Please,edit this account!", true));                
+                itemsList.addElement(new SimpleString(SR.MS_COPY+"?", true));
+                itemsList.addElement(new SimpleString(SR.MS_EDIT_ACCOUNT_MSG, true));                
                 break;
             }
             case _DEL_ACCOUNT_FROM_RMS:{
                 itemsList.addElement(new SimpleString((String)obj, true));
-                itemsList.addElement(new SimpleString("Delete this account?", true));                
+                itemsList.addElement(new SimpleString(SR.MS_DELETE+"?", true));                
                 break;
             } 
             case STATS_ITEM:{

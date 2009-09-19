@@ -177,7 +177,7 @@ public class AccountForm
         
         if(midlet.BombusQD.clipboard.getClipBoard()!=null){
             if(midlet.BombusQD.clipboard.getClipBoard().startsWith("!")){
-              insertpass = new LinkString("Insert New Password") { public void doAction() { 
+              insertpass = new LinkString(SR.MS_INSERT_NEW_PASSWORD) { public void doAction() { 
                 passbox.setValue(midlet.BombusQD.clipboard.getClipBoard().substring(1));
                 itemsList.removeElement(insertpass);
                 midlet.BombusQD.clipboard.setClipBoard("");

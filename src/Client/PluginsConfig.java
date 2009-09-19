@@ -185,9 +185,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     public PluginsConfig(Display display, Displayable pView) {
         super(display, pView, SR.MS_MODULES_CONFIG);
         this.display=display;
-        
-        itemsList.addElement(new SimpleString("Graphics", true));
-        itemsList.addElement(new SpacerItem(3));        
+             
         
         graphics = new PluginBox(SR.MS_grStr, cf.module_graphics){ public void doAction(boolean st){ cf.module_graphics=st; } };
         itemsList.addElement(graphics);
@@ -198,8 +196,6 @@ public class PluginsConfig extends DefForm implements MenuListener
         avatars = new PluginBox(SR.MS_avatarStr, cf.module_avatars){ public void doAction(boolean st){ cf.module_avatars=st; } };
         itemsList.addElement(avatars);         
         
-        itemsList.addElement(new SpacerItem(3));
-        itemsList.addElement(new SimpleString("Application", true));
         itemsList.addElement(new SpacerItem(3)); 
         
         app = new PluginBox(SR.MS_appStr, cf.module_app){ public void doAction(boolean st){ cf.module_app=st; } };

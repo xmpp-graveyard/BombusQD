@@ -66,8 +66,13 @@
 //#      addCommand(cmdBack);
 //#endif
 //#         addCommand(copyReport); copyReport.setImg(0x44);
+//#              if (midlet.BombusQD.cf.useClipBoard) {
+//#                 addCommand(midlet.BombusQD.commands.cmdCopy);
+//#                 if (!midlet.BombusQD.clipboard.isEmpty()) addCommand(midlet.BombusQD.commands.cmdCopyPlus);
+//#             }          
 //#         addCommand(cmdEnableDisable); cmdEnableDisable.setImg(0x26);
 //#         addCommand(cmdPurge); cmdPurge.setImg(0x41);//DELETE
+//#      
 //#     }
 //#     
 //#     private StringBuffer str = new StringBuffer(0);
