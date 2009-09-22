@@ -1293,11 +1293,11 @@ public abstract class VirtualList
  
     
 //#ifdef MENU_LISTENER
-    public Vector menuCommands=new Vector();
+    public Vector menuCommands=new Vector(0);
     
-    public Vector cmdfirstList=new Vector();
-    public Vector cmdsecondList=new Vector();
-    public Vector cmdThirdList=new Vector();    
+    public Vector cmdfirstList=new Vector(0);
+    public Vector cmdsecondList=new Vector(0);
+    public Vector cmdThirdList=new Vector(0);    
 
     public void addCommand(Command command) {
         if (menuCommands.indexOf(command)<0)
@@ -1361,7 +1361,7 @@ public abstract class VirtualList
     
     
     private boolean popUpshow=false;
-    private StringBuffer mem = new StringBuffer(0);
+    private static StringBuffer mem = new StringBuffer(0);
     
     
     private void key(int keyCode) {

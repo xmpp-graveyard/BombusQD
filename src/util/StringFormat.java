@@ -41,7 +41,7 @@ public class StringFormat {
     /** Creates a new instance of StrungFormat */
     public StringFormat(String format) {
         this.format=format;
-        args=new Vector();
+        args=new Vector(0);
     }
     
     public String toString() {

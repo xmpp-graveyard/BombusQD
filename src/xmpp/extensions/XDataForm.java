@@ -44,7 +44,7 @@ public class XDataForm implements CommandListener {
         String title=form.getChildBlockText("title");
         f=new Form(title);
 
-        items=new Vector();
+        items=new Vector(0);
         
         for (Enumeration e=form.getChildBlocks().elements(); e.hasMoreElements(); ) {
             

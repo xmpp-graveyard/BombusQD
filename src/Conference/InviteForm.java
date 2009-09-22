@@ -48,7 +48,7 @@ public class InviteForm
     
     private Display display;
 
-    Vector conferences=new Vector();
+    Vector conferences=new Vector(0);
     
     TextInput reason;
     DropChoiceBox conferenceList;

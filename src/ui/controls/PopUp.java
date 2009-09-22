@@ -83,7 +83,7 @@ public class PopUp {
     }
 
     public PopUp() {
-         popUps = new Vector();
+         popUps = new Vector(0);
          font=FontCache.getFont(false, FontCache.baloon);
          ri=RosterIcons.getInstance();
     }

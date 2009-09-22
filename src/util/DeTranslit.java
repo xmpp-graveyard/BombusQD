@@ -68,8 +68,8 @@ public class DeTranslit {
     
     private static void fill() {
         translit=new Vector[2];
-        translit[0]=new Vector();
-        translit[1]=new Vector();
+        translit[0]=new Vector(0);
+        translit[1]=new Vector(0);
         
         Vector defs[]=new StringLoader().stringLoader("/translit.txt", 2);
         for (int i=0; i<defs[0].size(); i++) {

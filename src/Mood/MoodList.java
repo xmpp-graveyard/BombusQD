@@ -83,7 +83,7 @@
 //#         addCommand(cmdOk);
 //#         setCommandListener(this);
 //#         
-//#         moods=new Vector();
+//#         moods=new Vector(0);
 //#         int count=Moods.getInstance().moodValue.size();
 //#         
 //#         for (int i=0; i<count; i++) {

@@ -68,7 +68,7 @@ public class PrivacySelect
 //#     public static String plugin = new String("PLUGIN_PRIVACY");
 //#endif
     
-    private Vector list=new Vector();
+    private Vector list=new Vector(0);
     
     private Command cmdCancel=new Command (SR.MS_BACK, Command.BACK, 99);
     private Command cmdActivate=new Command (SR.MS_ACTIVATE, Command.SCREEN, 10);
@@ -192,7 +192,7 @@ public class PrivacySelect
                 data=data.findNamespace("query", "jabber:iq:privacy");
                 if (data!=null) {
                     list=null;
-                    list=new Vector();
+                    list=new Vector(0);
                     String activeList="";
                     String defaultList="";
                     try {

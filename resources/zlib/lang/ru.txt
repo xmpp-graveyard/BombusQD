@@ -85,7 +85,8 @@ Startup actions	Действия при запуске
 Server	Сервер
 Admins	Администраторы
 Make Ignore-List	Создать Ignore-List
-General	Настройки
+General Group	Основные
+Options	Настройки
 Delete	Удалить
 Delete contact?	Удалить контакт?
 Authorize	Авторизовать

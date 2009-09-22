@@ -69,7 +69,7 @@ public abstract class MessageList extends VirtualList
     public MessageList() {
         super();
         messages=null;
-	messages=new Vector();
+	    messages=new Vector(0);
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
@@ -106,11 +106,7 @@ public abstract class MessageList extends VirtualList
 	}
         return mi;
     }
-    
-    public int getVWidth(){ 
-        return -1;
-    }       
-    
+
     public abstract Msg getMessage(int index);
     
     public void markRead(int msgIndex) {}

@@ -89,7 +89,7 @@ public class StringUtils {
   }   
    
   public static void addClassicChatMsg(String message, int availWidth,ClassicChat scrMsg) {
-        Vector lines=new Vector();
+        Vector lines=new Vector(0);
         char[] valueChars = message.concat("   ").toCharArray();
         int startPos = 0;
         availWidth-=24;
@@ -184,7 +184,7 @@ public class StringUtils {
         //    else vi++;
         //}
         value=out.toString();
-        Vector lines=new Vector();
+        Vector lines=new Vector(0);
         char[] valueChars = value.toCharArray();
         int startPos = 0;
         int lastSpacePos = -1;
@@ -228,7 +228,7 @@ public class StringUtils {
             else vi++;
         }
         value=out.toString();
-        Vector lines=new Vector();
+        Vector lines=new Vector(0);
         char[] valueChars = value.toCharArray();
         int startPos = 0;
         int lastSpacePos = -1;

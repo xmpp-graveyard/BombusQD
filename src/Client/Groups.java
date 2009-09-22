@@ -44,8 +44,6 @@ import ui.VirtualList;
 public class Groups implements JabberBlockListener{
     
     Vector groups;
-    
-    StaticData sd = StaticData.getInstance();
 
     public final static int TYPE_SELF=0;
     public final static int TYPE_NO_GROUP=1;
@@ -65,7 +63,7 @@ public class Groups implements JabberBlockListener{
     
     public Groups(){
         groups=null;
-        groups=new Vector();
+        groups=new Vector(0);
         addGroup(SR.MS_TRANSPORTS, TYPE_TRANSP);
         addGroup(SR.MS_SELF_CONTACT, TYPE_SELF);
         addGroup(SR.MS_SEARCH_RESULTS, TYPE_SEARCH_RESULT);
@@ -151,7 +149,7 @@ public class Groups implements JabberBlockListener{
     }
 
     public Vector getRosterGroupNames(){
-        Vector s=new Vector();
+        Vector s=new Vector(0);
         int size = groups.size();
         for (int i=0; i<size; i++) {
 	    Group grp=(Group) groups.elementAt(i);
@@ -189,7 +187,7 @@ public class Groups implements JabberBlockListener{
                         continue;
                     grp.collapsed=collapsed;            
                   }                
-                sd.roster.reEnumRoster();
+                midlet.BombusQD.sd.roster.reEnumRoster();
                 return NO_MORE_BLOCKS;
             }
         }
@@ -197,7 +195,7 @@ public class Groups implements JabberBlockListener{
     }
 
     public void queryGroupState(boolean get) {
-        if (!sd.roster.isLoggedIn()) 
+        if (!midlet.BombusQD.sd.roster.isLoggedIn()) 
             return;
         
         JabberDataBlock iq=new Iq(null, (get)? Iq.TYPE_GET : Iq.TYPE_SET, (get)? "queryGS" : "setGS");
@@ -205,7 +203,7 @@ public class Groups implements JabberBlockListener{
         JabberDataBlock gs=query.addChildNs("gs", GROUPSTATE_NS);
         
         if (get) {
-            sd.roster.theStream.addBlockListener(this);
+            midlet.BombusQD.sd.roster.theStream.addBlockListener(this);
         } else {
                  int size=groups.size();
                   for(int i=0;i<size;i++){  
@@ -215,7 +213,7 @@ public class Groups implements JabberBlockListener{
                      }                     
                   }            
         }
-        sd.roster.theStream.send(iq);
+        midlet.BombusQD.sd.roster.theStream.send(iq);
         iq=null;
         query=null;
         gs=null;

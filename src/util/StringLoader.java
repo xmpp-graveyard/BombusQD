@@ -41,7 +41,7 @@ public class StringLoader {
 	Vector table[] = new Vector[columns];
 	for (int i = 0; i<columns; i++) {
             table[i]=null;
-	    table[i]=new Vector();
+	    table[i]=new Vector(0);
 	}
 	
 	afterEol=0;
@@ -87,7 +87,7 @@ public class StringLoader {
         Vector table[] = new Vector[columns];
         for (int i = 0; i<columns; i++) {
             table[i]=null;
-            table[i]=new Vector();
+            table[i]=new Vector(0);
         }
         
         afterEol=0;
@@ -119,7 +119,7 @@ public class StringLoader {
     }
 
     public Hashtable hashtableLoader(String resource) {
-	Hashtable hash = new Hashtable();
+	Hashtable hash = new Hashtable(0);
 	
 	afterEol=0;
 	InputStream in = this.getClass().getResourceAsStream(resource);
@@ -150,7 +150,7 @@ public class StringLoader {
     }
     
     public Hashtable hashtableLoaderFromString(String sourc) {
-	Hashtable hash = new Hashtable();
+	Hashtable hash = new Hashtable(0);
 
 	afterEol=0;
         
@@ -179,7 +179,7 @@ public class StringLoader {
     }
     
     
-    private StringBuffer buf=new StringBuffer(0);
+    private static StringBuffer buf=new StringBuffer(0);
     String readLine(String source) throws IOException {//multiple calls
 	buf.setLength(0);
         int pos=0;
@@ -340,7 +340,7 @@ public class StringLoader {
     
     
     public Hashtable hashtableLoader(final InputStream in) {
-        Hashtable hash = new Hashtable();
+        Hashtable hash = new Hashtable(0);
         
         afterEol=0;
         try {

@@ -46,7 +46,7 @@ public class PrivacyList extends IconTextElement {
     boolean isActive;
     boolean isDefault;
     
-    Vector rules=new Vector(); 
+    Vector rules=new Vector(0); 
     
     /** Creates a new instance of PrivacyList */
     public PrivacyList(String name) {

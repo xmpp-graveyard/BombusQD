@@ -103,7 +103,7 @@ public class SR {
     public   static String MS_CLIENT_INFO = loadString( "Client Version" );
     public   static String MS_DISCARD = loadString( "Discard Search" );
     public   static String MS_SEARCH_RESULTS = loadString( "Search Results" );
-    public   static String MS_GENERAL = loadString( "General" );
+    public   static String MS_GENERAL = loadString( "General Group" );
     public   static String MS_MEMBERS = loadString( "Members" );
     public   static String MS_ADD_CONTACT = loadString( "Add Contact" );
     public   static String MS_SUBSCRIPTION = loadString( "Subscription" );
@@ -113,7 +113,7 @@ public class SR {
     public   static String MS_SERVER = loadString( "Server" );
     public   static String MS_ADMINS = loadString( "Admins" );
     public   static String MS_MK_ILIST = loadString( "Make Ignore-List" );
-    public   static String MS_OPTIONS = loadString( "General" );
+    public   static String MS_OPTIONS = loadString( "Options" );
     public   static String MS_DELETE = loadString( "Delete" );
     public   static String MS_DELETE_ASK = loadString( "Delete contact?" );
     public   static String MS_SUBSCRIBE = loadString( "Authorize" );
@@ -869,7 +869,7 @@ public class SR {
             System.out.print("Loading locale ");
             System.out.println(langFile);
             if (langFile!=null) lang=new StringLoader().hashtableLoader(langFile);
-            if (lang==null) lang=new Hashtable(); 
+            if (lang==null) lang=new Hashtable(0); 
             MS_XMLLANG=(String)lang.get("xmlLang");
             MS_IFACELANG=MS_XMLLANG;
             if (MS_IFACELANG==null) MS_IFACELANG="en";

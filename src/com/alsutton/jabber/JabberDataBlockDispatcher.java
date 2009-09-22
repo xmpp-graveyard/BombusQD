@@ -48,13 +48,13 @@ public class JabberDataBlockDispatcher extends Thread
   private JabberListener listener;
   private JabberStream stream;
 
-  private Vector blockListeners=new Vector();
+  private Vector blockListeners=new Vector(0);
 
   /**
    * The list of messages waiting to be dispatched
    */
 
-  private Vector waitingQueue = new Vector();
+  private Vector waitingQueue = new Vector(0);
 
   /**
    * Flag to watch the dispatching loop

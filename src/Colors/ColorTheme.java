@@ -64,7 +64,7 @@ public class ColorTheme {
     
     public static void init() {
         colorsContainer=null;
-        colorsContainer=new Vector();
+        colorsContainer=new Vector(0);
         
         colorsContainer.addElement(new ColorItem("BALLOON_INK", 0x000000));
         colorsContainer.addElement(new ColorItem("BALLOON_BGND", 0xfcaaaa));

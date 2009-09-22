@@ -115,7 +115,7 @@ public class AccountSelect
         setMainBarItem(new MainBar(status==-1?SR.MS_ACCOUNTS:SR.MS_CONNECT_TO + str));
 
         accountList=null;
-        accountList=new Vector();
+        accountList=new Vector(0);
 
         Account a;
         

@@ -82,7 +82,7 @@ public class XDataField {
             ChoiceGroup ch=new ChoiceGroup(label, choiceType);
             formItem=ch;
             
-            optionsList=new Vector();
+            optionsList=new Vector(0);
             for (Enumeration e=field.getChildBlocks().elements(); e.hasMoreElements();) {
                 JabberDataBlock option=(JabberDataBlock)e.nextElement();
                 

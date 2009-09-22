@@ -305,6 +305,11 @@ public class Config {
     public boolean runningMessage=false;
     public boolean debug=false;
     
+    
+    public int ANIsmilesHeight=-1;
+    
+    
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();

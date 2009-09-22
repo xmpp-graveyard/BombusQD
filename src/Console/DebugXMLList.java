@@ -40,7 +40,7 @@
 //# 
 //#     /** Creates a new instance of XMLList */
 //#     public DebugXMLList(Display display, Displayable pView) {
-//#         super ();
+//#         super();
 //#         super.smiles=false;
 //# 
 //#         commandState();
@@ -139,7 +139,7 @@
 //#                 for (int i=0; i<cursor+1; i++)
 //#                     midlet.BombusQD.debug.stanzas.removeElementAt(0);
 //#             }
-//#             messages=new Vector();
+//#             messages=new Vector(0);
 //#         } catch (Exception e) { }
 //#         moveCursorHome();
 //#         redraw(); 

@@ -76,7 +76,7 @@ public class ArchiveList
     Contact cc;
     /** Creates a new instance of ArchiveList */
     public ArchiveList(Display display, int caretPos, int where, TextField tf, TextBox tb, Contact cc) {
- 	super ();
+ 	super();
         this.where=where;
         this.caretPos=caretPos;
         if(midlet.BombusQD.cf.msgEditType>0){
@@ -185,13 +185,13 @@ public class ArchiveList
     public void reFresh() {
         archive=new MessageArchive(where);
         messages=null;
-        messages=new Vector();
+        messages=new Vector(0);
     }
 
     private void deleteMessage() {
         archive.delete(cursor);
         messages=null;
-        messages=new Vector();
+        messages=new Vector(0);
     }
     
     private void deleteAllMessages() {
@@ -199,7 +199,7 @@ public class ArchiveList
             public void yes() {
                 archive.deleteAll();
                 messages=null;
-                messages=new Vector();
+                messages=new Vector(0);
             }
             public void no() { }
         };

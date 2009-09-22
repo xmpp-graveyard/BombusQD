@@ -239,7 +239,7 @@
 //#         if (action==null) {
 //#             String file="/lang/ru.activity.txt";
 //#             if (file==null) {
-//#                 action=new Hashtable();
+//#                 action=new Hashtable(0);
 //#             } 
 //#             else {
 //#                 action=new StringLoader().hashtableLoader(file);

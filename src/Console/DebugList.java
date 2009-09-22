@@ -14,7 +14,7 @@
 //#  */
 //# public class DebugList {
 //# 
-//#     Vector stanzas=new Vector();
+//#     Vector stanzas=new Vector(0);
 //#     private static DebugList instance;
 //#     
 //#     public static DebugList get(){

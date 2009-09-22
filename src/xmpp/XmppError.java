@@ -216,8 +216,10 @@ public class XmppError {
         if (text.length()==0) text=null;
         
         Vector errChilds=error.getChildBlocks();
-        if (errChilds!=null) for (Enumeration e=errChilds.elements(); e.hasMoreElements();) {
-            JabberDataBlock child=(JabberDataBlock) e.nextElement();
+        int size = errChilds.size();
+        if (errChilds!=null) {
+          for(int i=0;i<size;i++){              
+            JabberDataBlock child =(JabberDataBlock)errChilds.elementAt(i);
             String xmlns=child.getAttribute("xmlns");
             if (xmlns!=null) if (!xmlns.equals(ns)) continue;
             
@@ -255,7 +257,7 @@ public class XmppError {
             // already defined
             //if (tag.equals("not-authorized"))          errCond=NOT_AUTHORIZED;
             if (tag.equals("temporary-auth-failure"))  errCond=TEMPORARY_AUTH_FAILURE;
-            
+          }
         }
         
         if (errCond==NONE) {

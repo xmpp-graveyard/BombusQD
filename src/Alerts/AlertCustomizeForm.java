@@ -98,7 +98,7 @@ public class AlertCustomizeForm
         
         files=new StringLoader().stringLoader("/sounds/res.txt",3);
         fileNames=null;
-        fileNames=new Vector();
+        fileNames=new Vector(0);
 	for (Enumeration file=files[2].elements(); file.hasMoreElements(); ) {
             fileNames.addElement((String)file.nextElement());
 	}

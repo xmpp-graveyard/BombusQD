@@ -99,7 +99,7 @@ public class GMenu extends Canvas {
    protected Font font = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_SMALL);
    private int fh = font.getHeight();
    private int size;  
-   private Vector menuCommands = new Vector();
+   private Vector menuCommands = new Vector(0);
    
    
    
@@ -205,7 +205,7 @@ public class GMenu extends Canvas {
   }
    
    boolean eventMenu=false;
-   Vector inMenuItems = new Vector();
+   Vector inMenuItems = new Vector(0);
    
    Gradient fon;
    

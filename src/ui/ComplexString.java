@@ -127,8 +127,22 @@ public class ComplexString extends Vector implements VirtualElement {
                             g.setFont(bold);
                         }
                         dw=0;
-                        int p1=0; 
                         int len = ((String)elementData[index]).length();
+                        if(((String)elementData[index]).endsWith("\02")) len-=1;//hardfix for squares
+
+                            if(midlet.BombusQD.cf.boldNicks) {
+                              g.setColor(ColorTheme.strong(color));   /*(c1>255) ?*/ /* : color*/
+                              dw=bold.substringWidth(((String)elementData[index]), 0, len);                                
+                            }else{
+                              g.setColor( /*(c1>255) ? ColorTheme.strong(color); :*/ color);  
+                              dw=font.substringWidth(((String)elementData[index]), 0, len);
+                            }
+                            if (ralign) w-=dw;
+                              g.drawSubstring( ((String)elementData[index]), 0, len, w,fontYOfs,Graphics.LEFT|Graphics.TOP);
+                            if (!ralign) w+=dw;
+                              
+                              
+/*                        
                         while (p1<len) {
                             int p2=p1;
                             c1=((String)elementData[index]).charAt(p1);
@@ -140,10 +154,10 @@ public class ComplexString extends Vector implements VirtualElement {
                             }
                             //g.setColor(randColor);
                             if(midlet.BombusQD.cf.boldNicks) {
-                              g.setColor(ColorTheme.strong(color));   /*(c1>255) ?*/ /* : color*/
+                              g.setColor(ColorTheme.strong(color));   /*(c1>255) ?*/ /* : color
                               dw=bold.substringWidth(((String)elementData[index]), p1, p2-p1);                                
                             }else{
-                              g.setColor( /*(c1>255) ? ColorTheme.strong(color); :*/ color);  
+                              g.setColor( /*(c1>255) ? ColorTheme.strong(color); :// color);  
                               dw=font.substringWidth(((String)elementData[index]), p1, p2-p1);
                             }
                             if (ralign) w-=dw;
@@ -152,6 +166,7 @@ public class ComplexString extends Vector implements VirtualElement {
                             if (!ralign) w+=dw;
                             p1=p2;
                         }
+*/
                         g.setColor(color);
                     } else {
 //#endif

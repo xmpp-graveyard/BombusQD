@@ -136,7 +136,7 @@ public class RosterItemActions extends Menu {
 //#ifdef PLUGINS
 //#                 if (sd.ChangeTransport);
 //#endif
-//#                     addItem("Change transport", 915);
+//#                     addItem("Change transport", menuIcons.ICON_NICK_RESOLVE);
 //#endif
 	    }
             

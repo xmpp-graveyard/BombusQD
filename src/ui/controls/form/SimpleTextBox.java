@@ -48,7 +48,7 @@ public class SimpleTextBox
     private boolean selectable=true;
     private boolean otherWindow=false;    
     private int colorItem;
-    Vector checkBox = new Vector();
+    Vector checkBox = new Vector(0);
     GMenuConfig gm = GMenuConfig.getInstance();
     
     public SimpleTextBox(String text, boolean state,boolean otherWindow) {

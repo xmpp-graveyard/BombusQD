@@ -94,7 +94,7 @@ public class ServiceDiscovery
     private StaticData sd=StaticData.getInstance();
     
     private Vector items;
-    private Vector stackItems=new Vector();
+    private Vector stackItems=new Vector(0);
     
     private Vector features;
     
@@ -136,8 +136,8 @@ public class ServiceDiscovery
      addCommand(cmdCancel);
 //#endif     
 
-        items=new Vector();
-        features=new Vector();
+        items=new Vector(0);
+        features=new Vector(0);
         
         this.node=node;
         
@@ -270,7 +270,7 @@ public class ServiceDiscovery
         //System.out.println(id);
 
         if (id.equals(discoId("disco2"))) {
-            Vector items=new Vector();
+            Vector items=new Vector(0);
             if (childs!=null)
             for (Enumeration e=childs.elements(); e.hasMoreElements(); ){
                 JabberDataBlock i=(JabberDataBlock)e.nextElement();
@@ -293,7 +293,7 @@ public class ServiceDiscovery
             
             showResults(items);
         }  else if (id.equals(discoId("disco"))) {
-            Vector cmds=new Vector();
+            Vector cmds=new Vector(0);
             boolean showPartialResults=false;
             boolean loadItems=true;
             boolean client=false;
@@ -331,7 +331,7 @@ public class ServiceDiscovery
                 this.cmds=cmds;
             //System.out.println("cmds: "+items.toString());
                 if (loadItems) requestQuery(NS_ITEMS, "disco2");
-                if (showPartialResults) showResults(new Vector());
+                if (showPartialResults) showResults(new Vector(0));
             }
         } else if (id.startsWith ("discoreg")) {
             discoIcon=0;
@@ -399,8 +399,8 @@ public class ServiceDiscovery
             st.features=features;
             stackItems.addElement(st);
             
-            items=new Vector();
-            features=new Vector();
+            items=new Vector(0);
+            features=new Vector(0);
 //#ifndef GRAPHICS_MENU    
         removeCommand(cmdBack);
         addCommand(cmdBack);

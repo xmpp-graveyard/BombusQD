@@ -98,7 +98,7 @@ public class Contact extends IconTextElement{
     
     public boolean moveToLatest=false;
 
-    public String presence;
+    //public String presence;
     public String statusString;
     
     public boolean acceptComposing;
@@ -172,14 +172,14 @@ public class Contact extends IconTextElement{
         //cf=Config.getInstance();
 
         msgs=null;
-        msgs=new Vector();
+        msgs=new Vector(0);
 
         scroller=null;
         key1="";
         ilHeight=il.getHeight();
         maxImgHeight=ilHeight;
 
-        fontHeight=getFont().getHeight();
+        //fontHeight=getFont().getHeight();
     }
 
     public Contact(final String Nick, final String sJid, final int Status, String subscr) {
@@ -324,39 +324,38 @@ public class Contact extends IconTextElement{
         return c.transport-transport;
     }
 
+    private static StringBuffer temp = new StringBuffer(0);
+    
     public void addMessage(Msg m) {
         boolean first_replace=false;
         if (origin!=ORIGIN_GROUPCHAT) {
             if (m.isPresence()) {
-                presence=m.body;
-                if (msgs.size()==1)
-                    if (((Msg)msgs.firstElement()).isPresence()){
-                        first_replace=true;
-                 }
+                //presence=m.body;//wtf?
+                if (msgs.size()==1) if (((Msg)msgs.firstElement()).isPresence()) first_replace=true;
             } else {
                 if (midlet.BombusQD.cf.showNickNames) {
-                    StringBuffer who=new StringBuffer();
-                    who.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
-                        who.append(" (");
-                        who.append(m.getTime());
-                        who.append(")");
-                    if (m.subject!=null) who.append(m.subject);
-                    m.subject=who.toString();
-                    who=null;
+                    temp.setLength(0);
+                    temp.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
+                        temp.append(" (");
+                        temp.append(m.getTime());
+                        temp.append(")");
+                    if (m.subject!=null) temp.append(m.subject);
+                    m.subject=temp.toString();
+                    temp.setLength(0);
                 }
                 if (m.body.startsWith("/me ")) {
-                    StringBuffer b=new StringBuffer();
+                    temp.setLength(0);
 //#if NICK_COLORS
-                    b.append("\01");
+                    temp.append("\01");
 //#endif
-                    b.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
+                    temp.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
 //#if NICK_COLORS
-                    b.append("\02");
+                    temp.append("\02");
 //#endif
-                    b.insert(0,'*');
-                    b.append(m.body.substring(3));
-                    m.body=b.toString().trim();
-                    b=null;
+                    temp.insert(0,'*');
+                    temp.append(m.body.substring(3));
+                    m.body=temp.toString().trim();
+                    temp.setLength(0);
                 }
             }
         } else {
@@ -403,20 +402,19 @@ public class Contact extends IconTextElement{
             msgs.setElementAt(m,0);
             return;
         }
-
+        
+        msgs.addElement(m);
+        
         if (midlet.BombusQD.cf.autoScroll) moveToLatest=true;
         
-        if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE)
-            activeMessage=msgs.size()+1;
+        if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE) activeMessage=msgs.size()+1;
 
-        msgs.addElement(m);
-
-          if (m.unread) {
+        if (m.unread) {
             lastUnread=msgs.size()-1;
             if (m.messageType>unreadType) unreadType=m.messageType;
             if (newMsgCnt>=0) newMsgCnt++;
             if (m.highlite) if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;
-          }
+        }
     }
 
     public int getFontIndex(){
@@ -442,7 +440,10 @@ public class Contact extends IconTextElement{
     
     public final void purge() {
         msgs.removeAllElements();
-        msgs=new Vector();
+        msgs=new Vector(0);
+        Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, "BombusQD", null, "clear." );
+        msgs.addElement(m);
+        m=null;
         lastSendedMessage=null;
         activeMessage=-1;
         cList=null;
@@ -761,8 +762,7 @@ public class Contact extends IconTextElement{
 //#     }
 //#     boolean hasActivity() {
 //#         if (activity!=null)
-//#             if (activity.length()>0)
-//#                 return true;
+//#             if (activity.length()>0) return true;
 //#         return false;
 //#     }
 //# 

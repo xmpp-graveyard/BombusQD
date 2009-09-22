@@ -91,7 +91,7 @@ public class PrivacyForm
         Object rfocus=StaticData.getInstance().roster.getFocusedObject();
         
         itemsList=null;
-        itemsList=new Vector();
+        itemsList=new Vector(0);
 
         choiceAction=new DropChoiceBox(display, SR.MS_PRIVACY_ACTION);
         for(int i=0; i<PrivacyItem.actions.length; i++){

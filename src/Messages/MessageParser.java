@@ -79,12 +79,12 @@ public final class MessageParser // implements Runnable
     
     private static class Leaf {
         public int smile=NOSMILE;
-        public String smileChars;
-        public Vector child;
+        private String smileChars;
+        private Vector child;
 
         public Leaf() {
-            child=new Vector();
-            smileChars=new String();
+            child=new Vector(0);
+            smileChars=new String("");
         }
         
         public Leaf findChild(char c){
@@ -119,7 +119,7 @@ public final class MessageParser // implements Runnable
     public void parseMsg(MessageItem messageItem,  int width) {
         //synchronized (tasks) {
             wordsWrap=midlet.BombusQD.cf.textWrap==1;
-            messageItem.msgLines=new Vector();
+            messageItem.msgLines=new Vector(0);
 //#ifdef SMILES
             this.smileImages=SmilesIcons.getInstance();
 //#endif
@@ -163,7 +163,7 @@ public final class MessageParser // implements Runnable
 
     private MessageParser() {
         smileTable=null;
-        smileTable=new Vector();
+        smileTable=new Vector(0);
         root=new Leaf();
 //#ifdef SMILES
         StringBuffer s=new StringBuffer(10);
@@ -236,9 +236,11 @@ public final class MessageParser // implements Runnable
 //#endif
     }
     
-    private StringBuffer s = new StringBuffer(0);
+    private static StringBuffer s = new StringBuffer(0);
+    private static StringBuffer buf = new StringBuffer(0);
 
     private void parseMessage(final MessageItem task) {
+//long s1 = System.currentTimeMillis();          
         Vector lines=task.msgLines;
         boolean singleLine=task.msg.itemCollapsed;
         
@@ -273,25 +275,24 @@ public final class MessageParser // implements Runnable
 //#endif
             lines.addElement(l);
             
-            Font f=getFont((task.msg.highlite || state==0));
-            
+            Font f = FontCache.getFont( (task.msg.highlite || state==0) , FontCache.msg);
             l.setFont(f);
             
-            String txt=(state==0)? task.msg.subject: task.msg.toString();
+            buf.setLength(0);
+            buf.append( (state==0)? task.msg.subject: task.msg.toString() );
             
+            int size = buf.length();
             int color=(state==0)?
                 ColorTheme.getColor(ColorTheme.MSG_SUBJ):
                 ColorTheme.getColor(ColorTheme.LIST_INK);
             l.setColor(color);
-           
-            if (txt==null) {
+
+            if (size==0) {
                 state++;
                 continue;
             }
             
             int pos=0;
-            int size = txt.length();
-            
             Leaf smileLeaf;
             char c;
             while (pos<size) {
@@ -300,7 +301,7 @@ public final class MessageParser // implements Runnable
                 int smileStartPos=pos;
                 int smileEndPos=pos;
                 while (pos<size) {
-                    c=txt.charAt(pos);
+                    c=buf.charAt(pos);
                     if (underline) {//ÓÐË
                         switch (c) {
                             case ' ':
@@ -311,7 +312,7 @@ public final class MessageParser // implements Runnable
                             case ')':
                                 underline=false;
                                 if (wordStartPos!=pos) {
-                                    s.append(txt.substring(wordStartPos,pos));
+                                    for(int j=wordStartPos;j<pos;j++) s.append(buf.charAt(j));
                                     wordStartPos=pos;
 				    w+=wordWidth;
                                     wordWidth=0;
@@ -347,7 +348,7 @@ public final class MessageParser // implements Runnable
                   
                  case -1: //text NOSMILE
                     pos=smileStartPos;
-                    c=txt.charAt(pos);
+                    c=buf.charAt(pos);
 
                     int cw=f.charWidth(c);//+fHeight
 
@@ -357,7 +358,7 @@ public final class MessageParser // implements Runnable
                         boolean newline = ( c==0x0d || c==0x0a );
                         
                         if (wordWidth+cw>width || newline) {
-                            s.append(txt.substring(wordStartPos,pos));
+                            for(int j=wordStartPos;j<pos;j++) s.append(buf.charAt(j));
                             w+=wordWidth;
                             wordWidth=0;
                             wordStartPos=pos;
@@ -392,8 +393,9 @@ public final class MessageParser // implements Runnable
                     }
 
                       if (wrapSeparators.indexOf(c)>=0 || !wordsWrap) { //by chars
-                        if (pos>wordStartPos)
-                            s.append(txt.substring(wordStartPos,pos));
+                        if (pos>wordStartPos){
+                           for(int j=wordStartPos;j<pos;j++) s.append(buf.charAt(j));
+                        }
                         if (c>0x1f) s.append(c);
                         w+=wordWidth;
                         wordStartPos=pos+1;
@@ -403,7 +405,7 @@ public final class MessageParser // implements Runnable
 
                  default: //smile
                     if (wordStartPos!=smileStartPos) {
-                        s.append(txt.substring(wordStartPos, smileStartPos));
+                        for(int j=wordStartPos;j<pos;j++) s.append(buf.charAt(j));
                         w+=wordWidth;
                         wordWidth=0;
                     }
@@ -435,20 +437,27 @@ public final class MessageParser // implements Runnable
               pos++;
             }
             
- 	    if (wordStartPos!=pos)
-                s.append(txt.substring(wordStartPos,pos));
+ 	    if (wordStartPos!=pos){
+                for(int j=wordStartPos;j<pos;j++) s.append(buf.charAt(j));
+            }
             if (s.length()>0) {
                 if (underline) l.addUnderline();
                 l.addElement(s.toString());
             }
              
-            if (l.isEmpty())
-                lines.removeElementAt(lines.size()-1);
+            if (l.isEmpty()) lines.removeElementAt(lines.size()-1);
 
             state++;
             s.setLength(0);
+            buf.setLength(0);
         }
         lines=null;
+        smileRoot=null;
+
+//long s2 = System.currentTimeMillis();  
+//System.out.println("parse "+(s2-s1)+" msec");   
+//parse speed  old - 21-25 msec,new - 10-14 msec
+
     }
     
     public Font getFont(boolean bold) {

@@ -91,7 +91,7 @@ public class Affiliations
         getMainBarItem().addElement(id);
         
         items=null;
-        items=new Vector();
+        items=new Vector(0);
         
         addCommand(cmdCancel);
         addCommand(cmdModify);
@@ -160,7 +160,7 @@ public class Affiliations
         try {
             if (data.getAttribute("id").equals(id)) {
                 JabberDataBlock query=data.findNamespace("query", namespace);
-                Vector tempItems=new Vector();
+                Vector tempItems=new Vector(0);
                 try {
                   int size=query.getChildBlocks().size();        
                     for(int i=0;i<size;i++){    

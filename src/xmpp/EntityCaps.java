@@ -103,7 +103,7 @@ public class EntityCaps implements JabberBlockListener{
     public static void initCaps() {
         ver=null;
         features=null;
-        features=new Vector();
+        features=new Vector(0);
         
         //features MUST be sorted
 //#ifdef PEP
@@ -161,5 +161,5 @@ public class EntityCaps implements JabberBlockListener{
         //sort(features);
     }
 
-    private static Vector features=new Vector();
+    private static Vector features=new Vector(0);
 }

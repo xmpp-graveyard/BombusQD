@@ -47,8 +47,8 @@ public class ClientsIconsData {
     public static ClientsIconsData getInstance() {
 	if (instance==null){
             try {
-                clients[0]=new Vector();
-                clients[1]=new Vector();
+                clients[0]=new Vector(0);
+                clients[1]=new Vector(0);
 
                 clients=new StringLoader().stringLoader(restxt, 2);
             } catch (Exception e) {

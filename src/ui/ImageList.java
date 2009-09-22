@@ -75,7 +75,8 @@ public class ImageList {
     {
         try {
             resImage = Image.createImage(s);
-            width = height = resImage.getWidth()/10;
+            if(midlet.BombusQD.cf.getInstance().ANIsmilesHeight==-1) width = height = resImage.getWidth()/10;
+            else width = height = midlet.BombusQD.cf.getInstance().ANIsmilesHeight;
         } catch (Exception e) { 
             System.out.print("Can't load smile: ");
             System.out.println(resource);

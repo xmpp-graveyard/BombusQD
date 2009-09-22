@@ -46,7 +46,7 @@
 //#         if (vMood==null) vMood=new StringLoader().stringLoader("/lang/en.moods.txt", 2);
 //#         if (vMood==null) {
 //#             System.out.println("Cant't load mood names");
-//#             en_moodValue=moodKey=moodValue=new Vector();
+//#             en_moodValue=moodKey=moodValue=new Vector(0);
 //#         } else {
 //#             moodKey=(Vector)vMood[0];
 //#             moodValue=(Vector)vMood[1];

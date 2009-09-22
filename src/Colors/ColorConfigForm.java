@@ -103,7 +103,7 @@ public class ColorConfigForm
         try {
             files=new StringLoader().stringLoader("/themes/res.txt",2);
             if (files[0].size()>0) {
-                Vector skins=new Vector();
+                Vector skins=new Vector(0);
                 int ind=0;
                 for (int i=0; i<files[0].size(); i++) {
                     skins.addElement((String)files[1].elementAt(i));

@@ -85,8 +85,8 @@ public class DiscoSearchForm
     private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 3);
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     
-    Vector servers = new Vector();
-    Vector list = new Vector();
+    Vector servers = new Vector(0);
+    Vector list = new Vector(0);
     int type = 0;
     
     /**
@@ -199,7 +199,7 @@ public class DiscoSearchForm
         defs=null;
     }
     private void loadRecentList() {
-        servers=new Vector();
+        servers=new Vector(0);
         try {
             DataInputStream is=NvStorage.ReadFileRecord("search_servers", 0);
             try { 

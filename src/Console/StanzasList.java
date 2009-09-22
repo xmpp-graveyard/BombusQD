@@ -39,7 +39,7 @@
 //#     public static String plugin = new String("PLUGIN_CONSOLE");
 //#endif
 //#     
-//#     Vector stanzas=new Vector();
+//#     Vector stanzas=new Vector(0);
 //#     
 //#     boolean enabled = false;
 //#     

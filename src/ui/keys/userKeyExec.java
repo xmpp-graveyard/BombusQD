@@ -75,7 +75,7 @@
 //#     
 //#     private void initCommands() {
 //#         commandsList=null;
-//#         commandsList=new Vector();
+//#         commandsList=new Vector(0);
 //#         
 //#         userKey u = null;
 //# 
@@ -174,7 +174,7 @@
 //#                 break;
 //#             case 14:
 //#                 if (cf.allowMinimize)
-//#                     BombusQD.getInstance().hideApp(true);
+//#                     BombusQD.getInstance().hideApp(true, null);
 //#                 break;
 //#             case 15:
 //#                 ColorTheme.invertSkin();

@@ -42,7 +42,7 @@ public class TrackItem
     
     int value;
     int steps;
-    Vector items = new Vector();
+    Vector items = new Vector(0);
     int maxValue;
     private boolean selectable=true;
     public TrackItem(int value, int maxValue) {

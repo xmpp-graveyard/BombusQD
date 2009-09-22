@@ -59,6 +59,8 @@ import Console.DebugList;
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
+import Client.Contact;
+import Client.ContactMessageList;
 
 /** Entry point class
  *
@@ -70,7 +72,6 @@ public class BombusQD extends MIDlet implements Runnable
     
     public Display display  = Display.getDisplay(this);
     private boolean isRunning;
-    public boolean isMinimized;
     
     public final static StaticData sd = StaticData.getInstance();
     public final static Config cf = Config.getInstance();
@@ -83,6 +84,7 @@ public class BombusQD extends MIDlet implements Runnable
     
     public int width = 0;
     public int height = 0;
+    public int count = 0;    
     
     ColorTheme ct=ColorTheme.getInstance();
     
@@ -99,7 +101,7 @@ public class BombusQD extends MIDlet implements Runnable
     /** Entry point  */
     public void startApp() {
         if (isRunning) {
-	    hideApp(false);
+	        hideApp(false,null);
             return;
         }
         isRunning=true;
@@ -118,8 +120,6 @@ public class BombusQD extends MIDlet implements Runnable
     public int himg_menu;
     public int wimg_actions;
     public int himg_actions;    
-    //public GMenuConfig gm;//
-    //public ImageBuffer ib;//
 
     
     public void run(){  
@@ -175,27 +175,24 @@ public class BombusQD extends MIDlet implements Runnable
 //#ifdef AUTOTASK
 //#         sd.autoTask=new AutoTask(display);
 //#endif        
-
-
-        //StartApp:
-        //SE Emulator: W700  JP8-240x320    DefaultJ2ME
-        //undo -      697    643            1093-1300      msec
-        //after -     288    329            225-350        msec
-        //(use: 580kb after start)
     }
 
     public void destroyApp(boolean unconditional) { }
 
-    public void hideApp(boolean hide) {
+    public void hideApp(boolean hide,Contact c) {
 	if (hide){
             cf.isMinimized=true;
             display.setCurrent(null);
         }
-	else if (isMinimized)
-        {
-            cf.isMinimized=false;            
-            display.setCurrent(display.getCurrent());
-        isMinimized=hide;
+	else {
+          cf.isMinimized=false;
+          if(c!=null){
+              if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3) 
+                   display.setCurrent((ContactMessageList)c.cList);
+              else new ContactMessageList(c,display);  
+          }else{
+              display.setCurrent(sd.roster);
+          }
         }
     }
     

@@ -61,30 +61,36 @@
 //#         sd.roster.theStream.cancelBlockListener(instance);
 //#     }   
 //# 
+//#     private static StringBuffer mood_=new StringBuffer(0);
+//#     private static StringBuffer activity_=new StringBuffer(0);
+//#     private static StringBuffer tune_=new StringBuffer(0);
+//#      
+//#     private static void clear(){
+//#         mood_.setLength(0);
+//#         activity_.setLength(0);
+//#         tune_.setLength(0);        
+//#     }
+//#      
 //#     public int blockArrived(JabberDataBlock data) {
 //#         if (!(data instanceof Message)) return BLOCK_REJECTED;
 //#         //if (!data.getTypeAttribute().equals("headline")) return BLOCK_REJECTED;
 //#         
-//#         String from=data.getAttribute("from");
-//#         String id=null;
-//#         
-//#         StringBuffer mood_=new StringBuffer();
-//#         StringBuffer activity_=new StringBuffer();
-//#         StringBuffer tune_=new StringBuffer();
-//#         
 //#         boolean  tuneVaule=false;
 //#         int moodIndex=-1;        
-//#         String tag=null;
-//#         String moodText = "";
-//#         String activity_name="";
 //# 
 //#         JabberDataBlock event=data.findNamespace("event", "http://jabber.org/protocol/pubsub#event");
 //#         if (event==null) {         
 //#             return BLOCK_REJECTED;
 //#         }
 //#         
-//# 
+//#         String from=data.getAttribute("from");
+//#         String id=null;        
+//#         String tag=null;
+//#         String moodText = "";
+//#         String activity_name="";
 //#         String type="";
+//#         
+//#         clear();
 //#         
 //#         boolean hasActivity=false;
 //#         if (cf.rcvactivity) {
@@ -242,11 +248,8 @@
 //#                 }
 //#             }
 //#         }
-//#         mood_=null;
-//#         activity_=null;
-//#         tune_=null;
+//#         clear();      
 //#         sd.roster.redraw();
-//#         
 //#         return BLOCK_PROCESSED;
 //#     }
 //#     

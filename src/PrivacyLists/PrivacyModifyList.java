@@ -195,7 +195,7 @@ public class PrivacyModifyList
                 try {
                     data=data.getChildBlock("list");
                     plist.rules=null;
-                    plist.rules=new Vector();
+                    plist.rules=new Vector(0);
                     for (Enumeration e=data.getChildBlocks().elements(); e.hasMoreElements();) {
                         JabberDataBlock item=(JabberDataBlock) e.nextElement();
                         plist.addRule(new PrivacyItem(item));

@@ -75,7 +75,7 @@ public class FormField {
             else if (type.equals("list-single")) {
                 DropChoiceBox listsingle=new DropChoiceBox(display, label);
                 optionsList=null;
-                optionsList=new Vector();
+                optionsList=new Vector(0);
                 int size = field.getChildBlocks().size();
                 int index = 0;
                 for (int i=0; i<size; i++) {
@@ -100,7 +100,7 @@ public class FormField {
                 //[<instructions>Choose a username and password to register with this server</instructions>, <username/>, <password/>]
             }else if (type.equals("list-multi")) {
                 DropChoiceBox listmulti=new DropChoiceBox(display, label);
-                optionsList=new Vector();
+                optionsList=new Vector(0);
                 int size = field.getChildBlocks().size();
                 int index = 0;
                 for (int i=0; i<size; i++) {

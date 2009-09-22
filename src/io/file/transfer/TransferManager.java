@@ -66,7 +66,7 @@ public class TransferManager
 //#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
 //#endif
     
-    private Vector taskList=new Vector();;
+    private Vector taskList=new Vector(0);;
     
     Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
     Command cmdDel=new Command(SR.MS_DECLINE, Command.SCREEN, 10);

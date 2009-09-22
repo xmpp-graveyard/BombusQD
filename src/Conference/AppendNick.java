@@ -90,7 +90,7 @@ public class AppendNick
         this.classic_chat=classic_chat;
         setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         nicknames=null;
-        nicknames=new Vector();
+        nicknames=new Vector(0);
         int size=StaticData.getInstance().roster.getHContacts().size();        
             for(int i=0;i<size;i++){    
               Contact c=(Contact)StaticData.getInstance().roster.getHContacts().elementAt(i);
@@ -114,7 +114,7 @@ public class AppendNick
         setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
         
         nicknames=null;
-        nicknames=new Vector();
+        nicknames=new Vector(0);
         int size=StaticData.getInstance().roster.getHContacts().size();        
             for(int i=0;i<size;i++){    
               Contact c=(Contact)StaticData.getInstance().roster.getHContacts().elementAt(i);

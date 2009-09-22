@@ -87,7 +87,7 @@ public class XMLParser {
                         tagName.setLength(0);
                         
                         attr=null;
-                        attr=new Vector();
+                        attr=new Vector(0);
                         
                         continue;
                     }
@@ -249,7 +249,8 @@ public class XMLParser {
         
     };
     
-    private String parsePlainText(StringBuffer sb) throws XMLException {
+    
+    private String parsePlainText(StringBuffer sb) throws XMLException { //StringBuffer..
         //1. output text length will be not greather than source
         //2. sb may be destroyed - all calls to parsePlainText succeeds flushing of sb
         int ipos=0;

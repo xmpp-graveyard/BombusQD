@@ -94,7 +94,7 @@ public class ContactMessageList extends MessageList {
 //#         if (midlet.BombusQD.cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
 //#endif
 //#endif
-        setCommandListener(this);
+        //setCommandListener(this);
        if(tr){
            moveCursorTo(contact.getCursor(), true); 
            tr=false;
@@ -290,7 +290,7 @@ public class ContactMessageList extends MessageList {
 //#         
 //#         contact.redraw=false;
 //#         messages=null;
-//#         messages=new Vector();
+//#         messages=new Vector(0);
 //#         redraw();
 //#     }
 //#endif
@@ -362,7 +362,7 @@ public class ContactMessageList extends MessageList {
                 }
                 startSelection = false;
                 messages=null;
-                messages=new Vector();
+                messages=new Vector(0);
             } else {
                 clearReadedMessageList();
             }
@@ -503,7 +503,7 @@ public class ContactMessageList extends MessageList {
     }  
 
     
-    Vector vectorfound = new Vector();
+    Vector vectorfound = new Vector(0);
     int found_count=0;
     
 
@@ -812,31 +812,44 @@ public class ContactMessageList extends MessageList {
     
     public final void smartPurge() {
         Vector msgs=contact.msgs;
+
         int cur=cursor+1;
+        int size = msgs.size();
+
         try {
-            if (msgs.size()>0){
-                int virtCursor=msgs.size();
+            if (size>0){
+                int virtCursor=size;
                 boolean delete = false;
-                int i=msgs.size();
+                int i=size;
                 while (true) {
                     if (i<0) break;
-
                     if (i<cur) {
                         if (!delete) {
                             if (((Msg)msgs.elementAt(virtCursor)).dateGmt+1000<System.currentTimeMillis()) {
                                 msgs.removeElementAt(virtCursor);
                                 delete=true;
                             }
-                        } else {
-                            msgs.removeElementAt(virtCursor);
-                        }
+                        } else msgs.removeElementAt(virtCursor);
                     }
                     virtCursor--;
                     i--;
                 }
-                contact.activeMessage=msgs.size()-1;
+                contact.activeMessage=size-1;
             }
         } catch (Exception e) { }
+
+        msgs=null;
+        msgs=new Vector(0);
+        midlet.BombusQD.sd.roster.systemGC();
+
+        Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, "BombusQD", null,"Cleared.");
+        
+        if(cur==size) contact.activeMessage=-1;
+        
+        m.itemCollapsed=false;
+        contact.addMessage(m);
+        
+        m=null;
         
         contact.clearVCard();
         
@@ -844,7 +857,6 @@ public class ContactMessageList extends MessageList {
         contact.lastUnread=0;
         contact.resetNewMsgCnt();
         contact.cList=null;
-        msgs=null;
     }
 
     public void destroyView(){

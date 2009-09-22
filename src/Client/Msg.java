@@ -128,7 +128,7 @@ public class Msg {
         return ColorTheme.getColor(ColorTheme.LIST_INK);
     }
     
-    private StringBuffer time = new StringBuffer(0);
+    private static StringBuffer time = new StringBuffer(0);
     public String toString() {
        if (messageType==MESSAGE_TYPE_PRESENCE && midlet.BombusQD.cf.timePresence) {
          time.setLength(0);

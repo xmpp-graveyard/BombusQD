@@ -58,7 +58,7 @@ public class Menu extends VirtualList
     public Menu(String mainbar, ImageList il,ImageList alt) {
         super();
         setMainBarItem(new MainBar(mainbar));
-        menuitems=new Vector();
+        menuitems=new Vector(0);
         this.il=il;
         this.alt=alt;
 //#ifndef MENU_LISTENER

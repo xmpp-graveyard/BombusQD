@@ -63,7 +63,7 @@ public class Accounts {
     /** Creates a new instance of Accounts */
     public Accounts(String path, int direction) {
         accountList=null;
-        accountList=new Vector();
+        accountList=new Vector(0);
         this.file=path;
         
         if (direction==0) {

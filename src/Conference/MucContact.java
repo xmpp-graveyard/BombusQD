@@ -79,7 +79,7 @@ public class MucContact extends Contact {
         offline_type=Presence.PRESENCE_OFFLINE;
     }
     
-    private StringBuffer b = new StringBuffer(0);//FIX
+    private static StringBuffer b = new StringBuffer(0);//FIX
     
     public String processPresence(JabberDataBlock xmuc, Presence presence) {
         String from=jid.getJid();
@@ -270,9 +270,9 @@ public class MucContact extends Contact {
         if(midlet.BombusQD.cf.useClassicChat) {  }
         
                         if(!midlet.BombusQD.cf.useClassicChat) { 
-                            sb.append((char)1);
+                            sb.append("\01");
                             sb.append(append);
-                            sb.append((char)2); 
+                            sb.append("\02"); 
                         }else{
                             sb.append(append.trim());
                         }        
@@ -280,7 +280,7 @@ public class MucContact extends Contact {
 //#endif
     }
     
-    private StringBuffer tip = new StringBuffer(0);
+    private static StringBuffer tip = new StringBuffer(0);
     
     public String getTipString() {
         tip.setLength(0);

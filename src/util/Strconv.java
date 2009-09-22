@@ -197,9 +197,13 @@ public class Strconv {
     public static String unicodeToUTF(String src) {
         return toUTFSb(new StringBuffer(src)).toString();
     }
+
+    
+    private static StringBuffer dst=new StringBuffer(0);
     
     public static String toLowerCase(String src){
-        StringBuffer dst=new StringBuffer(src);
+        dst.setLength(0);
+        dst.append(src);
         int len=dst.length();
         char c;
         for (int i=0; i<len; i++) {

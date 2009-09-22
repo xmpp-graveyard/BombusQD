@@ -75,7 +75,7 @@
 //# 
 //#     /** Creates a new instance of XMLList */
 //#     public XMLList(Display display, Displayable pView) {
-//#         super ();
+//#         super();
 //#         
 //#         super.smiles=false;
 //#         
@@ -196,7 +196,7 @@
 //#                 for (int i=0; i<cursor+1; i++)
 //#                     stanzas.stanzas.removeElementAt(0);
 //#             }
-//#             messages=new Vector();
+//#             messages=new Vector(0);
 //#         } catch (Exception e) { }
 //#         moveCursorHome();
 //#         redraw(); 

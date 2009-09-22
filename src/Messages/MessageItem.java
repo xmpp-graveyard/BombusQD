@@ -179,7 +179,7 @@ public class MessageItem
     }
 
     public Vector getUrlList() { 
-        Vector urlList=new Vector();
+        Vector urlList=new Vector(0);
         addUrls(msg.body, "http://", urlList);
         addUrls(msg.body, "https://", urlList);
         addUrls(msg.body, "tel:", urlList);

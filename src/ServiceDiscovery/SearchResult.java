@@ -79,7 +79,7 @@ public class SearchResult
         setCommandListener(this);
         addCommand(cmdBack);
         
-        items=new Vector();
+        items=new Vector(0);
         
         JabberDataBlock query=result.getChildBlock("query");
         if (query==null) return;

@@ -90,7 +90,7 @@ public class DiscoForm extends DefForm {
         JabberDataBlock x=query.getChildBlock("x");
         this.id=resultId;
         //this.listener=listener;
-        fields=new Vector();
+        fields=new Vector(0);
 
 
         // for instructions

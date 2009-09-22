@@ -431,6 +431,7 @@ public class MessageEdit
         if (c==cmdCancel) {
             composing=false;
             body=null;
+            if(to.msgSuspended!=null) to.msgSuspended=null;
             //thread=null;
             //if(to.cList!=null && midlet.BombusQD.cf.module_cashe && to.msgs.size()>3){
               display.setCurrent( parentView );

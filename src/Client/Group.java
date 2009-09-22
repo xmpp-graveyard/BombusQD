@@ -89,7 +89,7 @@ public class Group extends IconTextElement {
 
     public String getName() { return name; }
     
-    private StringBuffer mb = new StringBuffer(0);
+    private static StringBuffer mb = new StringBuffer(0);
     
     protected String mainbar(String mainbarStart) {
         if (this instanceof ConferenceGroup && midlet.BombusQD.cf.dont_loadMC) {
@@ -116,7 +116,7 @@ public class Group extends IconTextElement {
         tncontacts=0;
         unreadMessages=0;
         contacts=null;
-	contacts=new Vector();
+	    contacts=new Vector(0);
     }
 
     public void addContact(Contact c) {

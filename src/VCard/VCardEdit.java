@@ -79,7 +79,7 @@ public class VCardEdit
     Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
     Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,6);
 
-    private Vector items=new Vector();
+    private Vector items=new Vector(0);
     private VCard vcard;
     
     private ImageItem photoItem;

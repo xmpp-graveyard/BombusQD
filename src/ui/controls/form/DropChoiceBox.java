@@ -45,7 +45,7 @@ public class DropChoiceBox
     
     public int index=0;
     
-    public Vector items=new Vector();
+    public Vector items=new Vector(0);
     
     private boolean selectable=true;
     

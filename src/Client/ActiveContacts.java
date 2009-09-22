@@ -72,7 +72,7 @@ public class ActiveContacts
     public ActiveContacts(Display display, Displayable pView, Contact current) {
 	super();
         activeContacts=null;
-	activeContacts=new Vector();
+	    activeContacts=new Vector(0);
         Contact c=null;
          int size=midlet.BombusQD.sd.roster.getHContacts().size();        
             for(int i=0;i<size;i++){    

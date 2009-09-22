@@ -84,7 +84,7 @@ public class ColorsList
         addCommand(cmdOk);
         setCommandListener(this);
         
-        itemsList=new Vector();
+        itemsList=new Vector(0);
         int cnt=0;
         int size = ColorTheme.colorsContainer.size();
         for (int i=0;i<=size;i++) {

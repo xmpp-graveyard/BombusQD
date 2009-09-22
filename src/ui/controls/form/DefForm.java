@@ -63,7 +63,7 @@ public class DefForm
 
     public Display display;
     
-    public Vector itemsList=new Vector();
+    public Vector itemsList=new Vector(0);
 
     public Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
