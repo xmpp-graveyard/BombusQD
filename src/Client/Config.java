@@ -199,7 +199,6 @@ public class Config {
 //#ifdef CLIPBOARD
 //#     public boolean useClipBoard = true;
 //#endif
-    public boolean firstRun = true;
     public String verHash="";
     public String resolvedHost="";
     public int resolvedPort=0;
@@ -304,9 +303,12 @@ public class Config {
     public int msgEditType=0;
     public boolean runningMessage=false;
     public boolean debug=false;
+    public boolean selectOutMessages=false;
     
     
     public int ANIsmilesHeight=-1;
+    public boolean ANIsmilesDetect;
+    public boolean showCollapsedPresences=true;
     
     
     
@@ -483,7 +485,6 @@ public class Config {
             msgLogConfPresence=inputStream.readBoolean();
             msgLogConf=inputStream.readBoolean();
             cp1251=inputStream.readBoolean();
-            firstRun=inputStream.readBoolean();     
             
             fileTransfer=inputStream.readBoolean(); //newMenu
             lightState=inputStream.readBoolean();
@@ -583,6 +584,8 @@ public class Config {
             runningMessage=inputStream.readBoolean();
             
             debug=inputStream.readBoolean();
+            selectOutMessages=inputStream.readBoolean();
+            showCollapsedPresences=inputStream.readBoolean();
             
 	    inputStream.close();
             inputStream=null;
@@ -721,7 +724,6 @@ public class Config {
             outputStream.writeBoolean(msgLogConfPresence);
             outputStream.writeBoolean(msgLogConf);//20 
             outputStream.writeBoolean(cp1251);
-            outputStream.writeBoolean(firstRun);     
             
             outputStream.writeBoolean(fileTransfer); //newMenu
             outputStream.writeBoolean(lightState);
@@ -814,6 +816,8 @@ public class Config {
             outputStream.writeBoolean(runningMessage);
             
             outputStream.writeBoolean(debug);
+            outputStream.writeBoolean(selectOutMessages);
+            outputStream.writeBoolean(showCollapsedPresences);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean_", 0, true);      

@@ -41,22 +41,29 @@ public class PrivacyItem extends IconTextElement {
 //#endif
     
     public final static String types[]={"jid", "group", "subscription", "ANY"};
+    public final static String types_[]={"jid", SR.MS_GROUP, SR.MS_SUBSCRIPTION, SR.MS_PRIVACY_ANY};
+    
     public final static int ITEM_JID=0;
     public final static int ITEM_GROUP=1;
     public final static int ITEM_SUBSCR=2;
     public final static int ITEM_ANY=3;
 
     public final static String actions[]={"allow", "deny"};
+    public final static String actions_[]={SR.MS_PRIVACY_ALLOW, SR.MS_PRIVACY_DENY};
+    
     public final static int ITEM_ALLOW=0;
     public final static int ITEM_BLOCK=1;
 
     public final static String stanzas[]={"message", "presence-in", "presence-out", "iq"};
+    public final static String stanzas_[]={SR.MS_MESSAGES, SR.MS_PRIVACY_PRESENCE_IN, SR.MS_PRIVACY_PRESENCE_OUT , SR.MS_PRIVACY_IQ};   
+    
     public final static int STANZA_MSG=0;
     public final static int STANZA_PRESENCE_IN=1;
     public final static int STANZA_PRESENCE_OUT=2;
     public final static int STANZA_IQ=3;
     
     public final static String subscrs[]={"none", "from", "to", "both"};
+    public final static String subscrs_[]={SR.MS_SUBSCR_NONE, SR.MS_SUBSCR_FROM, SR.MS_SUBSCR_TO, SR.MS_SUBSCR_BOTH};
     
     int type;    //jid|group|subscription|ANY
     String value=new String();
@@ -129,23 +136,30 @@ public class PrivacyItem extends IconTextElement {
     }
 	
     public String getTipString() {
-        StringBuffer tip=new StringBuffer(actions[action]);
-        tip.append(": ");        
-        if (messageStz && presenceInStz && presenceOutStz && iqStz) {
-            tip.append("all stanzas"); 
-        } else if (!messageStz && !presenceInStz && !presenceOutStz && !iqStz) { 
-            tip.append("all stanzas"); 
-        } else {
-            if (messageStz) { tip.append(stanzas[STANZA_MSG]); tip.append(" "); }
-            if (presenceInStz) { tip.append(stanzas[STANZA_PRESENCE_IN]); tip.append(" "); }
-            if (presenceOutStz) { tip.append(stanzas[STANZA_PRESENCE_OUT]); tip.append(" "); }
-            if (iqStz) { tip.append(stanzas[STANZA_IQ]); tip.append(" "); }
+        StringBuffer tip=new StringBuffer();
+
+        tip.append(SR.MS_PRIVACY_IF+" ").append(types_[type]);
+        if (type!=ITEM_ANY) {
+            tip.append("==");
+            if(value.indexOf("both")>-1) tip.append(SR.MS_SUBSCR_BOTH);
+            else if(value.indexOf("from")>-1) tip.append(SR.MS_SUBSCR_FROM);
+            else if(value.indexOf("to")>-1) tip.append(SR.MS_SUBSCR_TO);
+            else if(value.indexOf("none")>-1) tip.append(SR.MS_SUBSCR_NONE);
+            else tip.append(value);
         }
         
-        tip.append("\nif ").append(types[type]);
-        if (type!=ITEM_ANY) {
-            tip.append('=').append(value);
-        }
+        tip.append("\n"+actions_[action]);
+        tip.append(": ");         
+        if (messageStz && presenceInStz && presenceOutStz && iqStz) {
+            tip.append("\n"+SR.MS_PRIVACY_ALL_STANZAS); 
+        } else if (!messageStz && !presenceInStz && !presenceOutStz && !iqStz) { 
+            tip.append("-");
+        } else {
+            if (messageStz) { tip.append("\n[" + stanzas_[STANZA_MSG]); tip.append(']'); }
+            if (presenceInStz) { tip.append("\n[" + stanzas_[STANZA_PRESENCE_IN]); tip.append(']'); }
+            if (presenceOutStz) { tip.append("\n[" + stanzas_[STANZA_PRESENCE_OUT]); tip.append(']'); }
+            if (iqStz) { tip.append("\n[" + stanzas_[STANZA_IQ]); tip.append(']'); }
+        }        
 
         return tip.toString();
     }

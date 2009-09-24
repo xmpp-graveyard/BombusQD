@@ -189,15 +189,16 @@ public class PrivacyModifyList
     }
     
     public int blockArrived(JabberDataBlock data){
-        if (data.getTypeAttribute().equals("result"))
+        if (data.getTypeAttribute().equals("result")){
             if (data.getAttribute("id").equals("getlistitems")) {
                 data=data.findNamespace("query", "jabber:iq:privacy");
                 try {
                     data=data.getChildBlock("list");
                     plist.rules=null;
                     plist.rules=new Vector(0);
-                    for (Enumeration e=data.getChildBlocks().elements(); e.hasMoreElements();) {
-                        JabberDataBlock item=(JabberDataBlock) e.nextElement();
+                    int size = data.getChildBlocks().size();
+                    for(int i=0;i<size;i++){  
+                        JabberDataBlock item = (JabberDataBlock)data.getChildBlocks().elementAt(i);
                         plist.addRule(new PrivacyItem(item));
                     }
                 } catch (Exception e) {}
@@ -205,6 +206,7 @@ public class PrivacyModifyList
                 processIcon(false);
                 return JabberBlockListener.NO_MORE_BLOCKS;
             } //id, result
+        } else processIcon(false);
         return JabberBlockListener.BLOCK_REJECTED;
     }
 

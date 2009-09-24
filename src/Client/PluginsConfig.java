@@ -81,6 +81,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     private static CheckBox eventComposing;
     private static CheckBox capsState;
     private static CheckBox storeConfPresence;
+    private static CheckBox showCollapsedPresences;
     private static CheckBox timePresence;
     private static CheckBox autoScroll;
     private static CheckBox useTabs;
@@ -103,6 +104,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     private static CheckBox sendMoodInMsg;
     private static CheckBox savePos;
     private static CheckBox boldNicks;    
+    private static CheckBox selectOutMessages;
     private static DropChoiceBox msgEditType;
 //#ifdef DETRANSLIT
 //#     private static CheckBox autoDetranslit;
@@ -228,7 +230,7 @@ public class PluginsConfig extends DefForm implements MenuListener
         classicchat = new PluginBox(SR.MS_clchatStr, cf.module_classicchat){ public void doAction(boolean st){ cf.module_classicchat=st; } };
         itemsList.addElement(classicchat); 
 
-        debug = new PluginBox("Debug Menu", cf.debug){ public void doAction(boolean st){ cf.debug=st; } };
+        debug = new PluginBox(SR.MS_DEBUG_MENU, cf.debug){ public void doAction(boolean st){ cf.debug=st; } };
         itemsList.addElement(debug);
 
         setCommandListener(this);
@@ -257,7 +259,7 @@ public class PluginsConfig extends DefForm implements MenuListener
              else if(text==SR.MS_hotkeysStr){ return cf.userKeys?SR.MS_config:""; }
              else if(text==SR.MS_astatusStr){ return cf.module_autostatus?SR.MS_config:""; } 
              else if(text==SR.MS_clchatStr){ return cf.module_classicchat?SR.MS_config:""; }
-             else if(text=="Debug Menu"){ return ""; }             
+             else if(text==SR.MS_DEBUG_MENU){ return ""; }             
              else if(text==SR.MS_cthemesStr){ return cf.module_theme?SR.MS_config:""; }
              
              else if(text==SR.MS_casheStr){ return cf.module_cashe?"Clear":""; }
@@ -394,6 +396,10 @@ public class PluginsConfig extends DefForm implements MenuListener
                   
            storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); 
            itemsList.addElement(storeConfPresence);
+             showCollapsedPresences = new CheckBox(SR.MS_COLLAPSE_PRESENCE, cf.showCollapsedPresences); 
+             itemsList.addElement(showCollapsedPresences);
+           
+           
              autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll);
              itemsList.addElement(autoScroll);
                timePresence = new CheckBox(SR.MS_SHOW_PRS_TIME, cf.timePresence);
@@ -406,13 +412,15 @@ public class PluginsConfig extends DefForm implements MenuListener
                        itemsList.addElement(savePos); 
                         boldNicks = new CheckBox(SR.MS_BOLD_AND_COLORS_NICKS, cf.boldNicks); 
                          itemsList.addElement(boldNicks);
+                          selectOutMessages = new CheckBox(SR.MS_SELECT_OUT_MESSAGES, cf.selectOutMessages); 
+                          itemsList.addElement(selectOutMessages);                         
 
                               useLowMemory_iconmsgcollapsed = new CheckBox(SR.MS_ICON_COLP, cf.useLowMemory_iconmsgcollapsed);
                               itemsList.addElement(useLowMemory_iconmsgcollapsed);
                                 smiles = new CheckBox(SR.MS_SMILES, cf.smiles);
                                 itemsList.addElement(smiles);
                                   animatedSmiles = new CheckBox(SR.MS_ANI_SMILES, cf.animatedSmiles); 
-                                  itemsList.addElement(animatedSmiles);                                
+                                  if(midlet.BombusQD.cf.ANIsmilesDetect) itemsList.addElement(animatedSmiles);                                
                                    capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); 
                                    itemsList.addElement(capsState);
 
@@ -630,23 +638,28 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.messageLimit=Integer.parseInt(messageLimit.getValue());
       
             cf.storeConfPresence=storeConfPresence.getValue();
+            cf.showCollapsedPresences=showCollapsedPresences.getValue();
             cf.autoScroll=autoScroll.getValue();
             cf.timePresence=timePresence.getValue();
             cf.autoDeTranslit=autoDetranslit.getValue();
             cf.showNickNames=showNickNames.getValue();
             cf.savePos=savePos.getValue();
             cf.boldNicks=boldNicks.getValue();
+            cf.selectOutMessages=selectOutMessages.getValue();
      
             cf.useLowMemory_iconmsgcollapsed=useLowMemory_iconmsgcollapsed.getValue();
             cf.smiles=smiles.getValue(); 
-            cf.animatedSmiles=animatedSmiles.getValue();
-            if(!cf.smiles){
-              SmilesIcons.stopTimer();
-              clearCache(false);
+            if(midlet.BombusQD.cf.ANIsmilesDetect)
+            {
+             cf.animatedSmiles=animatedSmiles.getValue();
+             if(!cf.smiles){
+               SmilesIcons.stopTimer();
+               clearCache(false);
+             }
+             if(!cf.animatedSmiles){
+               SmilesIcons.stopTimer();
+             }   
             }
-            if(!cf.animatedSmiles){
-              SmilesIcons.stopTimer();
-            }            
             cf.capsState=capsState.getValue(); 
 
             cf.useTabs=useTabs.getValue();

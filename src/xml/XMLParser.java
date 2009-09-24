@@ -312,6 +312,7 @@ public class XMLParser {
             continue;
             
         }
+        xmlChar.setLength(0);
         xmlChar=null;
         sb.setLength(opos);
         return sb.toString();

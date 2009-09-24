@@ -857,6 +857,35 @@ public class SR {
    public static String MS_EDIT_ACCOUNT_MSG = loadString("Please,edit this account to save new password!");
    public static String MS_ACCOUNT_DELETED = loadString("Account deleted!");
    public static String MS_INSERT_NEW_PASSWORD = loadString("Insert New Password");
+   public static String MS_SELECT_OUT_MESSAGES = loadString("Highlite Out Messages");
+   public static String MS_ALERT_CONTACT_OFFLINE = loadString("Contact is now offline.Continue?"); 
+   
+   public static String MS_COLLAPSE_PRESENCE = loadString("Collapse presences");
+   public static String MS_CLIPBOARD_SENDERROR = loadString("clipboard NOT sended");
+   public static String MS_PRIVACY_ANY = loadString("ANY");
+   public static String MS_PRIVACY_ALLOW = loadString("allow");
+   public static String MS_PRIVACY_DENY = loadString("deny");
+   public static String MS_PRIVACY_PRESENCE_IN = loadString("presence-in");
+   public static String MS_PRIVACY_PRESENCE_OUT = loadString("presence-out");
+   public static String MS_PRIVACY_IQ = loadString("iq");   
+   public static String MS_PRIVACY_ALL_STANZAS = loadString("all stanzas");
+   public static String MS_PRIVACY_IF = loadString("if");
+   
+   public static String MS_SUBSCR_NONE = loadString("none");
+   public static String MS_SUBSCR_FROM = loadString("from");
+   public static String MS_SUBSCR_TO = loadString("to");
+   public static String MS_SUBSCR_BOTH = loadString("both");
+   
+//#ifdef LIGHT_CONTROL
+//#    public static String L_CONFIG = loadString("Light control");
+//#    public static String L_ENABLED = loadString("Enable light control");
+//#    public static String L_IDLE_VALUE = loadString("Idle screen brightness");
+//#    public static String L_KEYPRESS_VALUE = loadString("Keypress screen brightness");
+//#    public static String L_KEYPRESS_TIMEOUT = loadString("Keypress idle timeout");
+//#    public static String L_MESSAGE_VALUE = loadString("Message screen brightness");
+//#    public static String L_MESSAGE_TIMEOUT = loadString("Message idle timeout");
+//#endif   
+   
    
     private SR() { }
     

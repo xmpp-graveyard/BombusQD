@@ -61,6 +61,9 @@ import Console.DebugList;
 //#endif
 import Client.Contact;
 import Client.ContactMessageList;
+//#ifdef LIGHT_CONTROL
+//# import LightControl.*;
+//#endif
 
 /** Entry point class
  *
@@ -91,6 +94,9 @@ public class BombusQD extends MIDlet implements Runnable
     public SplashScreen s;
     private static BombusQD instance;
     
+//#ifdef LIGHT_CONTROL    
+//#    LightConfig lcf;
+//#endif    
 
     public BombusQD() {
 	instance=this; 
@@ -122,7 +128,15 @@ public class BombusQD extends MIDlet implements Runnable
     public int himg_actions;    
 
     
-    public void run(){  
+    public void run(){ 
+        try {
+            Vector smiles[] = new StringLoader().stringLoader("/images/smiles/animate.txt", 2);
+            if(smiles[0].indexOf("OFF")>-1) {
+               cf.animatedSmiles = false;
+               cf.ANIsmilesDetect = false;
+            } else if(smiles[0].indexOf("ON")>-1) cf.ANIsmilesDetect = true;
+        } catch (Exception e) {} 
+        
         long s1 = System.currentTimeMillis();
         AccountSelect acc = new AccountSelect(display, null , true,-1);
 
@@ -160,8 +174,12 @@ public class BombusQD extends MIDlet implements Runnable
         //cf.path_skin="";
         
         SR.loaded();
-        FontClass.getInstance().Init(cf.drwd_fontname);         
+        FontClass.getInstance().Init(cf.drwd_fontname);  
         
+//#ifdef LIGHT_CONTROL
+//#         lcf=LightConfig.getInstance();
+//#         CustomLight.switchOn(lcf.light_control);
+//#endif        
         
         if(sd.roster==null){
           sd.roster=new Roster(display);

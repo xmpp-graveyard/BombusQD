@@ -346,11 +346,11 @@ public class Contact extends IconTextElement{
                 if (m.body.startsWith("/me ")) {
                     temp.setLength(0);
 //#if NICK_COLORS
-                    temp.append("\01");
+                    //temp.append("\01");
 //#endif
                     temp.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
 //#if NICK_COLORS
-                    temp.append("\02");
+                    //temp.append("\02");
 //#endif
                     temp.insert(0,'*');
                     temp.append(m.body.substring(3));

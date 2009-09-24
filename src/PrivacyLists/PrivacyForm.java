@@ -68,6 +68,9 @@ public class PrivacyForm
     
     int selectedAction=-1;
     String tValue="";
+    
+    private boolean subscrField=true;
+    private int newSubscrPos=0;    
 
     /** Creates a new instance of PrivacyForm */
     public PrivacyForm(Display display, Displayable pView, PrivacyItem item, PrivacyList plist) {
@@ -85,75 +88,105 @@ public class PrivacyForm
     }
     
     private void update() {
+        int len = 0;
         selectedAction=(selectedAction<0)?item.action:choiceAction.getSelectedIndex();
         tValue=(textValue!=null)?textValue.getValue():item.value;
         
         Object rfocus=StaticData.getInstance().roster.getFocusedObject();
-        
         itemsList=null;
         itemsList=new Vector(0);
 
         choiceAction=new DropChoiceBox(display, SR.MS_PRIVACY_ACTION);
-        for(int i=0; i<PrivacyItem.actions.length; i++){
-            choiceAction.append(PrivacyItem.actions[i]);
+        len = PrivacyItem.actions.length;
+        for(int i=0; i<len; i++){
+            choiceAction.append(PrivacyItem.actions_[i]);
         }
         choiceAction.setSelectedIndex(selectedAction);
         itemsList.addElement(choiceAction);
 
+          messageStz=new CheckBox(PrivacyItem.stanzas_[0], item.messageStz); 
+          presenceInStz=new CheckBox(PrivacyItem.stanzas_[1], item.presenceInStz); 
+          presenceOutStz=new CheckBox(PrivacyItem.stanzas_[2], item.presenceOutStz); 
+          iqStz=new CheckBox(PrivacyItem.stanzas_[3], item.iqStz); 
+          
+        itemsList.addElement(messageStz);
+        itemsList.addElement(presenceInStz);
+        itemsList.addElement(presenceOutStz);
+        itemsList.addElement(iqStz);
+        
         choiceType=new DropChoiceBox(display, SR.MS_PRIVACY_TYPE);
-        for(int i=0; i<PrivacyItem.types.length; i++){
-            choiceType.append(PrivacyItem.types[i]);
+        len = PrivacyItem.types.length;
+        for(int i=0; i<len; i++){
+            choiceType.append(PrivacyItem.types_[i]);
         }
         choiceType.setSelectedIndex(item.type);
         itemsList.addElement(choiceType);
+        newSubscrPos=itemsList.indexOf(choiceType)+1;
         
-        
-        textValue=new TextInput(display, SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
+       
+        choiceSubscr=new DropChoiceBox(display, SR.MS_SUBSCRIPTION);
+          len = PrivacyItem.subscrs.length;
+          for(int i=0; i<len; i++) choiceSubscr.append(PrivacyItem.subscrs_[i]);
+          
+        if(item.value!=null){
+         for (int i=0; i<len; i++) {
+             if (item.value.equals(PrivacyItem.subscrs[i])) {
+                choiceSubscr.setSelectedIndex(i);
+                break;
+             }
+         }
+        }
 
-        switch (selectedAction) {
+        textValue=new TextInput(display, SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
+        try{
+         switch (selectedAction) {
             case 0: //jid
                 if (targetList!=null) {
                     if (rfocus instanceof Contact) {
                         textValue.setValue(((Contact)rfocus).bareJid);
                     }
                 }
-                itemsList.addElement(textValue);
                 break;
             case 1: //group
                 if (targetList!=null)
                     textValue.setValue(((rfocus instanceof Group)?(Group)rfocus:((Contact)rfocus).group).getName());
-                itemsList.addElement(textValue);
                 break;
-            /*
-            case 2: //subscription
-                choiceSubscr=new DropChoiceBox(display, SR.MS_SUBSCRIPTION);
-                for(int i=0; i<PrivacyItem.subscrs.length; i++){
-                    choiceSubscr.append(PrivacyItem.subscrs[i]);
+         }
+         itemsList.addElement(textValue);
+         
+        } catch (Exception e) { }
+    }
+    
+    protected void beginPaint(){
+        if (choiceType!=null) {
+            if (choiceType.toString()==SR.MS_SUBSCRIPTION) {
+                if (subscrField==false) {
+                    itemsList.insertElementAt(choiceSubscr, newSubscrPos);
+                    itemsList.removeElement(textValue);
+                    subscrField=true;
+                }else{ 
+                //subscrField == TRUE when user îpen SUBSCR rule
+                   if(!itemsList.contains(choiceSubscr)) itemsList.addElement(choiceSubscr);
+                   if(itemsList.contains(textValue)) itemsList.removeElement(textValue);
+                   
                 }
-                for (int i=0; i<PrivacyItem.subscrs.length; i++) {
-                    if (item.value.equals(PrivacyItem.subscrs[i])) {
-                        choiceSubscr.setSelectedIndex(i);
-                        break;
-                    }
+            } else {
+                if (subscrField) {
+                    if(itemsList.contains(choiceSubscr)) itemsList.removeElement(choiceSubscr);
+                    if(!itemsList.contains(textValue)) itemsList.addElement(textValue);
+                    subscrField=false;
                 }
-                itemsList.addElement(choiceSubscr);
-                break;
-             */
+            }
         }
-
-        itemsList.addElement(new SimpleString(SR.MS_STANZAS, true));
-        
-        messageStz=new CheckBox(PrivacyItem.stanzas[0], item.messageStz); itemsList.addElement(messageStz);
-        presenceInStz=new CheckBox(PrivacyItem.stanzas[1], item.presenceInStz); itemsList.addElement(presenceInStz);
-        presenceOutStz=new CheckBox(PrivacyItem.stanzas[2], item.presenceOutStz); itemsList.addElement(presenceOutStz);
-        iqStz=new CheckBox(PrivacyItem.stanzas[3], item.iqStz); itemsList.addElement(iqStz);
     }
 
     public void cmdOk() {
         try {
             int type=choiceType.getSelectedIndex();
             String value=textValue.getValue();
-            //if (type==2) value=PrivacyItem.subscrs[choiceSubscr.getSelectedIndex()];
+            if (type==2) {
+                value=PrivacyItem.subscrs[choiceSubscr.getSelectedIndex()];
+            }
             if (type!=PrivacyItem.ITEM_ANY) 
             if (value.length()==0) return;
 

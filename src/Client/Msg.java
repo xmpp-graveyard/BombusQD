@@ -88,11 +88,10 @@ public class Msg {
         this.subject=subj;
         this.dateGmt=Time.utcTimeMillis();
         if (messageType>=MESSAGE_TYPE_IN) unread=true;
-        if (messageType==MESSAGE_TYPE_PRESENCE || messageType==MESSAGE_TYPE_HEADLINE)
-            itemCollapsed=true;
+        if (messageType==MESSAGE_TYPE_PRESENCE) itemCollapsed = midlet.BombusQD.cf.showCollapsedPresences;
+        else if (messageType==MESSAGE_TYPE_HEADLINE) itemCollapsed=true;
         else if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
-            if (body.length()>midlet.BombusQD.cf.messageLimit)
-                itemCollapsed=true;
+            if (body.length()>midlet.BombusQD.cf.messageLimit) itemCollapsed=true;
     }
     
     public void onSelect(){}

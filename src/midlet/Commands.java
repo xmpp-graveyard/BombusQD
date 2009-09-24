@@ -62,8 +62,17 @@ public class Commands {
     public static Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
     public static Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
     public static Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);    
-    
-
+  
+//#ifdef JUICK.COM   
+//#     /*
+//#     public static Command cmdJuickLastPopular = new Command("", Command.SCREEN, 101);//#
+//#     public static Command cmdJuickLastMsgs = new Command("", Command.SCREEN, 102);//#+
+//#     public static Command cmdJuickSubscribe = new Command("", Command.SCREEN, 103);//S #
+//#     public static Command cmdJuickUnsubscribe = new Command("", Command.SCREEN, 104);//U #
+//#     public static Command cmdJuickSendPM = new Command("", Command.SCREEN, 105);//PM @nick msg
+//#     public static Command cmdJuickUsersMsgs = new Command("", Command.SCREEN, 106); //@nick+
+//#     */    
+//#endif 
 
     private static void setImages(){
         cmdSelect.setImg(0x60);

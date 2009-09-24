@@ -60,6 +60,7 @@ public class SmilesIcons extends ImageList {
     {
       super(res, cols, SMILES_IN_ROW);
       if(anismiles==null){
+         boolean loadAnimatedSmiles=true;
          anismiles = new Vector(smilesCount);
            for(int i=1; i<=smilesCount; i++){
              try {
@@ -67,26 +68,26 @@ public class SmilesIcons extends ImageList {
                 anismiles.addElement(setSmile);
              } catch(Exception e) {
                 i=smilesCount;
-                midlet.BombusQD.cf.animatedSmiles=false;
+                loadAnimatedSmiles=false;
                 System.out.println("Err: " + i);
              }
            }
-         if(timer==null) startTimer();
+         //if(timer==null && loadAnimatedSmiles) startTimer();//?
       }
     }    
 
 
     public final static void startTimer(){
-        //System.out.println("start");
+        //System.out.println("start ani timer");
         if(timer==null){
-          timer = new Timer();
-          timer.schedule(new Counter(), 200 , interval);
+            timer = new Timer();
+            timer.schedule(new Counter(), 200 , interval);
         }
     }
     
     
     public final static void stopTimer(){
-        //System.out.println("stop");
+        //System.out.println("stop ani timer");
         if(timer!=null){
           timer.cancel();
           timer=null;

@@ -287,7 +287,7 @@ public final class MessageParser // implements Runnable
                 ColorTheme.getColor(ColorTheme.LIST_INK);
             l.setColor(color);
 
-            if (size==0) {
+            if (buf==null) {
                 state++;
                 continue;
             }
@@ -405,7 +405,7 @@ public final class MessageParser // implements Runnable
 
                  default: //smile
                     if (wordStartPos!=smileStartPos) {
-                        for(int j=wordStartPos;j<pos;j++) s.append(buf.charAt(j));
+                        for(int j=wordStartPos;j<smileStartPos;j++) s.append(buf.charAt(j));
                         w+=wordWidth;
                         wordWidth=0;
                     }

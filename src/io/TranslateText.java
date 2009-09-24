@@ -234,7 +234,7 @@ public class TranslateText implements Runnable{
                                   StringBuffer b=new StringBuffer();
                                   b.append("<==Lang "+from+": " + msg.from +"> "+msg.body+"\n");
 //#if NICK_COLORS
-                                  b.append("\01");
+                                  //b.append("\01");
 //#endif
                                  b.append(SR.MS_TRANSLATE+" [");
                                   if(from.length()>0){
@@ -244,7 +244,7 @@ public class TranslateText implements Runnable{
                                   }
                                       b.append("->" + to + "]:");
 //#if NICK_COLORS
-                                  b.append("\02");
+                                  //b.append("\02");
 //#endif                                 
                                   b.append("\n");                                  
                                  if(fromMucNick.indexOf("none")>-1){

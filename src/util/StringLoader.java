@@ -74,6 +74,7 @@ public class StringLoader {
 		}
 	    }
 	    in.close();
+            in=null;
 	} catch (Exception e)	{
             //e.printStackTrace();
         }

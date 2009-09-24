@@ -60,7 +60,7 @@ public class PrivacyList extends IconTextElement {
     
     public String toString() {
         StringBuffer result=new StringBuffer((name==null)? "<none>": name).append(' ');
-        if (isDefault) result.append("(default)");
+        if (isDefault) result.append(locale.SR.MS_IS_DEFAULT);
         return result.toString();
     }
     
@@ -111,7 +111,7 @@ public class PrivacyList extends IconTextElement {
         if (child!=null) qry.addChild(child);
         
         //System.out.println(pl);
-        StaticData.getInstance().roster.theStream.send(pl);
+        midlet.BombusQD.sd.roster.theStream.send(pl);
     }
 }
 //#endif

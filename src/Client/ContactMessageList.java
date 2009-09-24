@@ -62,7 +62,6 @@ import io.TranslateSelect;
 //# import ui.GMenuConfig;
 //#endif
 import Colors.ColorTheme;
-import ui.controls.form.CheckBox;
 
 public class ContactMessageList extends MessageList {
     
@@ -397,7 +396,7 @@ public class ContactMessageList extends MessageList {
             keyGreen();
         }
         if (c==midlet.BombusQD.commands.cmdQuote) Quote();
-        if (c==midlet.BombusQD.commands.cmdReply) Reply();
+        if (c==midlet.BombusQD.commands.cmdReply) checkOffline();
         if(c==midlet.BombusQD.commands.cmdAddSearchQuery) {
              new SearchText(display,d,contact);
              return;
@@ -451,7 +450,7 @@ public class ContactMessageList extends MessageList {
 //#                     if (contact.origin<Contact.ORIGIN_GROUPCHAT) contact.addMessage(msg);
 //#                 }
 //#             } catch (Exception e) {
-//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"clipboard NOT sended"));
+//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,SR.MS_CLIPBOARD_SENDERROR));
 //#             }
 //#             redraw();
 //#         }
@@ -470,7 +469,7 @@ public class ContactMessageList extends MessageList {
         super.eventLongOk();
 //#ifndef WMUC
         if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-            Reply();
+            checkOffline(); 
             return;
         }
 //#endif
@@ -553,6 +552,28 @@ public class ContactMessageList extends MessageList {
     }
         
         
+    private void checkOffline(){
+       boolean found = false;
+       Msg msg;
+       try {
+           msg=getMessage(cursor);
+           int size=midlet.BombusQD.sd.roster.hContacts.size();
+           Contact c;
+            for(int i=0;i<size;i++){
+             c=(Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
+             if (c instanceof MucContact){
+                if(c.nick.indexOf(msg.from)>-1) found=(c.status!=5);
+             }
+          }
+       } catch (Exception e) { msg = null; }
+       
+       if(!found&&msg!=null) new ui.controls.AlertBox(msg.from,
+           SR.MS_ALERT_CONTACT_OFFLINE, display, this) {
+           public void yes() { Reply(); }
+           public void no() { }
+       }; else Reply();
+       msg=null;
+    }
     
     
     public void keyPressed(int keyCode) {
@@ -565,7 +586,8 @@ public class ContactMessageList extends MessageList {
         if (keyCode==KEY_POUND) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-                Reply(); return;
+                checkOffline();
+                return;
             }
     
 //#ifdef JUICK.COM

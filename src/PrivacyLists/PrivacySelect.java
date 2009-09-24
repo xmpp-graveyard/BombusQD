@@ -196,8 +196,9 @@ public class PrivacySelect
                     String activeList="";
                     String defaultList="";
                     try {
-                        for (Enumeration e=data.getChildBlocks().elements(); e.hasMoreElements();) {
-                            JabberDataBlock pe=(JabberDataBlock) e.nextElement();
+                        int size = data.getChildBlocks().size();
+                        for(int i=0;i<size;i++){  
+                           JabberDataBlock pe = (JabberDataBlock)data.getChildBlocks().elementAt(i);
                             String tag=pe.getTagName();
                             String name=pe.getAttribute("name");
                             if (tag.equals("active")) activeList=name;

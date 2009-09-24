@@ -57,6 +57,10 @@ import java.util.Date;
 import java.util.Timer;
 import midlet.BombusQD;
 import Conference.ConferenceGroup;
+//#ifdef LIGHT_CONTROL
+//# import LightControl.CustomLight;
+//#endif
+
 
 public abstract class VirtualList         
     extends Canvas {
@@ -1119,7 +1123,12 @@ public abstract class VirtualList
     
     protected void keyRepeated(int keyCode){ key(keyCode); }
     protected void keyReleased(int keyCode) { kHold=0; }
-    protected void keyPressed(int keyCode) { kHold=0; key(keyCode); }
+    protected void keyPressed(int keyCode) { 
+        kHold=0; key(keyCode);
+//#ifdef LIGHT_CONTROL
+//#     CustomLight.keyPressed();
+//#endif    
+    }
     
     protected void pointerPressed(int x, int y) {
         System.out.println("pointerPressed("+x+", "+y+")");

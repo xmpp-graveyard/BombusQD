@@ -84,31 +84,33 @@ public class Presence extends JabberDataBlock {
     private int presenceCode;
     
     private StringBuffer presenseText = new StringBuffer(0);
-    private StringBuffer errText = new StringBuffer(0);
   
-    public String getText(){//StringBuffer
+    public String getText(){
+        String errText=null;
         presenseText.setLength(0);
+        String type=getTypeAttribute();
         presenceCode=PRESENCE_AUTH;
-        if (getTypeAttribute()!=null) {
-          if (getTypeAttribute().equals(PRS_OFFLINE)) { 
+        if (type!=null) {
+          if (type.equals(PRS_OFFLINE)) { 
               presenceCode=PRESENCE_OFFLINE;
               presenseText.append(SR.MS_OFFLINE);
           }
-          if (getTypeAttribute().equals("subscribe")) {
+          if (type.equals("subscribe")) {
               presenceCode=PRESENCE_AUTH_ASK;
               presenseText.append(SR.MS_SUBSCRIPTION_REQUEST_FROM_USER);
           } 
-          if (getTypeAttribute().equals("subscribed")) presenseText.append(SR.MS_SUBSCRIPTION_RECEIVED);
-          if (getTypeAttribute().equals("unsubscribed")) presenseText.append(SR.MS_SUBSCRIPTION_DELETED);
+          if (type.equals("subscribed")) presenseText.append(SR.MS_SUBSCRIPTION_RECEIVED);
+          if (type.equals("unsubscribed")) presenseText.append(SR.MS_SUBSCRIPTION_DELETED);
 
-          if (getTypeAttribute().equals(PRS_ERROR)) {
+
+          if (type.equals(PRS_ERROR)) {
               presenceCode=PRESENCE_ERROR;
               presenseText.append(PRS_ERROR);
-              errText.setLength(0);
-              errText.append(XmppError.findInStanza(this).toString());
+              errText=XmppError.findInStanza(this).toString();
           }
 
-          if (getTypeAttribute().length()==0) {
+
+          if (type.length()==0) {
               presenceCode=PRESENCE_UNKNOWN;
               presenseText.append("UNKNOWN presence stanza");
           }
@@ -123,7 +125,8 @@ public class Presence extends JabberDataBlock {
             show=null;
         }
 
-        String status=(errText.length()==0)? getChildBlockText("status"):errText.toString();
+
+        String status=(errText==null)? getChildBlockText("status"):errText;
         if (status!=null)
             if (status.length()>0)
                 presenseText
@@ -136,8 +139,13 @@ public class Presence extends JabberDataBlock {
                 .append(" [")
                 .append(getPriority())
                 .append(']');
+        errText=null;
+        type=null;
+
+
         return presenseText.toString();
     }
+    
     
 
     public void setType( String type ) {

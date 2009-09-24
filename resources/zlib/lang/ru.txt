@@ -11,7 +11,7 @@ invisible	невидимка
 dnd	занят
 offline	не в сети
 Jid	Jid
-Privacy Lists	Списки приватности
+Privacy Lists	Серверные списки
 Message font	Шрифт сообщения
 Roster font	Шрифт ростера
 Paste Body	Встав. тело сообщения
@@ -658,3 +658,19 @@ Debug Menu	Консоль отладки
 Please,edit this account to save new password!	Откройте форму редактирования аккаунта для сохранения пароля!
 Account deleted!	Аккаунт удален!
 Insert New Password	Вставить пароль из буфера
+Highlite Out Messages	Подсвечивать исходящие сообщения
+Contact is now offline.Continue?	Контакт отключен.Продолжить?
+clipboard NOT sended	Ошибка отправки
+Collapse presences	Сворачивать статусные сообщения
+ANY	Все
+allow	Разрешить
+deny	Блокировать
+presence-in	Входящие статусы
+presence-out	Исходящие статусы
+iq	Запросы версии/времени
+if	Если
+none	Нет подписки
+from	Ожидание подписки(from)
+to	Ожидание подписки(to)
+both	Взаимная подписка
+all stanzas	Все запросы

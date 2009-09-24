@@ -132,7 +132,7 @@ public class MucContact extends Contact {
         } catch (Exception e) { }
         
         b.setLength(0);
-        appendL(b,nick);
+        b.append(nick.trim());
         
         String statusText=presence.getChildBlockText("status");
         String tempRealJid=item.getAttribute("jid");
@@ -162,7 +162,7 @@ public class MucContact extends Contact {
                 case 303:
                     b.append(SR.MS_IS_NOW_KNOWN_AS);
                     String chNick=item.getAttribute("nick");
-                    appendL(b,chNick);
+                    b.append(chNick.trim());
                     String newJid=from.substring(0, from.indexOf('/')+1)+chNick;
                     jid.setJid(newJid);
                     bareJid=newJid;
@@ -263,21 +263,6 @@ public class MucContact extends Contact {
             case AFFILIATION_OWNER: return SR.MS_AFFILIATION_OWNER;
         }
         return null;
-    }
-    
-    private void appendL(StringBuffer sb, String append){
-//#if NICK_COLORS
-        if(midlet.BombusQD.cf.useClassicChat) {  }
-        
-                        if(!midlet.BombusQD.cf.useClassicChat) { 
-                            sb.append("\01");
-                            sb.append(append);
-                            sb.append("\02"); 
-                        }else{
-                            sb.append(append.trim());
-                        }        
-        
-//#endif
     }
     
     private static StringBuffer tip = new StringBuffer(0);

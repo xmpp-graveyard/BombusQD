@@ -153,6 +153,9 @@ import ui.controls.form.CheckBox;
 import Menu.RosterToolsMenu;
 //#endif
 import Info.GetFileServer;
+//#ifdef LIGHT_CONTROL
+//# import LightControl.*;
+//#endif
 
 
 public class Roster
@@ -1499,7 +1502,9 @@ public class Roster
                     message.addChildNs("evil","http://jabber.org/protocol/evil");            
 
 
-           theStream.send(message); 
+           theStream.send(message);
+           this.body.setLength(0);
+
            if(body!=null){
 
                if(midlet.BombusQD.cf.useClassicChat){   
@@ -2249,8 +2254,7 @@ public class Roster
                     if (start_me>=0) {
                         StringBuffer b=new StringBuffer(0);
 //#if NICK_COLORS
-                        if(start_me==3) b.append(name);
-                        else {   
+                        if(start_me!=3) {   
                           if(midlet.BombusQD.cf.useClassicChat==false) { 
                             b.append("\01");
                             b.append(name);
@@ -2258,9 +2262,18 @@ public class Roster
                           } else b.append(name.trim());
                         }
 //#endif
-                        if (start_me==0)b.append(": "); else b.insert(0,'*');
-                        
                         for(int i=0;i<start_me;i++) body.deleteCharAt(0);
+                        
+                        if (start_me==0) b.append(": "); else {
+                            b.setLength(0);
+                            b.append('*');
+                            String fr = data.getAttribute("from");
+                            int ind=fr.indexOf('/');
+                            int l = fr.length();
+                            if(groupchat) b.append(fr.substring(ind+1,l)); 
+                            else b.append(fr.substring(0,l));
+                            fr=null;
+                        }
                         
                         b.append(body);
                         body.setLength(0);
@@ -2268,6 +2281,9 @@ public class Roster
                         
                         b.setLength(0);
                         b=null;
+//#ifdef LIGHT_CONTROL
+//#                     if (type.equals("chat")) CustomLight.message();
+//#endif                        
                     }
                 }
                 if (type.equals("chat") && myStatus!=Presence.PRESENCE_INVISIBLE) {
@@ -2307,64 +2323,9 @@ public class Roster
 
                 Msg m=new Msg(mType, from.trim(), subj, body.toString());
                 m.MucChat = groupchat;
-
 //#ifdef JUICK.COM
-//#                 if(from.indexOf("juick@")>-1){
-//#                  //JabberDataBlock juickUnameNs = data.findNamespace("nick", "http://jabber.org/protocol/nick");
-//#                  //if (juickUnameNs!=null) juickUnameNs.getText();
-//#                 
-//#                  JabberDataBlock juickNs = data.findNamespace("juick","http://juick.com/message");
-//# 
-//#                  if(juickNs!=null){
-//# 
-//#                        StringBuffer sb = new StringBuffer(0);   
-//#                        String rid = juickNs.getAttribute("rid");
-//#                        String mid = juickNs.getAttribute("mid");
-//#                        String bodyAnsw = "";
-//#                        boolean photo = (juickNs.getAttribute("photo")==null)?false:true;                    
-//#                         JabberDataBlock child = null; 
-//#                         
-//#                          sb.append('@');
-//#                          sb.append(juickNs.getAttribute("uname")).append(" ");
-//#                          sb.append('(');
-//#                          sb.append("#").append(mid);
-//#                            //PrivateMsg:mid==null
-//#                            if(rid!=null) sb.append("/").append(rid);
-//#                            if(photo) sb.append("+photo");
-//#                          sb.append(')');
-//#                          
-//#                         
-//#                         int size=juickNs.getChildBlocks().size();
-//#                         for(int i=0;i<size;i++){  
-//#                           child =(JabberDataBlock)juickNs.getChildBlocks().elementAt(i);
-//#                           if (child.getTagName().equals("tag")) {
-//#                             sb.append("\n *"+child.getText()+"* ");//+tagName with select
-//#                           }
-//#                           if (child.getTagName().equals("body")) {
-//#                             bodyAnsw = child.getText();
-//#                           }                          
-//#                         }
-//#                         sb.append("\n").append(bodyAnsw);
-//#                         if(message.getUrl()!=null) sb.append("\n").append(message.getOOB());
-//#                         m.body=sb.toString();
-//#                         sb.setLength(0);
-//#                       
-//#                         sb.append("#").append(mid);
-//#                         if(rid!=null) sb.append("/").append(rid);
-//#                         sb.append(" ");
-//#                         m.messageType=Msg.MESSAGE_TYPE_JUICK;
-//#                         m.id=sb.toString(); // #id/num || #id
-//#                         sb.setLength(0);
-//#                         sb=null;
-//#                         bodyAnsw=null;
-//#                         mid=null;
-//#                         rid=null;
-//#                         
-//#                   }
-//#                  juickNs=null;
-//#                 }
-//# 
-//#endif                               
+//#                 if(from.indexOf("juick@")>-1) m = xmpp.extensions.JuickModule.jm().getMsg(m,data);
+//#endif
 
                 if (tStamp!=0) 
                     m.dateGmt=tStamp;
@@ -2374,9 +2335,12 @@ public class Roster
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
-                        m.highlite=true;
+                        m.highlite = midlet.BombusQD.cf.selectOutMessages;
                         m.unread=false;
                     } else {
+//#ifdef LIGHT_CONTROL
+//#                     CustomLight.message();
+//#endif                        
                         if (m.dateGmt<= ((ConferenceGroup)c.group).conferenceJoinTime)
                             m.messageType=Msg.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
@@ -2417,6 +2381,9 @@ public class Roster
                         String msg = message.getFrom();
                         int rp=msg.indexOf('/')+1;
                         m.from=msg.substring(rp);
+//#ifdef LIGHT_CONTROL
+//#                       CustomLight.message();
+//#endif                        
                         //System.out.println("groupchat "+msg+"   "+m.from);
                     }
                 }
@@ -3219,7 +3186,7 @@ public class Roster
                 break;
                 
             case KEY_NUM3: {
-                new ActiveContacts(display, this, null);
+                   new ActiveContacts(display, this, null);   
             }   
                 break;
             case KEY_NUM9:
@@ -3398,8 +3365,12 @@ public class Roster
                     .append(cntact.jid.getResource())
                     .append("\n")
                     .append(SR.MS_SUBSCRIPTION)
-                    .append(": ")
-                    .append(cntact.subscr);
+                    .append(": ");
+                if(cntact.subscr.indexOf("both")>-1) mess.append(SR.MS_SUBSCR_BOTH);
+                else if(cntact.subscr.indexOf("from")>-1) mess.append(SR.MS_SUBSCR_FROM);
+                else if(cntact.subscr.indexOf("to")>-1) mess.append(SR.MS_SUBSCR_TO);
+                else if(cntact.subscr.indexOf("none")>-1) mess.append(SR.MS_SUBSCR_NONE);
+                else mess.append(cntact.subscr);
 //#ifdef PEP
 //#                 if (cntact.hasMood()) {
 //#                     mess.append("\n")
