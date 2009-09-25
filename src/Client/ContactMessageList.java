@@ -553,18 +553,21 @@ public class ContactMessageList extends MessageList {
         
         
     private void checkOffline(){
-       boolean found = false;
        Msg msg;
+       boolean found=false; 
        try {
            msg=getMessage(cursor);
+           found = msg.from.startsWith("Cleared");
            int size=midlet.BombusQD.sd.roster.hContacts.size();
            Contact c;
-            for(int i=0;i<size;i++){
-             c=(Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
-             if (c instanceof MucContact){
+           if(!found) {
+             for(int i=0;i<size;i++){
+              c=(Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
+              if (c instanceof MucContact){
                 if(c.nick.indexOf(msg.from)>-1) found=(c.status!=5);
+               }
              }
-          }
+           }
        } catch (Exception e) { msg = null; }
        
        if(!found&&msg!=null) new ui.controls.AlertBox(msg.from,
@@ -720,7 +723,12 @@ public class ContactMessageList extends MessageList {
 //#                if(msg.messageType==Msg.MESSAGE_TYPE_JUICK){
 //#                     messg=msg.id;
 //#                }
-//#endif               
+//#endif          
+//#              if(msg.from=="Cleared") {
+//#                    messg="";
+//#                    msg.body="";
+//#              }
+//#                
 //#              switch(midlet.BombusQD.cf.msgEditType){
 //#                  case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg); break;
 //#                  case 1: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg, true); break;
@@ -864,7 +872,7 @@ public class ContactMessageList extends MessageList {
         msgs=new Vector(0);
         midlet.BombusQD.sd.roster.systemGC();
 
-        Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, "BombusQD", null,"Cleared.");
+        Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, "Cleared", null,"Cleared");
         
         if(cur==size) contact.activeMessage=-1;
         

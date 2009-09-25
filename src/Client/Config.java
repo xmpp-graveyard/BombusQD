@@ -1034,6 +1034,10 @@ public class Config {
 		if (platformName.startsWith("Moto")) {
                 if (device==null) device=System.getProperty("funlights.product");
                 if (device!=null) platformName="Motorola-"+device;
+	        try { // thanks vitalyster
+		        Class.forName("com.nokia.mid.ui.DeviceControl");
+		        platformName="Nokia"; // FS #896
+		} catch (Throwable ex) {}                
             }
 
             if (platformName.indexOf("SIE") > -1) {

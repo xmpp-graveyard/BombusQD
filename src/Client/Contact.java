@@ -441,7 +441,7 @@ public class Contact extends IconTextElement{
     public final void purge() {
         msgs.removeAllElements();
         msgs=new Vector(0);
-        Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, "BombusQD", null, "clear." );
+        Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, "Cleared", null, "Cleared" );
         msgs.addElement(m);
         m=null;
         lastSendedMessage=null;

@@ -1163,7 +1163,7 @@ public class Roster
 
         c.setStatus(Presence.PRESENCE_ONLINE);
         
-        c.transport=RosterIcons.ICON_GROUPCHAT_INDEX; //FIXME: —É–±—Ä–∞—Ç—å —Ö–∞—Ä–¥–∫–æ–¥
+        c.transport=RosterIcons.ICON_GROUPCHAT_INDEX; //?
         c.bareJid=from;
         c.origin=Contact.ORIGIN_GROUPCHAT;
         c.commonPresence=true;
@@ -1802,11 +1802,12 @@ public class Roster
 
 //#if FILE_IO && HISTORY
 //#     public void cashePhoto(VCard vcard,Contact c){
-//#         StringBuffer nickDate=new StringBuffer();
-//#         if (!(c instanceof MucContact)){
-//#            nickDate.append("roster_"+c.bareJid);
-//#         }else{
+//#        if(vcard.getPhoto()==null) return;
+//#         StringBuffer nickDate=new StringBuffer(0);
+//#         if (c instanceof MucContact){
 //#            nickDate.append("muc_"+c.nick);
+//#         }else{
+//#            nickDate.append("roster_"+c.bareJid);           
 //#         }
 //#        String filename = StringUtils.replaceBadChars(nickDate.toString());
 //#        nickDate=null;
@@ -2271,10 +2272,16 @@ public class Roster
                             int ind=fr.indexOf('/');
                             int l = fr.length();
                             if(groupchat) b.append(fr.substring(ind+1,l)); 
-                            else b.append(fr.substring(0,l));
+                            else {
+                                //„‰Â ÚÓ Á‰ÂÒ¸
+                                Contact cc = getContact(fr, true);
+                                if (cc instanceof MucContact){//name@conference.name/nick
+                                   b.append(fr.substring(ind+1,l));
+                                } else b.append(fr.substring(0,ind));
+                            }
                             fr=null;
                         }
-                        
+
                         b.append(body);
                         body.setLength(0);
                         body.append(b.toString());
