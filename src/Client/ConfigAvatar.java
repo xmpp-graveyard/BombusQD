@@ -278,7 +278,7 @@
 //#                              };
 //#                           } 
 //#                         }else{
-//#                           String checkNick = StringUtils.replaceBadChars("muc_"+c.nick);
+//#                           String checkNick = StringUtils.replaceBadChars("muc_"+c.getNick());
 //#                           int len = checkNick.length()-1;
 //#                           String fsName = e.elementAt(i).toString();
 //#                           if(fsName.startsWith("muc") && fsName.indexOf(checkNick)>-1){

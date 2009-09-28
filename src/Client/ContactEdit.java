@@ -144,7 +144,7 @@ public final class ContactEdit
 //#endif
             // edit contact
             tJid.setValue(jid);
-            tNick.setValue(c.nick);
+            tNick.setValue(c.getNick());
 //#ifndef WMUC
             if (c instanceof MucContact) {
                 c=null;

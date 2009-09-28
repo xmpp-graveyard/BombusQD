@@ -127,46 +127,24 @@ public class ComplexString extends Vector implements VirtualElement {
                             g.setFont(bold);
                         }
                         dw=0;
+                        int startDrw = 0;
                         int len = ((String)elementData[index]).length();
-                        if(((String)elementData[index]).endsWith("\02")) len-=1;//hardfix for squares
+                           if(((String)elementData[index]).startsWith("<nick>")){
+                            len-=6;//hotfix for <nick>,</nick>
+                            startDrw=6;
+                           }
 
                             if(midlet.BombusQD.cf.boldNicks) {
                               g.setColor(ColorTheme.strong(color));   /*(c1>255) ?*/ /* : color*/
-                              dw=bold.substringWidth(((String)elementData[index]), 0, len);                                
+                              dw=bold.substringWidth(((String)elementData[index]), startDrw, len);
                             }else{
-                              g.setColor( /*(c1>255) ? ColorTheme.strong(color); :*/ color);  
-                              dw=font.substringWidth(((String)elementData[index]), 0, len);
+                              g.setColor( /*(c1>255) ? ColorTheme.strong(color); :*/ color);
+                              dw=font.substringWidth(((String)elementData[index]), startDrw, len);
                             }
                             if (ralign) w-=dw;
-                              g.drawSubstring( ((String)elementData[index]), 0, len, w,fontYOfs,Graphics.LEFT|Graphics.TOP);
+                              g.drawSubstring( ((String)elementData[index]), startDrw, len, w,fontYOfs,Graphics.LEFT|Graphics.TOP);
                             if (!ralign) w+=dw;
-                              
-                              
-/*                        
-                        while (p1<len) {
-                            int p2=p1;
-                            c1=((String)elementData[index]).charAt(p1);
-                            //processing the same cp
-                            while (p2<len) {
-                                c2=((String)elementData[index]).charAt(p2);
-                                if ( (c1&0xff00) != (c2 &0xff00) ) break;
-                                p2++;
-                            }
-                            //g.setColor(randColor);
-                            if(midlet.BombusQD.cf.boldNicks) {
-                              g.setColor(ColorTheme.strong(color));   /*(c1>255) ?*/ /* : color
-                              dw=bold.substringWidth(((String)elementData[index]), p1, p2-p1);                                
-                            }else{
-                              g.setColor( /*(c1>255) ? ColorTheme.strong(color); :// color);  
-                              dw=font.substringWidth(((String)elementData[index]), p1, p2-p1);
-                            }
-                            if (ralign) w-=dw;
-                            g.drawSubstring( ((String)elementData[index]), p1, p2-p1, 
-                                    w,fontYOfs,Graphics.LEFT|Graphics.TOP);
-                            if (!ralign) w+=dw;
-                            p1=p2;
-                        }
-*/
+
                         g.setColor(color);
                     } else {
 //#endif

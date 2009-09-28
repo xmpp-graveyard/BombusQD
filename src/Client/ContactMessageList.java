@@ -152,8 +152,9 @@ public class ContactMessageList extends MessageList {
 
         if (contact.msgs.size()>0) {
 //#ifndef WMUC
-            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
-                addCommand(midlet.BombusQD.commands.cmdReply); 
+            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT
+                    || contact.getJid().indexOf("juick@juick.com")>-1 ) {
+                addCommand(midlet.BombusQD.commands.cmdReply);
             }
 //#endif
             addCommand(midlet.BombusQD.commands.cmdQuote); 
@@ -313,14 +314,14 @@ public class ContactMessageList extends MessageList {
 //#ifdef ARCHIVE
         if (c==midlet.BombusQD.commands.cmdArch) {
             try {
-                MessageArchive.store(getMessage(cursor),1);
+                MessageArchive.store(replaceNickTags(getMessage(cursor)),1);
             } catch (Exception e) {/*no messages*/}
         }
 //#endif
 //#if TEMPLATES
 //#         if (c==midlet.BombusQD.commands.cmdTemplate) {
 //#             try {
-//#                 MessageArchive.store(getMessage(cursor),2);
+//#                 MessageArchive.store(replaceNickTags(getMessage(cursor)),2);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
@@ -335,14 +336,14 @@ public class ContactMessageList extends MessageList {
         }
         
         if(c==midlet.BombusQD.commands.cmdTranslate){
-            String body = getMessage(cursor).body.toString();
+            String body = replaceNickTags(getMessage(cursor)).body.toString();
             if(body.indexOf(">")>-1){
               String nick = body.substring(0,body.indexOf(">"));
               new TranslateSelect(display,this,contact,
-                      getMessage(cursor).body.substring(body.indexOf(">")+1,body.length()).trim(),nick,
+                      replaceNickTags(getMessage(cursor)).body.substring(body.indexOf(">")+1,body.length()).trim(),nick,
                       true,cursor);                
             }else{
-              new TranslateSelect(display,this,contact,getMessage(cursor).body.toString(),"none",true,cursor);                
+              new TranslateSelect(display,this,contact,replaceNickTags(getMessage(cursor)).body.toString(),"none",true,cursor);                
             }
 
             tr=true;
@@ -396,7 +397,11 @@ public class ContactMessageList extends MessageList {
             keyGreen();
         }
         if (c==midlet.BombusQD.commands.cmdQuote) Quote();
-        if (c==midlet.BombusQD.commands.cmdReply) checkOffline();
+        if (c==midlet.BombusQD.commands.cmdReply) {
+            if(contact.getJid().indexOf("juick@juick.com")>-1){
+                Reply(); return;                  
+            } else checkOffline();
+        }
         if(c==midlet.BombusQD.commands.cmdAddSearchQuery) {
              new SearchText(display,d,contact);
              return;
@@ -564,7 +569,7 @@ public class ContactMessageList extends MessageList {
              for(int i=0;i<size;i++){
               c=(Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i);
               if (c instanceof MucContact){
-                if(c.nick.indexOf(msg.from)>-1) found=(c.status!=5);
+                if(c.getNick().indexOf(msg.from)>-1) found=(c.status!=5);
                }
              }
            }
@@ -709,7 +714,7 @@ public class ContactMessageList extends MessageList {
         if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
         
         try {
-            Msg msg=getMessage(cursor);
+            Msg msg=replaceNickTags(getMessage(cursor));
             
             if (msg==null ||
                 msg.messageType == Msg.MESSAGE_TYPE_OUT ||
@@ -748,10 +753,10 @@ public class ContactMessageList extends MessageList {
         
         try {
             String msg=new StringBuffer()
-                //.append("Quote:\n")
+                .append("Quote:\n")
                 .append((char)0xab) //
                 .append("")
-                .append(getMessage(cursor).quoteString())
+                .append(replaceNickTags(getMessage(cursor)).quoteString())
                 .append((char)0xbb)
                 .append("\n")
                 .toString();

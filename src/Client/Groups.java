@@ -174,19 +174,24 @@ public class Groups implements JabberBlockListener{
                 JabberDataBlock query=data.findNamespace("query", "jabber:iq:private");
                 if (query==null) 
                     return BLOCK_REJECTED;
+                
                 JabberDataBlock gs=query.findNamespace("gs", GROUPSTATE_NS);
                 if (gs==null || gs.getChildBlocks()==null) 
                     return BLOCK_REJECTED;
-                 int size=gs.getChildBlocks().size();
+                
+                 Vector childBlocks = new Vector(0); 
+                 childBlocks=gs.getChildBlocks();
+                 int size=childBlocks.size();
                   for(int i=0;i<size;i++){  
-                    JabberDataBlock item=(JabberDataBlock)gs.getChildBlocks().elementAt(i);
+                    JabberDataBlock item=(JabberDataBlock)childBlocks.elementAt(i);
                     String groupName=item.getText();
                     boolean collapsed=item.getAttribute("state").equals("collapsed");
                     grp=getGroup(groupName);
-                    if (grp==null) 
-                        continue;
+                    if (grp==null) continue;
                     grp.collapsed=collapsed;            
-                  }                
+                  }  
+                 childBlocks.setSize(0);
+                childBlocks=null;
                 midlet.BombusQD.sd.roster.reEnumRoster();
                 return NO_MORE_BLOCKS;
             }

@@ -74,6 +74,7 @@ public class Contact extends IconTextElement{
 //#     public int activ=-1;   
 //#endif
 //#endif
+    public String annotations=null;    
     
     public final static short ORIGIN_ROSTER=0;
     public final static short ORIGIN_ROSTERRES=1;
@@ -86,7 +87,9 @@ public class Contact extends IconTextElement{
 //#endif
 
     
-    public String nick;
+    private String nick;
+    private String statusString;
+    
     public Jid jid;
     public String bareJid; // for roster/subscription manipulating
     public int status;
@@ -94,13 +97,16 @@ public class Contact extends IconTextElement{
     public Group group;
     public int transport;
     
-    public boolean autoresponded=false;
+    public String getNick() { return nick; }
+    public String getStatus() { return statusString; }
     
+    public void setNick(String value) { this.nick = value; }
+    public void setStatus(String value) { this.statusString = value; }
+    
+    
+    public boolean autoresponded=false;
     public boolean moveToLatest=false;
 
-    //public String presence;
-    public String statusString;
-    
     public boolean acceptComposing;
     public boolean showComposing=false;
     
@@ -346,11 +352,11 @@ public class Contact extends IconTextElement{
                 if (m.body.startsWith("/me ")) {
                     temp.setLength(0);
 //#if NICK_COLORS
-                    //temp.append("\01");
+                    temp.append("<nick>");
 //#endif
                     temp.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
 //#if NICK_COLORS
-                    //temp.append("\02");
+                    temp.append("</nick>");
 //#endif
                     temp.insert(0,'*');
                     temp.append(m.body.substring(3));
@@ -540,19 +546,15 @@ public class Contact extends IconTextElement{
     }
     
     public String getFirstString() {
-        if (!midlet.BombusQD.cf.showResources)
-            return (nick==null)?getJid():nick;
-        if (origin>ORIGIN_GROUPCHAT)
-            return nick;
-        if (origin==ORIGIN_GROUPCHAT)
-            return getJid();
+        if (!midlet.BombusQD.cf.showResources) return (nick==null)?getJid():nick;
+        else if (origin>ORIGIN_GROUPCHAT) return nick;
+        else if (origin==ORIGIN_GROUPCHAT) return getJid();
         return (nick==null)?getJid():nick+jid.getResource(); 
     }
     
     public String getSecondString() {
         if (midlet.BombusQD.cf.rosterStatus){
-            if (statusString!=null)
-                return statusString;
+            if (statusString!=null) return statusString;
 //#if PEP
 //#             return getMoodString();
 //#endif

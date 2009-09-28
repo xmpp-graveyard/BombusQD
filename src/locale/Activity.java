@@ -237,12 +237,11 @@
 //# 
 //#     public static String loadString(String key) {
 //#         if (action==null) {
-//#             String file="/lang/ru.activity.txt";
-//#             if (file==null) {
+//#             String file="/lang/"+midlet.BombusQD.cf.getInstance().lang+".activity.txt";
+//#             System.out.println(file);
+//#             action=new StringLoader().hashtableLoader(file);
+//#             if (action==null) {
 //#                 action=new Hashtable(0);
-//#             } 
-//#             else {
-//#                 action=new StringLoader().hashtableLoader(file);
 //#             }
 //#         }
 //#         String value=(String)action.get(key);

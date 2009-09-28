@@ -97,7 +97,11 @@ public class Utf8IOStream {
             setSent(bytesSent+outLen);
 
 	    outStream.flush();
+            outbuf.setLength(0);
+            
             outbuf=null;
+            bytes=new byte[0];
+            bytes=null;            
             updateTraffic();
 	}
 //#if (XML_STREAM_DEBUG)        

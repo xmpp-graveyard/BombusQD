@@ -129,7 +129,7 @@
 //#         if (cursor==0) OkNotify(null); 
 //#         else {
 //#             Config.getInstance().cursorPos[3]=cursor;            
-//#             new MIDPTextBox(display, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY);
+//#             new MIDPTextBox(display, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY,100);
 //#         }
 //#     }
 //#     public void OkNotify(String moodText) {

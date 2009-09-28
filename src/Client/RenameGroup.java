@@ -90,7 +90,7 @@ public class RenameGroup
                 if (cr.group.getName().equals(sourceGroup)) {
                     JabberDataBlock item= qB.addChild("item",null);
                     item.setAttribute("jid", cr.bareJid);
-                    item.setAttribute("name", cr.nick);
+                    item.setAttribute("name", cr.getNick());
                     item.setAttribute("subscription", null);
                     if (destGroup!=null && destGroup.length()>0) {//patch by Tishka17
                         item.addChild("group",destGroup);

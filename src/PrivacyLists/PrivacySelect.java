@@ -158,7 +158,7 @@ public class PrivacySelect
             }
         }
         if (c==cmdNewList)
-            new MIDPTextBox(display, SR.MS_NEW, "", this, TextField.ANY);
+            new MIDPTextBox(display, SR.MS_NEW, "", this, TextField.ANY,50);
     }
     
 //#ifdef MENU_LISTENER

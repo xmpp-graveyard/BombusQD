@@ -108,7 +108,7 @@ public class ConferenceQuickPrivelegeModify
 
         getMainBarItem().setElementAt(okName, 0);
         
-        StringBuffer user=new StringBuffer(victim.nick);
+        StringBuffer user=new StringBuffer(victim.getNick());
         if (victim.jid!=null) {
             user.append(" (")
             .append(victim.realJid)
@@ -175,7 +175,7 @@ public class ConferenceQuickPrivelegeModify
         switch (action) {
             case KICK: 
                 item.setAttribute("role", "none");
-                item.setAttribute("nick", victim.nick);
+                item.setAttribute("nick", victim.getNick());
                 break;
 
             case OUTCAST:
@@ -185,17 +185,17 @@ public class ConferenceQuickPrivelegeModify
                 
             case PARTICIPANT:
                 item.setAttribute("role", "participant");
-                item.setAttribute("nick", victim.nick);
+                item.setAttribute("nick", victim.getNick());
                 break;
                 
             case VISITOR:
                 item.setAttribute("role", "visitor");
-                item.setAttribute("nick", victim.nick);
+                item.setAttribute("nick", victim.getNick());
                 break;
                 
             case MODERATOR:
                 item.setAttribute("role", "moderator");
-                item.setAttribute("nick", victim.nick);
+                item.setAttribute("nick", victim.getNick());
                 break;
                 
             case MEMBER:

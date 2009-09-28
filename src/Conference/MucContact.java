@@ -109,7 +109,7 @@ public class MucContact extends Contact {
         tempRole=null;
         tempAffiliation=null;
 
-        setSortKey(nick);
+        setSortKey(getNick());
 
         switch (roleCode) {
             case ROLE_MODERATOR:
@@ -132,7 +132,7 @@ public class MucContact extends Contact {
         } catch (Exception e) { }
         
         b.setLength(0);
-        b.append(nick.trim());
+        b.append(getNick().trim());
         
         String statusText=presence.getChildBlockText("status");
         String tempRealJid=item.getAttribute("jid");
@@ -167,7 +167,7 @@ public class MucContact extends Contact {
                     jid.setJid(newJid);
                     bareJid=newJid;
                     from=newJid;
-                    nick=chNick;
+                    setNick(chNick);
                     break;
                 case 301: //ban
                     presenceType=Presence.PRESENCE_ERROR;

@@ -176,7 +176,7 @@ public class DiscoSearchForm
         if (c==cmdCancel) {
             exitSearchForm();
         } else if (c==cmdAddServer) {
-            new MIDPTextBox(display, SR.MS_SERVER, null, this, TextField.ANY);
+            new MIDPTextBox(display, SR.MS_SERVER, null, this, TextField.ANY,50);
 	} else if (c==cmdDel) {
             delServer();
         }

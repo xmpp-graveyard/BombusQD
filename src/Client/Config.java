@@ -309,9 +309,9 @@ public class Config {
     public int ANIsmilesHeight=-1;
     public boolean ANIsmilesDetect;
     public boolean showCollapsedPresences=true;
+    public boolean networkAnnotation=true;
     
-    
-    
+
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -586,6 +586,7 @@ public class Config {
             debug=inputStream.readBoolean();
             selectOutMessages=inputStream.readBoolean();
             showCollapsedPresences=inputStream.readBoolean();
+            networkAnnotation=inputStream.readBoolean();
             
 	    inputStream.close();
             inputStream=null;
@@ -818,6 +819,7 @@ public class Config {
             outputStream.writeBoolean(debug);
             outputStream.writeBoolean(selectOutMessages);
             outputStream.writeBoolean(showCollapsedPresences);
+            outputStream.writeBoolean(networkAnnotation);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean_", 0, true);      

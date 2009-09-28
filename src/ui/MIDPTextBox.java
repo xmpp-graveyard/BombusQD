@@ -54,8 +54,8 @@ public class MIDPTextBox implements CommandListener {
         void OkNotify(String text_return);
     }
    
-    public MIDPTextBox(Display display, String mainbar, String text, TextBoxNotify tbn , int constraints) {
-        t=new TextBox(mainbar, text, 50, constraints);
+    public MIDPTextBox(Display display, String mainbar, String text, TextBoxNotify tbn , int constraints,int maxLen) {
+        t=new TextBox(mainbar, text, maxLen, constraints);
         
         this.display=display;
         this.tbn=tbn;

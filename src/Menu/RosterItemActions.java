@@ -82,18 +82,19 @@ import com.alsutton.jabber.*;
 //#ifdef CHECKERS
 //# import xmpp.extensions.games.*;
 //#endif
+import ui.MIDPTextBox;
+import java.util.Vector;
+import javax.microedition.lcdui.TextField;
 
 /**
  *
- * @author EvgS
+ * @author EvgS,aqent
  */
-public class RosterItemActions extends Menu {
+public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify {
 
-    Object item;
+    Object item=null;
 
     private int action;
-    
-    StaticData sd=StaticData.getInstance();
 
     ActionsIcons menuIcons=ActionsIcons.getInstance();
     
@@ -101,16 +102,14 @@ public class RosterItemActions extends Menu {
 //#ifdef PEP
 //#     EventPublish publishEvent = new EventPublish();
 //#endif        
-    
-    Config cf=Config.getInstance();
-    
+
     /** Creates a new instance of RosterItemActions */
     public RosterItemActions(Display display, Displayable pView, Object item, int action) {
-        super(item.toString(), ActionsIcons.getInstance(),null);
+        super(item.toString(), ActionsIcons.getInstance() ,null);
 
         this.item=item;
         this.action=action;
-        if (!sd.roster.isLoggedIn()) return;
+        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
 
         if (item==null) return;
         boolean isContact=( item instanceof Contact );
@@ -119,16 +118,15 @@ public class RosterItemActions extends Menu {
 	    Contact contact=(Contact)item;            
             MainBar mainbar=new MainBar(contact);
             setMainBarItem(mainbar);
-            
-            //System.out.println(contact.getGroupType()+":"+Groups.TYPE_CONFERENCE);
-            
-            if (contact.getGroupType()==Groups.TYPE_CONFERENCE) {
+            int grType = contact.getGroupType();
+
+            if (grType==Groups.TYPE_CONFERENCE) {
                addItem(SR.MS_LEAVE_ROOM,902, menuIcons.ICON_LEAVE);
                return;
             }
  
         // if(contact.bareJid.equals(StaticData.HELPER_CONTACT)==false){            
-	    if (contact.getGroupType()==Groups.TYPE_TRANSP) {
+	    if (grType==Groups.TYPE_TRANSP) {
 		addItem(SR.MS_LOGON,5, menuIcons.ICON_ON);
 		addItem(SR.MS_LOGOFF,6, menuIcons.ICON_OFF);
                 addItem(SR.MS_RESOLVE_NICKNAMES, 7, menuIcons.ICON_NICK_RESOLVE);
@@ -136,26 +134,10 @@ public class RosterItemActions extends Menu {
 //#ifdef PLUGINS
 //#                 if (sd.ChangeTransport);
 //#endif
-//#                     addItem("Change transport", menuIcons.ICON_NICK_RESOLVE);
+//#                     addItem(SR.MS_CHANGE_TRANSPORT, menuIcons.ICON_NICK_RESOLVE);
 //#endif
 	    }
-            
-            /*
-            switch (contact.getCheckers()) {
-                case -1:
-                    addItem(SR.GAME_SEND_GAME,220, 0x06);
-                    break;
-                case 0:
-                    addItem(SR.GAME_APPLIED,222, 0x06);
-                    break;
-                case 1:
-                    addItem(SR.GAME_STOP,221, 0x01);
-                    break;
-                case 2:
-                    addItem(SR.GAME_RESUME,223, 0x02);
-                    break;
-            }
-             */
+
 
 	    addItem(SR.MS_VCARD,1, menuIcons.ICON_VCARD);
             addItem(SR.MS_FEATURES,250,menuIcons.ICON_INFO);
@@ -163,16 +145,25 @@ public class RosterItemActions extends Menu {
 //#ifdef POPUPS
             addItem(SR.MS_INFO,86, menuIcons.ICON_INFO);
 //#endif
+            
+           if (!(contact instanceof MucContact) && midlet.BombusQD.cf.networkAnnotation) { 
+               //XEP-0145: Annotations
+               if (grType!=Groups.TYPE_TRANSP && grType!=Groups.TYPE_SELF){
+                   addItem(SR.MS_CREATE_ANNOTATION,888, menuIcons.ICON_VOICE);
+                   if(contact.annotations!=null) addItem(SR.MS_REMOVE_ANNOTATION,887, menuIcons.ICON_VOICE);
+               }
+           }   
+
             addItem(SR.MS_CLIENT_INFO,0, menuIcons.ICON_VERSION);
 
 //#ifdef SERVICE_DISCOVERY
 	    addItem(SR.MS_COMMANDS,30, menuIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
-//#             if (cf.useClipBoard) {
+//#             if (midlet.BombusQD.cf.useClipBoard) {
 //#                 if (!midlet.BombusQD.clipboard.isEmpty())
 //#                     addItem(SR.MS_SEND_BUFFER,914, menuIcons.ICON_SEND_BUFFER);
-//#                 if (contact.getGroupType()!=Groups.TYPE_SELF)
+//#                 if (grType!=Groups.TYPE_SELF)
 //#                     addItem(SR.MS_COPY_JID,892, menuIcons.ICON_COPY_JID);
 //#             }
 //#endif
@@ -183,13 +174,13 @@ public class RosterItemActions extends Menu {
                 addItem(SR.MS_PING,893, menuIcons.ICON_PING);
             }
 	    
-	    if (contact.getGroupType()!=Groups.TYPE_SELF && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
+	    if (grType!=Groups.TYPE_SELF && grType!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
 		if (contact.status<Presence.PRESENCE_OFFLINE) {
                     addItem(SR.MS_ONLINE_TIME,890, menuIcons.ICON_ONLINE);    
                 } else {
                     addItem(SR.MS_SEEN,894, menuIcons.ICON_ONLINE); 
                 }
-                if (contact.getGroupType()!=Groups.TYPE_TRANSP) {
+                if (grType!=Groups.TYPE_TRANSP) {
                     addItem(SR.MS_EDIT,2, menuIcons.ICON_RENAME);
                 }
 		addItem(SR.MS_SUBSCRIPTION,3, menuIcons.ICON_SUBSCR);
@@ -279,15 +270,15 @@ public class RosterItemActions extends Menu {
                 if (mc.realJid!=null && mc.status<Presence.PRESENCE_OFFLINE) {
                     
                 }
-            } else if (contact.getGroupType()!=Groups.TYPE_TRANSP && contact.getGroupType()!=Groups.TYPE_SEARCH_RESULT) {
+            } else if (grType!=Groups.TYPE_TRANSP && grType!=Groups.TYPE_SEARCH_RESULT) {
                 // usual contact - invite item check
                  if (onlineConferences) 
                      addItem(SR.MS_INVITE,40, menuIcons.ICON_INVITE);
             }
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
-            if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer) 
-                if (contact!=sd.roster.selfContact()) {
+            if (grType!=Groups.TYPE_TRANSP && midlet.BombusQD.cf.fileTransfer) 
+                if (contact!=midlet.BombusQD.sd.roster.selfContact()) {
 //#ifdef PLUGINS
 //#                     if (sd.FileTransfer)
 //#endif
@@ -296,8 +287,8 @@ public class RosterItemActions extends Menu {
             
 //#endif
 //#if FILE_TRANSFER
-            if (contact.getGroupType()!=Groups.TYPE_TRANSP && cf.fileTransfer) {
-                if (contact!=sd.roster.selfContact()) {
+            if (grType!=Groups.TYPE_TRANSP && midlet.BombusQD.cf.fileTransfer) {
+                if (contact!=midlet.BombusQD.sd.roster.selfContact()) {
                     String cameraAvailable=System.getProperty("supports.video.capture");
                     if (cameraAvailable!=null) if (cameraAvailable.startsWith("true")) {
 //#ifdef PLUGINS
@@ -317,7 +308,8 @@ public class RosterItemActions extends Menu {
 		MucContact self=((ConferenceGroup)group).selfContact;
                 
 		addItem(SR.MS_LEAVE_ROOM,22, menuIcons.ICON_LEAVE);
-                
+                addItem(SR.MS_CLOSE_ALL_ROOMS,900, menuIcons.ICON_LEAVE);
+
                 if (self.status>=Presence.PRESENCE_OFFLINE) {// offline or error
 		    addItem(SR.MS_REENTER,23, menuIcons.ICON_CHANGE_NICK);
                 } else {
@@ -336,10 +328,10 @@ public class RosterItemActions extends Menu {
  		}
 	    } else {
 //#endif
-               if (group.type==Groups.TYPE_CONFERENCE){
-                  addItem("CLOSE ALL ROOMS!",900, menuIcons.ICON_LEAVE);
-               }
-               else{
+             //  if (group.type==Groups.TYPE_CONFERENCE){
+             //     addItem("CLOSE ALL ROOMS!",900, menuIcons.ICON_LEAVE);
+             //  }
+             //  else{
                  if (    group.type!=Groups.TYPE_IGNORE
                         && group.type!=Groups.TYPE_NOT_IN_LIST
                         && group.type!=Groups.TYPE_SEARCH_RESULT
@@ -349,7 +341,7 @@ public class RosterItemActions extends Menu {
                     addItem(SR.MS_RENAME,1001, menuIcons.ICON_RENAME);
                     addItem(SR.MS_DELETE, 1004, menuIcons.ICON_DELETE);
                  }
-               }
+             //  }
 //#ifndef WMUC
             }
 //#endif
@@ -368,6 +360,33 @@ public class RosterItemActions extends Menu {
         moveCursorTo(Config.getInstance().cursorPos[1]);            
      }
      
+    
+    public void OkNotify(String annotationText) { //XEP-0145: Annotations
+           Contact find = null;
+           Contact current = (Contact)item;
+           current.annotations = annotationText;
+           
+           JabberDataBlock query = new Iq(null, Iq.TYPE_SET, "notes" + current.bareJid);
+           JabberDataBlock query_private = query.addChildNs("query", "jabber:iq:private");
+           
+             JabberDataBlock storage = query_private.addChildNs("storage", "storage:rosternotes");
+               int size = midlet.BombusQD.sd.roster.hContacts.size();
+               synchronized (midlet.BombusQD.sd.roster.hContacts) {
+                  for(int i=0;i<size;i++){
+                    find = (Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i); 
+                    if(find.annotations!=null){
+                      JabberDataBlock note = storage.addChild("note",find.annotations);
+                      note.setAttribute("jid",find.bareJid);
+                    }
+                  }
+               }
+           midlet.BombusQD.sd.roster.theStream.send(query);
+           query=null;
+           destroyView();
+    }
+    
+    
+    
      public void eventOk(){
          try {
              MenuItem me=(MenuItem) getFocusedObject();
@@ -411,62 +430,62 @@ public class RosterItemActions extends Menu {
 //#                 */                            
 //#endif                
                 case 0: // version
-                    sd.roster.setQuerySign(true);
-                    cf.flagQuerySign=true;
-                    sd.roster.theStream.send(IqVersionReply.query(to));
+                    midlet.BombusQD.sd.roster.setQuerySign(true);
+                    midlet.BombusQD.cf.flagQuerySign=true;
+                    midlet.BombusQD.sd.roster.theStream.send(IqVersionReply.query(to));
                     break;
                 case 86: // info
 //#ifdef POPUPS
-                    sd.roster.showInfo();
+                    midlet.BombusQD.sd.roster.showInfo();
 //#endif
                     break;
                 case 250: //FEATURES
-                   sd.roster.setQuerySign(true);
-                   sd.roster.theStream.addBlockListener(new SoftwareInfo());
-                   sd.roster.theStream.send(SoftwareInfo.querySend(c.getJid()));
+                   midlet.BombusQD.sd.roster.setQuerySign(true);
+                   midlet.BombusQD.sd.roster.theStream.addBlockListener(new SoftwareInfo());
+                   midlet.BombusQD.sd.roster.theStream.send(SoftwareInfo.querySend(c.getJid()));
                     break;
                 case 1: // vCard
                     if (c.vcard!=null) {
                         if (c.getGroupType()==Groups.TYPE_SELF)
-                            new VCardEdit(display, sd.roster, c.vcard);
+                            new VCardEdit(display, midlet.BombusQD.sd.roster, c.vcard);
                         else
-                            new VCardView(display, sd.roster, c);
+                            new VCardView(display, midlet.BombusQD.sd.roster, c);
                         return;
                     }
                     VCard.request(c.bareJid, c.getJid());
                     break;
                 case 2:
-                    new ContactEdit(display, sd.roster, c );
+                    new ContactEdit(display, midlet.BombusQD.sd.roster, c );
                     return; //break;
                 case 3: //subscription
-                    new SubscriptionEdit(display, sd.roster, c);
+                    new SubscriptionEdit(display, midlet.BombusQD.sd.roster, c);
                     return; //break;
                 case 4:
-                    new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display,  sd.roster) {
+                    new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display,  midlet.BombusQD.sd.roster) {
                         public void yes() {
-                            sd.roster.deleteContact((Contact)item);
+                            midlet.BombusQD.sd.roster.deleteContact((Contact)item);
                         }
                         public void no() { }
                     };
                     return;
                 case 6: // logoff
-                    sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
+                    midlet.BombusQD.sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     Presence presence = new Presence(
                     Presence.PRESENCE_OFFLINE, -1, "", null);
                     presence.setTo(c.getJid());
-                    sd.roster.theStream.send( presence );
+                    midlet.BombusQD.sd.roster.theStream.send( presence );
                     presence=null;
                     break;
                 case 5: // logon
-                    sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
+                    midlet.BombusQD.sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     //querysign=true; displayStatus();
-                    Presence presence2 = new Presence(sd.roster.myStatus, 0, "", null);
+                    Presence presence2 = new Presence(midlet.BombusQD.sd.roster.myStatus, 0, "", null);
                     presence2.setTo(c.getJid());
-                    sd.roster.theStream.send( presence2 );
+                    midlet.BombusQD.sd.roster.theStream.send( presence2 );
                     presence2=null;                    
                     break;
                 case 7: // Nick resolver
-                    sd.roster.resolveNicknames(c.bareJid);
+                    midlet.BombusQD.sd.roster.resolveNicknames(c.bareJid);
                     break;
 //#if CHANGE_TRANSPORT
 //#                 case 915: // change transport
@@ -474,7 +493,7 @@ public class RosterItemActions extends Menu {
 //#                     return;
 //#endif
                 case 21:
-                    sd.roster.cleanupSearch();
+                    midlet.BombusQD.sd.roster.cleanupSearch();
                     break;
 //#ifdef SERVICE_DISCOVERY
                 case 30:
@@ -486,20 +505,29 @@ public class RosterItemActions extends Menu {
                     return;
  */
                 case 889: //idle
-                    sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqLast.query(c.getJid(), "idle"));
+                    midlet.BombusQD.sd.roster.setQuerySign(true);
+                    midlet.BombusQD.sd.roster.theStream.send(IqLast.query(c.getJid(), "idle"));
                     break;
                 case 890: //online
-                    sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqLast.query(c.bareJid, "online_"+c.getResource()));
+                    midlet.BombusQD.sd.roster.setQuerySign(true);
+                    midlet.BombusQD.sd.roster.theStream.send(IqLast.query(c.bareJid, "online_"+c.getResource()));
                     break;
                 case 894: //seen
-                    sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqLast.query(c.bareJid, "seen"));
+                    midlet.BombusQD.sd.roster.setQuerySign(true);
+                    midlet.BombusQD.sd.roster.theStream.send(IqLast.query(c.bareJid, "seen"));
                     break;
                 case 891: //time
-                    sd.roster.setQuerySign(true);
-                    sd.roster.theStream.send(IqTimeReply.query(c.getJid()));
+                    midlet.BombusQD.sd.roster.setQuerySign(true);
+                    midlet.BombusQD.sd.roster.theStream.send(IqTimeReply.query(c.getJid()));
+                    break;
+                case 888:
+                    new MIDPTextBox(display, SR.MS_NEW, c.annotations==null?"":c.annotations, this, TextField.ANY,200);
+                    break;
+                case 887:
+                    OkNotify(null);
+                    break;
+                case 900:
+                    midlet.BombusQD.sd.roster.leaveAllMUCs();
                     break;
 //#ifdef PEP                    
 //#                     /*
@@ -538,18 +566,18 @@ public class RosterItemActions extends Menu {
 //#endif
                 case 893: //ping
                     try {
-                        sd.roster.setQuerySign(true);
+                        midlet.BombusQD.sd.roster.setQuerySign(true);
                         //c.setPing();
-                        sd.roster.theStream.send(IqPing.query(c.getJid(), null));
+                        midlet.BombusQD.sd.roster.theStream.send(IqPing.query(c.getJid(), null));
                     } catch (Exception e) {/*no messages*/}
                     break;
                 case 912: //send color scheme
-                    String from=sd.account.toString();
+                    String from=midlet.BombusQD.sd.account.toString();
                     String body=ColorTheme.getInstance().getSkin();
                     String id=String.valueOf((int) System.currentTimeMillis());
 
                     try {
-                        sd.roster.sendMessage(c, id, body, null, null,false);
+                        midlet.BombusQD.sd.roster.sendMessage(c, id, body, null, null,false);
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"scheme sended"));
                     } catch (Exception e) {
                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"scheme NOT sended"));
@@ -562,7 +590,7 @@ public class RosterItemActions extends Menu {
 //#                     if (body2.length()==0)
 //#                         return;
 //# 
-//#                     String from2=sd.account.toString();
+//#                     String from2=midlet.BombusQD.sd.account.toString();
 //# 
 //#                     String id2=String.valueOf((int) System.currentTimeMillis());
 //#                     Msg msg2=new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,body2);
@@ -571,7 +599,7 @@ public class RosterItemActions extends Menu {
 //# 
 //#                     try {
 //#                         if (body2!=null && body2.length()>0) {
-//#                             sd.roster.sendMessage(c, id2, body2, null, null,false);
+//#                             midlet.BombusQD.sd.roster.sendMessage(c, id2, body2, null, null,false);
 //#                             
 //#                             if (c.origin<Contact.ORIGIN_GROUPCHAT) c.addMessage(msg2);
 //#                         }
@@ -584,35 +612,35 @@ public class RosterItemActions extends Menu {
                 case 40: //invite
                     //new InviteForm(c, display);
                     if (c.jid!=null) {
-                        new InviteForm(display, sd.roster, c);
+                        new InviteForm(display, midlet.BombusQD.sd.roster, c);
                     } else {
                         MucContact mcJ=(MucContact) c;
 
                         if (mcJ.realJid!=null) {
                             boolean onlineConferences=false;
-                            for (Enumeration cJ=sd.roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
+                            for (Enumeration cJ=midlet.BombusQD.sd.roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
                                 try {
                                     MucContact mcN=(MucContact)cJ.nextElement();
                                     if (mcN.origin==Contact.ORIGIN_GROUPCHAT && mcN.status==Presence.PRESENCE_ONLINE)
                                         onlineConferences=true;
                                 } catch (Exception e) {}
                             }
-                            if (onlineConferences) new InviteForm(display, sd.roster, mcJ);
+                            if (onlineConferences) new InviteForm(display, midlet.BombusQD.sd.roster, mcJ);
                         }
                     }
                     return;
 //#endif
                 case 45: //direct presence
-                    new StatusSelect(display, sd.roster, c);
+                    new StatusSelect(display, midlet.BombusQD.sd.roster, c);
                     return;
 //#if (FILE_IO && FILE_TRANSFER)
                 case 50: //send file
-                    new TransferSendFile(display, sd.roster, c.getJid());
+                    new TransferSendFile(display, midlet.BombusQD.sd.roster, c.getJid());
                     return;
 //#endif
 //#if FILE_TRANSFER
                 case 51: //send photo
-                    new TransferImage(display, sd.roster, c.getJid());
+                    new TransferImage(display, midlet.BombusQD.sd.roster, c.getJid());
                     return;
 //#endif
             }
@@ -641,47 +669,47 @@ public class RosterItemActions extends Menu {
                         new Affiliations(display, parentView, roomJid, (short)(index-10));
                         return;
                     case 22:
-                        sd.roster.leaveRoom( g );
+                        midlet.BombusQD.sd.roster.leaveRoom( g );
                         break;
                     case 23:
-                        sd.roster.reEnterRoom( g );
+                        midlet.BombusQD.sd.roster.reEnterRoom( g );
                         return; //break;
                     case 46: //conference presence
-                        new StatusSelect(display, sd.roster, ((ConferenceGroup)g).confContact);
+                        new StatusSelect(display, midlet.BombusQD.sd.roster, ((ConferenceGroup)g).confContact);
                         return;
                     case 49:                  
                         new CommandForm(display,parentView,0,"Form",item,null);  
                         break;
                      case 8: // kick
-                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
+                        new ConferenceQuickPrivelegeModify(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.KICK,myNick);
                         return;
                      case 9: // ban
-                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
+                        new ConferenceQuickPrivelegeModify(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.OUTCAST,myNick);
                         return;
                      case 31: //grant voice and revoke moderator
-                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,myNick); //
+                        new ConferenceQuickPrivelegeModify(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.PARTICIPANT,myNick); //
                         return;
                      case 32: //revoke voice
-                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.VISITOR,myNick);
+                        new ConferenceQuickPrivelegeModify(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.VISITOR,myNick);
                         return;
                      case 33: //grant moderator
-                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.MODERATOR,null); //
+                        new ConferenceQuickPrivelegeModify(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.MODERATOR,null); //
                         return;
                     case 35: //grant membership and revoke admin
-                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.MEMBER,null); //
+                        new ConferenceQuickPrivelegeModify(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.MEMBER,null); //
                         return;
                     case 36: //revoke membership
-                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.NONE,null); //
+                        new ConferenceQuickPrivelegeModify(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.NONE,null); //
                          return;
                     case 37: //grant admin and revoke owner
-                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.ADMIN,null); //
+                        new ConferenceQuickPrivelegeModify(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.ADMIN,null); //
                         return;
                     case 38: //grant owner
-                        new ConferenceQuickPrivelegeModify(display, sd.roster, mc, ConferenceQuickPrivelegeModify.OWNER,null); //
+                        new ConferenceQuickPrivelegeModify(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.OWNER,null); //
                         return;
 //#ifdef REQUEST_VOICE		 
 //#                 case 39: //request voice
-//#                     new QueryRequestVoice(display, sd.roster, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
+//#                     new QueryRequestVoice(display, midlet.BombusQD.sd.roster, mc, ConferenceQuickPrivelegeModify.PARTICIPANT);
 //#                     return;
 //#endif
 //#ifdef CLIPBOARD
@@ -705,12 +733,12 @@ public class RosterItemActions extends Menu {
             {
                 switch (index) {
                     case 1001: //rename
-                        new RenameGroup(display, sd.roster, sg/*, null*/);
+                        new RenameGroup(display, midlet.BombusQD.sd.roster, sg/*, null*/);
                         return;
                     case 1004: //delete
-                        new AlertBox(SR.MS_DELETE_GROUP_ASK, sg.getName(), display, sd.roster) {
+                        new AlertBox(SR.MS_DELETE_GROUP_ASK, sg.getName(), display, midlet.BombusQD.sd.roster) {
                             public void yes() {
-                                sd.roster.deleteGroup((Group)item);
+                                midlet.BombusQD.sd.roster.deleteGroup((Group)item);
                             }
                             public void no() {
                             }

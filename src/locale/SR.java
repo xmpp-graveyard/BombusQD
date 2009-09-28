@@ -876,6 +876,13 @@ public class SR {
    public static String MS_SUBSCR_TO = loadString("to");
    public static String MS_SUBSCR_BOTH = loadString("both");
    
+   public static String MS_CLOSE_ALL_ROOMS = loadString("Exit from ALL Rooms");
+   public static String MS_CREATE_ANNOTATION = loadString("Create Annotation");
+   public static String MS_REMOVE_ANNOTATION = loadString("Remove Annotation");   
+   public static String MS_CONTACT_ANNOTATIONS = loadString("Contact Annotations");
+   public static String MS_ANNOTATION = loadString("Note");  
+   public static String MS_CHANGE_TRANSPORT = loadString("Change transport");
+   
 //#ifdef LIGHT_CONTROL
 //#    public static String L_CONFIG = loadString("Light control");
 //#    public static String L_ENABLED = loadString("Enable light control");

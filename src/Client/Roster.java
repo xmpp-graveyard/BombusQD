@@ -171,8 +171,6 @@ public class Roster
         LoginListener
 {
 
-    //private Config cf=Config.getInstance();
-    //private StaticData sd=StaticData.getInstance();
     private GMenuConfig gm=GMenuConfig.getInstance();
     
     
@@ -1048,7 +1046,7 @@ public class Roster
                         continue;
                     }
                     
-                    c.nick=nick;
+                    c.setNick(nick);
                     c.group=group;
                     c.subscr=subscr;
                     c.offline_type=status;
@@ -1187,7 +1185,7 @@ public class Roster
         // if exists (and online - rudimentary check due to line 500)
         // rename contact
         if (c!=null) if (c.status>=Presence.PRESENCE_OFFLINE) {
-            c.nick=nick;
+            c.setNick(nick);
             c.jid.setJid(from);
             c.bareJid=from;
         }
@@ -1469,6 +1467,31 @@ public class Roster
 //#           boolean groupchat=false;  
 //#endif
             
+//#ifdef JUICK.COM            
+//#              if(to.getJid().indexOf("juick@juick.com")>-1) { //Need fixes
+//#                 String chars = "0123456789";
+//#                 int charLen = chars.length();
+//#                 if(body.startsWith("#") && body.endsWith("+")){//include #+
+//#                    int len = body.length()-1;
+//#                    int newLen = 1;
+//#                    int i = 0;
+//#                    while(i<len){ i++;
+//#                       for(int j=0;j<charLen;j++){
+//#                         if(body.charAt(i)==chars.charAt(j)) newLen++;
+//#                       }
+//#                    }
+//#                   if(len==newLen){
+//#                     String postNum = body.substring(1,len);
+//#                     JabberDataBlock request = new Iq("juick@juick.com/Juick", Iq.TYPE_GET, (postNum.length()==0) ? "lastmsgs" :"cmts_"+postNum );
+//#                     JabberDataBlock query = request.addChildNs("query","http://juick.com/query#messages");
+//#                     query.setAttribute("mid", (body=="#+") ? "" : postNum );
+//#                     theStream.send(request);
+//#                     return;
+//#                   }
+//#                 }
+//#              }
+//#endif            
+            
 //#ifdef AUTOSTATUS
 //#             if (autoAway) {
 //#                     ExtendedStatus es=sl.getStatus(oldStatus);
@@ -1567,7 +1590,7 @@ public class Roster
                 if (k.jid.isTransport()) 
                     continue;
                 int grpType=k.getGroupType();
-                if (k.jid.getServer().equals(transport) && k.nick==null && (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP))
+                if (k.jid.getServer().equals(transport) && k.getNick()==null && (grpType==Groups.TYPE_COMMON || grpType==Groups.TYPE_NO_GROUP))
                     vCardQueue.addElement(VCard.getQueryVCard(k.getJid(), "nickvc"+k.bareJid));
             }
         }
@@ -1603,7 +1626,7 @@ public class Roster
 //#                     grpType==Groups.TYPE_VISIBLE || grpType==Groups.TYPE_IGNORE)) {
 //#                 String jid=k.getJid();
 //#                 jid=StringUtils.stringReplace(jid, srcTransport, dstTransport);
-//#                 storeContact(jid, k.nick, (!k.group.getName().equals(SR.MS_GENERAL))?(k.group.getName()):"", true); //new contact addition
+//#                 storeContact(jid, k.getNick(), (!k.group.getName().equals(SR.MS_GENERAL))?(k.group.getName()):"", true); //new contact addition
 //#                 try {
 //#                     Thread.sleep(300);
 //#                 } catch (Exception ex) { }
@@ -1805,7 +1828,7 @@ public class Roster
 //#        if(vcard.getPhoto()==null) return;
 //#         StringBuffer nickDate=new StringBuffer(0);
 //#         if (c instanceof MucContact){
-//#            nickDate.append("muc_"+c.nick);
+//#            nickDate.append("muc_"+c.getNick());
 //#         }else{
 //#            nickDate.append("roster_"+c.bareJid);           
 //#         }
@@ -1846,7 +1869,12 @@ public class Roster
                 String from=data.getAttribute("from");
                 String type = (String) data.getTypeAttribute();
                 String id=(String) data.getAttribute("id");
-                
+//#ifdef JUICK.COM                
+//#                 if(from.indexOf("juick@juick.com")>-1) {
+//#                     midlet.BombusQD.debug.add(data.toString(),10);
+//#                     Msg m = xmpp.extensions.JuickModule.jm().getMsg(null,data);
+//#                 }
+//#endif                
                 if (id!=null) {
                     if (id.startsWith("nickvc")) {
                         if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
@@ -1952,6 +1980,32 @@ public class Roster
                        redraw();
                     }  
                     
+                    if(id.startsWith("getnotes")){
+                      //XEP-0145: Annotations
+                      midlet.BombusQD.debug.add(data.toString(),10);
+                      if(midlet.BombusQD.cf.networkAnnotation) {
+                        JabberDataBlock notes = data.findNamespace("query","jabber:iq:private").findNamespace("storage","storage:rosternotes");
+                        Vector childBlocks = new Vector(0);
+                        childBlocks = notes.getChildBlocks();
+                       
+                        int size = notes.getChildBlocks().size();
+                        int hCsize = hContacts.size();
+                        Contact find;
+                        for(int i=0;i<size;i++){
+                           JabberDataBlock note = (JabberDataBlock)childBlocks.elementAt(i);
+                           for(int j=0;j<hCsize;j++){
+                             find = (Contact)hContacts.elementAt(j);
+                             if(find instanceof Contact){
+                                 if (find.bareJid.indexOf( note.getAttribute("jid") )>-1) {
+                                     find.annotations=note.getText();
+                                 }
+                             }
+                           }
+                        }
+                        childBlocks.setSize(0);
+                        childBlocks=null;
+                      }
+                    }
                   
                     if(id.equals("changemypass")) { 
                          JabberDataBlock reg=data.findNamespace("query","jabber:iq:register");
@@ -2193,8 +2247,8 @@ public class Roster
                 if (groupchat) {
                     if (subj!=null) { // subject
                         if (body.length()==0) body.append(name).append(" ").append(SR.MS_HAS_SET_TOPIC_TO).append(": ").append(subj);
-                        if (!subj.equals(c.statusString)) {
-                            c.statusString=subj; // adding secondLine to conference
+                        if (!subj.equals(c.getStatus())) {
+                            c.setStatus(subj); // adding secondLine to conference
                             highlite=true;
                         } else {
                             return JabberBlockListener.BLOCK_PROCESSED;
@@ -2257,9 +2311,9 @@ public class Roster
 //#if NICK_COLORS
                         if(start_me!=3) {   
                           if(midlet.BombusQD.cf.useClassicChat==false) { 
-                            b.append("\01");
+                            b.append("<nick>");//? fix squares
                             b.append(name);
-                            b.append("\02");//bug: squres without trim
+                            b.append("</nick>");//bug: squres without trim
                           } else b.append(name.trim());
                         }
 //#endif
@@ -2331,7 +2385,10 @@ public class Roster
                 Msg m=new Msg(mType, from.trim(), subj, body.toString());
                 m.MucChat = groupchat;
 //#ifdef JUICK.COM
-//#                 if(from.indexOf("juick@")>-1) m = xmpp.extensions.JuickModule.jm().getMsg(m,data);
+//#                 if(from.indexOf("juick@juick.com")>-1) {
+//#                     m = xmpp.extensions.JuickModule.jm().getMsg(m,data);
+//#                     if(m==null) return JabberBlockListener.BLOCK_REJECTED;
+//#                 }
 //#endif
 
                 if (tStamp!=0) 
@@ -2472,7 +2529,7 @@ public class Roster
                         String lang=pr.getAttribute("xml:lang");
                         if (lang!=null) c.lang=lang;
                         lang=null;
-                        c.statusString=pr.getStatus();
+                        c.setStatus(pr.getStatus());
                         String chatPres=c.processPresence(xmuc, pr);
 
                         if (midlet.BombusQD.cf.storeConfPresence) {
@@ -2573,7 +2630,7 @@ public class Roster
 //#                         System.out.println(lang);
 //#endif
                             c.lang=lang; lang=null;
-                            c.statusString=pr.getStatus();
+                            c.setStatus(pr.getStatus());
                         }
                         messageStore(c, m);
                         m=null;
@@ -2581,9 +2638,9 @@ public class Roster
                     c.priority=pr.getPriority();
                     if (ti>=0) 
                         c.setStatus(ti);
-                    if (c.nick==null && c.status<=Presence.PRESENCE_DND) {
+                    if (c.getNick()==null && c.status<=Presence.PRESENCE_DND) {
                         JabberDataBlock nick = pr.findNamespace("nick", "http://jabber.org/protocol/nick");
-                        if (nick!=null) c.nick=nick.getText();nick=null;
+                        if (nick!=null) c.setNick(nick.getText()); nick=null;
                         
                     }
                     if ((ti==Presence.PRESENCE_ONLINE || ti==Presence.PRESENCE_CHAT) && notifyReady(-111)) {
@@ -2676,8 +2733,15 @@ public class Roster
                 i=null;
             }
         }
+        if(midlet.BombusQD.cf.networkAnnotation){
+           //XEP-0145: Annotations
+           JabberDataBlock getNotes = new Iq(null, Iq.TYPE_GET, "getnotes");
+           getNotes.addChildNs("query", "jabber:iq:private").addChildNs("storage", "storage:rosternotes");    
+           theStream.send(getNotes);
+        }        
         cont=null;
         q=null;
+        reEnumRoster();//fix problem with groups
         return true;
     }
 
@@ -3405,21 +3469,26 @@ public class Roster
 //#ifdef PLUGINS
 //#                 if (midlet.BombusQD.cf.showClientIcon)
 //#endif
-                    if (cntact.client>-1)
-                        mess.append("\nUse: "+cntact.clientName);
 //#endif
-                if (cntact.version!=null) mess.append("\nVersion: "+cntact.version);
+                if (cntact.client>-1 && cntact.version!=null) 
+                    mess.append("\nUse: "+cntact.clientName).append(" ").append(cntact.version);
+                else{
+                  if (cntact.client>-1) mess.append("\nUse: "+cntact.clientName);
+                  if (cntact.version!=null) mess.append("\nVersion: "+cntact.version);
+                }
+
                 if (cntact.lang!=null) mess.append("\nLang: "+cntact.lang);
             }
             
-            if (cntact.statusString!=null) {
+            if (cntact.getStatus()!=null) {
                 if (cntact.origin!=Contact.ORIGIN_GROUPCHAT){
                     mess.append("\n")
                         .append(SR.MS_STATUS)
                         .append(": ");
                 }
-                mess.append(cntact.statusString);
+                mess.append(cntact.getStatus());
             }
+            if(cntact.annotations!=null) mess.append("\n"+SR.MS_ANNOTATION+": "+cntact.annotations);
             
             VirtualList.setWobble(1, null, mess.toString());
             mess.setLength(0);
