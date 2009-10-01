@@ -138,7 +138,6 @@ public class PluginsConfig extends DefForm implements MenuListener
     private static CheckBox enableVersionOs;
     private static CheckBox queryExit;
 
-    private static CheckBox lightState;
     private static CheckBox popupFromMinimized;
     private static NumberInput fieldGmt; 
     private static NumberInput scrollWidth; 
@@ -522,10 +521,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                       queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); 
                       itemsList.addElement(queryExit);
                           oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
-                          if (phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE);
-                             lightState = new CheckBox(SR.MS_FLASHLIGHT, cf.lightState);
-                             if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 
-                             || phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);  
+                          if (phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE); 
                                if (cf.allowMinimize) {
                                    popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
                                    itemsList.addElement(popupFromMinimized);
@@ -727,7 +723,6 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.enableVersionOs=enableVersionOs.getValue();
             cf.queryExit=queryExit.getValue();  
             if (phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
-            cf.lightState=lightState.getValue();
             if (cf.allowMinimize) cf.popupFromMinimized=popupFromMinimized.getValue();
             cf.executeByNum=executeByNum.getValue();
             cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());

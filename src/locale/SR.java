@@ -162,6 +162,12 @@ public class SR {
     public   static String MS_APPLICATION = loadString( "Application" );
     public   static String MS_BOOKMARKS = loadString( "Bookmarks" );
     public   static String MS_TEST_SOUND = loadString( "Test sound" );
+    
+    public   static String MS_TEST_VIBRATION = loadString( "Test Vibration" );
+    public   static String MS_VIBRATION_LEN = loadString( "Vibration Len" );
+    public   static String MS_VIBRATION_REPEAT = loadString( "Vibration Repeats" );
+    public   static String MS_VIBRATION_INTERVAL = loadString( "Vibration Repeats Interval" );
+    
     public   static String MS_STARTUP = loadString( "Startup" );
     public   static String MS_EDIT_RULE = loadString( "Edit rule" );
     public   static String MS_CANCEL = loadString( "Cancel" );
@@ -847,7 +853,7 @@ public class SR {
    public static String MS_historyStr = loadString( "History");
    public static String MS_fontsStr = loadString( "Fonts");
    public static String MS_ieStr = loadString( "Import/Export");
-   public static String MS_notifyStr = loadString( "Notifications");
+   public static String MS_notifyStr = loadString( "Notifications&Light Control");
    public static String MS_taskstr = loadString( "Tasks");
    public static String MS_avatarStr = loadString( "Avatars");   
 
@@ -883,15 +889,14 @@ public class SR {
    public static String MS_ANNOTATION = loadString("Note");  
    public static String MS_CHANGE_TRANSPORT = loadString("Change transport");
    
-//#ifdef LIGHT_CONTROL
-//#    public static String L_CONFIG = loadString("Light control");
-//#    public static String L_ENABLED = loadString("Enable light control");
-//#    public static String L_IDLE_VALUE = loadString("Idle screen brightness");
-//#    public static String L_KEYPRESS_VALUE = loadString("Keypress screen brightness");
-//#    public static String L_KEYPRESS_TIMEOUT = loadString("Keypress idle timeout");
-//#    public static String L_MESSAGE_VALUE = loadString("Message screen brightness");
-//#    public static String L_MESSAGE_TIMEOUT = loadString("Message idle timeout");
-//#endif   
+
+   public static String L_CONFIG = loadString("Light control");
+   public static String L_ENABLED = loadString("Enable light control");
+   public static String L_IDLE_VALUE = loadString("Idle screen brightness");
+   public static String L_KEYPRESS_VALUE = loadString("Keypress screen brightness");
+   public static String L_KEYPRESS_TIMEOUT = loadString("Keypress idle timeout");
+   public static String L_MESSAGE_VALUE = loadString("Message screen brightness");
+   public static String L_MESSAGE_TIMEOUT = loadString("Message idle timeout");
    
    
     private SR() { }

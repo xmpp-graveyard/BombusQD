@@ -510,7 +510,7 @@ public class Contact extends IconTextElement{
             int size=msgs.size();
             for(int i=0;i<size;i++){
               m=(Msg)msgs.elementAt(i);
-              if (m.id!=null) {
+              if (m.id!=null && m.id.equals(id)) { //Tishka17
                     m.delivered=true;
                 }
             }        

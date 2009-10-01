@@ -75,7 +75,7 @@
 //# 
 //#     /** Creates a new instance of XMLList */
 //#     public XMLList(Display display, Displayable pView) {
-//#         super();
+//#         super ();
 //#         
 //#         super.smiles=false;
 //#         

@@ -72,7 +72,10 @@ public class AlertCustomize {
     
     public boolean vibrateOnlyHighlited;
 
-    public int soundVol=100;
+    public int soundVol=50;
+    public int vibraLen=300;
+    public int vibraRepeatCount=2;
+    public int vibraRepeatPause=200;
     
     private static int size=0;
     
@@ -107,6 +110,9 @@ public class AlertCustomize {
         DataInputStream inputStream=NvStorage.ReadFileRecord("AlertCustomize", 0);
         try {
             soundVol=inputStream.readInt();
+            vibraLen=inputStream.readInt();
+            vibraRepeatCount=inputStream.readInt();
+            vibraRepeatPause=inputStream.readInt();
 	    soundsMsgIndex=inputStream.readInt();            
             soundOnlineIndex=inputStream.readInt();
             soundOfflineIndex=inputStream.readInt();
@@ -136,6 +142,9 @@ public class AlertCustomize {
             DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
             
             outputStream.writeInt(soundVol);
+            outputStream.writeInt(vibraLen);
+            outputStream.writeInt(vibraRepeatCount);
+            outputStream.writeInt(vibraRepeatPause);
 	    outputStream.writeInt(soundsMsgIndex);            
 	    outputStream.writeInt(soundOnlineIndex);
 	    outputStream.writeInt(soundOfflineIndex);

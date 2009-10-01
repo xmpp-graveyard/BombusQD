@@ -33,6 +33,51 @@ public class StringUtils {
     public StringUtils() { }
     
     private final static String[] badChars= { "?", "\\", "/", "*", ".", "\"", ":", "%", "@", "|", "<", ">", "COM", "LPT", "NULL", "PRINT"};
+ 
+    public static String replaceNickTags(String body){
+         StringBuffer sb = new StringBuffer(0);
+         boolean parse = true;
+         int f1,f2,len=0;
+         while(parse){
+          len = body.length();
+          f1 = body.indexOf("<nick>");
+          f2 = body.indexOf("</nick>");
+          if(f1>-1 || f2>-1){
+            for(int i=0;i<len;i++){
+              if(i==f1) i+=6;
+              if(i==f2) i+=7;
+              sb.append(body.charAt(i));
+            }
+            body = sb.toString(); sb.setLength(0);
+          } else parse = false;
+         }
+         sb = null;
+         return body;
+    }    
+    
+    public static Msg replaceNickTags(Msg msg){
+         StringBuffer sb = new StringBuffer(0);
+         String body = msg.body;
+         boolean parse = true;
+         int f1,f2,len=0;
+         while(parse){
+          len = body.length();
+          f1 = body.indexOf("<nick>");
+          f2 = body.indexOf("</nick>");
+          if(f1>-1 || f2>-1){
+            for(int i=0;i<len;i++){
+              if(i==f1) i+=6;
+              if(i==f2) i+=7;
+              sb.append(body.charAt(i));
+            }
+            body = sb.toString(); sb.setLength(0);
+          } else parse = false;
+         }
+         sb = null;         
+         msg.body = body;
+         return msg;
+    }      
+    
     
     public static String stringReplace(String aSearch, String aFind, String aReplace) {
     	int pos = aSearch.indexOf(aFind);

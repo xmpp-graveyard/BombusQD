@@ -148,6 +148,7 @@ public class EntityCaps implements JabberBlockListener{
 //#          }
 //#endif
 //#endif
+        features.addElement("http://jabber.org/protocol/evil");//XEP-0076: Malicious Stanzas
         
         features.addElement("jabber:iq:time"); //DEPRECATED
         features.addElement("jabber:iq:version");

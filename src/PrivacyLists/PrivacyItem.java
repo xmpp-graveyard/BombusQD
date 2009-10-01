@@ -136,7 +136,7 @@ public class PrivacyItem extends IconTextElement {
     }
 	
     public String getTipString() {
-        StringBuffer tip=new StringBuffer();
+        StringBuffer tip=new StringBuffer(0);
 
         tip.append(SR.MS_PRIVACY_IF+" ").append(types_[type]);
         if (type!=ITEM_ANY) {

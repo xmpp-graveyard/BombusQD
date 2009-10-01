@@ -111,23 +111,8 @@ public abstract class MessageList extends VirtualList
     
     
     public Msg replaceNickTags(Msg msg){ //NOTE: replace ALL "action-user-msgs" WITH <nick>
-      if(msg.body.startsWith("<nick>")){
-         StringBuffer sb = new StringBuffer(0);
-         int len = msg.body.length();
-         int f1 = msg.body.indexOf("<nick>");
-         int f2 = msg.body.indexOf("</nick>");
-          for(int i=0;i<len;i++){
-            if(i==f1) i+=6;
-            if(i==f2) i+=7;
-            sb.append(msg.body.charAt(i));
-          }
-         msg.body = sb.toString();
-         sb.setLength(0);
-         sb = null;
-         return msg;
-      }
-      return msg;
-    }    
+         return util.StringUtils.replaceNickTags(msg);
+    }     
     
     
     public void markRead(int msgIndex) {}

@@ -41,6 +41,8 @@ import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.TrackItem;
+import ui.controls.form.NumberInput;
+import ui.controls.form.LinkString;
 import util.StringLoader;
 import java.util.Enumeration;
 //#ifndef MENU_LISTENER
@@ -54,6 +56,9 @@ import Menu.MyMenu;
 //#ifdef GRAPHICS_MENU        
 //# import ui.GMenu;
 //# import ui.GMenuConfig;
+//#endif
+//#ifdef LIGHT_CONTROL
+//# import LightControl.*;
 //#endif
 
 public class AlertCustomizeForm 
@@ -79,22 +84,30 @@ public class AlertCustomizeForm
     private CheckBox IQNotify;
     
     private TrackItem sndVol;
+    private NumberInput vibraLen;
+    
+    private NumberInput vibraRepeatCount;
+    private NumberInput vibraRepeatPause;
+    
+    LinkString linkLight;
     
     AlertCustomize ac;
-    Config cf;
     Vector files[];
     Vector fileNames;
+    boolean isVibroProfile = false;
 
     Command cmdSave=new Command(SR.MS_SAVE, Command.OK, 1);
     Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
+    Command cmdTestVibro=new Command(SR.MS_TEST_VIBRATION, Command.SCREEN, 3);
 
     /** Creates a new instance of ConfigForm */
     public AlertCustomizeForm(Display display, Displayable pView) {
         super(display, pView, SR.MS_NOTICES_OPTIONS);
         this.display=display;
         
+        isVibroProfile = (midlet.BombusQD.cf.profile==AlertProfile.ALL || midlet.BombusQD.cf.profile==AlertProfile.VIBRA);
+        
         ac=AlertCustomize.getInstance();
-        cf=Config.getInstance();
         
         files=new StringLoader().stringLoader("/sounds/res.txt",3);
         fileNames=null;
@@ -131,20 +144,40 @@ public class AlertCustomizeForm
         VIPFile.setSelectedIndex(ac.soundVIPIndex); itemsList.addElement(VIPFile);
 
         itemsList.addElement(new SimpleString(SR.MS_SHOW_LAST_APPEARED_CONTACTS, true)); 
-        statusBox=new CheckBox(SR.MS_STATUS, cf.notifyPicture); itemsList.addElement(statusBox);
-        blinkBox=new CheckBox(SR.MS_BLINKING, cf.notifyBlink); itemsList.addElement(blinkBox);
-        soundBox=new CheckBox(SR.MS_SOUND, cf.notifySound); itemsList.addElement(soundBox);
+        statusBox=new CheckBox(SR.MS_STATUS, midlet.BombusQD.cf.notifyPicture); itemsList.addElement(statusBox);
+        blinkBox=new CheckBox(SR.MS_BLINKING, midlet.BombusQD.cf.notifyBlink); itemsList.addElement(blinkBox);
+        //soundBox=new CheckBox(SR.MS_SOUND, cf.notifySound); itemsList.addElement(soundBox);
         
-        itemsList.addElement(new SpacerItem(10));
-        vibrateOnlyHighlited=new CheckBox(SR.MS_VIBRATE_ONLY_HIGHLITED, ac.vibrateOnlyHighlited); itemsList.addElement(vibrateOnlyHighlited);
+        if(isVibroProfile){
+          itemsList.addElement(new SpacerItem(10));
+          vibrateOnlyHighlited=new CheckBox(SR.MS_VIBRATE_ONLY_HIGHLITED, ac.vibrateOnlyHighlited); itemsList.addElement(vibrateOnlyHighlited);
+        }
 
         itemsList.addElement(new SimpleString(SR.MS_SOUND_VOLUME, true));
         sndVol=new TrackItem(ac.soundVol/10, 10);
         itemsList.addElement(sndVol);
         
+        if(isVibroProfile){
+          vibraLen=new NumberInput(display, SR.MS_VIBRATION_LEN + "(1-5000)", Integer.toString(ac.vibraLen), 1, 5000);
+          itemsList.addElement(vibraLen);
+          
+          vibraRepeatCount=new NumberInput(display, SR.MS_VIBRATION_REPEAT, Integer.toString(ac.vibraRepeatCount), 1, 5);
+          itemsList.addElement(vibraRepeatCount);
+          
+          vibraRepeatPause=new NumberInput(display, SR.MS_VIBRATION_INTERVAL, Integer.toString(ac.vibraRepeatPause), 1, 300);
+          itemsList.addElement(vibraRepeatPause);
+        }
+        
         itemsList.addElement(new SpacerItem(10));
-        IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, cf.IQNotify); itemsList.addElement(IQNotify);
+        IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, midlet.BombusQD.cf.IQNotify); itemsList.addElement(IQNotify);
 
+        itemsList.addElement(new SpacerItem(5));
+        linkLight = new LinkString(SR.L_CONFIG) { public void doAction() { 
+            new LightConfigForm(midlet.BombusQD.getInstance().display, midlet.BombusQD.getInstance().display.getCurrent());
+        } };
+        itemsList.addElement(linkLight);  
+        itemsList.addElement(new SpacerItem(5));
+        
         commandState();
 
         attachDisplay(display);
@@ -154,6 +187,11 @@ public class AlertCustomizeForm
     public void cmdSave() {
         ac.soundsMsgIndex=MessageFile.getSelectedIndex();
         ac.soundVol=sndVol.getValue()*10;
+        if(isVibroProfile) {
+            ac.vibraLen=Integer.parseInt(vibraLen.getValue());
+            ac.vibraRepeatCount=Integer.parseInt(vibraRepeatCount.getValue());
+            ac.vibraRepeatPause=Integer.parseInt(vibraRepeatPause.getValue());
+        }
         ac.soundOnlineIndex=OnlineFile.getSelectedIndex();
         ac.soundOfflineIndex=OfflineFile.getSelectedIndex();
         ac.soundForYouIndex=ForYouFile.getSelectedIndex();
@@ -163,7 +201,7 @@ public class AlertCustomizeForm
         ac.soundOutgoingIndex=OutgoingFile.getSelectedIndex(); 
         ac.soundVIPIndex=VIPFile.getSelectedIndex();
         
-        ac.vibrateOnlyHighlited=vibrateOnlyHighlited.getValue();
+        if(isVibroProfile) ac.vibrateOnlyHighlited=vibrateOnlyHighlited.getValue();
         
         ac.loadSoundName();
         ac.loadOnlineSoundName();
@@ -177,11 +215,11 @@ public class AlertCustomizeForm
 
         ac.saveToStorage();
 
-        cf.notifyPicture=statusBox.getValue();
-        cf.notifyBlink=blinkBox.getValue();
-        cf.notifySound=soundBox.getValue();
+        midlet.BombusQD.cf.notifyPicture=statusBox.getValue();
+        midlet.BombusQD.cf.notifyBlink=blinkBox.getValue();
+        //cf.notifySound=soundBox.getValue();
         
-        cf.IQNotify=IQNotify.getValue();
+        midlet.BombusQD.cf.IQNotify=IQNotify.getValue();
 
         //cf.saveToStorage();
 
@@ -190,9 +228,11 @@ public class AlertCustomizeForm
     
     public void commandAction(Command c, Displayable d) {
         if (c==cmdTest)
-            PlaySound();
+            PlaySound(false);
         else if (c==cmdSave) {
             cmdSave();
+        }else if(c==cmdTestVibro){
+            PlaySound(true);
         }
         else super.commandAction(c, d);
     }
@@ -202,7 +242,13 @@ public class AlertCustomizeForm
         return -1;
     }
     
-    private void PlaySound(){
+    private void PlaySound(boolean vibration){
+        if(vibration){
+          ac.vibraRepeatCount=Integer.parseInt(vibraRepeatCount.getValue());
+          ac.vibraRepeatPause=Integer.parseInt(vibraRepeatPause.getValue());
+          new EventNotify(display, null, null, -1, Integer.parseInt(vibraLen.getValue()) ).startNotify();
+          return;
+        }
         int sound=playable();
         if (sound<0) return;
         
@@ -246,6 +292,7 @@ public class AlertCustomizeForm
         if (playable()>-1)
             addCommand(cmdTest); cmdTest.setImg(0x54);
         addCommand(cmdSave); cmdSave.setImg(0x44);
+        if(isVibroProfile) addCommand(cmdTestVibro); cmdTestVibro.setImg(0x43);
 //#ifndef GRAPHICS_MENU        
      addCommand(cmdCancel);
 //#endif

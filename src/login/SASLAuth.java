@@ -241,9 +241,9 @@ public class SASLAuth implements JabberBlockListener{
     private String decodeBase64(String src)  {
         int len=0;
         int ibuf=1;
-        StringBuffer out=new StringBuffer();
-        
-        for (int i=0; i<src.length(); i++) {
+        StringBuffer out=new StringBuffer(0);
+        int length = src.length();
+        for (int i=0; i<length; i++) {
             int nextChar = src.charAt(i);
             int base64=-1;
             if (nextChar>'A'-1 && nextChar<'Z'+1) base64=nextChar-'A';

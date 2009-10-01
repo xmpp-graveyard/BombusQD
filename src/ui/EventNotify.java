@@ -32,6 +32,7 @@ import javax.microedition.media.Manager;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
 import javax.microedition.media.control.VolumeControl;
+import Alerts.AlertCustomize;
 
 /**
  *
@@ -53,6 +54,7 @@ public class EventNotify
     
     private final static String tone="A6E6J6";
     private int sndVolume;
+    private InputStream is;
 
     //private boolean flashBackLight;
     
@@ -69,8 +71,7 @@ public class EventNotify
         this.soundType=soundMediaType;
         this.vibraLength=vibraLength;
         //this.flashBackLight=flashBackLight;
-        if (soundType!=null) 
-            toneSequence= soundType.equals("tone");
+        if (soundType!=null) toneSequence= soundType.equals("tone");
         this.sndVolume=sndVolume;
     }
     
@@ -80,7 +81,7 @@ public class EventNotify
         
         if (soundName!=null) {
             try {
-                InputStream is = getClass().getResourceAsStream(soundName);
+                this.is = getClass().getResourceAsStream(soundName);
                 player = Manager.createPlayer(is, soundType);
 
                 player.addPlayerListener(this);
@@ -97,11 +98,17 @@ public class EventNotify
         }
 
         if (vibraLength>0) {
-            display.vibrate(vibraLength);
+             int count = AlertCustomize.getInstance().vibraRepeatCount;
+             int pause = AlertCustomize.getInstance().vibraRepeatPause;
+             for(int i=0;i<count;i++){
+                display.vibrate(vibraLength);
+                try {
+                    Thread.sleep(pause+vibraLength);
+                } catch (Exception e) {}
+             }
         }
 
-	if (toneSequence)
-            new Thread(this).start();
+	if (toneSequence) new Thread(this).start();
     }
     
     public void run(){
@@ -119,11 +126,18 @@ public class EventNotify
         if (player!=null) {
 	    player.removePlayerListener(this);
 	    player.close();
+            player=null;
 	}
-        player=null;
+        try {
+            if (is!=null) {
+                is.close();
+                is = null;
+            }
+        } catch (Exception e) {}
     }
     
     public void playerUpdate(Player player, String string, Object object) {
-	if (string.equals(PlayerListener.END_OF_MEDIA)) {    release(); }
+	if (string.equals(PlayerListener.END_OF_MEDIA)||
+                string.equals(PlayerListener.ERROR)) { release(); }
     }
 }

@@ -53,8 +53,6 @@ import Menu.MenuListener;
 public class Config {
     // Singleton
     private static Config instance;
-    
-    public final int vibraLen=500;
 
     public static int KEY_BACK = -11;
     public static int SOFT_LEFT = -1000;

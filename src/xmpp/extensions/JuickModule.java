@@ -26,46 +26,44 @@
 //#     /** Creates a new instance of JuickListener */
 //#     
 //#     public static JuickModule listener;
-//#     private static Contact juick = null;
-//#     private static String botname = "juick@juick.com/Juick";
 //#     
-//#     public JuickModule() { }
+//#     private final static String BOTNAME = "juick@juick.com/Juick";
+//#     private final static String NS_MESSAGES = "http://juick.com/query#messages";
+//#     private final static String NS_MESSAGE = "http://juick.com/message";
+//# 
+//#     private static StringBuffer buf = new StringBuffer(0);
+//#     private static StringBuffer message_id = new StringBuffer(0);    
+//#     private static Vector childBlocks = new Vector(0);
+//#     private static Vector childTags = new Vector(0);
+//#         
+//#     public JuickModule() {
+//#     }
 //#     
-//#     public static JuickModule jm() {
+//#     public static JuickModule jm(){
 //#         if (listener==null) { listener=new JuickModule(); }
 //#         return listener;
 //#     }    
 //# 
-//#  /*
-//#   \nLast messages:
-//#   \n@USER1: \n*this is 1 text message
-//#   \n#NUM1 (if replies) URL
-//#   \n
-//#   \n@USER2: \n*this is 2 text message
-//#   \n#NUM2 (if replies) URL
-//#   \n
-//#   */     
 //#     
 //#     private void storeMessage(Msg msg){
-//#       if(juick==null && midlet.BombusQD.sd.roster.isLoggedIn())
-//#           juick = midlet.BombusQD.sd.roster.getContact(botname,false);
-//#       midlet.BombusQD.sd.roster.messageStore(juick,msg);
+//#       midlet.BombusQD.debug.add("STORE wait::",10);
+//#       midlet.BombusQD.sd.roster.messageStore( midlet.BombusQD.sd.roster.getContact(BOTNAME,false) ,msg);
+//#       midlet.BombusQD.debug.add("STORE::"+msg.body,10);
 //#     }
 //#     
 //#     
 //#     private boolean separateMsgs(Msg message){
 //#        String body = message.body.concat("\n");
-//#        StringBuffer buf = new StringBuffer(0);
+//#        StringBuffer bufMsg = new StringBuffer(0);
 //#        StringBuffer id = new StringBuffer(0);
-//#        
 //#         int len = body.length();
 //#         int i = 0;
 //#         int count = 0;
 //#         boolean lastPopularMessages = body.startsWith("Last popular messages:");
 //#         boolean lastMessages = body.startsWith("Last messages:");
-//#  
+//# 
 //#         if( lastMessages || lastPopularMessages ) {
-//#           message = new Msg(Msg.MESSAGE_TYPE_JUICK, juick.bareJid , null ,"[Last" + (lastMessages?" ":" popular ") + "messages]" );
+//#           message = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null ,"<nick>[Last" + (lastMessages?" ":" popular ") + "messages]</nick>" );
 //#           storeMessage(message);
 //#           boolean parse = false;
 //#           for (i = 0; i < len; i++) {
@@ -75,160 +73,161 @@
 //#                  
 //#                 if (c == '@'){  //@NICK: tagslist \n
 //#                     count++;
-//#                     buf.setLength(0);
-//#                     buf.append(count);
-//#                     buf.append(").");
-//#                     while(c!='\n'){ i++;  c = body.charAt(i); buf.append(c); } //include tags
+//#                     bufMsg.setLength(0);
+//#                     bufMsg.append(count);
+//#                     bufMsg.append(").");
+//#                     while(c!='\n'){ i++;  c = body.charAt(i); bufMsg.append(c); } //include tags
 //#                     parse = true;
 //#                 }
 //#                 else if (c=='#'){ //get num post and send to msg.id
-//#                    buf.append('\n');
+//#                    bufMsg.append('\n');
 //#                    int j = i;
 //#                    while(parse) { j++; c = body.charAt(j);
 //#                      if(body.charAt(j)==' '){
-//#                        buf.append(' ');
+//#                        bufMsg.append(' ');
 //#                        c = body.charAt(j+1);
 //#                        if(c=='('){
 //#                          j=j-1;
-//#                          while(c!=')') { j++;  c = body.charAt(j);  buf.append(c); } //include replies
+//#                          while(c!=')') { j++;  c = body.charAt(j);  bufMsg.append(c); } //include replies
 //#                        }
-//#                        message = new Msg(Msg.MESSAGE_TYPE_JUICK, botname , null , buf.toString() );
+//#                        message = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null , bufMsg.toString() );
 //#                        message.id = id.append(' ').toString();
 //#                        storeMessage(message);
-//#                          buf.setLength(0);
+//#                          bufMsg.setLength(0);
 //#                          id.setLength(0);
 //#                          parse = false;
 //#                      } else {
-//#                        buf.append(c); id.append(c);
+//#                        bufMsg.append(c); id.append(c);
 //#                      }
 //#                    }
 //#                 }
-//#               } else buf.append(c);
+//#               } else bufMsg.append(c);
 //#            }
-//#          body = null; return true;
+//#          bufMsg.setLength(0);
+//#          id = null;
+//#          body = null;
+//#          return true;
 //#       }
 //#       return false;
 //#       //speed 10 messages - 14 msec
 //#     }
 //#     
 //#     
-//#     public Msg getMsg(Msg m,JabberDataBlock data) { //Need fixes
+//#     public Msg getMsg(Msg m,JabberDataBlock data) {
 //#         if( data instanceof Iq ) {
+//#             midlet.BombusQD.debug.add("IQ::"+data.toString(),10);
 //#             String id=(String) data.getAttribute("id"); 
 //#             String type = (String) data.getTypeAttribute();
 //#             
 //#             if (id!=null) {
-//#                 if ( type.equals( "result" ) ) {
-//#                     if(id.startsWith("cmts_")) {
-//#                         //send query comments
-//#                         String body = id.substring(5,id.length());
-//#                         
-//#                           JabberDataBlock comments = new Iq("juick@juick.com/Juick", Iq.TYPE_GET,"qd_comments");
-//#                           JabberDataBlock comments_query = comments.addChildNs("query","http://juick.com/query#messages");
-//#                           comments_query.setAttribute("mid",body);
-//#                           comments_query.setAttribute("rid","*");
-//#                           midlet.BombusQD.debug.add(comments.toString(),10);
-//#                           if(body.length()>0) midlet.BombusQD.sd.roster.theStream.send(comments);
-//#                     }
-//#                     
-//#      /*
-//#       *QUERY to:
-//#        <iq to="juick@juick.com/Juick" id="id222" type="get">
-//#             <query xmlns="http://juick.com/query#messages" mid="xxx" rid="*">
-//#        </iq>
-//#       *
-//#       *from:
-//#        <iq type="result" id="id222">
-//#             <query xmlns="http://juick.com/query#messages">
-//#                <juick xmlns="http://juick.com/message" mid="234235" rid="22" uname="username" replies=""><body>hello world!</body></juick>
-//#                <juick xmlns="http://juick.com/message" mid="234235" rid="22" uname="username" replies=""><body>hello world!</body></juick>
-//#                ....
-//#             </query>
-//#        </iq>
-//#       *
-//#       *
-//#       */                    
-//#                     JabberDataBlock query = data.findNamespace("query","http://juick.com/query#messages");
+//#                 if (type.equals( "result" )) {
+//#                     JabberDataBlock query = data.findNamespace("query",NS_MESSAGES);
+//# 
 //#                     if(query!=null) { //use <nick> for highlite tags
+//#                       if(id.startsWith("cmts_")) { 
+//#                       //send query comments
+//#                           String body = id.substring(5,id.length());
+//#                           String replies = "";
+//#                           if(query!=null){
+//#                               JabberDataBlock ns = query.findNamespace("juick",NS_MESSAGE);
+//#                               if(ns!=null) replies = ns.getAttribute("replies");
+//#                           }
+//#                           midlet.BombusQD.debug.add("IQ replies::"+replies,10);                          
+//#                           if(replies!=null){
+//#                              JabberDataBlock comments = new Iq(BOTNAME, Iq.TYPE_GET,"qd_comments");
+//#                              JabberDataBlock comments_query = comments.addChildNs("query",NS_MESSAGES);
+//#                              comments_query.setAttribute("mid",body);
+//#                              comments_query.setAttribute("rid","*");
+//#                              if(body.length()>0) midlet.BombusQD.sd.roster.theStream.send(comments);
+//#                              comments=null;
+//#                              body=null;
+//#                           }
+//#                       }
 //#                         
-//#                       JabberDataBlock child,tag = null;
-//#                       Vector childBlocks,childTags = new Vector(0);
-//#                       StringBuffer buf = new StringBuffer(0);
-//#                       String uname,mid,rid,replies,body = "";
+//#                       JabberDataBlock child = null;
+//#                       JabberDataBlock tag = null;
+//#                       
+//#                       childBlocks.setSize(0);
+//#                       childTags.setSize(0);
+//#                       
+//#                       String uname = "";
+//#                       String mid = "";
+//#                       String rid = "";
+//#                       String replies = "";
+//#                       String body = "";
 //#                       
 //#                       childBlocks = query.getChildBlocks();
 //#                       int size=childBlocks.size();
-//# 
 //#                         for(int i=0;i<size;i++){  
 //#                            child = (JabberDataBlock)childBlocks.elementAt(i);
 //#                            childTags = child.getChildBlocks();  
-//# 
+//#                            
 //#                              uname = child.getAttribute("uname");
 //#                              replies = child.getAttribute("replies");
 //#                              mid = child.getAttribute("mid");
 //#                              rid = child.getAttribute("rid");
 //#                              
-//#                            if (uname!=null) buf.append("<nick>@").append(uname).append("</nick>: ");
-//#                            if (replies!=null) buf.append("\nReplies:").append(replies);      
-//#  
+//#                            if (uname!=null) buf.append("<nick>@").append(uname).append("</nick>:");
+//#                            if (replies!=null) 
+//#                                buf.append('\n')
+//#                                   .append("<nick>")
+//#                                   .append("Replies ")
+//#                                   .append('(')
+//#                                   .append(replies)
+//#                                   .append(')')
+//#                                   .append("</nick>");
+//#                              
 //#                            int tagSize = childTags.size();
 //#                            if(tagSize>0){
-//#                            for(int k=0;k<tagSize;k++){
+//#                             for(int k=0;k<tagSize;k++){
 //#                               //specially for "#+" type
 //#                               tag = (JabberDataBlock)childTags.elementAt(k);
-//#                                if (tag.getTagName().equals("tag")) buf.append("\n <nick>*"+tag.getText()).append("</nick>");
+//#                                if (tag.getTagName().equals("tag"))
+//#                                     buf.append('\n')
+//#                                       .append("<nick>*")
+//#                                       .append(tag.getText())
+//#                                       .append("</nick>");
 //#                                if (tag.getTagName().equals("body")) body = tag.getText();
 //#                              }
 //#                              buf.append('\n').append(body);
 //#                            }
-//#  
 //#                            
 //#                            if (mid!=null){
-//#                              buf.append(" (");
-//#                              buf.append(mid);
-//#                                 if(rid!=null) buf.append("/").append(rid);
-//#                              buf.append(")");
+//#                              message_id.append('\n').append('#').append(mid);
+//#                                 if(rid!=null) message_id.append('/').append("<nick>").append(rid).append("</nick>");
+//#                              message_id.append(' ');
+//#                              buf.append(message_id.toString());
 //#                            }
-//#                            
-//#                            
-//#                           m = new Msg(Msg.MESSAGE_TYPE_JUICK, botname , null , buf.toString() );
-//#                           buf.setLength(0);
-//#                             if (mid!=null){
-//#                              buf.append("#");
-//#                              buf.append(mid);
-//#                                 if(rid!=null) buf.append("/").append(rid);
-//#                              buf.append(" ");
-//#                            }  
-//#                           m.id = buf.toString();
-//#                           buf.setLength(0);
-//#                           childTags.setSize(0);
+//#                           m = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null , buf.toString() );
+//#                           m.id = message_id.toString();
 //#                           storeMessage(m);
+//#                           buf.setLength(0);
+//#                           message_id.setLength(0);
+//#                           childTags.setSize(0);
 //#                            /*
-//#                             *<nick>NICK</nick>: textbody (id/reply)
-//#                             */
+//#                             *<nick>NICK</nick>: textbody
+//#                            */
 //#                         }
-//#                       childBlocks = null;
-//#                       childTags = null;
-//#                       
 //#                     }else {
-//#                        m = new Msg(Msg.MESSAGE_TYPE_JUICK, botname , null , "none messages." );
+//#                        m = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null , "none messages." );
 //#                        storeMessage(m);                        
 //#                     }
-//#                     
 //#                 }
 //#                 if ( type.equals( "error" ) ) {
-//#                    m = new Msg(Msg.MESSAGE_TYPE_JUICK, botname , null , "error. "+data.toString());
+//#                    m = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null , "<nick>error:</nick> "+data.toString());
 //#                    storeMessage(m);                     
 //#                 }
+//#                return null;
 //#             }
 //#             
 //#         } else if( data instanceof Message ) {
+//#                  midlet.BombusQD.debug.add("MESSAGE::"+data.toString(),10);             
 //#                  Message message = (Message) data;
 //#                  
 //#                  //JabberDataBlock juickUnameNs = data.findNamespace("nick", "http://jabber.org/protocol/nick");
 //#                  //if (juickUnameNs!=null) juickUnameNs.getText();
 //#                  
-//#                  JabberDataBlock juickNs = data.findNamespace("juick","http://juick.com/message");
+//#                  JabberDataBlock juickNs = data.findNamespace("juick",NS_MESSAGE);
 //#                  m.messageType=Msg.MESSAGE_TYPE_JUICK;
 //#                  m.id=null;
 //#                  
@@ -242,22 +241,32 @@
 //#                         JabberDataBlock child = null; 
 //#                         
 //#                          sb.append('@');
-//#                          sb.append(juickNs.getAttribute("uname")).append(" ");
+//#                          sb.append("<nick>")
+//#                            .append(juickNs.getAttribute("uname"))
+//#                            .append("</nick> ");
+//#                          
 //#                          sb.append('(');
-//#                          sb.append("#").append(mid==null?"PM":mid);
-//#                            if(rid!=null) sb.append("/").append(rid);
-//#                            if(photo) sb.append("+photo");
+//#                          sb.append('#').append(mid==null?"PM":mid);
+//#                            if(rid!=null) 
+//#                                sb.append('/').append(rid);
+//#                            if(photo) 
+//#                                sb.append("+photo");
 //#                          sb.append(')');
 //#                          
 //#                         childBlocks = juickNs.getChildBlocks();
 //#                         int size=childBlocks.size();
 //#                         for(int i=0;i<size;i++){  
 //#                           child = (JabberDataBlock)childBlocks.elementAt(i);
-//#                           if (child.getTagName().equals("tag")) sb.append("\n *"+child.getText());//+tagNames
+//#                           if (child.getTagName().equals("tag"))
+//#                               sb.append('\n')
+//#                               .append("<nick>*")
+//#                               .append(child.getText())
+//#                               .append("</nick>");
+//# 
 //#                           if (child.getTagName().equals("body")) bodyAnsw = child.getText();
 //#                         }
-//#                         sb.append("\n").append(bodyAnsw);
-//#                         if(message.getUrl()!=null) sb.append("\n").append(message.getOOB());
+//#                         sb.append('\n').append(bodyAnsw);
+//#                         if(message.getUrl()!=null) sb.append('\n').append(message.getOOB());
 //#                         m.body=sb.toString();
 //# 
 //#                         /*
@@ -267,17 +276,17 @@
 //#                          *  url:OOB_LINK
 //#                          */                        
 //#                         
-//#                         sb.setLength(0);//Clear for next MessageEdit msg.id
+//#                         sb.setLength(0);//Clear for next msg.id
 //#                          if(mid==null)
 //#                              sb.append("PM @")
 //#                                .append(juickNs.getAttribute("uname"));
 //#                          else 
-//#                              sb.append("#")
+//#                              sb.append('#')
 //#                                .append(mid);
 //#                         
-//#                         if(rid!=null && mid!=null) sb.append("/").append(rid);
+//#                         if(rid!=null && mid!=null) sb.append('/').append(rid);
 //#                         
-//#                         sb.append(" ");
+//#                         sb.append(' ');
 //#                         m.id=sb.toString(); // #id/num || #id
 //#                         sb.setLength(0);
 //#                         childBlocks.setSize(0);

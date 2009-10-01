@@ -40,7 +40,7 @@
 //# 
 //#     /** Creates a new instance of XMLList */
 //#     public DebugXMLList(Display display, Displayable pView) {
-//#         super();
+//#         super ();
 //#         super.smiles=false;
 //# 
 //#         commandState();

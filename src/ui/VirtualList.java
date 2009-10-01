@@ -122,6 +122,7 @@ public abstract class VirtualList
     public static PopUp popup;
 
     public static void setWobble(int type, String contact, String txt){
+        txt = StringUtils.replaceNickTags(txt);
         popup.addPopup(type, contact, txt);
     }
 //#endif
@@ -369,6 +370,7 @@ public abstract class VirtualList
         redraw();
     }
 
+    
     public void redraw(){
         Displayable d=display.getCurrent();
         if (d instanceof Canvas) {
@@ -402,12 +404,31 @@ public abstract class VirtualList
     protected void beginPaint(){};
 
     
+   /*
+    int frames = 0;
+    int showFrames = 0;
+    long time_start = 0;
+    long time_wait = 0;
+    */
+    
     public void paint(Graphics graphics) {
-
         mHeight=0;
         iHeight=0;
         
         Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
+        /*
+        if((time_wait-time_start)>=1000) {
+            time_start = System.currentTimeMillis();
+            //time_start - 1023msec
+            //time_wait - 1025msec
+            showFrames = frames;
+            //System.out.println(frames + " per seconds.(FPS)");
+            frames=0;
+        }
+        frames++;
+         */
+        
+        
         //System.out.println("paint " + Thread.activeCount());
         //long s1 = System.currentTimeMillis();
         
@@ -704,8 +725,19 @@ public abstract class VirtualList
         g.setColor(0,0,0);
         g.drawRect(xpos,1,ws-1,fh-1);
         g.drawString(Long.toString(s2-s1)+"msec", xpos+2, 2, g.LEFT|g.TOP);
- */
-
+        
+        //draw FPS
+        time_wait = System.currentTimeMillis();
+        int ws = g.getFont().stringWidth(Long.toString(showFrames)+" fps") + 5;
+        int fh = g.getFont().getHeight();
+        int xpos = width/2-ws/2;
+        g.setColor(255,255,0);
+        g.fillRect(xpos,1,ws,fh);
+        g.setColor(0,0,0);
+        g.drawRect(xpos,1,ws-1,fh-1);
+        g.drawString(Long.toString(showFrames)+" fps", xpos+2, 2, g.LEFT|g.TOP);             
+*/            
+        
         if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
     }
     
@@ -1498,7 +1530,7 @@ public abstract class VirtualList
 //#         case KEY_STAR:
 //#             popUpshow=true;
 //#             System.gc();
-//#             try { Thread.sleep(50); } catch (InterruptedException ex) { }
+//#             try { Thread.yield(); } catch (Exception ex) { }
 //#ifdef POPUPS
 //#             mem.setLength(0);
 //#             mem.append("Time: ")

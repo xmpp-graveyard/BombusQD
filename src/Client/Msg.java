@@ -132,7 +132,7 @@ public class Msg {
        if (messageType==MESSAGE_TYPE_PRESENCE && midlet.BombusQD.cf.timePresence) {
          time.setLength(0);
          time.append(getTime());
-         time.append(" ");
+         time.append(' ');
          time.append(body);
          return time.toString(); 
        }else{
@@ -158,13 +158,14 @@ public class Msg {
     }
 
     public String quoteString(){
-        StringBuffer out=new StringBuffer();
+        StringBuffer out=new StringBuffer(0);
         if (subject!=null)
             if (subject.length()>0)
                 out.append(subject).append("\n");
         out.append(body);
         int i=0;
-        while (i<out.length()) {
+        int len = out.length();
+        while (i<len) {
             if (out.charAt(i)<0x03) out.deleteCharAt(i);
             else i++;
         }

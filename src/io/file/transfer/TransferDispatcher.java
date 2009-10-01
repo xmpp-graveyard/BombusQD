@@ -160,12 +160,12 @@ public class TransferDispatcher implements JabberBlockListener{
     }
 	
     // send shortcut
+    private static StringBuffer sb=new StringBuffer(0);
     void send(JabberDataBlock data, boolean async) {
         try {
-            StringBuffer sb=new StringBuffer();
+            sb.setLength(0);
             data.constructXML(sb);
             sd.roster.theStream.sendBuf( sb );
-            sb=null;
         } catch (Exception e) {
             //e.printStackTrace();
         }

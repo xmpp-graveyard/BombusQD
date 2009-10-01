@@ -648,7 +648,7 @@ Cashe	Кэш
 History	История сообщений
 Fonts	Шрифты
 Import/Export	Импорт/Экспорт данных
-Notifications	Звуки и Уведомления
+Notifications&Light Control	Звуки,уведомления и подсветка
 Tasks	Планировщик
 Avatars	Аватары
 Config	Настроить
@@ -680,3 +680,14 @@ Remove Annotation	Удалить заметку
 Contact Annotations	Заметки для контактов
 Note	Заметка
 Change transport	Изменить транспорт
+Test Vibration	Вибро тест
+Vibration Len	Длина вибрации
+Vibration Repeats	Кол-во повторов
+Vibration Repeats Interval	Интервал между повторами
+Light control	Управление подсветкой
+Enable light control	Включить управление подсветкой
+Idle screen brightness	Яркость в покое
+Keypress screen brightness	Яркость после нажатия
+Keypress idle timeout	Таймаут после нажатия
+Message screen brightness	Яркость при сообщении
+Message idle timeout	Таймаут после сообщения
