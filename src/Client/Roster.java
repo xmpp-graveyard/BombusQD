@@ -996,6 +996,7 @@ public class Roster
 
     ReEnumerator reEnumerator=null;
     public void reEnumRoster(){
+        if(!isLoggedIn()) return;
         if (reEnumerator==null) reEnumerator=new ReEnumerator();
         reEnumerator.queueEnum();
 //#ifndef WSYSTEMGC        
@@ -1068,21 +1069,7 @@ public class Roster
         J=null;
         c=null;
     }
-    
-    private final void removeTrash(){
-        int index=0;
-        int size = hContacts.size();
-        synchronized (hContacts) {
-            while (index<size) {
-                Contact c=(Contact)hContacts.elementAt(index);
-                if (c.offline_type<0) {
-                    hContacts.removeElementAt(index);
-                } else index++;
-            }
-            countNewMsgs();
-        }
-    }
-    
+
     public final Contact findContact(final Jid j, final boolean compareResources) {
         Contact c=null;
         int size=hContacts.size();        
@@ -1200,8 +1187,7 @@ public class Roster
         
         c=null;
         foundInRoom=null;
-
-        sort(hContacts);
+        sortContacts(c);
         return grp;
     }
     
@@ -1225,10 +1211,45 @@ public class Roster
         }
 
         c.group=grp;
-        sort(hContacts);
         return c;
     }
 //#endif
+
+ 
+   private void sortContacts(Contact sort){
+        try {
+            synchronized (hContacts) {
+                int f, i;
+                IconTextElement left, right;
+                int size = hContacts.size();
+                Group g = null;
+                Contact c = null;
+                if(sort!=null) g = sort.group;
+                for (f = 1; f < size; f++) {
+                     c = (Contact)hContacts.elementAt(f);
+                     if(sort!=null && c.group!=g) continue;
+                        left=(IconTextElement)hContacts.elementAt(f);
+                        right=(IconTextElement)hContacts.elementAt(f-1);
+                        if ( left.compare(right) >=0 ) continue;
+                        i = f-1;
+                        while (i>=0){
+                           c = (Contact)hContacts.elementAt(i);
+                           if(c.metaContact) break;
+                           right=(IconTextElement)hContacts.elementAt(i);
+                           if (right.compare(left) <0) break;
+                           hContacts.setElementAt(right,i+1);
+                           i--;
+                        }
+                        hContacts.setElementAt(left,i+1);
+                }
+            }
+            reEnumRoster();
+        } catch (Exception e) {
+            e.printStackTrace(); /* ClassCastException */
+        }
+    }    
+    
+
     public final Contact getContact(final String jid, boolean createInNIL) {
         Jid J=new Jid(jid);
 
@@ -1253,8 +1274,10 @@ public class Roster
                 c=c.clone(J, Presence.PRESENCE_OFFLINE);
                 addContact(c);
             }
+        } 
+        if(isLoggedIn()) {
+            sortContacts(c);
         }
-        sort(hContacts);
         return c;
     }
     
@@ -1333,7 +1356,7 @@ public class Roster
         }
         Contact c=selfContact();
         c.setStatus(myStatus);
-        sort(hContacts);
+        sortContacts(null);
         reEnumRoster();
     }
     
@@ -1724,7 +1747,7 @@ public class Roster
             
             Contact c=selfContact();
             c.setStatus(myStatus);
-            sort(hContacts);
+            sortContacts(null);
             reEnumRoster();            
         } else {
             JabberDataBlock qr=new IqQueryRoster();
@@ -1973,7 +1996,11 @@ public class Roster
                         }
                        redraw();
                     }  
-                    
+//#if METACONTACTS
+//#                     if(id.startsWith("idMetaCnts")){//XEP-0209: Metacontacts
+//#                        convertContacts(data);
+//#                     }
+//#endif                    
                     if(id.startsWith("getnotes")){
                       //XEP-0145: Annotations
                       if(midlet.BombusQD.cf.networkAnnotation) {
@@ -1988,10 +2015,8 @@ public class Roster
                            JabberDataBlock note = (JabberDataBlock)childBlocks.elementAt(i);
                            for(int j=0;j<hCsize;j++){
                              find = (Contact)hContacts.elementAt(j);
-                             if(find instanceof Contact){
-                                 if (find.bareJid.indexOf( note.getAttribute("jid") )>-1) {
-                                     find.annotations=note.getText();
-                                 }
+                             if (find.bareJid.indexOf(note.getAttribute("jid"))>-1) {
+                                 find.annotations=note.getText();
                              }
                            }
                         }
@@ -2123,7 +2148,7 @@ public class Roster
 
                         Contact c=selfContact();
                         c.setStatus(myStatus);
-                        sort(hContacts);
+                        sortContacts(null);
                         reEnumRoster();
                         return JabberBlockListener.BLOCK_PROCESSED;
                     }
@@ -2164,7 +2189,14 @@ public class Roster
                     if (rp>0) from=from.substring(0, rp);
                 }
                 
-                Contact c=getContact(from, (midlet.BombusQD.cf.notInListDropLevel != NotInListFilter.DROP_MESSAGES_PRESENCES || groupchat));
+                Contact c = null;
+//#if METACONTACTS       
+//#                 c = getMetaContact(from,-1,-1);
+//#                 if(c==null) c = getContact(from, (midlet.BombusQD.cf.notInListDropLevel!=NotInListFilter.DROP_MESSAGES_PRESENCES||groupchat));
+//#else
+                c = getContact(from, (midlet.BombusQD.cf.notInListDropLevel!=NotInListFilter.DROP_MESSAGES_PRESENCES||groupchat));
+//#endif           
+                
                 if (c==null) return JabberBlockListener.BLOCK_REJECTED; //not-in-list message dropped
 
 
@@ -2244,6 +2276,7 @@ public class Roster
                 
                 if (groupchat) {
                     if (subj!=null) { // subject
+                        sortContacts(null);
                         if (body==null)
                             body=name+" "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
                         if (!subj.equals(c.getStatus())) {
@@ -2374,6 +2407,28 @@ public class Roster
 //#                     if(m==null) {
 //#                        m = new Msg(mType, from.trim(), subj, body.toString());
 //#                     }
+//#                     /*
+//#                     if(m.from.startsWith("[j]")){
+//#                         //create temp [j] contact
+//#                         Group group = groups.getGroup("Juick@Temp");
+//#                         if (group==null) {
+//#                            group=groups.addGroup("Juick@Temp", Groups.TYPE_COMMON);
+//#                            reEnumRoster();
+//#                         }
+//#                         String jid = m.from.substring(3);//#POST_ID
+//#                         Jid J=new Jid(jid);
+//#                         Contact juick = findContact(J,false); // search by bare jid
+//#                         if (juick==null) {
+//#                             juick=new Contact("#"+jid, "juick@juick.com/Juick" , Presence.PRESENCE_ONLINE, "both");
+//#                             addContact(juick);
+//#                         }
+//#                         juick.setGroup(group);
+//#                         juick.setStatus(util.StringUtils.replaceNickTags(m.body));
+//#                         messageStore(juick,m);
+//#                         m = null;
+//#                         J = null;
+//#                     }
+//#                      */
 //#                 }
 //#endif
                 if (tStamp!=0) m.dateGmt=tStamp;
@@ -2495,6 +2550,11 @@ public class Roster
                      
                     try {
                         MucContact c = mucContact(from);
+                        int rp=from.indexOf('/');
+                        Contact room = null;
+                        if(rp!=-1)
+                            room = getContact(from.substring(0, rp), false);
+                        
                         if (pr.getAttribute("ver")!=null) c.version=pr.getAttribute("ver"); // for bombusmod only
 //#ifdef CLIENTS_ICONS
 //#ifdef PLUGINS
@@ -2516,7 +2576,6 @@ public class Roster
                         String chatPres=c.processPresence(xmuc, pr);
 
                         if (midlet.BombusQD.cf.storeConfPresence) {
-                            int rp=from.indexOf('/');
                             String name=from.substring(rp+1);
                             Msg chatPresence;
                              if(chatPres.indexOf(SR.MS_WAS_BANNED)>-1 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1
@@ -2526,7 +2585,7 @@ public class Roster
                                 chatPresence = new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, chatPres );                                
                              }
                             chatPresence.color=c.getMainColor();
-                            messageStore(getContact(from.substring(0, rp), false), chatPresence);
+                            messageStore(room, chatPresence);
                             name=null;
                             chatPresence=null;
                         }
@@ -2536,13 +2595,10 @@ public class Roster
                               ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, Prtext );   
                         
                         if (ti==Presence.PRESENCE_ERROR) {
-                            
-                           int rp=from.indexOf('/');
                            String name=from.substring(rp+1);
                            StringBuffer sb = new StringBuffer(0);
                              sb.append(SR.MS_ERROR_).append(XmppError.findInStanza(pr).toString());
-                             messageStore(getContact(from.substring(0, rp), false),
-                                     new Msg(Msg.MESSAGE_TYPE_ERROR, name, null, sb.toString()));
+                             messageStore(room, new Msg(Msg.MESSAGE_TYPE_ERROR, name, null, sb.toString()));
                            
                            sb.setLength(0);
                            name=null;
@@ -2553,6 +2609,7 @@ public class Roster
                         m=null;
                         lang=null;
                         c.priority=pr.getPriority();
+                        sortContacts(c);
                         c=null;
                     }
                     catch(OutOfMemoryError eom){ errorLog("error Roster::3"); } catch (Exception e) { e.printStackTrace(); }
@@ -2560,6 +2617,10 @@ public class Roster
                 } else {
 //#endif
                     Contact c=null;
+//#if METACONTACTS
+//#                     int priority = pr.getPriority();
+//#                     c = getMetaContact(from,priority,ti);
+//#endif                    
                     Msg m=new Msg( (ti==Presence.PRESENCE_AUTH ||
                          ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, Prtext );                    
                      if (ti==Presence.PRESENCE_AUTH_ASK) {
@@ -2574,8 +2635,15 @@ public class Roster
                             sendPresence(from, "unsubscribed", null, false);
                             return JabberBlockListener.BLOCK_PROCESSED;
                         }
+                        
+//#if METACONTACTS
+//#                         if(c==null) c=getContact(from, true);
+//#else
                         c=getContact(from, true);
+//#endif
+                        
                         messageStore(c, m);
+                        sortContacts(c);
                         m=null;
                         if (midlet.BombusQD.cf.autoSubscribe==Config.SUBSCR_AUTO) {
                              doSubscribe(c);
@@ -2584,7 +2652,12 @@ public class Roster
                     } else {
                         // processing presences
                         boolean enNIL= midlet.BombusQD.cf.notInListDropLevel > NotInListFilter.DROP_PRESENCES;
+//#if METACONTACTS
+//#                         if(c==null) c=getContact(from, enNIL);
+//#else
                         c=getContact(from, enNIL);
+//#endif
+                        //c=getContact(from, enNIL);
                         if (c==null) return JabberBlockListener.BLOCK_REJECTED; //drop not-in-list presence
                         if (pr.getAttribute("ver")!=null) c.version=pr.getAttribute("ver");  // for bombusmod only
                         if (pr.getTypeIndex()!=Presence.PRESENCE_ERROR) {
@@ -2592,6 +2665,7 @@ public class Roster
 //#ifdef PLUGINS
 //#                             if (midlet.BombusQD.cf.showClientIcon)
 //#endif
+                            if(!c.metaContact){
                                 if (pr.hasEntityCaps()) {
                                     if (pr.getEntityNode()!=null) {
                                         ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
@@ -2601,6 +2675,7 @@ public class Roster
                                 } else if (c.jid.hasResource()) {
                                     ClientsIconsData.getInstance().processData(c, c.getResource().substring(1));
                                 }
+                            }
 //#endif
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                             if (j2j!=null) {
@@ -2615,12 +2690,13 @@ public class Roster
                             c.lang=lang; lang=null;
                             c.setStatus(pr.getStatus());
                         }
+                        if (ti>=0) c.setStatus(ti);
                         messageStore(c, m);
+                        sortContacts(c);
                         m=null;
                      }
-                    c.priority=pr.getPriority();
-                    if (ti>=0) 
-                        c.setStatus(ti);
+                    c.priority=priority;
+                    if (ti>=0) c.setStatus(ti);
                     if (c.getNick()==null && c.status<=Presence.PRESENCE_DND) {
                         JabberDataBlock nick = pr.findNamespace("nick", "http://jabber.org/protocol/nick");
                         if (nick!=null) c.setNick(nick.getText()); nick=null;
@@ -2667,7 +2743,6 @@ public class Roster
 //#ifndef WMUC
                 }
 //#endif
-		 sort(hContacts);
                  pr=null;
                  from=null;
                  reEnumRoster();                 
@@ -2721,10 +2796,17 @@ public class Roster
            JabberDataBlock getNotes = new Iq(null, Iq.TYPE_GET, "getnotes");
            getNotes.addChildNs("query", "jabber:iq:private").addChildNs("storage", "storage:rosternotes");    
            theStream.send(getNotes);
-        }        
-        cont=null;
+        }
+//#if METACONTACTS
+//#         //XEP-0209: Metacontacts
+//#         JabberDataBlock metaQuery = new Iq(null, Iq.TYPE_GET, "idMetaCnts");
+//#         metaQuery.addChildNs("query", "jabber:iq:private").addChildNs("storage", "storage:metacontacts");
+//#         theStream.send(metaQuery);
+//#endif
+        cont.setSize(0);
+        cont = null;
         q=null;
-        reEnumRoster();//fix problem with groups
+        reEnumRoster();
         return true;
     }
 
@@ -2754,6 +2836,7 @@ public class Roster
        
         boolean active=true;
         if(message.messageType==message.MESSAGE_TYPE_PRESENCE){
+           //reEnumRoster();//<<<
            int size = hContacts.size();
            Contact search;
            for(int i=0;i<size;i++) {
@@ -3057,30 +3140,7 @@ public class Roster
              sendPresence(lastOnlineStatus, null);
         } catch (Exception e2) { }
      }
-    
 
-     
-    
-    public void eventOk(){
-       super.eventOk();
-        Object e=getFocusedObject();
-        if (e instanceof Contact) {
-              if(midlet.BombusQD.cf.useClassicChat){
-                new SimpleItemChat(display,this,(Contact)e);
-              } else{
-                if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
-                if(((Contact)e).cList!=null && midlet.BombusQD.cf.module_cashe && ((Contact)e).msgs.size()>3){
-                  display.setCurrent( (ContactMessageList)((Contact)e).cList );  
-                }else{
-                  new ContactMessageList((Contact)e,display);  
-                }
-              }                
-        } else{
-                    cleanupGroup();
-                    reEnumRoster();
-        }       
-    }
-    
     public void eventLongOk(){
         super.eventLongOk();
 //#ifndef WMUC
@@ -3160,6 +3220,196 @@ public class Roster
         }
     }
 
+//#if METACONTACTS
+//#     private void convertContacts(JabberDataBlock data){ //XEP-0209: Metacontacts
+//#         midlet.BombusQD.debug.add("METACONTACTS::"+data.toString(),10);
+//#         searchMeta.setSize(0);
+//#         searchMetaContact.setSize(0);
+//#         JabberDataBlock metaBlocks = data.findNamespace("query","jabber:iq:private").findNamespace("storage","storage:metacontacts");
+//#         Vector childBlocks = new Vector(0);
+//#         childBlocks = metaBlocks.getChildBlocks();
+//#           int size = metaBlocks.getChildBlocks().size();   
+//#           for(int i=0;i<size;i++){
+//#                JabberDataBlock metaElement = (JabberDataBlock)childBlocks.elementAt(i);
+//#                int hsize = hContacts.size();
+//#                    Jid J=new Jid(metaElement.getAttribute("jid"));
+//#                    Contact metaContact = findContact(J,false); // search by bare jid
+//#                    if(metaContact!=null){
+//#                       metaContact.metaContact = true;
+//#                       metaContact.contactId = "id" + metaElement.getAttribute("tag");
+//#                   }
+//#            }
+//#          reEnumRoster();
+//#          sortContacts(null);
+//#          convertContacts();
+//#     }
+//#     
+//# 
+//#     public Contact getMetaContact(String jid,int priority,int status){ //XEP-0209: Metacontacts
+//#              int hsize = hContacts.size();
+//#              int slash = jid.indexOf('/');
+//#              int len = jid.length();
+//#              int msize = searchMeta.size();
+//#              int jid_size = searchMetaContact.size();
+//#              String resource = "";
+//#              String from = "";
+//#              if(slash!=-1){
+//#                resource = jid.substring(slash,len);
+//#                from = jid.substring(0,slash);
+//#              }
+//# 
+//#          Contact c = null;
+//#          boolean find = false;
+//# 
+//#          for(int y=0;y<msize;y++){
+//#             if(find||msize==0) break;
+//#             Contact search = (Contact)searchMeta.elementAt(y);
+//#             for(int i=0;i<jid_size;i++) {
+//#                    String element = (String)searchMetaContact.elementAt(i);
+//#                    if(element.equals(from)){
+//#                      int sizeIn = search.metaContacts.size();
+//#                      for(int k=0;k<sizeIn;k++){
+//#                          if(find) break;
+//#                          Contact metaIn = (Contact)search.metaContacts.elementAt(k);
+//#                          if(metaIn.bareJid.indexOf(from)>-1){
+//#                              metaIn.group = search.group;//найденный контакт наследует группу
+//#                              if(priority!=-1 && status!=-1) { //incoming presence
+//#                                 metaIn.setStatus(status);
+//#                                 jid = from;
+//#                              }else { //incoming message
+//#                                 if(metaIn.status==5) {
+//#                                     jid = from;
+//#                                     metaIn.status = 0;
+//#                                 }
+//#                              }
+//#                              metaIn.version = "";
+//#                              metaIn.jid.setJid(jid);//bareJid
+//#                              c = metaIn;
+//#                              find = true;
+//#                              break;
+//#                          }
+//#                      }
+//#                    }
+//#             }
+//#          }
+//#       return c;
+//#     }    
+//#     
+//#     
+//#     private Vector searchMetaContact = new Vector();//all included jids
+//#     private Vector searchMeta = new Vector();//all metaGroups
+//#     
+//#     
+//#     private void convertContacts(){
+//#         Contact c = null;
+//#         int size = hContacts.size();
+//#         Vector tempMetaContact = new Vector(0);
+//#         synchronized (hContacts) {
+//#           int i = 0;
+//#            for(i=0;i<hContacts.size();i++) {
+//#                 c =(Contact)hContacts.elementAt(i);
+//#                 if(c.metaContact){
+//#                   if(c.contactId.length()>0)
+//#                   {
+//#                     Contact metaContact = new Contact("", "metacontact", Presence.PRESENCE_CHAT, "both");
+//#                     metaContact.setStatus(Presence.PRESENCE_CHAT);
+//#                     //metaContact.setStatus("<metacontact>");
+//#                     metaContact.setGroup(c.group);
+//#                     metaContact.metaContact = true;
+//#                     metaContact.contactId = "";
+//#                       int foundContacts = 0;
+//#                       tempMetaContact = new Vector(0);
+//#                       for(int y=0;y<hContacts.size();y++){
+//#                         Contact find =(Contact)hContacts.elementAt(y);
+//#                         if(c.contactId.equals(find.contactId)) {
+//#                             find.jid.setJid(find.bareJid);
+//#                             tempMetaContact.addElement(find);
+//#                             searchMetaContact.addElement(find.bareJid);
+//#                             hContacts.removeElement(find);
+//#                             foundContacts++;
+//#                             y = -1;
+//#                         }
+//#                       }
+//#                     metaContact.metaContacts = tempMetaContact;
+//#                     metaContact.status = 0;
+//#                     searchMeta.addElement(metaContact);//for fast search
+//#                     hContacts.insertElementAt(metaContact,i);
+//#                     i = -1;
+//#                   }
+//#                 }
+//#           }
+//#         }
+//#        reEnumRoster();
+//#        sortContacts(null);
+//#     }
+//#         
+//# 
+//#     private void collapseContacts(){ //Metacontacts.Collapse
+//#        synchronized (hContacts) {
+//#           for(int y=0; y<hContacts.size(); y++) {
+//#             Contact c = (Contact)hContacts.elementAt(y);
+//#             eventMetaContact(c,true);//only collapse
+//#           }
+//#        }
+//#       reEnumRoster();
+//#     }   
+//#     
+//# 
+//#     private boolean eventMetaContact(Contact c,boolean collapseStatus){
+//#       boolean opened = c.contactId.startsWith("opened");
+//#       if(opened) c.contactId = "";
+//#       if(c.metaContact && c.contactId.length()==0){
+//#           int pos = hContacts.indexOf(c);
+//#           if (pos>=0) {
+//#                  int size = c.metaContacts.size();
+//#                  pos+=1;
+//#                   while(size>0){
+//#                     size-=1;
+//#                       if(opened) hContacts.removeElementAt(pos);
+//#                       else {
+//#                          if(collapseStatus==false){
+//#                             Contact extract  = (Contact)c.metaContacts.elementAt(size);
+//#                             extract.group = c.group;
+//#                             hContacts.insertElementAt(extract,pos);
+//#                             c.contactId="opened";
+//#                          }
+//#                       }
+//#                    }
+//#              reEnumRoster();
+//#              redraw();
+//#            }
+//#           return true;
+//#       }
+//#       return false;
+//#     }
+//#endif
+    
+
+    public void eventOk(){
+       super.eventOk();
+        Object e=getFocusedObject();
+        if (e instanceof Contact) {
+            Contact c = (Contact)e;
+//#if METACONTACTS
+//#             if(eventMetaContact(c,false)) return;
+//#endif            
+              if(midlet.BombusQD.cf.useClassicChat){
+                new SimpleItemChat(display,this,c);
+              } else{
+                if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
+                if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3){
+                  display.setCurrent( (ContactMessageList)c.cList );
+                }else{
+                  new ContactMessageList(c,display);
+                }
+              }                
+        } else{
+            cleanupGroup();
+            reEnumRoster();
+        }       
+    }        
+    
+
     public void keyPressed(int keyCode){
         super.keyPressed(keyCode);
         if(gm.itemGrMenu>0){
@@ -3174,6 +3424,9 @@ public class Roster
                 return;
 //#endif
             case KEY_NUM1:
+//#if METACONTACTS
+//#                 //collapseContacts();
+//#endif
                 if (midlet.BombusQD.cf.collapsedGroups) { //collapse all groups
                     groups.collapseGroups(true);
                     reEnumRoster();
@@ -3420,11 +3673,13 @@ public class Roster
             } else {
 //#endif
                 mess.append("jid: ")
+                    .append("\nMetaContact: "+cntact.metaContact)
+                    .append("\nMetaID:"+cntact.contactId+"\nStatus "+cntact.status+"\n")
                     .append(cntact.bareJid)
                     .append(cntact.jid.getResource())
                     .append("\n")
-                    .append(SR.MS_SUBSCRIPTION)
-                    .append(": ");
+                    .append(SR.MS_SUBSCRIPTION+" ");
+                
                 if(cntact.subscr.indexOf("both")>-1) mess.append(SR.MS_SUBSCR_BOTH);
                 else if(cntact.subscr.indexOf("from")>-1) mess.append(SR.MS_SUBSCR_FROM);
                 else if(cntact.subscr.indexOf("to")>-1) mess.append(SR.MS_SUBSCR_TO);
@@ -3859,11 +4114,8 @@ public class Roster
 //#endif
 
     private static StringBuffer onl=new StringBuffer(0);
-    
     private class ReEnumerator {
-        int pendingRepaints=0;
 	boolean force;
-	
 	Object desiredFocus;
         
         public void queueEnum(Object focusTo, boolean force) {
@@ -3871,80 +4123,83 @@ public class Roster
 	    this.force=force;
 	    queueEnum();
         }
-	
+
         public void queueEnum() {
-            pendingRepaints++;
-            Enumerate();
-        }
-        
-        public void Enumerate(){
-            //need fix
-                while (pendingRepaints>0) {
-                    int locCursor=cursor;
-                    Object focused=(desiredFocus==null)?getFocusedObject():desiredFocus;
+               int locCursor=cursor;
+               Object focused=(desiredFocus==null)?getFocusedObject():desiredFocus;
 		    desiredFocus=null;
-                    Vector tContacts=new Vector(vContacts.size());
+               Vector tContacts=new Vector(vContacts.size());
 
-                    groups.resetCounters();
-                    Contact kk=null;
-                    Group grp=null;
-                    
-                    int sizeh=hContacts.size();
-                    synchronized (hContacts) {
-                        for(int i=0;i<sizeh;i++){
-                           kk = (Contact)hContacts.elementAt(i);
-                           grp=kk.group;
-			   grp.addContact(kk);                           
-                        }
-                    }                
-                    // self-contact group
-                    Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
-                    selfContactGroup.visible=(midlet.BombusQD.cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 );
-                    
-                    // hiddens
-                    groups.getGroup(Groups.TYPE_IGNORE).visible= midlet.BombusQD.cf.ignore ;
-                    
-                    // transports
-                    Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);
-                    transpGroup.visible= (midlet.BombusQD.cf.showTransports || transpGroup.unreadMessages>0);
-                    
-                    // always visible
-                    groups.getGroup(Groups.TYPE_VISIBLE).visible=true;
-                    
-                    // always visible
-                    groups.getGroup(Groups.TYPE_SEARCH_RESULT).visible=true;
+               groups.resetCounters();
+               Group grp;
+               Contact kk = null;
+               int size = hContacts.size();
 
-                    // adding groups
-                    int gc = groups.getCount();
-                    for (int i=0; i<gc; i++)
-                        groups.addToVector(tContacts,i);
-                    
-                    vContacts=tContacts;
-                    tContacts=null;
-                    onl.setLength(0);
-                    onl
-                    .append("(")
-                    .append(groups.getRosterOnline())
-                    .append("/")
-                    .append(groups.getRosterContacts())
-                    .append(")")
-                    //.append("  *"+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz))
-                    ;
-                    setRosterMainBar(onl.toString());
-                    
-                    if (cursor<0) cursor=0;
+               synchronized (hContacts) {
+                   for(int i=0;i<size;i++){
+                      kk = (Contact)hContacts.elementAt(i);
+                      if(kk.metaContact) {
+                        if(kk.contactId.startsWith("opened") || kk.contactId.length()==0){
+                          int sizeM = kk.metaContacts.size();
+                          int online = 0;
+                          String nick = null;
+                          for(int y = 0; y < sizeM; y++){
+                           Contact find = (Contact)kk.metaContacts.elementAt(y);
+                           if(nick==null) nick = find.bareJid;
+                           if(find.status>=0 && find.status<5) online++;
+                          }
+                          kk.setNick(nick + " (" +Integer.toString(online) + "/" + Integer.toString(sizeM) + ")");
+                         }
+                       }                      
+                      grp=kk.group;
+		      grp.addInGroup(kk);
+                   }
+               }
+               
+               // self-contact group
+               Group selfContactGroup=groups.getGroup(Groups.TYPE_SELF);
+               selfContactGroup.visible=(midlet.BombusQD.cf.selfContact || selfContactGroup.tonlines>1 || selfContactGroup.unreadMessages>0 );
+               
+               // hiddens
+               groups.getGroup(Groups.TYPE_IGNORE).visible= midlet.BombusQD.cf.ignore ;
+               
+               // transports
+               Group transpGroup=groups.getGroup(Groups.TYPE_TRANSP);
+               transpGroup.visible= (midlet.BombusQD.cf.showTransports || transpGroup.unreadMessages>0);
+               
+               // always visible
+               groups.getGroup(Groups.TYPE_VISIBLE).visible=true;
+               
+               // always visible
+               groups.getGroup(Groups.TYPE_SEARCH_RESULT).visible=true;
+               // adding groups
+               int gc = groups.getCount();
+               for (int i=0; i<gc; i++)
+                   groups.addToVector(tContacts,i);
+               vContacts=tContacts;
+               tContacts=null;
+               onl.setLength(0);
+               onl
+               .append("(")
+               .append(groups.getRosterOnline())
+               .append("/")
+               .append(groups.getRosterContacts())
+               .append(")")
+               //.append("  *"+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz))
+               ;
+               setRosterMainBar(onl.toString());
+               
+               if (cursor<0) cursor=0;
 
-                    if ( locCursor==cursor && focused!=null ) {
-                        int c=vContacts.indexOf(focused);
-                        if (c>=0) moveCursorTo(c);
+               if ( locCursor==cursor && focused!=null ) {
+                   int c=vContacts.indexOf(focused);
+                   if (c>=0) moveCursorTo(c);
 			force=false;
-                    }
-                    focusedItem(cursor);
-                    focused=null;
-                    selfContactGroup=null;
-                    redraw();
-                    pendingRepaints=0;                    
-                }
+               }
+               focusedItem(cursor);
+               focused=null;
+               selfContactGroup=null;
+               redraw();
         }
     }
 }

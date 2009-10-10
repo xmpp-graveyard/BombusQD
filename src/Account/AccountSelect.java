@@ -101,7 +101,7 @@ public class AccountSelect
         super();
         this.display=display;
         this.status=status;
-
+        midlet.BombusQD.debug.add("::AccountSelect super() "+Integer.toString(status),10);
         String str = "";
         switch(status){
             case 0: str = "(online)"; break;
@@ -224,6 +224,7 @@ public class AccountSelect
 //#         }
 //# 
 //#         if (c==cmdJabber) {
+//#           midlet.BombusQD.debug.add("::add profile",10);            
 //#           new AccountForm(display, this, this, null,1,false,null);  
 //#         }
 //#         if (c==cmdYaru) {
@@ -308,7 +309,8 @@ public class AccountSelect
     private void switchAccount(boolean login){
         midlet.BombusQD.cf.accountIndex=cursor;
         midlet.BombusQD.cf.saveInt();
-        Account.loadAccount(login, cursor, status);
+        Account acc =  (Account)getFocusedObject();
+        acc.loadAccount(login, cursor, status);
         destroyView();
     }
     

@@ -115,7 +115,10 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
         boolean isContact=( item instanceof Contact );
         
 	if (isContact) {
-	    Contact contact=(Contact)item;            
+	    Contact contact=(Contact)item;   
+            
+            if(contact.metaContact && (contact.contactId==""||contact.contactId=="opened")) return;
+            
             MainBar mainbar=new MainBar(contact);
             setMainBarItem(mainbar);
             int grType = contact.getGroupType();
@@ -181,7 +184,8 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
                     addItem(SR.MS_SEEN,894, menuIcons.ICON_ONLINE); 
                 }
                 if (grType!=Groups.TYPE_TRANSP) {
-                    addItem(SR.MS_EDIT,2, menuIcons.ICON_RENAME);
+                    if(!contact.metaContact && !contact.contactId.startsWith("id"))
+                        addItem(SR.MS_EDIT,2, menuIcons.ICON_RENAME);
                 }
 		addItem(SR.MS_SUBSCRIPTION,3, menuIcons.ICON_SUBSCR);
 //		addItem(SR.MS_MOVE,1003, menuIcons.ICON_MOVE);

@@ -683,7 +683,7 @@ public abstract class VirtualList
 //#endif
         
           if (showBalloon) {
-            if (showBalloons) {
+            if (midlet.BombusQD.cf.showBalloons) {
                 String text=null;
                 try {
                     text=((VirtualElement)getFocusedObject()).getTipString();

@@ -36,6 +36,30 @@ public class StringUtils {
  
     public static String replaceNickTags(String body){
          StringBuffer sb = new StringBuffer(0);
+         body = body+" ";
+         boolean parse = true;
+         int f1,f2,len=0;
+         while(parse){
+          len = body.length();
+          f1 = body.indexOf("<nick>");
+          f2 = body.indexOf("</nick>");
+          if(f1>-1 || f2>-1){
+            for(int i=0;i<len;i++){
+              if(i==f1) i+=6;
+              if(i==f2) i+=7;
+              sb.append(body.charAt(i));
+            }
+            body = sb.toString(); sb.setLength(0);
+          } else parse = false;
+         }
+         len = body.length();
+         sb = null;
+         return body.substring(0,len-1);
+    }    
+    
+    public static Msg replaceNickTags(Msg msg){
+         StringBuffer sb = new StringBuffer(0);
+         String body = msg.body+" ";
          boolean parse = true;
          int f1,f2,len=0;
          while(parse){
@@ -52,29 +76,8 @@ public class StringUtils {
           } else parse = false;
          }
          sb = null;
-         return body;
-    }    
-    
-    public static Msg replaceNickTags(Msg msg){
-         StringBuffer sb = new StringBuffer(0);
-         String body = msg.body;
-         boolean parse = true;
-         int f1,f2,len=0;
-         while(parse){
-          len = body.length();
-          f1 = body.indexOf("<nick>");
-          f2 = body.indexOf("</nick>");
-          if(f1>-1 || f2>-1){
-            for(int i=0;i<len;i++){
-              if(i==f1) i+=6;
-              if(i==f2) i+=7;
-              sb.append(body.charAt(i));
-            }
-            body = sb.toString(); sb.setLength(0);
-          } else parse = false;
-         }
-         sb = null;         
-         msg.body = body;
+         len = body.length();
+         msg.body = body.substring(0,len-1);
          return msg;
     }      
     

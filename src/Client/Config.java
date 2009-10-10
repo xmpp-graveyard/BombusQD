@@ -308,7 +308,7 @@ public class Config {
     public boolean ANIsmilesDetect;
     public boolean showCollapsedPresences=true;
     public boolean networkAnnotation=true;
-    
+    public boolean metaContacts=true;
 
     public static Config getInstance(){
 	if (instance==null) {

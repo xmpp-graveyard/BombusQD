@@ -119,7 +119,7 @@ public class Group extends IconTextElement {
 	    contacts=new Vector(0);
     }
 
-    public void addContact(Contact c) {
+    public void addInGroup(Contact c) {
 	tncontacts++;
 	boolean online=c.status<Presence.PRESENCE_OFFLINE;
 	if (online) {
@@ -127,8 +127,15 @@ public class Group extends IconTextElement {
 	}
 	// hide offlines whithout new messages
         unreadMessages+=c.getNewMsgsCount(); 
-        
-	if ( online || midlet.BombusQD.cf.showOfflineContacts || c.getNewMsgsCount()>0 || type==Groups.TYPE_NOT_IN_LIST || type==Groups.TYPE_TRANSP || type==Groups.TYPE_VISIBLE || type==Groups.TYPE_SEARCH_RESULT || c.origin==Contact.ORIGIN_GROUPCHAT )
+	if ( online
+                || c.metaContact
+                || midlet.BombusQD.cf.showOfflineContacts
+                || c.getNewMsgsCount()>0 
+                || type==Groups.TYPE_NOT_IN_LIST 
+                || type==Groups.TYPE_TRANSP
+                || type==Groups.TYPE_VISIBLE
+                || type==Groups.TYPE_SEARCH_RESULT 
+                || c.origin==Contact.ORIGIN_GROUPCHAT )
             contacts.addElement(c);
     }
     

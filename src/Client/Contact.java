@@ -93,7 +93,7 @@ public class Contact extends IconTextElement{
     public Jid jid;
     public String bareJid; // for roster/subscription manipulating
     public int status;
-    public int priority;
+    public int priority = 0;
     public Group group;
     public int transport;
     
@@ -236,7 +236,10 @@ public class Contact extends IconTextElement{
         }
 //#endif
         if (j2j!=null) return ColorTheme.getColor(ColorTheme.CONTACT_J2J);
-
+//#if METACONTACTS
+//#         if(metaContact && contactId.length()==0) return ColorTheme.getColor(ColorTheme.GROUP_INK);
+//#         if(metaContact && contactId.startsWith("opened")) return ColorTheme.getColor(ColorTheme.GROUP_INK);
+//#endif
         return getMainColor();
     }
     
@@ -633,24 +636,39 @@ public class Contact extends IconTextElement{
 
    
     
+//#if METACONTACTS
+//#     public boolean metaContact = false;
+//#     public String contactId = "";
+//#     public Vector metaContacts = new Vector(0);
+//#endif
+    
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int w=g.getClipWidth();
         int h=getVHeight();
         int xo=g.getClipX();
         int yo=g.getClipY();
         
+        int pos = 8;
+        int imageIndex = getImageIndex();
+//#if METACONTACTS
+//#         if(metaContact) {
+//#            if(contactId.startsWith("id")) pos+=ilHeight;
+//#            if(contactId.startsWith("opened")) imageIndex = 0x23;
+//#            if(contactId.length()==0) imageIndex = 0x24;
+//#         }
+//#endif
+        g.translate(pos,0);
+        w -= pos;
+        
         int offset=4;
-
         int imgH=(h-ilHeight)/2;
         
         if(midlet.BombusQD.cf.drawCPhoto==false){
           img_vcard=null;  
         }
-        if (getImageIndex()>-1) {
+        if (imageIndex>-1) {
             offset+=ilHeight;
-            il.drawImage(g, getImageIndex(), 
-                    2, 
-                    imgH);
+            il.drawImage(g, imageIndex, 2, imgH);
         }
         if(img_vcard!=null){
            int yy = (h - avatar_height)/2;
@@ -724,7 +742,16 @@ public class Contact extends IconTextElement{
         g.setClip(offset, yo, w-offset, h);
         thisOfs=(getFirstLength()>w)?-ofs+offset:offset;
         if ((thisOfs+getFirstLength())<0) thisOfs=offset;
+//#if METACONTACTS        
+//#         if(metaContact){
+//#           if(contactId.startsWith("id")) g.setFont(getFont());
+//#           if(contactId.startsWith("opened")) g.setFont(FontCache.getFont(false,FontCache.roster));
+//#           if(contactId.length()==0) g.setFont(FontCache.getFont(false,FontCache.roster));
+//#         } else g.setFont(getFont());
+//#else
         g.setFont(getFont());
+//#endif
+        
         
         if (getSecondString()==null) {
             int y = (h - fontHeight)/2;

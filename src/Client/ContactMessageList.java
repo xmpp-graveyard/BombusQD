@@ -715,24 +715,24 @@ public class ContactMessageList extends MessageList {
         
         try {
             Msg msg=replaceNickTags(getMessage(cursor));
-            
             if (msg==null ||
                 msg.messageType == Msg.MESSAGE_TYPE_OUT ||
                 msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
                 keyGreen();
             else{
 //#ifdef RUNNING_MESSAGE
-//#                 
 //#                String messg = msg.from+": "; 
 //#ifdef JUICK.COM                
 //#                if(msg.messageType==Msg.MESSAGE_TYPE_JUICK){
-//#                     messg=msg.id;
+//#                     messg=util.StringUtils.replaceNickTags(msg.id);
 //#                }
 //#endif          
 //#              if(msg.from=="Cleared") {
 //#                    messg="";
 //#                    msg.body="";
 //#              }
+//#                
+//#              if(messg==null) messg = "";
 //#                
 //#              switch(midlet.BombusQD.cf.msgEditType){
 //#                  case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg); break;

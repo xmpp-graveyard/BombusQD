@@ -66,7 +66,7 @@
 //#     
 //#     public StanzaEdit(Display display, Displayable pView, String body) {
 //#         //super(display, pView, body, SR.MS_XML_CONSOLE, TextField.ANY);
-//#         t=new TextBox(SR.MS_XML_CONSOLE,body, 500, TextField.ANY);
+//#         t=new TextBox(SR.MS_XML_CONSOLE,body, 4096, TextField.ANY);
 //#         this.display=display;
 //#         
 //#         t.addCommand(cmdSend);

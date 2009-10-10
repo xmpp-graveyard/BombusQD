@@ -362,6 +362,7 @@ public class AccountForm
     }
     
     public void cmdOk() {
+        midlet.BombusQD.debug.add("::saved",10);
         String user = userbox.getValue().trim().toLowerCase();
         String server = servbox.getValue().trim().toLowerCase();
         String pass = passbox.getValue();

@@ -47,7 +47,13 @@
 //#     
 //#     private void storeMessage(Msg msg){
 //#       midlet.BombusQD.debug.add("STORE wait::",10);
-//#       midlet.BombusQD.sd.roster.messageStore( midlet.BombusQD.sd.roster.getContact(BOTNAME,false) ,msg);
+//#if METACONTACTS  
+//#        Contact c = midlet.BombusQD.sd.roster.getMetaContact(BOTNAME,-1,-1);
+//#        if(c==null) c = midlet.BombusQD.sd.roster.getContact(BOTNAME,false);
+//#        midlet.BombusQD.sd.roster.messageStore( c ,msg);
+//#else
+//#         
+//#endif
 //#       midlet.BombusQD.debug.add("STORE::"+msg.body,10);
 //#     }
 //#     
@@ -62,7 +68,7 @@
 //#         boolean lastPopularMessages = body.startsWith("Last popular messages:");
 //#         boolean lastMessages = body.startsWith("Last messages:");
 //# 
-//#         if( lastMessages || lastPopularMessages ) {
+//#         if( lastMessages || lastPopularMessages) {
 //#           message = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null ,"<nick>[Last" + (lastMessages?" ":" popular ") + "messages]</nick>" );
 //#           storeMessage(message);
 //#           boolean parse = false;
@@ -191,13 +197,15 @@
 //#                              }
 //#                              buf.append('\n').append(body);
 //#                            }
+//#                          
+//#                           if (mid!=null){
+//#                               buf.append('\n');
+//#                               message_id.append('#').append(mid);
+//#                                  if(rid!=null) message_id.append('/').append("<nick>").append(rid).append("</nick>");
+//#                               message_id.append(' ');
+//#                               buf.append(message_id.toString());
+//#                           }
 //#                            
-//#                            if (mid!=null){
-//#                              message_id.append('\n').append('#').append(mid);
-//#                                 if(rid!=null) message_id.append('/').append("<nick>").append(rid).append("</nick>");
-//#                              message_id.append(' ');
-//#                              buf.append(message_id.toString());
-//#                            }
 //#                           m = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null , buf.toString() );
 //#                           m.id = message_id.toString();
 //#                           storeMessage(m);
@@ -220,7 +228,7 @@
 //#                return null;
 //#             }
 //#             
-//#         } else if( data instanceof Message ) {
+//#         } else if( data instanceof Message ) {//Сообщения по подписке
 //#                  midlet.BombusQD.debug.add("MESSAGE::"+data.toString(),10);             
 //#                  Message message = (Message) data;
 //#                  
@@ -240,19 +248,10 @@
 //#                        boolean photo = (juickNs.getAttribute("photo")==null)?false:true;                    
 //#                         JabberDataBlock child = null; 
 //#                         
-//#                          sb.append('@');
-//#                          sb.append("<nick>")
+//#                          sb.append("<nick>@")
 //#                            .append(juickNs.getAttribute("uname"))
-//#                            .append("</nick> ");
-//#                          
-//#                          sb.append('(');
-//#                          sb.append('#').append(mid==null?"PM":mid);
-//#                            if(rid!=null) 
-//#                                sb.append('/').append(rid);
-//#                            if(photo) 
-//#                                sb.append("+photo");
-//#                          sb.append(')');
-//#                          
+//#                            .append(":</nick>");
+//# 
 //#                         childBlocks = juickNs.getChildBlocks();
 //#                         int size=childBlocks.size();
 //#                         for(int i=0;i<size;i++){  
@@ -266,28 +265,43 @@
 //#                           if (child.getTagName().equals("body")) bodyAnsw = child.getText();
 //#                         }
 //#                         sb.append('\n').append(bodyAnsw);
+//#                         sb.append('\n');
+//#                         sb.append('#').append(mid==null?"<nick>PM</nick>":mid);
+//#                            if(rid!=null) 
+//#                                sb.append('/')
+//#                                  .append("<nick>")
+//#                                  .append(rid)
+//#                                  .append("</nick>");
+//#                            if(photo) 
+//#                                sb.append("+photo");
+//#                         
 //#                         if(message.getUrl()!=null) sb.append('\n').append(message.getOOB());
 //#                         m.body=sb.toString();
 //# 
 //#                         /*
-//#                          *  @NICK (#NUMBER_POST)
+//#                          *  @NICK
 //#                          *  *enabled tags []
 //#                          *  MESSAGE_TEXT
+//#                          *  #NUMBER_POST/comment
 //#                          *  url:OOB_LINK
 //#                          */                        
 //#                         
 //#                         sb.setLength(0);//Clear for next msg.id
-//#                          if(mid==null)
-//#                              sb.append("PM @")
-//#                                .append(juickNs.getAttribute("uname"));
+//#                          if(mid==null) 
+//#                              sb.append("PM @").append(juickNs.getAttribute("uname"));
 //#                          else 
-//#                              sb.append('#')
-//#                                .append(mid);
+//#                              sb.append('#').append(mid);
 //#                         
-//#                         if(rid!=null && mid!=null) sb.append('/').append(rid);
+//#                         if(rid!=null) sb.append('/').append(rid);
 //#                         
 //#                         sb.append(' ');
+//#                         
 //#                         m.id=sb.toString(); // #id/num || #id
+//# ///////////////                        
+//#                         //if(mid!=null) m.from = "[j]"+mid;
+//#                         //created [j] temp contact
+//#                         //juickNs!=null,т.е. сообщение с juick namespace
+//# ///////////////                        
 //#                         sb.setLength(0);
 //#                         childBlocks.setSize(0);
 //#                         childBlocks=null;
