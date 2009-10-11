@@ -369,8 +369,10 @@ public class Roster
 //#endif                              
 //#ifdef PRIVACY      
 //#       private Command cmdPrivacy=new Command(SR.MS_PRIVACY_LISTS, Command.SCREEN, 27);
-//#endif                        
+//#endif       
+//#ifdef FILE_TRANSFER      
 //#       private Command cmdTransfers=new Command(SR.MS_FILE_TRANSFERS, Command.SCREEN, 28);
+//#endif
 //#ifdef PEP        
 //#   private Command cmdMood=new Command(SR.MS_USERMOOD, Command.SCREEN, 29);
 //#       private Command cmdActivity=new Command(SR.MS_ACTIVITY, Command.SCREEN, 30);
@@ -435,8 +437,11 @@ public class Roster
 //#endif              
 //#ifdef PRIVACY              
 //#               addInCommand(1,cmdPrivacy); cmdPrivacy.setImg(MenuIcons.ICON_PRIVACY);
-//#endif                 
+//#endif             
+//#               
+//#ifdef FILE_TRANSFER
 //#               if (midlet.BombusQD.cf.fileTransfer) { addInCommand(1,cmdTransfers); cmdTransfers.setImg(MenuIcons.ICON_FT); }
+//#endif
 //#ifdef PEP                                      
 //#               addInCommand(1,cmdMood); cmdMood.setImg(MenuIcons.ICON_MOOD);
 //#               addInCommand(1,cmdActivity); cmdActivity.setImg(MenuIcons.ICON_MOOD);
@@ -591,8 +596,10 @@ public class Roster
 //#endif                    
 //#ifdef PRIVACY         
 //#            else if(c==cmdPrivacy){ new PrivacySelect(display, this);  }
-//#endif           
+//#endif   
+//#ifdef FILE_TRANSFER         
 //#            else if(c==cmdTransfers){ new io.file.transfer.TransferManager(display);  }
+//#endif
 //#ifdef PEP                
 //#            else if(c==cmdMood){ new MoodList(display);  }
 //#            else if(c==cmdActivity){ new ActivityMenu(display, this); }
@@ -809,7 +816,9 @@ public class Roster
         if (s==null) return;
         Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", "Info", s);
         messageStore(selfContact(), m);
-        if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add(s,10);
+//#ifdef CONSOLE 
+//#         if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add(s,10);
+//#endif
     }
     
     
@@ -2837,6 +2846,7 @@ public class Roster
         boolean active=true;
         if(message.messageType==message.MESSAGE_TYPE_PRESENCE){
            //reEnumRoster();//<<<
+           if(c.metaContact) sortMetaContacts(c);
            int size = hContacts.size();
            Contact search;
            for(int i=0;i<size;i++) {
@@ -3153,11 +3163,13 @@ public class Roster
     private Displayable createMsgList(){
         Object e=getFocusedObject();
         if (e instanceof Contact) {
+         Contact c = (Contact)e;
+         if(c.metaContact && (c.contactId==""||c.contactId=="opened")) return null;
          if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
-	     return ( ((Contact)e).cList!=null && midlet.BombusQD.cf.module_cashe && ((Contact)e).msgs.size()>3 )? 
-                 (ContactMessageList)((Contact)e).cList 
+	     return ( c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 )? 
+                 (ContactMessageList)c.cList 
                      : 
-                 new ContactMessageList((Contact)e,display);
+                 new ContactMessageList(c,display);
         }
         return null;
     }
@@ -3222,7 +3234,9 @@ public class Roster
 
 //#if METACONTACTS
 //#     private void convertContacts(JabberDataBlock data){ //XEP-0209: Metacontacts
+//#ifdef CONSOLE 
 //#         midlet.BombusQD.debug.add("METACONTACTS::"+data.toString(),10);
+//#endif
 //#         searchMeta.setSize(0);
 //#         searchMetaContact.setSize(0);
 //#         JabberDataBlock metaBlocks = data.findNamespace("query","jabber:iq:private").findNamespace("storage","storage:metacontacts");
@@ -3344,6 +3358,36 @@ public class Roster
 //#     }
 //#         
 //# 
+//#     private void sortMetaContacts(Contact current){
+//#       int msize = searchMeta.size();
+//#       for(int y=0;y<msize;y++){
+//#          Contact metaGroup = (Contact)searchMeta.elementAt(y);
+//#          if(current!=null){
+//#             int grpSize = metaGroup.metaContacts.size();
+//#             for(int i=0;i<grpSize;i++) {
+//#                Contact metaIn = (Contact)metaGroup.metaContacts.elementAt(i);
+//#                if(metaIn.bareJid.indexOf(current.bareJid)>-1) sortMetaGrp(metaGroup);
+//#             }
+//#          }else sortMetaGrp(metaGroup);
+//# 
+//#       }
+//#       reEnumRoster();
+//#     }   
+//#     
+//#     
+//#     private void sortMetaGrp(Contact metaGroup){
+//#        boolean opened = metaGroup.contactId.startsWith("opened");
+//#        if(opened){
+//#             if(eventMetaContact(metaGroup,false)) {//remove all elements
+//#                 metaGroup.contactId = "";
+//#                 eventMetaContact(metaGroup,false);//resort
+//#             }
+//#         }
+//#     }
+//#     
+//#     
+//#     
+//# 
 //#     private void collapseContacts(){ //Metacontacts.Collapse
 //#        synchronized (hContacts) {
 //#           for(int y=0; y<hContacts.size(); y++) {
@@ -3354,6 +3398,7 @@ public class Roster
 //#       reEnumRoster();
 //#     }   
 //#     
+//#  
 //# 
 //#     private boolean eventMetaContact(Contact c,boolean collapseStatus){
 //#       boolean opened = c.contactId.startsWith("opened");
@@ -3363,18 +3408,28 @@ public class Roster
 //#           if (pos>=0) {
 //#                  int size = c.metaContacts.size();
 //#                  pos+=1;
+//#                  if(opened){
 //#                   while(size>0){
-//#                     size-=1;
-//#                       if(opened) hContacts.removeElementAt(pos);
-//#                       else {
-//#                          if(collapseStatus==false){
-//#                             Contact extract  = (Contact)c.metaContacts.elementAt(size);
-//#                             extract.group = c.group;
-//#                             hContacts.insertElementAt(extract,pos);
-//#                             c.contactId="opened";
-//#                          }
-//#                       }
+//#                      size-=1;
+//#                      int position = hContacts.indexOf(c.metaContacts.elementAt(size));
+//#                      if(position!=-1) hContacts.removeElementAt(position);
 //#                    }
+//#                  } else {
+//#                     int status = midlet.BombusQD.cf.showOfflineContacts?5:4;
+//#                     while(status>=0){
+//#                         for(int i = 0; i<size; i++){
+//#                          if(collapseStatus==false){
+//#                             Contact extract  = (Contact)c.metaContacts.elementAt(i);
+//#                             if(extract.status==status){
+//#                               extract.group = c.group;
+//#                               hContacts.insertElementAt(extract,pos);
+//#                               c.contactId="opened";
+//#                             }
+//#                          }
+//#                         }
+//#                       status--;
+//#                     }
+//#                  }
 //#              reEnumRoster();
 //#              redraw();
 //#            }
@@ -3550,6 +3605,7 @@ public class Roster
             return;
         } else if (keyCode==KEY_NUM0) {
             midlet.BombusQD.cf.showOfflineContacts=!midlet.BombusQD.cf.showOfflineContacts;
+            sortMetaContacts(null);
             reEnumRoster();
             return;
         }
@@ -4145,7 +4201,7 @@ public class Roster
                           String nick = null;
                           for(int y = 0; y < sizeM; y++){
                            Contact find = (Contact)kk.metaContacts.elementAt(y);
-                           if(nick==null) nick = find.bareJid;
+                           if(nick==null) nick = find.getNick();
                            if(find.status>=0 && find.status<5) online++;
                           }
                           kk.setNick(nick + " (" +Integer.toString(online) + "/" + Integer.toString(sizeM) + ")");

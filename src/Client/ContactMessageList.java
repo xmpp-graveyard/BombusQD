@@ -87,7 +87,10 @@ public class ContactMessageList extends MessageList {
         commandState();
         
         contact.setIncoming(0);
+//#ifdef FILE_TRANSFER        
         contact.fileQuery=false;
+//#endif        
+        
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
 //#         if (midlet.BombusQD.cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();

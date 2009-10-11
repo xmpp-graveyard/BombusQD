@@ -46,7 +46,9 @@
 //# 
 //#     
 //#     private void storeMessage(Msg msg){
+//#ifdef CONSOLE
 //#       midlet.BombusQD.debug.add("STORE wait::",10);
+//#endif
 //#if METACONTACTS  
 //#        Contact c = midlet.BombusQD.sd.roster.getMetaContact(BOTNAME,-1,-1);
 //#        if(c==null) c = midlet.BombusQD.sd.roster.getContact(BOTNAME,false);
@@ -54,7 +56,9 @@
 //#else
 //#         
 //#endif
+//#ifdef CONSOLE
 //#       midlet.BombusQD.debug.add("STORE::"+msg.body,10);
+//#endif
 //#     }
 //#     
 //#     
@@ -121,7 +125,9 @@
 //#     
 //#     public Msg getMsg(Msg m,JabberDataBlock data) {
 //#         if( data instanceof Iq ) {
+//#ifdef CONSOLE
 //#             midlet.BombusQD.debug.add("IQ::"+data.toString(),10);
+//#endif
 //#             String id=(String) data.getAttribute("id"); 
 //#             String type = (String) data.getTypeAttribute();
 //#             
@@ -138,7 +144,9 @@
 //#                               JabberDataBlock ns = query.findNamespace("juick",NS_MESSAGE);
 //#                               if(ns!=null) replies = ns.getAttribute("replies");
 //#                           }
-//#                           midlet.BombusQD.debug.add("IQ replies::"+replies,10);                          
+//#ifdef CONSOLE
+//#                           midlet.BombusQD.debug.add("IQ replies::"+replies,10);    
+//#endif
 //#                           if(replies!=null){
 //#                              JabberDataBlock comments = new Iq(BOTNAME, Iq.TYPE_GET,"qd_comments");
 //#                              JabberDataBlock comments_query = comments.addChildNs("query",NS_MESSAGES);
@@ -229,7 +237,9 @@
 //#             }
 //#             
 //#         } else if( data instanceof Message ) {//Сообщения по подписке
-//#                  midlet.BombusQD.debug.add("MESSAGE::"+data.toString(),10);             
+//#ifdef CONSOLE
+//#                  midlet.BombusQD.debug.add("MESSAGE::"+data.toString(),10);    
+//#endif
 //#                  Message message = (Message) data;
 //#                  
 //#                  //JabberDataBlock juickUnameNs = data.findNamespace("nick", "http://jabber.org/protocol/nick");

@@ -55,7 +55,9 @@ import util.StringLoader;
 import Fonts.*;
 import util.Strconv;
 import Account.YesNoAlert;
-import Console.DebugList;
+//#ifdef CONSOLE
+//# import Console.DebugList;
+//#endif
 //#ifdef CLIPBOARD
 //# import util.ClipBoard;
 //#endif
@@ -81,9 +83,10 @@ public class BombusQD extends MIDlet implements Runnable
     public final static ClipBoard clipboard=ClipBoard.getInstance();
     
     public final static Cashe cashe = Cashe.get();  
-    public final static Commands commands=Commands.get();    
-    public final static DebugList debug = DebugList.get();
-    
+    public final static Commands commands=Commands.get();
+//#ifdef CONSOLE    
+//#     public final static DebugList debug = DebugList.get();
+//#endif    
     
     public int width = 0;
     public int height = 0;
@@ -152,14 +155,14 @@ public class BombusQD extends MIDlet implements Runnable
         }
         
         long s2 = System.currentTimeMillis();
-        
-        if(cf.debug){      
-            debug.add("::start "+(s2-s1)+" msec",10);
-            debug.add("::startmem free/total "+ 
-                    Long.toString(Runtime.getRuntime().freeMemory()>>10) + "/" + 
-                    Long.toString(Runtime.getRuntime().totalMemory()>>10), 10) ;
-        }
-        
+//#ifdef CONSOLE        
+//#         if(cf.debug){      
+//#             debug.add("::start "+(s2-s1)+" msec",10);
+//#             debug.add("::startmem free/total "+ 
+//#                     Long.toString(Runtime.getRuntime().freeMemory()>>10) + "/" + 
+//#                     Long.toString(Runtime.getRuntime().totalMemory()>>10), 10) ;
+//#         }
+//#endif        
         s.getKeys();
         width=s.width;
         height=s.height;

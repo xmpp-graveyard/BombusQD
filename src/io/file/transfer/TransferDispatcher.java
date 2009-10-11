@@ -1,3 +1,4 @@
+//#ifdef FILE_TRANSFER
 /* 
  * TransferDispatcher.java
  *
@@ -203,3 +204,4 @@ public class TransferDispatcher implements JabberBlockListener{
         task.sendInit();
     }
 }
+//#endif

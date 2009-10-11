@@ -1,3 +1,4 @@
+//#ifdef FILE_TRANSFER
 /*
  * TransferTask.java
  *
@@ -360,3 +361,4 @@ public class TransferTask
             bytes=null;
     }
 }
+//#endif

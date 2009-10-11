@@ -177,7 +177,9 @@ public class PluginsConfig extends DefForm implements MenuListener
     
     private static PluginBox history;
     private static PluginBox fonts; 
-    private static PluginBox ie;  
+//#ifdef IMPORT_EXPORT
+//#     private static PluginBox ie;  
+//#endif
     private static PluginBox notify; 
     private static PluginBox tasks;
     private static PluginBox avatars;      
@@ -223,8 +225,10 @@ public class PluginsConfig extends DefForm implements MenuListener
         
         cashe = new PluginBox(SR.MS_casheStr, cf.module_cashe){ public void doAction(boolean st){ cf.module_cashe=st; } };
         itemsList.addElement(cashe); 
-        ie = new PluginBox(SR.MS_ieStr, cf.module_ie){ public void doAction(boolean st){ cf.module_ie=st; } };
-        itemsList.addElement(ie);  
+//#ifdef IMPORT_EXPORT         
+//#         ie = new PluginBox(SR.MS_ieStr, cf.module_ie){ public void doAction(boolean st){ cf.module_ie=st; } };
+//#         itemsList.addElement(ie);  
+//#endif
         tasks = new PluginBox(SR.MS_taskstr, cf.module_tasks){ public void doAction(boolean st){ cf.module_tasks=st; } };
         itemsList.addElement(tasks); 
         classicchat = new PluginBox(SR.MS_clchatStr, cf.module_classicchat){ public void doAction(boolean st){ cf.module_classicchat=st; } };
@@ -265,7 +269,9 @@ public class PluginsConfig extends DefForm implements MenuListener
              else if(text==SR.MS_casheStr){ return cf.module_cashe?"Clear":""; }
              else if(text==SR.MS_historyStr){ return cf.module_history?SR.MS_config:""; }
              else if(text==SR.MS_fontsStr){ return cf.module_fonts?SR.MS_config:""; }
-             else if(text==SR.MS_ieStr){ return cf.module_ie?SR.MS_config:""; } 
+//#ifdef IMPORT_EXPORT
+//#              else if(text==SR.MS_ieStr){ return cf.module_ie?SR.MS_config:""; } 
+//#endif
              else if(text==SR.MS_notifyStr){ return cf.module_notify?SR.MS_config:""; } 
              else if(text==SR.MS_taskstr){ return cf.module_tasks?SR.MS_config:""; }
              else if(text==SR.MS_avatarStr){ return cf.module_avatars?SR.MS_config:""; }
@@ -291,9 +297,11 @@ public class PluginsConfig extends DefForm implements MenuListener
           else if(type==SR.MS_fontsStr){
            display.setCurrent(new Fonts.ConfigFonts(display, this));
           }
-          else if(type==SR.MS_ieStr){
-           display.setCurrent(new IE.IEMenu(display, this));
-          }  
+//#ifdef IMPORT_EXPORT          
+//#           else if(type==SR.MS_ieStr){
+//#            display.setCurrent(new IE.IEMenu(display, this));
+//#           }  
+//#endif
           else if(type==SR.MS_notifyStr){
            display.setCurrent(new Alerts.AlertCustomizeForm(display, this));
           }
@@ -438,7 +446,7 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#                 itemsList.addElement(rcvtune);
 //#                   rcvactivity = new CheckBox(SR.MS_USERACTIVITY, cf.rcvactivity);
 //#                   itemsList.addElement(rcvactivity);
-//#endif                  
+//#endif
                    itemsList.addElement(new SpacerItem(10));
                    itemsList.addElement(new SimpleString(SR.MS_MESSAGES, true));
                      eventComposing = new CheckBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); 
@@ -459,9 +467,11 @@ public class PluginsConfig extends DefForm implements MenuListener
                          itemsList.addElement(reconnectTime);
                          nokiaReconnectHack = new CheckBox(SR.MS_NOKIA_RECONNECT_HACK, cf.nokiaReconnectHack);
                          itemsList.addElement(nokiaReconnectHack);
-            
+//#ifdef FILE_TRANSFER
                          fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
+                         
                          itemsList.addElement(fileTransfer);   
+//#endif                         
                          adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc); 
                          itemsList.addElement(adhoc);
 
@@ -678,7 +688,9 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
             cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());
             cf.nokiaReconnectHack=nokiaReconnectHack.getValue();  
+//#ifdef FILE_TRANSFER
             cf.fileTransfer=fileTransfer.getValue();
+//#endif
             cf.adhoc=adhoc.getValue(); 
          } 
          else if(type==SR.MS_grStr){

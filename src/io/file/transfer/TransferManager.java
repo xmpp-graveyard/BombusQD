@@ -1,3 +1,4 @@
+//#ifdef FILE_TRANSFER
 /*
  * TransferManager.java 
  *
@@ -224,3 +225,4 @@ public class TransferManager
         }
     }
 }
+//#endif

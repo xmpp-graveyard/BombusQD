@@ -1,3 +1,4 @@
+//#ifdef FILE_TRANSFER
 /*
  * TransferAcceptFile.java 
  *
@@ -125,3 +126,4 @@ public class TransferAcceptFile
         destroyView();
     }
 }
+//#endif

@@ -1,3 +1,4 @@
+//#ifdef FILE_TRANSFER 
 /*
  * TransferSendFile.java
  *
@@ -94,3 +95,4 @@ public class TransferSendFile
         } catch (Exception e) {}
     }
 }
+//#endif

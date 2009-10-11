@@ -96,7 +96,9 @@ public class Commands {
         cmdActions.setImg(0x16);
         cmdSendBuffer.setImg(0x84);
         cmdSaveChat.setImg(0x44);
-        cmdReadHistory.setImg(0x05);
+//#if HISTORY_READER
+//#         cmdReadHistory.setImg(0x05);
+//#endif
         cmdMyService.setImg(0x27);
 
     }

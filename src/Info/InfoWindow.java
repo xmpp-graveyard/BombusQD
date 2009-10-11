@@ -159,25 +159,10 @@ public class InfoWindow
 //#         }
 //#endif
 //#endif
-        
-
-        versions = new LinkString("About") { public void doAction() { showVersions(); } };
-        itemsList.addElement(versions); 
         attachDisplay(display);
         this.parentView=pView;
     }
-    
-    public void showNews() {
-        itemsList.removeElement(news);         
-        String getNews = new StringLoader().loadString("/roadmap.txt");
-        item=new MultiLine("Version ", Info.Version.getVersionNumber(), super.superWidth);  item.selectable=true; itemsList.addElement(item);
-        item=new MultiLine("News", getNews, super.superWidth);  item.selectable=true; itemsList.addElement(item);
-    }
-    
-    public void showVersions(){
-        showNews();         
-    }
-        
+
     
 //#ifdef CLIPBOARD
 //#     public void cmdOk(){

@@ -1,3 +1,4 @@
+//#ifdef FILE_TRANSFER
 /*
  * TransferImage.java 
  *
@@ -102,3 +103,4 @@ public class TransferImage
         } catch (Exception e) { photo=null; }
     }
 }
+//#endif
