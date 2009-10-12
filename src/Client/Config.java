@@ -585,6 +585,7 @@ public class Config {
             selectOutMessages=inputStream.readBoolean();
             showCollapsedPresences=inputStream.readBoolean();
             networkAnnotation=inputStream.readBoolean();
+            metaContacts=inputStream.readBoolean();
             
 	    inputStream.close();
             inputStream=null;
@@ -818,6 +819,7 @@ public class Config {
             outputStream.writeBoolean(selectOutMessages);
             outputStream.writeBoolean(showCollapsedPresences);
             outputStream.writeBoolean(networkAnnotation);
+            outputStream.writeBoolean(metaContacts);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean_", 0, true);      

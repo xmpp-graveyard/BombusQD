@@ -45,7 +45,7 @@ public class LightConfigForm
 
     private TrackItem light_message;
     private NumberInput light_message_time;
-    private static CheckBox lightState;    
+    //private static CheckBox lightState;    
 
     
     LightConfig light;
@@ -81,10 +81,12 @@ public class LightConfigForm
         light_message_time=new NumberInput(display, SR.L_MESSAGE_TIMEOUT, Integer.toString(light.light_message_time), 1, 600);
         itemsList.addElement(light_message_time);
 
+        /*
         itemsList.addElement(new SpacerItem(5));
         lightState = new CheckBox(SR.MS_FLASHLIGHT, midlet.BombusQD.cf.lightState);
            if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 
            || phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);  
+         */
         
         commandState();
 
@@ -107,7 +109,7 @@ public class LightConfigForm
         light.light_keypressed_time=Integer.parseInt(light_keypressed_time.getValue());
         light.light_message=light_message.getValue();
         light.light_message_time=Integer.parseInt(light_message_time.getValue());
-        midlet.BombusQD.cf.lightState=lightState.getValue();
+        //midlet.BombusQD.cf.lightState=lightState.getValue();
         light.saveToStorage();
         destroyView();
     }

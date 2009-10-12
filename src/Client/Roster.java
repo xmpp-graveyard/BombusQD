@@ -310,11 +310,13 @@ public class Roster
             return;
         }
         if (!state) return;
+        /*
 //#ifdef SE_LIGHT
 //#         if (phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) {
 //#             new KeepLightTask().start();
 //#          }
 //#endif
+         */
     }
     
    
@@ -1923,7 +1925,11 @@ public class Roster
                         setQuerySign(false);
                         VCard vc=new VCard(data);
                         String jid=id.substring(5);
-                        Contact c=getContact(jid, false); // drop unwanted vcards
+                        Contact c=null;
+//#if METACONTACTS
+//#                         c = getMetaContact(from,-1,-1);
+//#endif
+                        if(c==null) c=getContact(jid, false); // drop unwanted vcards
 //#if FILE_IO && HISTORY
 //#                                 if(midlet.BombusQD.cf.autoSaveVcard) {//check img in fs?
 //#                                     cashePhoto(vc,c);
@@ -1954,7 +1960,11 @@ public class Roster
                             } else {
                                 ImageList il = new ImageList();
                                 Image photoImg=Image.createImage(vc.getPhoto(), 0, length);
-                                Contact c=getContact(data.getAttribute("from"), true);
+                                Contact c=null;
+//#if METACONTACTS
+//#                                 c = getMetaContact(from,-1,-1);
+//#endif
+                                if(c==null) c=getContact(data.getAttribute("from"), true);
 //#if FILE_IO && HISTORY
 //#                                 if(midlet.BombusQD.cf.autoSaveVcard) {
 //#                                     cashePhoto(vc,c);
@@ -2173,7 +2183,10 @@ public class Roster
                 Message message = (Message) data;
                 
                 String from=message.getFrom();
-
+                
+//#ifdef CONSOLE 
+//#                 midlet.BombusQD.debug.add("::MESSAGE "+data.toString(),10);
+//#endif
 
                 if (myJid.equals(new Jid(from), false)) //Enable forwarding only from self-jids
                     from=message.getXFrom();
@@ -2523,10 +2536,17 @@ public class Roster
                 String from=pr.getFrom();
                 String Prtext = pr.getText();
                 int ti=pr.getTypeIndex();
+//#ifdef CONSOLE 
+//#                 midlet.BombusQD.debug.add("::PRESENCE "+data.toString(),10);
+//#endif
                 
                 if(midlet.BombusQD.cf.auto_queryPhoto)
                 {
-                    Contact c = getContact(data.getAttribute("from"), true);
+                    Contact c=null;
+//#if METACONTACTS
+//#                     c = getMetaContact(from,-1,-1);
+//#endif
+                    if(c==null) c = getContact(data.getAttribute("from"), true);
                     if(c.hasPhoto==false&&c.img_vcard==null){
                      JabberDataBlock req=new Iq(c.getJid(), Iq.TYPE_GET, "avcard_get");
                      req.addChildNs("vCard", "vcard-temp" );
@@ -2808,9 +2828,11 @@ public class Roster
         }
 //#if METACONTACTS
 //#         //XEP-0209: Metacontacts
-//#         JabberDataBlock metaQuery = new Iq(null, Iq.TYPE_GET, "idMetaCnts");
-//#         metaQuery.addChildNs("query", "jabber:iq:private").addChildNs("storage", "storage:metacontacts");
-//#         theStream.send(metaQuery);
+//#         if(midlet.BombusQD.cf.metaContacts) {
+//#           JabberDataBlock metaQuery = new Iq(null, Iq.TYPE_GET, "idMetaCnts");
+//#           metaQuery.addChildNs("query", "jabber:iq:private").addChildNs("storage", "storage:metacontacts");
+//#           theStream.send(metaQuery);
+//#         }
 //#endif
         cont.setSize(0);
         cont = null;
@@ -2832,7 +2854,11 @@ public class Roster
     
 //#ifdef FILE_TRANSFER
     public void addFileQuery(String from, String message) {
-        Contact c=getContact(from, true);
+        Contact c=null;
+//#if METACONTACTS
+//#         c = getMetaContact(from,-1,-1);
+//#endif
+        if(c==null) c=getContact(from, true);
         c.fileQuery=true;
         messageStore(c, new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, " "+SR.MS_FILE, message));
     }
@@ -3260,17 +3286,30 @@ public class Roster
 //#     
 //# 
 //#     public Contact getMetaContact(String jid,int priority,int status){ //XEP-0209: Metacontacts
+//#         if(!midlet.BombusQD.cf.metaContacts) return null;
+//#ifdef CONSOLE 
+//#              midlet.BombusQD.debug.add("::getMeta>> "+jid,10);
+//#endif
 //#              int hsize = hContacts.size();
 //#              int slash = jid.indexOf('/');
+//#ifdef CONSOLE 
+//#              midlet.BombusQD.debug.add("::getMeta>> "+slash,10);
+//#endif
 //#              int len = jid.length();
 //#              int msize = searchMeta.size();
 //#              int jid_size = searchMetaContact.size();
+//#ifdef CONSOLE 
+//#              midlet.BombusQD.debug.add("::getMeta>> "+msize+":"+jid_size,10);
+//#endif
 //#              String resource = "";
 //#              String from = "";
 //#              if(slash!=-1){
 //#                resource = jid.substring(slash,len);
 //#                from = jid.substring(0,slash);
 //#              }
+//#ifdef CONSOLE 
+//#              midlet.BombusQD.debug.add("::getMeta>> ["+resource+"]["+from+"]",10);
+//#endif
 //# 
 //#          Contact c = null;
 //#          boolean find = false;
@@ -3291,6 +3330,7 @@ public class Roster
 //#                                 metaIn.setStatus(status);
 //#                                 jid = from;
 //#                              }else { //incoming message
+//#                                 if(search.contactId=="") eventMetaContact(search,false);
 //#                                 if(metaIn.status==5) {
 //#                                     jid = from;
 //#                                     metaIn.status = 0;
@@ -3306,6 +3346,9 @@ public class Roster
 //#                    }
 //#             }
 //#          }
+//#ifdef CONSOLE 
+//#       midlet.BombusQD.debug.add("::getMeta>> return " + c,10);
+//#endif
 //#       return c;
 //#     }    
 //#     
@@ -4204,6 +4247,7 @@ public class Roster
                            if(nick==null) nick = find.getNick();
                            if(find.status>=0 && find.status<5) online++;
                           }
+                          kk.setNick("");
                           kk.setNick(nick + " (" +Integer.toString(online) + "/" + Integer.toString(sizeM) + ")");
                          }
                        }                      

@@ -35,14 +35,14 @@ public class Version {
 
 //#ifdef GRAPHICS_MENU  
    //#ifdef  SUPER_LIGHT
-//#            public final static String version="0.8.r40"
+//#            public final static String version="0.8.r41"
 //#                    + Config.getInstance().getStringProperty("build", "");  
     //#else
-//#            public final static String version="0.8.r40"
+//#            public final static String version="0.8.r41"
 //#                    + Config.getInstance().getStringProperty("build", "") ;
     //#endif
 //#else
-       public final static String version="0.8.r40";
+       public final static String version="0.8.r41";
 //#endif     
 
     public final static String NAME="BombusQD";

@@ -101,6 +101,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     private static CheckBox animatedSmiles;
     private static CheckBox eventDelivery;
     private static CheckBox networkAnnotation;
+    private static CheckBox metaContacts;
     private static CheckBox executeByNum;
     private static CheckBox sendMoodInMsg;
     private static CheckBox savePos;
@@ -455,6 +456,8 @@ public class PluginsConfig extends DefForm implements MenuListener
                          itemsList.addElement(eventDelivery);
                            networkAnnotation = new CheckBox(SR.MS_CONTACT_ANNOTATIONS, cf.networkAnnotation);
                            itemsList.addElement(networkAnnotation);
+                             metaContacts = new CheckBox(SR.MS_METACONTACTS, cf.metaContacts);
+                             itemsList.addElement(metaContacts);
                            //sendMoodInMsg = new CheckBox(SR.MS_MOOD_IN_MSG, cf.sendMoodInMsg);
                            //itemsList.addElement(sendMoodInMsg);
                           
@@ -683,6 +686,7 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.eventComposing=eventComposing.getValue();
             cf.eventDelivery=eventDelivery.getValue();
             cf.networkAnnotation=networkAnnotation.getValue();
+            cf.metaContacts=metaContacts.getValue();
             //cf.sendMoodInMsg=sendMoodInMsg.getValue();
             
             cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());

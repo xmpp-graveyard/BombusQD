@@ -648,7 +648,7 @@ public class Contact extends IconTextElement{
         int xo=g.getClipX();
         int yo=g.getClipY();
         
-        int pos = 8;
+        int pos = 10;
         int imageIndex = getImageIndex();
 //#if METACONTACTS
 //#         if(metaContact) {

@@ -886,6 +886,7 @@ public class SR {
    public static String MS_CREATE_ANNOTATION = loadString("Create Annotation");
    public static String MS_REMOVE_ANNOTATION = loadString("Remove Annotation");   
    public static String MS_CONTACT_ANNOTATIONS = loadString("Contact Annotations");
+   public static String MS_METACONTACTS = loadString("Metacontacts");
    public static String MS_ANNOTATION = loadString("Note");  
    public static String MS_CHANGE_TRANSPORT = loadString("Change transport");
    

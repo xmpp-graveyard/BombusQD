@@ -120,15 +120,15 @@ public class Group extends IconTextElement {
     }
 
     public void addInGroup(Contact c) {
+        boolean online=c.status<Presence.PRESENCE_OFFLINE;
 	tncontacts++;
-	boolean online=c.status<Presence.PRESENCE_OFFLINE;
-	if (online) {
-	    tonlines++;
-	}
+        if (online) tonlines++;
 	// hide offlines whithout new messages
         unreadMessages+=c.getNewMsgsCount(); 
 	if ( online
-                || c.metaContact
+//#if METACONTACTS
+//#                 || c.metaContact
+//#endif
                 || midlet.BombusQD.cf.showOfflineContacts
                 || c.getNewMsgsCount()>0 
                 || type==Groups.TYPE_NOT_IN_LIST 
