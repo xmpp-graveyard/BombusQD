@@ -299,6 +299,7 @@ public class Roster
 //#         if (myStatus<2)
 //#             messageActivity();
 //#endif
+        Messages.MessageParser.restart();
     }
     
     public void setLight(boolean state) {
@@ -2834,8 +2835,10 @@ public class Roster
 //#           theStream.send(metaQuery);
 //#         }
 //#endif
-        cont.setSize(0);
-        cont = null;
+        if(cont!=null){
+          cont.setSize(0);
+          cont = null;
+        }
         q=null;
         reEnumRoster();
         return true;
@@ -3191,7 +3194,6 @@ public class Roster
         if (e instanceof Contact) {
          Contact c = (Contact)e;
          if(c.metaContact && (c.contactId==""||c.contactId=="opened")) return null;
-         if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
 	     return ( c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 )? 
                  (ContactMessageList)c.cList 
                      : 
@@ -3302,7 +3304,7 @@ public class Roster
 //#              midlet.BombusQD.debug.add("::getMeta>> "+msize+":"+jid_size,10);
 //#endif
 //#              String resource = "";
-//#              String from = "";
+//#              String from = jid;
 //#              if(slash!=-1){
 //#                resource = jid.substring(slash,len);
 //#                from = jid.substring(0,slash);
@@ -3494,7 +3496,6 @@ public class Roster
               if(midlet.BombusQD.cf.useClassicChat){
                 new SimpleItemChat(display,this,c);
               } else{
-                if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
                 if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3){
                   display.setCurrent( (ContactMessageList)c.cList );
                 }else{
@@ -4030,7 +4031,6 @@ public class Roster
             if (currentContact==nowContact) return;
             Contact c=(Contact)activeContacts.elementAt(nowContact);
             activeContacts=null;
-            if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
             if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 ){
               display.setCurrent( (ContactMessageList)c.cList );   
             }else{

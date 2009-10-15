@@ -213,7 +213,6 @@
 //#     
 //#     public void destroyView(){
 //# 	super.destroyView();
-//#         if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.stopTimer(); 
 //#     }
 //# }
 //#endif

@@ -296,7 +296,7 @@ public class Config {
     public boolean isStatusFirst=false;
     
     public boolean dont_loadMC=false;
-    public boolean animatedSmiles=true;    
+    public static boolean animatedSmiles=true;
     
     public int msgEditType=0;
     public boolean runningMessage=false;
@@ -305,7 +305,7 @@ public class Config {
     
     
     public int ANIsmilesHeight=-1;
-    public boolean ANIsmilesDetect;
+    public static boolean ANIsmilesDetect = true;
     public boolean showCollapsedPresences=true;
     public boolean networkAnnotation=true;
     public boolean metaContacts=true;
@@ -340,7 +340,12 @@ public class Config {
                 RosterIcons.getInstance();
                 ActionsIcons.getInstance();
 //#ifdef SMILES
-                if (smiles) SmilesIcons.getInstance();
+                if (smiles) {
+                    if(animatedSmiles)
+                        SmilesIcons.getInstance();
+                    else 
+                        SmilesIcons.getStaticInstance();
+                }
 //#endif
                 System.gc();
                 try { Thread.sleep(50); } catch (InterruptedException e){}

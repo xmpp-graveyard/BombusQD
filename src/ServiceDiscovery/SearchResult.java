@@ -62,7 +62,6 @@ public class SearchResult
 {
     
     StaticData sd=StaticData.getInstance();
-    private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
     private Command cmdAdd=new Command(SR.MS_ADD, Command.SCREEN, 1);
     
     private Vector items;
@@ -77,8 +76,7 @@ public class SearchResult
         setMainBarItem(new MainBar(2, null, service, false));
         
         setCommandListener(this);
-        addCommand(cmdBack);
-        
+
         items=new Vector(0);
         
         JabberDataBlock query=result.getChildBlock("query");
@@ -155,6 +153,10 @@ public class SearchResult
     public void touchLeftPressed(){ new ContactEdit(display, sd.roster, (Contact)getFocusedObject()); }
     public void touchRigthPressed(){ destroyView(); }
     
+    public void destroyView(){
+       if (display!=null) display.setCurrent(midlet.BombusQD.sd.roster);
+    }
+    
 //#ifdef GRAPHICS_MENU        
 //#     public int showGraphicsMenu() {
 //#          commandState();
@@ -181,14 +183,12 @@ public class SearchResult
             new ContactEdit(display, sd.roster, (Contact)getFocusedObject());
             //return;
         }
-        if (c==cmdBack) destroyView(); 
     }
     
     public void eventOk(){
         try {
             Contact c=(Contact)getFocusedObject();
             if (c==null) return;
-            if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();//?
             if(c.cList!=null && Config.getInstance().module_cashe && c.msgs.size()>3){//?
                 display.setCurrent( (ContactMessageList)c.cList );  
             }else{

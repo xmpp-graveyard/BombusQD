@@ -901,7 +901,6 @@ public class ContactMessageList extends MessageList {
 //#ifdef GRAPHICS_MENU
 //#            midlet.BombusQD.sd.roster.activeContact=null;
 //#            midlet.BombusQD.sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
-//#            if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.stopTimer();           
 //#            if (display!=null) display.setCurrent(midlet.BombusQD.sd.roster);
 //#else
         sd.roster.activeContact=null;

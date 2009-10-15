@@ -49,6 +49,8 @@ public class ImageList {
 
     protected int height;
     protected int width;
+    protected int aniWidth[];
+    protected int aniHeight[];
 
     public ImageList(){ };
     int pos;
@@ -63,28 +65,18 @@ public class ImageList {
             resImage = Image.createImage(resource);
             width = resImage.getWidth()/columns;
             height = (rows==0)? width : resImage.getHeight()/rows;
-        } catch (Exception e) { 
+        }
+        catch(OutOfMemoryError eom) {
+            System.out.print("ImageList OutOfMem "+resource);
+        }
+        catch (Exception e) { 
             System.out.print("Can't load ImgList ");
             System.out.println(resource);
             //if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("error Can't load ImgList "+resource,10);
             //SE crashes on start with OutOfMem here
         }
     }
-    
-    public ImageList(String s)
-    {
-        try {
-            resImage = Image.createImage(s);
-            if(midlet.BombusQD.cf.getInstance().ANIsmilesHeight==-1) width = height = resImage.getWidth()/10;
-            else width = height = midlet.BombusQD.cf.getInstance().ANIsmilesHeight;
-        } catch (Exception e) { 
-            System.out.print("Can't load smile: ");
-            System.out.println(resource);
-            //if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("error Can't load smile: "+resource,10);
-            //SE crashes on start with OutOfMem here
-        }
-    }     
-    
+
    public static Image resize(Image image, int w, int h) {
         int w0 = image.getWidth(); //Ширина 200
         int h0 = image.getHeight();//Высота 150
@@ -121,6 +113,19 @@ public class ImageList {
     };
     
     public int getHeight() {return height;}
+    
+    public int getHeight(int smileIndex) {
+        if(!midlet.BombusQD.cf.animatedSmiles) return height;
+        if(smileIndex<aniHeight.length) return aniHeight[smileIndex];
+        return height; 
+    }
+    
     public int getWidth() {return width;}
+    
+    public int getWidth(int smileIndex) {
+        if(!midlet.BombusQD.cf.animatedSmiles) return width;
+        if(smileIndex<aniWidth.length) return aniWidth[smileIndex];
+        return width; 
+    }
 
 }

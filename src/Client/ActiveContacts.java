@@ -127,7 +127,6 @@ public class ActiveContacts
          if(Config.getInstance().useClassicChat){
            new SimpleItemChat(display,midlet.BombusQD.sd.roster,(Contact)c);            
          }else{
-           if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();            
            if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3){
               display.setCurrent((ContactMessageList)c.cList); 
            }else{

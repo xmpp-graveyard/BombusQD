@@ -101,8 +101,6 @@ public class ArchiveList
         addCommands();
         setCommandListener(this);
         
-        if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
-        
         attachDisplay(display);
     }
 
@@ -248,7 +246,6 @@ public class ArchiveList
 
     public void destroyView(){
         super.destroyView();
-        if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.stopTimer();
         archive.close();
     }
 

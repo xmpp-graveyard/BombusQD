@@ -31,105 +31,59 @@ package images;
 
 import Messages.MessageParser;
 import ui.ImageList;
-import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Displayable;
-import java.util.*;
 
 /**
  *
- * @author EvgS,aqent
+ * @author EvgS
  */
-public class SmilesIcons extends ImageList {
-
-    private final static String res = "/images/smiles/smiles.png";
-    private final static String restxt = "/images/smiles/smiles.txt";
-    private final static String path = "/images/smiles/";
-
-    private static Timer timer;
-    private static Vector anismiles;
-    private static int indexPos = 0;    
-    private static int interval=195;
+public class SmilesIcons {
     
-    private static int smilesCount;
-    private static int cols; 
-    private static int SMILES_IN_ROW=16;    
+    private static String res= "/images/smiles/smiles.png";
+    private final static int SMILES_IN_ROW=16;
+    private static int cols;
     
+    private static ImageList animatedInstance = null;
+    private static ImageList staticInstance = null;
     
-    private SmilesIcons()
-    {
-      super(res, cols, SMILES_IN_ROW);
-      if(anismiles==null){
-         boolean loadAnimatedSmiles=true;
-         anismiles = new Vector(smilesCount);
-           for(int i=1; i<=smilesCount; i++){
-             try {
-                ImageList setSmile = new ImageList(path + Integer.toString(i) + ".png");
-                anismiles.addElement(setSmile);
-             } catch(Exception e) {
-                i=smilesCount;
-                loadAnimatedSmiles=false;
-                System.out.println("Err: " + i);
-             }
+    public static ImageList getStaticInstance() {
+//#ifdef SMILES
+       if(staticInstance==null){
+           try {
+              int smilesCount = MessageParser.getInstance().getSmileTable().size();
+              cols = ceil(SMILES_IN_ROW, smilesCount);
+           } catch (Exception e) {
+              System.out.print("Can't load res");
            }
-         //if(timer==null && loadAnimatedSmiles) startTimer();//?
-      }
-    }    
-
-
-    public final static void startTimer(){
-        //System.out.println("start ani timer");
-        if(timer==null){
-            timer = new Timer();
-            timer.schedule(new Counter(), 200 , interval);
-        }
+           staticInstance = new ImageList(res, cols, SMILES_IN_ROW);
+       }
+//#endif
+       return staticInstance;
     }
     
-    
-    public final static void stopTimer(){
-        //System.out.println("stop ani timer");
-        if(timer!=null){
-          timer.cancel();
-          timer=null;
-        }
-    }    
-    
-
-    private final static class Counter extends TimerTask {
-        private int pause=0;
-        public Counter(){}
-	public void run () {
-              //System.out.println(indexPos);
-              indexPos++;
-              if(indexPos == 10 ) indexPos = 0;
-              Displayable displayable=midlet.BombusQD.getInstance().display.getCurrent();
-              if (displayable instanceof Canvas) ((Canvas)displayable).repaint();
-  	}
-    }  
-    
-
-    public final void drawImage(Graphics g, int index, int x, int y) {
-      if(midlet.BombusQD.cf.animatedSmiles){
-          ((ImageList)anismiles.elementAt(index)).drawImage(g, indexPos , x, y);
-      }else super.drawImage(g,index,x,y);
-    }       
-    
-    
-    public static ImageList instance;
-
     public static ImageList getInstance() {
-	if (instance==null){
 //#ifdef SMILES
-            try {
-                smilesCount=MessageParser.getInstance().getSmileTable().size();
-                cols=ceil(SMILES_IN_ROW, smilesCount);
-            } catch (Exception e) {
-                System.out.println("Exception SmilesIcons: "+restxt);
-            }
-//#endif
-            instance=new SmilesIcons();
+        if (null == animatedInstance){
+            int smilesCount = -1;
+             try {
+                 smilesCount = MessageParser.getInstance().getSmileTable().size();
+                 cols = ceil(SMILES_IN_ROW, smilesCount);
+             } catch (Exception e) {
+                 System.out.print("Can't load res");
+             }
+             animatedInstance=new AniImageList();
+             boolean load = ((AniImageList)animatedInstance).load("/images/smiles");
+             if(!load) {
+                 midlet.BombusQD.cf.ANIsmilesDetect = midlet.BombusQD.cf.animatedSmiles = false;
+                 MessageParser.restart();
+                 images.SmilesIcons.getStaticInstance();
+             }
+
+             if (0 == animatedInstance.getWidth())
+                 animatedInstance=new ImageList(res, cols, SMILES_IN_ROW);
+
         }
-	return instance;
+//#endif
+        return animatedInstance;
     }
     
     private static int ceil(int rows, int count){

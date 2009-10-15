@@ -89,6 +89,7 @@ public class SmilePicker
 
     private TextField tf;
     private TextBox tb;
+    private boolean aniSmiles = false;
     
      /** Creates a new instance of SmilePicker */
     public SmilePicker(Display display, Displayable pView, int caretPos, TextField tf, TextBox tb) {
@@ -101,8 +102,10 @@ public class SmilePicker
            this.tb=tb;
          };
          
-         setMainBarItem(new MainBar(locale.SR.MS_SELECT));         
-         il = SmilesIcons.getInstance();
+         setMainBarItem(new MainBar(locale.SR.MS_SELECT));
+         aniSmiles = midlet.BombusQD.cf.animatedSmiles;
+         
+         il = aniSmiles?SmilesIcons.getInstance():SmilesIcons.getStaticInstance();
 //#ifdef SMILES 
         smileTable=MessageParser.getInstance().getSmileTable();
 //#endif
@@ -164,7 +167,16 @@ public class SmilePicker
     public void drawItem(Graphics g, int ofs, boolean selected){
         int max=(lineIndex==lines-1)? xLastCnt:xCnt;
         for (int i=0;i<max;i++) {
-            il.drawImage(g, lineIndex*xCnt + i, xBorder+(i*imgWidth+CURSOR_HOFFSET), CURSOR_VOFFSET);
+            int index = lineIndex*xCnt + i;
+            int x = xBorder + CURSOR_HOFFSET + i*imgWidth;
+            if(aniSmiles){
+                int hCenter = (imgWidth-il.getWidth(index))/2;
+                int vCenter = (lineHeight-il.getHeight(index))/2;
+                x+=hCenter;
+                il.drawImage(g, index, x, vCenter);
+            }else {
+                il.drawImage(g, index, x, CURSOR_VOFFSET);
+            }
         }
     }
 

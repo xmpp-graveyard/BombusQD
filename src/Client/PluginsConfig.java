@@ -429,7 +429,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                                 smiles = new CheckBox(SR.MS_SMILES, cf.smiles);
                                 itemsList.addElement(smiles);
                                   animatedSmiles = new CheckBox(SR.MS_ANI_SMILES, cf.animatedSmiles); 
-                                  if(midlet.BombusQD.cf.ANIsmilesDetect) itemsList.addElement(animatedSmiles);                                
+                                  if(cf.ANIsmilesDetect) itemsList.addElement(animatedSmiles);                                
                                    capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); 
                                    itemsList.addElement(capsState);
 
@@ -661,17 +661,14 @@ public class PluginsConfig extends DefForm implements MenuListener
      
             cf.useLowMemory_iconmsgcollapsed=useLowMemory_iconmsgcollapsed.getValue();
             cf.smiles=smiles.getValue(); 
-            if(midlet.BombusQD.cf.ANIsmilesDetect)
-            {
-             cf.animatedSmiles=animatedSmiles.getValue();
+            if(cf.ANIsmilesDetect) cf.animatedSmiles=animatedSmiles.getValue();
              if(!cf.smiles){
-               SmilesIcons.stopTimer();
                clearCache(false);
              }
-             if(!cf.animatedSmiles){
-               SmilesIcons.stopTimer();
-             }   
-            }
+             boolean aniSmiles = Messages.MessageParser.animated;
+             if( !aniSmiles && cf.animatedSmiles || aniSmiles && !cf.animatedSmiles ){
+                 Messages.MessageParser.restart();
+             }
             cf.capsState=capsState.getValue(); 
 
             cf.useTabs=useTabs.getValue();

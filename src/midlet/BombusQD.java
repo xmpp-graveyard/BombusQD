@@ -132,14 +132,6 @@ public class BombusQD extends MIDlet implements Runnable
 
     
     public void run(){ 
-        try {
-            Vector smiles[] = new StringLoader().stringLoader("/images/smiles/animate.txt", 2);
-            if(smiles[0].indexOf("OFF")>-1) {
-               cf.animatedSmiles = false;
-               cf.ANIsmilesDetect = false;
-            } else if(smiles[0].indexOf("ON")>-1) cf.ANIsmilesDetect = true;
-        } catch (Exception e) {} 
-        
         long s1 = System.currentTimeMillis();
         AccountSelect acc = new AccountSelect(display, null , true,-1);
 

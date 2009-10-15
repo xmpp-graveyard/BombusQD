@@ -65,11 +65,20 @@ public final class MessageParser // implements Runnable
     
     boolean wordsWrap;
     private static String wrapSeparators=" .,-=/\\;:+()[]<>~!@#%^_&";
+    public static boolean animated = false;
     
+    public static void restart() {
+       if(instance!=null) instance = null;
+       animated = midlet.BombusQD.cf.animatedSmiles;
+//#ifdef CONSOLE 
+//#        //midlet.BombusQD.debug.add("::restart()"+(animated?"/images/smiles/ani_smiles.txt":"/images/smiles/smiles.txt"),10);//se error
+//#endif
+       getInstance();
+    }
     
     public static MessageParser getInstance() {
-        if (instance==null) 
-            instance=new MessageParser();
+        if (instance==null)
+            instance=new MessageParser(animated?"/images/smiles/ani_smiles.txt":"/images/smiles/smiles.txt");
         return instance;
     }
 
@@ -120,7 +129,7 @@ public final class MessageParser // implements Runnable
             wordsWrap=midlet.BombusQD.cf.textWrap==1;
             messageItem.msgLines=new Vector(0);
 //#ifdef SMILES
-            this.smileImages=SmilesIcons.getInstance();
+            this.smileImages = midlet.BombusQD.cf.animatedSmiles?SmilesIcons.getInstance():SmilesIcons.getStaticInstance();
 //#endif
             if (null != messageItem.msg.subject) {//fixes by aspro
              parseMessage(messageItem, width, messageItem.msg.subject, true);
@@ -130,7 +139,7 @@ public final class MessageParser // implements Runnable
     }
 
     
-    private MessageParser() {
+    private MessageParser(String res) {
         smileTable=null;
         smileTable=new Vector(0);
         root=new Leaf();
@@ -141,7 +150,7 @@ public final class MessageParser // implements Runnable
             boolean strhaschars=false;
             boolean endline=false;
 
-            InputStream in=this.getClass().getResourceAsStream("/images/smiles/smiles.txt");
+            InputStream in=this.getClass().getResourceAsStream(res);
 
             boolean firstSmile=true;
             
@@ -304,7 +313,7 @@ public final class MessageParser // implements Runnable
                         l.addElement(s.toString());
                     }
                     s.setLength(0);
-                    int iw=(smileIndex<0x01000000)? smileImages.getWidth() : 0;
+                    int iw=(smileIndex<0x01000000)? smileImages.getWidth(smileIndex) : 0;
                     if (w+iw>windowWidth) {
                         if (singleLine) return;
                         l=new ComplexString(smileImages);
@@ -313,7 +322,7 @@ public final class MessageParser // implements Runnable
                         l.setFont(f);
                         w=0;
                     }
-                    l.addImage(smileIndex); w+=iw;
+                    l.addSmile(smileIndex,iw); w+=iw;
                     pos=smileEndPos;
                     wordStartPos=pos+1;
                     pos++;

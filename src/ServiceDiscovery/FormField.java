@@ -183,7 +183,7 @@ public class FormField {
                 j.setAttribute("type", type);
                 j.addChild("value", valuestr);
             }
-           System.out.println("          TextInput ["+value+"] "+j.toString());         
+           //System.out.println("          TextInput ["+value+"] "+j.toString());         
         } catch (Exception e) { }
         
         try{  

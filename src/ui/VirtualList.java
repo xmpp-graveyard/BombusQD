@@ -1430,7 +1430,6 @@ public abstract class VirtualList
 //#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
 //#                    }else{
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
-//#                        if(midlet.BombusQD.cf.animatedSmiles) images.SmilesIcons.startTimer();
 //#                        if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 ){
 //#                           display.setCurrent( (ContactMessageList)c.cList );
 //#                        }else{

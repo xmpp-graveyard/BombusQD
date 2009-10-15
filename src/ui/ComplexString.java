@@ -40,7 +40,6 @@ import Colors.ColorTheme;
  */
 public class ComplexString extends Vector implements VirtualElement {
 
-    //private Vector v;
     public final static int IMAGE     = 0x00000000;
     public final static int COLOR     = 0x01000000; 
     public final static int RALIGN    = 0x02000000;
@@ -61,6 +60,7 @@ public class ComplexString extends Vector implements VirtualElement {
     private ImageList imageList;
     private int colorBGnd;
     private int color;
+    private boolean aniSmile;
     
 
     /** Creates a new instance of ComplexString */
@@ -93,7 +93,6 @@ public class ComplexString extends Vector implements VirtualElement {
     
     public void onSelect(){};
     
-    //FontClass fc = FontClass.getInstance();
     Font bold;
     char c1,c2;
     
@@ -107,14 +106,12 @@ public class ComplexString extends Vector implements VirtualElement {
         int dw;
         int imageYOfs=(( getVHeight()-imgHeight() )>>1);
         int fontYOfs=(( getVHeight() - font.getHeight() )>>1);
-        int imgWidth=imgWidth();
+        int imgWidth = imgWidth();
         
-        //if(fc.isCheck()==false){
         if(!midlet.BombusQD.cf.boldNicks){
             g.setFont(font);
         }
-        //}
-        
+
         for (int index=0; index<elementCount;index++) {
             if (elementData[index]!=null) {
                 if (elementData[index] instanceof String ){
@@ -162,15 +159,14 @@ public class ComplexString extends Vector implements VirtualElement {
                     }
 //#endif
 
-                } else if ((elementData[index] instanceof Integer)) {
-                    // image element or color
+                } else if ((elementData[index] instanceof Integer)) { // image element or color
                     int i=((Integer)elementData[index]).intValue();                           
                     switch (i&0xff000000) {
                         case IMAGE:
                             if (imageList==null) break;
-                              if (ralign) w-=imgWidth;
-                              imageList.drawImage(g, ((Integer)elementData[index]).intValue(), w, imageYOfs);  
-                              if (!ralign) w+=imgWidth;
+                              if (ralign) w -= aniSmile? imageList.getWidth(i) : imgWidth; 
+                              imageList.drawImage(g, i, w, imageYOfs);
+                              if (!ralign) w += aniSmile? imageList.getWidth(i) : imgWidth;
                             break;
                         case COLOR:
                             g.setColor(0xFFFFFF&i);
@@ -205,20 +201,13 @@ public class ComplexString extends Vector implements VirtualElement {
     
     
     public int getVWidth() {
-        //g.setColor(0);
         if (width>0) return width;  // cached
-        
         int w=0;
         int imgWidth=imgWidth();
-        
         for (int index=0; index<elementCount;index++) {
             if (elementData[index]!=null) {
-                
-                if (elementData[index] instanceof String ){
-                    // string element
-                    w+=//(fc.isCheck()?fc.stringWidth((String)elementData[index]):
-                            font.stringWidth((String)elementData[index]);
-                } else if ((elementData[index] instanceof Integer)&& imageList!=null) {
+                if (elementData[index] instanceof String ) w+= font.stringWidth((String)elementData[index]);
+                else if ((elementData[index] instanceof Integer)&& imageList!=null) {
                     // image element or color
                     int i=(((Integer)elementData[index]).intValue());
                     switch (i&0xff000000) {
@@ -243,15 +232,12 @@ public class ComplexString extends Vector implements VirtualElement {
         for (int i=0;i<elementCount;i++){
             int h=0;
             if (elementData[i]==null) continue;
-            if (elementData[i] instanceof String) { 
-                h=//(fc.isCheck()?fc.getFontHeight():
-                        font.getHeight(); 
-            } else
-            if (elementData[i] instanceof Integer) {
+            if (elementData[i] instanceof String) h=font.getHeight(); 
+            else if (elementData[i] instanceof Integer) {
                 int a=((Integer)elementData[i]).intValue();
                 if ((a&0xff000000) == 0) { h=imageList.getHeight(); }
-            } else
-            if (elementData[i] instanceof VirtualElement) { h=((VirtualElement)elementData[i]).getVHeight(); }
+            }
+            else if (elementData[i] instanceof VirtualElement) h=((VirtualElement)elementData[i]).getVHeight();
             if (h>height) height=h;
         }
         return height;
@@ -263,7 +249,8 @@ public class ComplexString extends Vector implements VirtualElement {
         super.addElement(obj);
     }
 
-    public void addImage(int imageIndex){ addElement(new Integer(imageIndex)); }
+    public void addSmile(int imageIndex,int iw) {  addElement(new Integer(imageIndex));  aniSmile = true; }
+    public void addImage(int imageIndex){  addElement(new Integer(imageIndex));  aniSmile = false; }
     public void addColor(int colorRGB){ addElement(new Integer(COLOR | colorRGB)); }
     public void addRAlign(){ addElement(new Integer(RALIGN)); }
     public void addUnderline(){ addElement(new Integer(UNDERLINE)); }
