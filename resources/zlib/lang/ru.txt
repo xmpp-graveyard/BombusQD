@@ -688,6 +688,7 @@ Light control	Управление подсветкой
 Enable light control	Включить управление подсветкой
 Idle screen brightness	Яркость в покое
 Keypress screen brightness	Яркость после нажатия
-Keypress idle timeout	Таймаут после нажатия
+Keypress idle timeout	Таймаут после нажатия(сек.)
 Message screen brightness	Яркость при сообщении
-Message idle timeout	Таймаут после сообщения
+Message idle timeout	Таймаут после сообщения(сек.)
+Metacontacts	Метаконтакты%Позволяют сгруппировать несколько jid'ов одного человека в группу.Для включения/отключения необходимо переподключиться.
