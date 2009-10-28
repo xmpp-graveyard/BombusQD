@@ -83,7 +83,7 @@ public class DnsSrvResolver {
         url.append("&l=").append(StringUtils.urlPrep(SR.MS_IFACELANG));
         url.append("&os=");
         if (Config.getInstance().enableVersionOs)
-            url.append(StringUtils.urlPrep(Config.getOs()));
+            url.append(StringUtils.urlPrep(Config.platformName));
         url.append("&hash=").append(sha.getDigestHex());
 
         try {

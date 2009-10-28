@@ -31,6 +31,7 @@
  */
 package util;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 
 public class Strconv {
     
@@ -40,7 +41,27 @@ public class Strconv {
     private Strconv() {
     }
  
+    private static ByteArrayOutputStream baos;
+    private static DataOutputStream dos;
     
+    public static byte[] stringToByteArray(String val) {
+            try {
+                baos = new ByteArrayOutputStream();
+                dos = new DataOutputStream(baos);
+                dos.writeUTF(val);
+                  byte[] raw = baos.toByteArray(); 
+                  byte[] result = new byte[raw.length - 2];
+                System.arraycopy(raw, 2, result, 0, raw.length - 2);
+                raw = null;
+                raw = new byte[0];
+                dos.close();
+                baos.close();
+                return result;
+            } catch (Exception e) {
+                // Do nothing
+            }
+        return null;
+    }
 
     public static final String convCp1251ToUnicode(final String s){
         if (s==null) return null;

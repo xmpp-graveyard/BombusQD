@@ -87,6 +87,23 @@ public class JabberDataBlock
   public JabberDataBlock( JabberDataBlock _parent, Vector _attributes )  {
     this( "unknown", _parent, _attributes );
   }
+  
+  public void destroy() {
+      parent = null;
+      //System.out.println("   <destroy "+childBlocks.size()+">");
+      if (null != childBlocks) {
+         // for (int i = 0; i < childBlocks.size(); ++i) {
+         //     System.out.println("     "+i+":"+ ((JabberDataBlock)childBlocks.elementAt(i)).toString() );
+         // }
+      
+        childBlocks.removeAllElements();
+        attributes.removeAllElements();
+        childBlocks = null;
+        attributes = null;
+        //System.out.println("   /destroy>.");
+      }
+  }
+
 
   /**
    * Constructor including an Attribute list
@@ -144,7 +161,7 @@ public class JabberDataBlock
    * @param text The text to add
    */
 
-  public void setText( String text ) { textData=text; }
+  public final void setText( String text ) { textData=text; }
 
   /**
    * Method to get the parent of this block
@@ -202,7 +219,7 @@ public class JabberDataBlock
       if (childBlocks==null) return null;
       int size=childBlocks.size();
       JabberDataBlock d=null;
-      for(int i=0;i<size;i++){   
+      for(int i=0;i<size;++i){   
           d =(JabberDataBlock)childBlocks.elementAt(i);
           if (tagName!=null) if (! tagName.equals(d.tagName)) continue;
           if (! d.isJabberNameSpace(xmlns)) continue;
@@ -211,7 +228,7 @@ public class JabberDataBlock
       return null;
   }
   
-  public void setNameSpace(String xmlns){
+  public final void setNameSpace(String xmlns){
       setAttribute("xmlns", xmlns);
   }
 
@@ -222,7 +239,7 @@ public class JabberDataBlock
    * @param value The value of the attribute
    */
 
-  public void setAttribute( String attributeName, String value )  {
+  public final void setAttribute( String attributeName, String value )  {
       if( attributeName == null )
           return;
       
@@ -252,7 +269,7 @@ public class JabberDataBlock
       attributes.addElement(value);
    }
 
-  public void setTypeAttribute( String value ) {
+  public final void setTypeAttribute( String value ) {
       setAttribute("type",value);
   }
   
@@ -277,7 +294,7 @@ public class JabberDataBlock
     if (childBlocks==null) return null;
     int size=childBlocks.size();
     JabberDataBlock d=null;
-      for(int i=0;i<size;i++){    
+      for(int i=0;i<size;++i){    
         d=(JabberDataBlock)childBlocks.elementAt(i);
         if (d.getTagName().equals(byTagName)) return d;        
       }   
@@ -294,7 +311,7 @@ public class JabberDataBlock
     if (childBlocks==null) return null;
     int size=childBlocks.size();
       JabberDataBlock d=null;    
-      for(int i=0;i<size;i++){    
+      for(int i=0;i<size;++i){    
         d=(JabberDataBlock)childBlocks.elementAt(i);
         if (text.equals(d.getText()) ) return d;
       }
@@ -317,7 +334,7 @@ public class JabberDataBlock
       private void appendXML(StringBuffer dest, String src){
         if (src==null) return;
         int len=src.length();
-        for (int i=0;i<len;i++){
+        for (int i=0;i<len;++i){
             char ch=src.charAt(i);
             switch (ch) {
                 case '&':   dest.append("&amp;"); break;
@@ -361,7 +378,7 @@ public class JabberDataBlock
       
       if( childBlocks != null ) {
             int size=childBlocks.size();
-            for(int i=0;i<size;i++){          
+            for(int i=0;i<size;++i){          
               JabberDataBlock thisBlock = (JabberDataBlock) childBlocks.elementAt(i);
               thisBlock.constructXML(data);
             }

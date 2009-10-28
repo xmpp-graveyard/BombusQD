@@ -36,11 +36,11 @@ import ui.IconTextElement;
  * @author EvgS
  */
 public class AffiliationItem extends IconTextElement{
-    public final static short AFFILIATION_NONE=0;
-    public final static short AFFILIATION_OWNER=1;
-    public final static short AFFILIATION_ADMIN=2;
-    public final static short AFFILIATION_MEMBER=3;
-    public final static short AFFILIATION_OUTCAST=4;
+    public final static byte AFFILIATION_NONE=0;
+    public final static byte AFFILIATION_OWNER=1;
+    public final static byte AFFILIATION_ADMIN=2;
+    public final static byte AFFILIATION_MEMBER=3;
+    public final static byte AFFILIATION_OUTCAST=4;
     
     public static String getAffiliationName(short index){
         switch (index) {

@@ -42,6 +42,7 @@ import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Displayable;
 import Menu.MenuListener;
 import ui.GMenu;
+import ui.controls.ScrollBar;
 import ui.GMenuConfig;
 import Menu.MenuListener;
 import Menu.Command;
@@ -55,7 +56,7 @@ import java.util.*;
  *
  * @author aqent
  */
-public class PluginsConfig extends DefForm implements MenuListener
+public final class PluginsConfig extends DefForm implements MenuListener
 {
     private Display display;
     
@@ -97,6 +98,7 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#ifdef POPUPS
     private static CheckBox popUps;
 //#endif
+    private static CheckBox graphicsMenu;
     private static CheckBox showBaloons;
     private static CheckBox animatedSmiles;
     private static CheckBox eventDelivery;
@@ -186,56 +188,53 @@ public class PluginsConfig extends DefForm implements MenuListener
     private static PluginBox avatars;      
 
     private final Config cf = midlet.BombusQD.cf;
+    private int pos = -1;
          
     public PluginsConfig(Display display, Displayable pView) {
         super(display, pView, SR.MS_MODULES_CONFIG);
         this.display=display;
              
-        
-        graphics = new PluginBox(SR.MS_grStr, cf.module_graphics){ public void doAction(boolean st){ cf.module_graphics=st; } };
-        itemsList.addElement(graphics);
-        theme = new PluginBox(SR.MS_cthemesStr, cf.module_theme){ public void doAction(boolean st){ cf.module_theme=st; } };
-        itemsList.addElement(theme);
-        fonts = new PluginBox(SR.MS_fontsStr, cf.module_fonts){ public void doAction(boolean st){ cf.module_fonts=st; } };
-        itemsList.addElement(fonts);        
-        avatars = new PluginBox(SR.MS_avatarStr, cf.module_avatars){ public void doAction(boolean st){ cf.module_avatars=st; } };
-        itemsList.addElement(avatars);         
-        
-        itemsList.addElement(new SpacerItem(3)); 
-        
-        app = new PluginBox(SR.MS_appStr, cf.module_app){ public void doAction(boolean st){ cf.module_app=st; } };
-        itemsList.addElement(app);        
-        notify = new PluginBox(SR.MS_notifyStr, cf.module_notify){ public void doAction(boolean st){ cf.module_notify=st; } };
-        itemsList.addElement(notify);          
-        contacts = new PluginBox(SR.MS_contactStr, cf.module_contacts){ public void doAction(boolean st){ cf.module_contacts=st; } };
+        contacts = new PluginBox(SR.MS_contactStr, cf.module_contacts, false){ public void doAction(boolean st){ cf.module_contacts=st; } };
         itemsList.addElement(contacts);
-        messages = new PluginBox(SR.MS_msgStr, cf.module_messages){ public void doAction(boolean st){ cf.module_messages=st; } };
+        messages = new PluginBox(SR.MS_msgStr, cf.module_messages, false){ public void doAction(boolean st){ cf.module_messages=st; } };
         itemsList.addElement(messages);
-        network = new PluginBox(SR.MS_netStr, cf.module_network){ public void doAction(boolean st){ cf.module_network=st; } };
+        notify = new PluginBox(SR.MS_notifyStr, cf.module_notify, false){ public void doAction(boolean st){ cf.module_notify=st; } };
+        itemsList.addElement(notify); 
+        network = new PluginBox(SR.MS_netStr, cf.module_network, false){ public void doAction(boolean st){ cf.module_network=st; } };
         itemsList.addElement(network);
-        autostatus = new PluginBox(SR.MS_astatusStr, cf.module_autostatus){ public void doAction(boolean st){ cf.module_autostatus=st; } };
-        itemsList.addElement(autostatus);        
-        userKeys = new PluginBox(SR.MS_hotkeysStr, cf.userKeys){ public void doAction(boolean st){ cf.userKeys=st; } };
-        itemsList.addElement(userKeys);     
-        history = new PluginBox(SR.MS_historyStr, cf.module_history){ public void doAction(boolean st){ cf.module_history=st; } };
-        itemsList.addElement(history);         
+        app = new PluginBox(SR.MS_appStr, cf.module_app, false){ public void doAction(boolean st){ cf.module_app=st; } };
+        itemsList.addElement(app); 
+        graphics = new PluginBox(SR.MS_grStr, cf.module_graphics, false){ public void doAction(boolean st){ cf.module_graphics=st; } };
+        itemsList.addElement(graphics);
+        theme = new PluginBox(SR.MS_cthemesStr, cf.module_theme, false){ public void doAction(boolean st){ cf.module_theme=st; } };
+        itemsList.addElement(theme);
+        fonts = new PluginBox(SR.MS_fontsStr, cf.module_fonts, false){ public void doAction(boolean st){ cf.module_fonts=st; } };
+        itemsList.addElement(fonts);
 
-        itemsList.addElement(new SpacerItem(3));
-        itemsList.addElement(new SimpleString(SR.MS_ADVANCED_OPT, true));
-        itemsList.addElement(new SpacerItem(3));
+        SimpleString str = new SimpleString(SR.MS_ADVANCED_OPT, true);
+        itemsList.addElement(str);
         
-        cashe = new PluginBox(SR.MS_casheStr, cf.module_cashe){ public void doAction(boolean st){ cf.module_cashe=st; } };
-        itemsList.addElement(cashe); 
+        autostatus = new PluginBox(SR.MS_astatusStr, cf.module_autostatus, true){ public void doAction(boolean st){ cf.module_autostatus=st; } };
+        itemsList.addElement(autostatus);  
+        userKeys = new PluginBox(SR.MS_hotkeysStr, cf.userKeys, true){ public void doAction(boolean st){ cf.userKeys=st; } };
+        itemsList.addElement(userKeys); 
+        avatars = new PluginBox(SR.MS_avatarStr, cf.module_avatars, true){ public void doAction(boolean st){ cf.module_avatars=st; } };
+        itemsList.addElement(avatars);           
+        history = new PluginBox(SR.MS_historyStr, cf.module_history, true){ public void doAction(boolean st){ cf.module_history=st; } };
+        itemsList.addElement(history); 
+        
+        //cashe = new PluginBox(SR.MS_casheStr, cf.module_cashe){ public void doAction(boolean st){ cf.module_cashe=st; } };
+        //itemsList.addElement(cashe); 
 //#ifdef IMPORT_EXPORT         
-//#         ie = new PluginBox(SR.MS_ieStr, cf.module_ie){ public void doAction(boolean st){ cf.module_ie=st; } };
+//#         ie = new PluginBox(SR.MS_ieStr, cf.module_ie, true){ public void doAction(boolean st){ cf.module_ie=st; } };
 //#         itemsList.addElement(ie);  
 //#endif
-        tasks = new PluginBox(SR.MS_taskstr, cf.module_tasks){ public void doAction(boolean st){ cf.module_tasks=st; } };
+        tasks = new PluginBox(SR.MS_taskstr, cf.module_tasks, true){ public void doAction(boolean st){ cf.module_tasks=st; } };
         itemsList.addElement(tasks); 
-        classicchat = new PluginBox(SR.MS_clchatStr, cf.module_classicchat){ public void doAction(boolean st){ cf.module_classicchat=st; } };
+        classicchat = new PluginBox(SR.MS_clchatStr, cf.module_classicchat, true){ public void doAction(boolean st){ cf.module_classicchat=st; } };
         itemsList.addElement(classicchat); 
 
-        debug = new PluginBox(SR.MS_DEBUG_MENU, cf.debug){ public void doAction(boolean st){ cf.debug=st; } };
+        debug = new PluginBox(SR.MS_DEBUG_MENU, cf.debug, true){ public void doAction(boolean st){ cf.debug=st; } };
         itemsList.addElement(debug);
 
         setCommandListener(this);
@@ -368,6 +367,8 @@ public class PluginsConfig extends DefForm implements MenuListener
                itemsList.addElement(showTransports);
                  showResources = new CheckBox(SR.MS_SHOW_RESOURCES, cf.showResources);
                  itemsList.addElement(showResources);
+                  useBoldFont = new CheckBox(SR.MS_BOLD_FONT, cf.useBoldFont);
+                  itemsList.addElement(useBoldFont);
                    showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon);
                    itemsList.addElement(showClientIcon);
                      iconsLeft = new CheckBox(SR.MS_CLIENT_ICONS_LEFT, cf.iconsLeft);
@@ -384,7 +385,6 @@ public class PluginsConfig extends DefForm implements MenuListener
             msgEditType=new DropChoiceBox(display, SR.MS_MSG_EDIT_TYPE);
             msgEditType.append(SR.MS_MES_EDIT_OLD);//0
             msgEditType.append(SR.MS_MES_EDIT_ALT);//1
-            msgEditType.append(SR.MS_MES_EDIT_ALT_GUI);//2                         
 	    msgEditType.setSelectedIndex(cf.msgEditType);
             itemsList.addElement(msgEditType);
             itemsList.addElement(new SpacerItem(3));  
@@ -456,7 +456,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                          itemsList.addElement(eventDelivery);
                            networkAnnotation = new CheckBox(SR.MS_CONTACT_ANNOTATIONS, cf.networkAnnotation);
                            itemsList.addElement(networkAnnotation);
-                             metaContacts = new CheckBox(SR.MS_METACONTACTS, cf.metaContacts);
+                             metaContacts = new CheckBox(SR.MS_METACONTACTS +"[FROZEN]", cf.metaContacts);
                              itemsList.addElement(metaContacts);
                            //sendMoodInMsg = new CheckBox(SR.MS_MOOD_IN_MSG, cf.sendMoodInMsg);
                            //itemsList.addElement(sendMoodInMsg);
@@ -480,6 +480,9 @@ public class PluginsConfig extends DefForm implements MenuListener
 
          } 
          else if(type==SR.MS_grStr){
+          graphicsMenu = new CheckBox(SR.MS_GR_MENU, cf.graphicsMenu);
+          itemsList.addElement(graphicsMenu);
+          
           panels=new DropChoiceBox(display, SR.MS_PANELS);
           panels.append(SR.MS_NO_BAR+" : "+SR.MS_NO_BAR);
           panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_NO_BAR);
@@ -500,7 +503,7 @@ public class PluginsConfig extends DefForm implements MenuListener
            bgnd_image.setSelectedIndex(cf.bgnd_image);
            itemsList.addElement(bgnd_image);                     
            itemsList.addElement(new SpacerItem(3));                   
-	         scrollWidth=new NumberInput(display, SR.MS_SCROLL_WIDTH, Integer.toString(cf.scrollWidth), 4, 20); 
+	         scrollWidth=new NumberInput(display, SR.MS_SCROLL_WIDTH, Integer.toString(cf.scrollWidth), 4, 25); 
                  itemsList.addElement(scrollWidth);   
                  itemsList.addElement(new SpacerItem(3));
                  
@@ -605,18 +608,19 @@ public class PluginsConfig extends DefForm implements MenuListener
     
     
     private void clearCache(boolean itemList){
-            int size = StaticData.getInstance().roster.hContacts.size(); 
+            int size = midlet.BombusQD.sd.roster.contactList.contacts.size(); 
             System.gc();
             midlet.BombusQD.cashe.get().menu_PlaginsConfig=null;
             Contact c = null;
             int count =0;
              for(int i=0;i<size;i++){
-                        c =(Contact)StaticData.getInstance().roster.hContacts.elementAt(i);
-                        if(c.cList!=null){
+                        c =(Contact)midlet.BombusQD.sd.roster.contactList.contacts.elementAt(i);
+                       /* if(c.cList!=null){
                             count+=1;
                             c.cList=null;
                             System.gc();
                         }
+                        */
              }
             if(itemList) {
                 itemsList.addElement(new SimpleString("Cashe cleared.", true));
@@ -631,6 +635,7 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.selfContact=selfContact.getValue();
             cf.showTransports=showTransports.getValue();
             cf.showResources=showResources.getValue();
+            cf.useBoldFont=useBoldFont.getValue();
             cf.showClientIcon=showClientIcon.getValue();
             cf.iconsLeft=iconsLeft.getValue();
             cf.autoFocus=autoFocus.getValue();
@@ -695,6 +700,7 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.adhoc=adhoc.getValue(); 
          } 
          else if(type==SR.MS_grStr){
+           cf.graphicsMenu=graphicsMenu.getValue();
            cf.panelsState=panels.getSelectedIndex();             
            cf.bgnd_image=bgnd_image.getSelectedIndex();
            cf.scrollWidth=Integer.parseInt(scrollWidth.getValue());
@@ -709,6 +715,7 @@ public class PluginsConfig extends DefForm implements MenuListener
            
            cf.popUps=popUps.getValue();
            cf.showBalloons=showBaloons.getValue();
+           
 //#ifdef BACK_IMAGE
 //#            try {
 //#             if (/*img==null && */ cf.bgnd_image==1 /*|| cf.bgnd_image==2*/ ){

@@ -190,70 +190,7 @@ public class MessageEdit
     public Ticker ticker = null; 
     public TextField textField = null;//default msgEdit
     public StringItem messageItem = null; //show latest message for default msgEdit
-    public InformWindow informWindow = null;
-    
 
-    public class InformWindow extends CustomItem {
-        
-      public InformWindow(boolean upperBlock) { 
-          super(""); 
-          this.upperBlock=upperBlock;
-      } 
-      
-      private String latestMessage="Message Editing";
-      private boolean upperBlock=false;
-      private Font font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD ,Font.SIZE_SMALL);
-      private int msgLength = 0;
-      private int msgSymbols = 0;
-      private int maxWidth = 0;  
-      
-      private int getMainBarBGnd() { return Colors.ColorTheme.getColor(Colors.ColorTheme.BAR_BGND); } 
-      private int getMainBarBGndBottom() { return Colors.ColorTheme.getColor(Colors.ColorTheme.BAR_BGND_BOTTOM); }
-      
-      public int getMinContentWidth() { return midlet.BombusQD.getInstance().width; }
-      public int getMinContentHeight() { return font.getHeight()+2; }
-      public int getPrefContentWidth(int width) { return getMinContentWidth(); }
-      public int getPrefContentHeight(int height) { return getMinContentHeight(); }
-      
-      public void storeMessage(String latestMessage) {
-        this.latestMessage=latestMessage;
-        msgLength = font.stringWidth(latestMessage);
-        msgSymbols = latestMessage.length();
-        maxWidth = getMinContentWidth()/2 + 30;//128 - minimum width
-        repaint();
-      }  
-
-      public void paint(Graphics g, int w, int h) {
-        ui.Gradient grIB=new ui.Gradient(0, 0, getMinContentWidth(), getMinContentHeight(), 
-                                               getMainBarBGnd(), getMainBarBGndBottom(), false);
-        grIB.paint(g);
-        g.setFont(font);
-        g.setColor(Colors.ColorTheme.getColor(Colors.ColorTheme.BLK_INK));        
-        if(upperBlock){
-          int drawPos=0;
-          int widthSymbols=0;
-          for(int i=0;i<msgSymbols;i++){
-            widthSymbols+=font.charWidth(latestMessage.charAt(i));
-            drawPos+=1;
-            if(widthSymbols>maxWidth){
-              i=msgSymbols;
-              break;
-            }
-          }
-          g.drawString( (drawPos==0?latestMessage:(latestMessage.substring(0,drawPos)+"..")), 6 , 1 , g.LEFT|g.TOP);
-        }else{
-           g.drawString(ui.Time.timeLocalString(ui.Time.utcTimeMillis())
-           + " (" + textField.getString().length() + "/4096)"
-           , 6 , 1 , g.LEFT|g.TOP);
-        }
-      }
-      
-      public void keyPressed(int keyCode){
-        repaint();
-      }    
-    }        
-    
-    
     
     public MessageEdit(Display display, Displayable pView, Contact to, String body, boolean altMsgEdit) {
        this.to=to;
@@ -265,27 +202,7 @@ public class MessageEdit
 //#ifdef DETRANSLIT
 //#         dt=DeTranslit.getInstance();
 //#endif
-        
-       if(midlet.BombusQD.cf.msgEditType==2) {
-            
-         //***************alt MessageEdit Window based on TextField with GUI panels***************
-            
-         informWindow=new InformWindow(true);
-         form.append(informWindow);
-         textField = new TextField(null, null, 4096, 0);
-         form.append(textField);
-         try {
-            if (body!=null) {
-                if (body.length()>4096)
-                    body=body.substring(0, 4095);
-                textField.setString(body);
-            }
-         } catch (Exception e) {}
-         form.append(new InformWindow(false));
-         this.informWindow=informWindow;
 
-       }else { 
-            
          //***************default MessageEdit Window based on TextField***************
             
           int maxSize = 4096;
@@ -301,9 +218,7 @@ public class MessageEdit
           
          if (Config.getInstance().capsState) textField.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
          form.append(textField);    
-         
-       }
-        
+
         
        if (midlet.BombusQD.cf.runningMessage) {
          ticker = new Ticker("BombusQD");
@@ -539,7 +454,6 @@ public class MessageEdit
                   midlet.BombusQD.sd.roster.sendMessage(to, id, body, subj, comp,false);
                   to.msgSuspended=null;                  
                  }
-                if(informWindow!=null) informWindow=null;
                 if(textField!=null) textField=null;
                 if(ticker!=null) ticker=null;
                 if(messageItem!=null) messageItem=null;

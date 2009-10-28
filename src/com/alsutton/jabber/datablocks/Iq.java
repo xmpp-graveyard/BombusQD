@@ -58,7 +58,7 @@ public class Iq extends JabberDataBlock
       switch (typeSet) {
           case TYPE_SET: type="set"; break;
           case TYPE_GET: type="get"; break;
-          case TYPE_ERROR: type="error";
+          case TYPE_ERROR: type="error"; break;
           default: type="result";
       }
       setAttribute("type", type);

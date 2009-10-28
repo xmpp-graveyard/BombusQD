@@ -43,18 +43,21 @@ import util.Strconv;
  */
 public class NonSASLAuth implements JabberBlockListener{
     
+    public void destroy() {
+        listener = null;
+    }
     private LoginListener listener;
     
     private Account account;
 
-    private JabberStream stream;
+    //private JabberStream stream;
     
     /** Creates a new instance of NonSASLAuth */
-    public NonSASLAuth(Account account, LoginListener listener, JabberStream stream) {
+    public NonSASLAuth(Account account, LoginListener listener) {
         this.listener=listener;
         this.account=account;
-        this.stream=stream;
-        
+        //this.stream=stream;
+        JabberStream stream=midlet.BombusQD.sd.roster.theStream;
         stream.addBlockListener(this);
         
         jabberIqAuth(AUTH_GET);
@@ -67,6 +70,7 @@ public class NonSASLAuth implements JabberBlockListener{
     private final static int AUTH_DIGEST=2;
     
     private void jabberIqAuth(int authType) {
+        JabberStream stream=midlet.BombusQD.sd.roster.theStream;
         int type=Iq.TYPE_GET;
         String id="auth-1";
         

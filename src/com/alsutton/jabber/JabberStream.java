@@ -46,7 +46,7 @@ import Client.Config;
 public class JabberStream extends XmppParser implements Runnable {
     
     private Utf8IOStream iostream;
- 
+    private boolean isConnected = true;
     /**
      * The dispatcher thread.
      */
@@ -127,6 +127,7 @@ public class JabberStream extends XmppParser implements Runnable {
     public void tagEnd(String name) throws XMLException {
         if (currentBlock == null) {
             if (name.equals( "stream:stream" ) ) {
+                //close();
                 dispatcher.halt();
                 iostream.close();
                 if(!midlet.BombusQD.cf.nokiaReconnectHack) {
@@ -140,11 +141,12 @@ public class JabberStream extends XmppParser implements Runnable {
         if (currentBlock.getParent() == null) {
             if (currentBlock.getTagName().equals("stream:error")) {
                 XmppError xe = XmppError.decodeStreamError(currentBlock);
+                //close();
                 dispatcher.halt();
                 iostream.close();
-                 if(!midlet.BombusQD.cf.nokiaReconnectHack) {
-                   iostream=null;
-                 }
+                if(!midlet.BombusQD.cf.nokiaReconnectHack) {
+                    iostream=null;
+                }
                 throw new XMLException("Stream error: "+xe.toString());
             }
         }
@@ -156,10 +158,9 @@ public class JabberStream extends XmppParser implements Runnable {
     }
     
     public void startKeepAliveTask(){
-        Account account=StaticData.getInstance().account;
-        int keepAliveType=account.getKeepAliveType();
+        int keepAliveType=midlet.BombusQD.sd.account.getKeepAliveType();
         if (keepAliveType==0) return;
-        int keepAlivePeriod=account.getKeepAlivePeriod();
+        int keepAlivePeriod=midlet.BombusQD.sd.account.getKeepAlivePeriod();
 
         if (keepAlive!=null) { keepAlive.destroyTask(); keepAlive=null; }
         
@@ -171,29 +172,29 @@ public class JabberStream extends XmppParser implements Runnable {
      * own thread.
      */
     public void coldreconnect(){
-        System.out.println("Exception in parser:");
+        System.out.println("cException in parser:");
         dispatcher.broadcastTerminatedConnection(null);
     }
 
     
-    byte cbuf[]=new byte[512];
-    
     public void run() {
+        XMLParser parser = new XMLParser( this );
+        byte cbuf[]=new byte[512];
+        
         try {
-            XMLParser parser = new XMLParser( this );
             int length=-1;
-            while (true) {
+            while (isConnected) {
                 length=iostream.read(cbuf);
-                if (length==0) {
+                if (0 == length) {
                     try { 
-                        Thread.sleep(150);
+                        Thread.sleep(100);
                     } catch (Exception e) {};
                     continue;
                 }
                 parser.parse(cbuf, length);
             }
         } catch( Exception e ) {
-            System.out.println("Exception in parser:");
+            System.out.println("rException in parser:");
             //e.printStackTrace();
             dispatcher.broadcastTerminatedConnection(e);
         };    
@@ -240,6 +241,7 @@ public class JabberStream extends XmppParser implements Runnable {
             case 3:
                 if (pingSent) {
                     dispatcher.broadcastTerminatedConnection(new Exception("Ping Timeout"));
+                    throw new IOException("Ping Timeout");
                 } else {
                     //System.out.println("Ping myself");
                     ping();
@@ -253,8 +255,10 @@ public class JabberStream extends XmppParser implements Runnable {
          }
      }
     
+    //private Vector outPackets = new Vector();
+    
     public void send( String data ) throws IOException {
-	iostream.send(new StringBuffer(data));
+        sendBuf(new StringBuffer(data));
 //#ifdef CONSOLE
 //#         if (data.equals("</iq") || data.equals(" "))
 //#             addLog("Ping myself", 1);
@@ -264,11 +268,37 @@ public class JabberStream extends XmppParser implements Runnable {
     }
     
     public void sendBuf( StringBuffer data ) throws IOException {
-	iostream.send(data);
+        //iostream.send(data);
+        //System.out.println(data.toString());
+        //if (null != outPackets) outPackets.addElement(data);
+        if (null == data) return;
+        if (null != iostream) iostream.send(data);
 //#ifdef CONSOLE
 //#         addLog(data.toString(), 1);
 //#endif
     }
+    
+    /*
+    public void send( String data ) throws IOException {
+	iostream.send(new StringBuffer(data));
+        sendBuf(new StringBuffer(data));
+//#ifdef CONSOLE
+//#         if (data.equals("</iq") || data.equals(" "))
+//#             addLog("Ping myself", 1);
+//#         else
+//#             addLog(data, 1);
+//#endif
+    }
+    
+    public void sendBuf( StringBuffer data ) throws IOException {
+	//iostream.send(data);
+        if (null != outPackets) outPackets.addElement(data);
+//	if (null != iostream) iostream.send(data);
+//#ifdef CONSOLE
+//#         addLog(data.toString(), 1);
+//#endif
+    }
+     */
     
     /**
      * Method of sending a Jabber datablock to the server.
@@ -277,7 +307,20 @@ public class JabberStream extends XmppParser implements Runnable {
      */
     
     public void send( JabberDataBlock block )  {
-        new SendJabberDataBlock(block);
+        try{
+            //System.out.println("SEND: "+block.toString());
+            sendBuf(getString(block));
+            block.destroy();
+        } catch (Exception e) { }
+    }
+    
+    private final StringBuffer buf=new StringBuffer(0);
+    
+    private StringBuffer getString(JabberDataBlock block) {
+        buf.setLength(0);
+        block.constructXML(buf);
+        //block.destroy();
+        return buf;
     }
     
     
@@ -304,19 +347,23 @@ public class JabberStream extends XmppParser implements Runnable {
      * Set the listener to this stream.
      */
     public void addBlockListener(JabberBlockListener listener) { 
-        dispatcher.addBlockListener(listener);
+        if (null != dispatcher) dispatcher.addBlockListener(listener);
     }
 
     public void cancelBlockListener(JabberBlockListener listener) { 
-        dispatcher.cancelBlockListener(listener);
+        if (null != dispatcher) dispatcher.cancelBlockListener(listener);
+    }
+    
+    public void resetBlockListners() {
+        if (null != dispatcher) dispatcher.resetBlockListners();
     }
     
     public void cancelBlockListenerByClass(Class removeClass) {
-        dispatcher.cancelBlockListenerByClass(removeClass);
+        if (null != dispatcher) dispatcher.cancelBlockListenerByClass(removeClass);
     }
     
     public void setJabberListener( JabberListener listener ) {
-        dispatcher.setJabberListener( listener );
+        if (null != dispatcher) dispatcher.setJabberListener( listener );
     }
     
     private void ping() {
@@ -369,7 +416,7 @@ public class JabberStream extends XmppParser implements Runnable {
                  if (loggedIn)
                      sendKeepAlive(type);
             } catch (Exception e) { 
-                dispatcher.broadcastTerminatedConnection(e);
+               if (isConnected) dispatcher.broadcastTerminatedConnection(e);
             }
         }
 	

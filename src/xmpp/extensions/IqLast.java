@@ -44,7 +44,8 @@ import ui.Time;
 public class IqLast implements JabberBlockListener {
     
     public IqLast(){}
-    
+    public void destroy() {
+    }
     public static JabberDataBlock query(String to, String type){
         JabberDataBlock result=new Iq(to, Iq.TYPE_GET, "last_"+type);
         result.addChildNs("query", "jabber:iq:last");

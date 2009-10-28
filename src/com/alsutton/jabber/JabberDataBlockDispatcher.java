@@ -93,7 +93,10 @@ public class JabberDataBlockDispatcher extends Thread
   }
   public void cancelBlockListener(JabberBlockListener listener) {
       synchronized (blockListeners) { 
-          try { blockListeners.removeElement(listener); }
+          try { 
+              blockListeners.removeElement(listener);
+              listener.destroy();
+          }
           catch (Exception e) {
               e.printStackTrace(); 
           }
@@ -109,7 +112,8 @@ public class JabberDataBlockDispatcher extends Thread
   public void broadcastJabberDataBlock( JabberDataBlock dataBlock )
   {
     waitingQueue.addElement( dataBlock );
-    if(Runtime.getRuntime().freeMemory()<150000) {//150kb
+    if(Runtime.getRuntime().freeMemory()<150000) {
+        //se crashes after entering room with >=400 occupants
         while( waitingQueue.size() != 0 ) {
             try {
                 Thread.sleep( 50L );
@@ -127,7 +131,7 @@ public class JabberDataBlockDispatcher extends Thread
         while( dispatcherActive ) {
             while( waitingQueue.size() == 0 ) {
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(100L);//200
                 } catch( InterruptedException e ) { }
             }
 
@@ -145,45 +149,51 @@ public class JabberDataBlockDispatcher extends Thread
                         if (processResult==JabberBlockListener.NO_MORE_BLOCKS) {
                             blockListeners.removeElementAt(i); break;
                         }
-                        i++;
+                        ++i;
                     }
                 }
-                if (processResult==JabberBlockListener.BLOCK_REJECTED)
-                    if( listener != null )
-                        processResult=listener.blockArrived( dataBlock );
-                
+                if (processResult==JabberBlockListener.BLOCK_REJECTED && listener != null ) processResult=listener.blockArrived( dataBlock );
                 if (processResult==JabberBlockListener.BLOCK_REJECTED) {
-                    if (!(dataBlock instanceof Iq)) continue;
-                    
-                    String type=dataBlock.getTypeAttribute();
-                    if (type.equals("get") || type.equals("set")) {
-                        dataBlock.setAttribute("to", dataBlock.getAttribute("from"));
-                        dataBlock.setAttribute("from", null);
-                        dataBlock.setTypeAttribute("error");
-                        dataBlock.addChild(new XmppError(XmppError.FEATURE_NOT_IMPLEMENTED, null).construct());
-                        stream.send(dataBlock);
-                        dataBlock=null;
-                    }
-                    type=null;
+                    if (dataBlock instanceof Iq) {
+                        String type=dataBlock.getTypeAttribute();
+                        if (type.equals("get") || type.equals("set")) {
+                            dataBlock.setAttribute("to", dataBlock.getAttribute("from"));
+                            dataBlock.setAttribute("from", null);
+                            dataBlock.setTypeAttribute("error");
+                            dataBlock.addChild(new XmppError(XmppError.FEATURE_NOT_IMPLEMENTED, null).construct());
+                            stream.send(dataBlock);
+                            dataBlock = null;
+                        }
+                     }
                     //TODO: reject iq stansas where type =="get" | "set"
                 }
 //#ifdef CONSOLE
 //#                 stream.addLog(dataBlock.toString(), 10);
 //#                 midlet.BombusQD.cf.inStanz+=1;
 //#endif
+                dataBlock.destroy();
             } catch (Exception e) { }
         }
+        halt();
+        listener = null;
+        stream = null;
+        while (!waitingQueue.isEmpty()) {
+            ((JabberDataBlock)waitingQueue.elementAt(0)).destroy();
+            waitingQueue.removeElementAt(0);
+        }
+        resetBlockListners();
     }
     
-  public void cancelBlockListenerByClass(Class removeClass){
-      synchronized (blockListeners) {
-          int index=0;
-          while (index<blockListeners.size()) {
-              Object list=blockListeners.elementAt(index);
-              if (list.getClass().equals(removeClass)) blockListeners.removeElementAt(index); 
-              else index++;
-          }
-      }
+  public void cancelBlockListenerByClass(Class removeClass) {
+        synchronized (blockListeners) {
+            for (int index = blockListeners.size() - 1; 0 <= index; --index) {
+                JabberBlockListener list= (JabberBlockListener)blockListeners.elementAt(index);
+                if (list.getClass().equals(removeClass)) {
+                    blockListeners.removeElementAt(index);
+                    list.destroy();
+                }
+            }
+        }
   }
 
   public void rosterNotify(){
@@ -196,6 +206,7 @@ public class JabberDataBlockDispatcher extends Thread
   
   public void halt()
   {
+    //setJabberListener( null );
     dispatcherActive = false;
   }
 
@@ -213,6 +224,19 @@ public class JabberDataBlockDispatcher extends Thread
     halt();
     if( listener != null ) listener.connectionTerminated( exception );
   }
+  
+    void resetBlockListners() {
+        try {
+            synchronized (blockListeners) {
+                for (int i = 0; i < blockListeners.size(); ++i) {
+                    ((JabberBlockListener)blockListeners.elementAt(i)).destroy();
+                }
+                blockListeners.removeAllElements();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
   /**
    * Method to tell the listener the stream is ready for talking to.

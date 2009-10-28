@@ -86,22 +86,15 @@ public class Utf8IOStream {
 	countPocketsSend++;
 //#endif          
 	synchronized (outStream) {
-            midlet.BombusQD.sd.updateTrafficOut();
-            StringBuffer outbuf=Strconv.toUTFSb(data);
-            int outLen=outbuf.length();
-            byte bytes[]=new byte[outLen];
-            for (int i=0; i<outLen; i++) {
-                bytes[i]=(byte)outbuf.charAt(i);
-            }
+            byte[] bytes = Strconv.stringToByteArray(data.toString());
+            int outLen=bytes.length;
 	    outStream.write(bytes);
             setSent(bytesSent+outLen);
 
 	    outStream.flush();
-            outbuf.setLength(0);
-            
-            outbuf=null;
+            bytes=null;
             bytes=new byte[0];
-            bytes=null;            
+            data.setLength(0);
             updateTraffic();
 	}
 //#if (XML_STREAM_DEBUG)        
@@ -136,6 +129,7 @@ public class Utf8IOStream {
 
     private void updateTraffic() {
         midlet.BombusQD.sd.traffic=getBytes();
+        midlet.BombusQD.sd.updateTrafficOut();
     }
     
     

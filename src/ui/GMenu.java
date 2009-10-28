@@ -34,6 +34,8 @@ import locale.SR;
 import midlet.BombusQD;
 import Menu.MenuListener;
 import Menu.Command;
+import images.MenuIcons;
+import Menu.MyMenu;
 import java.util.*;
 import ui.controls.CommandsPointer;
 
@@ -104,6 +106,10 @@ public class GMenu extends Canvas {
    
    
    public GMenu(Display display, Displayable parentView, MenuListener menuListener, ImageList il, Vector menuCommands) {
+        if(!midlet.BombusQD.cf.graphicsMenu){
+            new MyMenu(display, parentView, menuListener, "Menu", il, menuCommands);
+            return;
+        }
         gm.ml=menuListener;
         this.parentView=parentView;
         this.display=display;
@@ -119,6 +125,11 @@ public class GMenu extends Canvas {
    
    public GMenu(Display display,Displayable parentView,MenuListener menuListener,ImageList il,Vector menuCommands,
            Vector cmdfirstList,Vector cmdsecondList,Vector cmdThirdList){//Количество вкладок
+        if(!midlet.BombusQD.cf.graphicsMenu){
+            if(il == null) il = MenuIcons.getInstance();
+            new MyMenu(display, parentView, menuListener, "Menu", il, menuCommands);
+            return;
+        }
         gm.ml=menuListener;
         this.parentView=parentView;
         this.display=display;
@@ -178,10 +189,7 @@ public class GMenu extends Canvas {
   public void paintCustom(Graphics g,int itemGrMenu) {
         Graphics graphics=(offscreen==null)? g: offscreen.getGraphics();    
 //long s1 = System.currentTimeMillis();
-          if(eventMenu==false){
-            drawAllItems(g,gm.menuCommands,gm.commandslist,gm.itemCursorIndex); 
-          }
-          if(eventMenu==true){
+          if(eventMenu){
            if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_NEW_ACCOUNT)>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_REGISTERING)>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_MY_JABBER)>-1
@@ -189,6 +197,8 @@ public class GMenu extends Canvas {
               ){
               drawAllItems(g,gm.menuCommandsIn,gm.commandslistIn,gm.itemCursorIndexIn);
            }
+         }else{
+            drawAllItems(g,gm.menuCommands,gm.commandslist,gm.itemCursorIndex);  
          }
 /*          
         long s2 = System.currentTimeMillis();

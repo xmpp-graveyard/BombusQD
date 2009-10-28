@@ -36,7 +36,8 @@ import Client.*;
 public class SoftwareInfo implements JabberBlockListener {
     
     public SoftwareInfo(){ };
-
+    public void destroy() {
+    }
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
         String id=/*(String)*/ data.getAttribute("id"); 

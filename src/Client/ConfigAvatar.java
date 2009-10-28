@@ -259,12 +259,12 @@
 //#             FileIO f=FileIO.createConnection(cf.msgAvatarPath);
 //#             Vector e = f.fileList(false);
 //#             int size1=e.size()-1;
-//#             int size=StaticData.getInstance().roster.hContacts.size();   
+//#             int size=midlet.BombusQD.sd.roster.contactList.contacts.size();   
 //#             
 //#             StaticData.getInstance().roster.errorLog(e.toString());
 //#             for(int i=0;i<size1;i++){
 //#                for(int j=0;j<size;j++){
-//#                   c = (Contact)StaticData.getInstance().roster.hContacts.elementAt(j);
+//#                   c = (Contact)midlet.BombusQD.sd.roster.contactList.contacts.elementAt(j);
 //#                         if(isRoster){
 //#                           String checkBareJid = StringUtils.replaceBadChars("roster_"+c.bareJid);
 //#                           String fsName = e.elementAt(i).toString();
@@ -335,12 +335,12 @@
 //#     
 //#     public void UpdateAvatarsOnline() {
 //#         Image photoImg=null;
-//#         int size=StaticData.getInstance().roster.hContacts.size();
+//#         int size=midlet.BombusQD.sd.roster.contactList.contacts.size();
 //#         ImageList il = new ImageList();      
 //#         Contact c=null;
 //#         int countAv=0;
 //#         for(int i=0;i<size;i++){
-//#             c = (Contact)StaticData.getInstance().roster.hContacts.elementAt(i);
+//#             c = (Contact)midlet.BombusQD.sd.roster.contactList.contacts.elementAt(i);
 //#             if(c.hasPhoto){
 //#                  try {
 //#                    photoImg=Image.createImage(c.vcard.getPhoto(), 0, c.vcard.getPhoto().length);

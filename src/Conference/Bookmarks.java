@@ -55,7 +55,7 @@ import ui.controls.AlertBox;
  *
  * @author EvgS,aqent
  */
-public class Bookmarks 
+public final class Bookmarks 
         extends VirtualList 
         implements
 //#ifndef MENU_LISTENER
@@ -66,10 +66,7 @@ public class Bookmarks
     {   
     
     private BookmarkItem toAdd;
-    
-    private StaticData sd = StaticData.getInstance();
-    private Config cf=Config.getInstance();
-    
+
     private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
     private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
     private Command cmdAdvJoin=new Command (SR.MS_EDIT_JOIN, Command.SCREEN, 2);
@@ -93,7 +90,7 @@ public class Bookmarks
 
     private Command cmdMyService=new Command(SR.MS_SERVICE, Command.SCREEN, 31);
     
-    JabberStream stream=sd.roster.theStream;
+    //JabberStream stream=sd.roster.theStream;
     /** Creates a new instance of Bookmarks */
     public Bookmarks(Display display, Displayable pView, BookmarkItem toAdd) {
         super ();
@@ -147,12 +144,12 @@ public class Bookmarks
     }
 
     protected int getItemCount() { 
-        Vector bookmarks=sd.roster.bookmarks;
+        Vector bookmarks=midlet.BombusQD.sd.roster.bookmarks;
         return (bookmarks==null)?0: bookmarks.size(); 
     }
     
     protected VirtualElement getItemRef(int index) { 
-        return (VirtualElement) sd.roster.bookmarks.elementAt(index); 
+        return (VirtualElement) midlet.BombusQD.sd.roster.bookmarks.elementAt(index); 
     }
     
     public void loadBookmarks() {
@@ -160,7 +157,7 @@ public class Bookmarks
 
     private void addBookmark() {
         if (toAdd!=null) {
-            Vector bm=sd.roster.bookmarks;
+            Vector bm=midlet.BombusQD.sd.roster.bookmarks;
             bm.addElement(toAdd);
             //sort(bm);
             saveBookmarks();
@@ -168,16 +165,14 @@ public class Bookmarks
     }
     
     public void eventOk(){
-        if (getItemCount()==0) 
-            return;
-        
-        BookmarkItem join=(BookmarkItem)getFocusedObject();
-        if (join==null) 
-            return;
-        if (join.isUrl) 
-            return;
-        ConferenceForm.join(join.desc, join.getJidNick(), join.password, cf.confMessageCount);
-        display.setCurrent(sd.roster);
+      try{
+          Object obj = getFocusedObject();
+          if(null != obj){
+              BookmarkItem join=(BookmarkItem)getFocusedObject();
+              ConferenceForm.join(join.desc, join.getJidNick(), join.password, midlet.BombusQD.cf.confMessageCount); 
+          }
+       } catch (Exception e) { }
+       midlet.BombusQD.getInstance().display.setCurrent(midlet.BombusQD.sd.roster);//N78 hardfix
     }
     
     public void commandAction(Command c, Displayable d){
@@ -207,7 +202,7 @@ public class Bookmarks
         else if (c==cmdRoomAdmins) new Affiliations(display, this, roomJid, (short)2);  
         else if (c==cmdRoomMembers) new Affiliations(display, this, roomJid, (short)3);  
         else if (c==cmdRoomBanned) new Affiliations(display, this, roomJid, (short)4);  
-        else if (c==cmdSort) sort(sd.roster.bookmarks);
+        else if (c==cmdSort) sort(midlet.BombusQD.sd.roster.bookmarks);
         /*else if (c==cmdDoAutoJoin) {
             for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements();) {
                 BookmarkItem bm=(BookmarkItem) e.nextElement();
@@ -229,7 +224,7 @@ public class Bookmarks
         if (del.isUrl) 
             return;
 
-        sd.roster.bookmarks.removeElement(del);
+        midlet.BombusQD.sd.roster.bookmarks.removeElement(del);
         if (getItemCount()<=cursor) 
             moveCursorEnd();
         saveBookmarks();
@@ -241,7 +236,7 @@ public class Bookmarks
     }
 
     private void exitBookmarks(){
-        display.setCurrent(sd.roster);
+        display.setCurrent(midlet.BombusQD.sd.roster);
     }
     
     public void move(int offset){
@@ -250,8 +245,8 @@ public class Bookmarks
             BookmarkItem p1=(BookmarkItem)getItemRef(index);
             BookmarkItem p2=(BookmarkItem)getItemRef(index+offset);
             
-            sd.roster.bookmarks.setElementAt(p1, index+offset);
-            sd.roster.bookmarks.setElementAt(p2, index);
+            midlet.BombusQD.sd.roster.bookmarks.setElementAt(p1, index+offset);
+            midlet.BombusQD.sd.roster.bookmarks.setElementAt(p2, index);
         } catch (Exception e) {/* IndexOutOfBounds */}
     }
 

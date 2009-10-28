@@ -41,7 +41,8 @@
 //#endif
 //#     /** Singleton */
 //#     public static PepListener instance;
-//#     
+//#     public void destroy() {
+//#     }
 //#     public static PepListener getInstance() {
 //#         if (instance==null) instance=new PepListener();
 //#         return instance;
@@ -216,7 +217,7 @@
 //# 
 //#         Vector hContacts=sd.roster.getHContacts();
 //#         String msg="";
-//#         synchronized (hContacts) {
+//#         //synchronized (hContacts) {
 //#             Jid j=new Jid(from);
 //#             int s = hContacts.size();
 //#             for (int i=0; i<s; i++) {
@@ -247,7 +248,7 @@
 //#                     c.addMessage(new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, msg));
 //#                 }
 //#             }
-//#         }
+//#         //}
 //#         clear();      
 //#         sd.roster.redraw();
 //#         return BLOCK_PROCESSED;

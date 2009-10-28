@@ -72,13 +72,23 @@ public class Msg {
     public boolean unread = false;
 
     public boolean itemCollapsed;
-    public int itemHeight=-1;
+    //public int itemHeight=-1;
     
     public int color = -1;
 
     public boolean selected;
 
     public boolean oldHighlite;
+    
+    public void destroy(){
+       if(null != from) from = null;
+       if(null != subject) subject = null;
+       if(null != body) body = null;
+       if(null != id) id = null;
+       if(time.length()>0){
+           time.setLength(0);
+       }
+    }
     
     /** Creates a new instance of msg */
     public Msg(int messageType, String from, String subj, String body) {

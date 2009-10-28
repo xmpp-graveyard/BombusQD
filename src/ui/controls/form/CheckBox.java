@@ -48,6 +48,8 @@ public class CheckBox
     private boolean selectable=true;
     private boolean otherWindow=false;    
     private int colorItem;
+    private int width = 0;
+    
     Vector checkBox = new Vector(0);
     GMenuConfig gm = GMenuConfig.getInstance();
     
@@ -88,8 +90,11 @@ public class CheckBox
     
     int fontHeight=getFont().getHeight();
     
+
     public void drawItem(Graphics g, int ofs, boolean sel){
-       g.setFont(getFont());
+       Font f = getFont();
+       g.setFont(f);
+       int scrollW = midlet.BombusQD.cf.scrollWidth;
        int offset=4;
        if (il!=null && otherWindow==false) {
             if (getImageIndex()!=-1) {
@@ -105,20 +110,20 @@ public class CheckBox
         int y = 0;
          if(state){
               int helpHeight=0;
-              
               if(toString().indexOf("%")>-1){
                     helpHeight += fontHeight*(size-1);
-                    g.drawString(text_undo, offset-ofs, y, Graphics.TOP|Graphics.LEFT);                    
+                    int posIndex = offset-ofs;
+                    g.drawString(text_undo, posIndex, y, Graphics.TOP|Graphics.LEFT);                    
                     g.setColor(0xffffff);
-                    g.fillRoundRect(20,fontHeight+2,gm.phoneWidth-30,helpHeight,9,9);
+                    g.fillRoundRect(posIndex,fontHeight+2,gm.phoneWidth - 30 - scrollW, helpHeight,9,9);
                     g.setColor(0x000000);
-                    g.drawRoundRect(20,fontHeight+2,gm.phoneWidth-30,helpHeight,9,9);  
+                    g.drawRoundRect(posIndex,fontHeight+2,gm.phoneWidth - 30 - scrollW, helpHeight,9,9);  
                     g.setColor(0x000000);
                  for(int i=0;i<size;i++){ 
                    if(i==0){
                       g.drawString((String)lines.elementAt(i),3, y, Graphics.TOP|Graphics.LEFT);
                    }else{
-                      g.drawString((String)lines.elementAt(i),23 , y + 2, Graphics.TOP|Graphics.LEFT);   
+                      g.drawString((String)lines.elementAt(i),posIndex + 3 , y + 2, Graphics.TOP|Graphics.LEFT);   
                    }
                    y += fontHeight;
                  }

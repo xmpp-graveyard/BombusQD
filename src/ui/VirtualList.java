@@ -65,7 +65,7 @@ import Conference.ConferenceGroup;
 public abstract class VirtualList         
     extends Canvas {
     
-    public void focusedItem(int index) {}
+    protected void focusedItem(int index) {}
 
     abstract protected int getItemCount();
 
@@ -130,6 +130,14 @@ public abstract class VirtualList
     
 
     boolean isSel=false;
+    
+    public void destroy() {
+        //System.out.println("    :::destroy mainbar&&infobar");
+        if (null != mainbar) mainbar.destroy();
+        mainbar = null;
+        if (null != infobar) infobar.destroy();
+        infobar = null;
+    }
     
     
     public void eventOk(){
@@ -246,8 +254,8 @@ public abstract class VirtualList
     
     protected boolean showBalloon;
     
-    protected VirtualElement mainbar;
-    protected VirtualElement infobar;
+    protected MainBar mainbar;
+    protected MainBar infobar;
     
     private boolean wrapping = true;
 
@@ -263,11 +271,11 @@ public abstract class VirtualList
     
     public void enableListWrapping(boolean wrap) { this.wrapping=wrap; }
     
-    public ComplexString getMainBarItem() {return (ComplexString)mainbar;}
-    public void setMainBarItem(ComplexString mainbar) { this.mainbar=mainbar; }
+    public MainBar getMainBarItem() {return mainbar;}
+    public void setMainBarItem(MainBar mainbar) { this.mainbar=mainbar; }
     
-    public ComplexString getInfoBarItem() {return (ComplexString)infobar;}
-    public void setInfoBarItem(ComplexString infobar) { this.infobar=infobar; }    
+    public MainBar getInfoBarItem() {return infobar;}
+    public void setInfoBarItem(MainBar infobar) { this.infobar=infobar; }    
 
 //#ifdef ELF    
 //#     private static boolean sie_accu=true;
@@ -309,8 +317,8 @@ public abstract class VirtualList
 
 //#endif
         
-//#ifdef GRAPHICS_MENU     
-//#         GMenu = new GMenu();
+//#ifdef GRAPHICS_MENU   
+//#          if(GMenu == null) GMenu = new GMenu();
 //#endif       
          gm.phoneWidth = width;
          gm.phoneHeight = height;        
@@ -372,7 +380,7 @@ public abstract class VirtualList
 
     
     public void redraw(){
-        Displayable d=display.getCurrent();
+        Displayable d = midlet.BombusQD.getInstance().display.getCurrent();
         if (d instanceof Canvas) {
             ((Canvas)d).repaint();
         }
@@ -435,11 +443,9 @@ public abstract class VirtualList
 //#ifdef POPUPS
         popup.init(g, width, height);
 //#ifdef GRAPHICS_MENU
-//#         if(gm.itemGrMenu>0){
-//#           GMenu.init(g, width, height,this);
-//#         }
-//#         if(gm.ml!=null && gm.itemGrMenu==-1){
-//#             GMenu.select(gm.inMenuSelected);
+//#         if(midlet.BombusQD.cf.graphicsMenu){
+//#           if(gm.itemGrMenu>0) GMenu.init(g, width, height,this);
+//#           if(gm.ml!=null && gm.itemGrMenu==-1) GMenu.select(gm.inMenuSelected);
 //#         }
 //#endif          
         
@@ -669,7 +675,7 @@ public abstract class VirtualList
             if (System.currentTimeMillis()-sd.getTrafficOut()<2000) drawTraffic(g, true);
         }
   
-        if(gm.itemGrMenu>0){
+        if(gm.itemGrMenu>0 && midlet.BombusQD.cf.graphicsMenu){
           //showBalloon=false;
 //#ifdef GRAPHICS_MENU              
 //#           drawGraphicsMenu(g);
@@ -1340,29 +1346,38 @@ public abstract class VirtualList
     public Vector cmdsecondList=new Vector(0);
     public Vector cmdThirdList=new Vector(0);    
 
+    
     public void addCommand(Command command) {
-        if (menuCommands.indexOf(command)<0)
-            menuCommands.addElement(command);
+        if (menuCommands.indexOf(command)<0) menuCommands.addElement(command);
     }
     
     public void addInCommand(int countMenu,Command command) {
-        if(countMenu==1){
-          if (cmdfirstList.indexOf(command)<0)cmdfirstList.addElement(command);            
-        } else if(countMenu==2){
-          if (cmdsecondList.indexOf(command)<0) cmdsecondList.addElement(command);   
-        } else if(countMenu==3){
-          if (cmdThirdList.indexOf(command)<0) cmdThirdList.addElement(command);   
+        if(midlet.BombusQD.cf.graphicsMenu){
+          if(countMenu==1){
+            if (cmdfirstList.indexOf(command)<0)cmdfirstList.addElement(command);            
+          } else if(countMenu==2){
+            if (cmdsecondList.indexOf(command)<0) cmdsecondList.addElement(command);   
+          } else if(countMenu==3){
+            if (cmdThirdList.indexOf(command)<0) cmdThirdList.addElement(command);   
+          }
+        }else{
+            command.setIn();
+            if (menuCommands.indexOf(command)<0) menuCommands.addElement(command);
         }
     } 
     
     public void removeInCommand(int countMenu,Command command) {
+       if(midlet.BombusQD.cf.graphicsMenu){
         if(countMenu==1){
           if (cmdfirstList.indexOf(command)<0)cmdfirstList.removeElement(command);            
         } else if(countMenu==2){
           if (cmdsecondList.indexOf(command)<0) cmdsecondList.removeElement(command);   
         } else if(countMenu==3){
           if (cmdThirdList.indexOf(command)<0) cmdThirdList.removeElement(command);   
-        }        
+        } 
+       }else{
+           menuCommands.removeElement(command);
+       }
     }
     
     public void removeCommand(Command command) {
@@ -1407,7 +1422,7 @@ public abstract class VirtualList
     
     private void key(int keyCode) {
 //#ifdef GRAPHICS_MENU    
-//#      if(gm.itemGrMenu>0){ //Активное меню
+//#      if(gm.itemGrMenu>0 && midlet.BombusQD.cf.graphicsMenu ){ //Активное меню
 //#          GMenu.keyPressed(keyCode);
 //#          repaint();
 //#      }
@@ -1430,11 +1445,14 @@ public abstract class VirtualList
 //#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
 //#                    }else{
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
+//#                        display.setCurrent(c.getMessageList());
+//#                        /*
 //#                        if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 ){
 //#                           display.setCurrent( (ContactMessageList)c.cList );
 //#                        }else{
 //#                           new ContactMessageList(c,display);  
 //#                        }
+//#                         */
 //#                       //new ContactMessageList(sd.roster.getContact(popup.getContact(), false),display);
 //#                    }                
 //#                 popup.next();
@@ -1876,7 +1894,7 @@ public abstract class VirtualList
 
     public final static void sort(Vector sortVector){
         try {
-            synchronized (sortVector) {
+            //synchronized (sortVector) {
                 int f, i;
                 IconTextElement left, right;
                 int size=sortVector.size();
@@ -1893,7 +1911,7 @@ public abstract class VirtualList
                     }
                     sortVector.setElementAt(left,i+1);
                 }
-            }
+           // }
         } catch (Exception e) {
             e.printStackTrace(); /* ClassCastException */
         }
@@ -1953,21 +1971,21 @@ class TimerTaskRotate extends Thread{
             return;
         }
         
-        synchronized (instance) {
+        //synchronized (instance) {
             list.offset=0;
             instance.scrollLen=max;
             instance.scrollline=(max>0);
             instance.attachedList=list;
             instance.balloon  = 20;
             instance.scroll   = 10;
-        }
+       // }
     }
     
     public void run() {
         while (true) {
             try {  sleep(100);  } catch (Exception e) { instance=null; break; }
 
-            synchronized (this) {
+            //synchronized (this) {
                 if (scroll==0) {
                     if (        instance.scroll()
                             ||  instance.balloon()
@@ -1980,12 +1998,12 @@ class TimerTaskRotate extends Thread{
                     attachedList.reconnectRedraw=false;
                     try { attachedList.redraw(); } catch (Exception e) { instance=null; break; }
                 }
-            }
+            //}
         }
     }
 
     public boolean scroll() {
-        synchronized (this) {
+        //synchronized (this) {
             if (scrollline==false || attachedList==null || scrollLen<0)
                 return false;
             if (attachedList.offset>=scrollLen) {
@@ -1994,17 +2012,17 @@ class TimerTaskRotate extends Thread{
                 attachedList.offset+=6;
 
             return true;
-        }
+        //}
     }
     
     public boolean balloon() {
-        synchronized (this) {
+       // synchronized (this) {
             if (attachedList==null || balloon<0)
                 return false;
             balloon--;
             attachedList.showBalloon=(balloon<20 && balloon>0);
             return true;
-        }
+       // }
     }
 }
 //#endif

@@ -26,16 +26,30 @@
  */
 //#ifdef SERVICE_DISCOVERY 
 package ServiceDiscovery;
+import images.RosterIcons;
+import ui.IconTextElement;
+import Client.Jid;
 
-import Client.Contact;
-
-public class DiscoContact extends Contact {
-    public DiscoContact(String nick, String sJid, int status) { 
-        super( (nick==null)?null:nick.trim(), sJid, status, null);
-    }
+public class DiscoContact extends IconTextElement {
     
-    public String toString() { return (getNick()==null)?getJid():getNick(); }
+    private String nickname;
+    private String sJid;
+    private int status;
+    
+    public DiscoContact(String nick, String sJid, int status) { 
+        super(RosterIcons.getInstance());
+        this.nickname=(nick==null)?null:nick.trim();
+        this.sJid=sJid;
+        if(null != sJid) {
+            Jid jid = new Jid(sJid);
+            this.status = RosterIcons.getInstance().getTransportIndex(jid.getTransport());
+            jid = null;
+        }
+    }
 
-    public String getTipString() { return getJid()+((getNick()==null)?"":"\n"+getNick()); }
+    public boolean getFontIndex() { return true; } //change font
+    public int getImageIndex() { return status; };
+    public String toString() { return (nickname==null)?sJid:nickname; }
+    public String getTipString() { return sJid; }
 }
 //#endif

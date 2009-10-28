@@ -22,15 +22,17 @@ public abstract class PluginBox extends IconTextElement {
     private boolean state=false;
     private String text="";
     private boolean selectable=true;
+    private boolean edit = false;
     private int colorItem;
     private Font font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD ,Font.SIZE_SMALL);
     int fH = font.getHeight();
 
 
-    public PluginBox(String text, boolean state) {
+    public PluginBox(String text, boolean state,boolean edit) {
         super(RosterIcons.getInstance());
         this.text=text;
         this.state=state;
+        this.edit=edit;
         colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
     }
     
@@ -49,12 +51,13 @@ public abstract class PluginBox extends IconTextElement {
        if (text!=null){
          g.drawString(text, offset-ofs, (ilImageSize-fH)/2, Graphics.TOP|Graphics.LEFT);
        }
-       //super.drawItem(g, ofs, sel);
     }
 
     public void onSelect(){
-        state=!state;
-        doAction(state);
+        if(edit==true) {
+           state=!state;
+         }
+         doAction(state);
     }
     
     public int getVHeight(){ 
@@ -63,18 +66,7 @@ public abstract class PluginBox extends IconTextElement {
     }    
     
     public abstract void doAction(boolean state);  
-    public int getImageIndex(){ return state?0x36:0x37; }
+    public int getImageIndex(){ return edit ? (state?0x36:0x37) : 0x36; }
     public boolean getValue() { return state; }
     public boolean isSelectable() { return selectable; }
-    /*
-    public boolean handleEvent(int keyCode) {
-         switch (keyCode) {
-            //case 12: // enter
-            case 5:
-                state=!state;
-                return true;
-         }
-        return false;
-    }
-     */
 }

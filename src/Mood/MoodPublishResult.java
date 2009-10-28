@@ -36,7 +36,8 @@
 //# import xmpp.XmppError; 
 //# 
 //# public class MoodPublishResult implements JabberBlockListener {
-//# 
+//#     public void destroy() {
+//#     }
 //#     private Display display;
 //#     private String id;
 //#     

@@ -25,7 +25,8 @@ public class Captcha implements JabberBlockListener, XDataForm.NotifyListener{
     
     private String from;
     private String id;
-    
+    public void destroy() {
+    }    
     /** Creates a new instance of Captcha */
     public Captcha(Display display) {
         this.display=display;

@@ -55,7 +55,7 @@ import Menu.MyMenu;
  *
  * @author EvgS,aqent
  */
-public class ConferenceForm
+public final class ConferenceForm
     extends DefForm {
     
     private Display display;

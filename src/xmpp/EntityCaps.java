@@ -28,6 +28,10 @@ public class EntityCaps implements JabberBlockListener{
         initCaps();
     }
     
+    public void destroy() {
+        ver = null;
+    }
+    
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
         if (!data.getTypeAttribute().equals("get")) return BLOCK_REJECTED;

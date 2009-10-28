@@ -38,7 +38,7 @@ public class Version {
 //#            public final static String version="0.8.r43"
 //#                    + Config.getInstance().getStringProperty("build", "");  
     //#else
-//#            public final static String version="0.8.r43"
+//#            public final static String version="0.8.r44"
 //#                    + Config.getInstance().getStringProperty("build", "") ;
     //#endif
 //#else

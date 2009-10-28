@@ -54,7 +54,7 @@ public class MyMenu
         int size = commands.size();
         for (int index=0; index<size; index++) {
             Command c=(Command)commands.elementAt(index);
-            addItem(c.getName(), index, c.getImg());
+            addItem(c.getName(), index, c.getImg(), c.inCommand);
         }
         attachDisplay(display);
     }

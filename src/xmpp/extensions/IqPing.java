@@ -38,7 +38,8 @@ import ui.Time;
 public class IqPing implements JabberBlockListener {
 
     public IqPing(){};
-    
+    public void destroy() {
+    }
     private final static String PING="ping";
     private final static String _PING_="_ping_";
     

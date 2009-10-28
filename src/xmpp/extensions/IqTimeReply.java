@@ -43,7 +43,8 @@ import locale.SR;
 public class IqTimeReply implements JabberBlockListener{
     
     public IqTimeReply(){};
-    
+    public void destroy() {
+    }
     public static JabberDataBlock query(String to){
         JabberDataBlock result=new Iq(to, Iq.TYPE_GET, "time");
         result.addChildNs("query", "jabber:iq:time");

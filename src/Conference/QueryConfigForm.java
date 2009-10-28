@@ -43,6 +43,8 @@ import javax.microedition.lcdui.Display;
  */
 public class QueryConfigForm implements JabberBlockListener{
     
+    public void destroy() {
+    }
     private final static String OWNER_XMLNS="http://jabber.org/protocol/muc#owner";
     private Display display;
     /** Creates a new instance of QueryConfigForm */

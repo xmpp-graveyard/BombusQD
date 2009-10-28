@@ -87,8 +87,7 @@ public class Config {
     public final static int NOKIA_5800=44;
 
     StaticData sd = StaticData.getInstance();
-    
-    private static String platformName;
+
     
     public boolean ghostMotor=false;
     public boolean flagQuerySign=false;       
@@ -158,7 +157,6 @@ public class Config {
     public int profile=0;
     public int lastProfile=0;
     public boolean istreamWaiting;
-    public int phoneManufacturer=NOT_DETECTED;
     public int panelsState= 2; //default state both panels show, reverse disabled
     public boolean lightState=false;
     public boolean autoScroll=true;
@@ -190,7 +188,7 @@ public class Config {
     public boolean notifyBlink=true;
     public boolean notifySound=false;
     public boolean notifyPicture=false;
-    public boolean useBoldFont=true;
+    public boolean useBoldFont=false;
 
     public boolean notifyWhenMessageType = false;
 
@@ -230,7 +228,6 @@ public class Config {
     
     public int track=0;
     public boolean find_text=false;//fix
-    public String find_text_str="";
     public int maxAvatarHeight=45;
     public int maxAvatarWidth=45;
     public int bgnd_image=getIntFromManifest("bgnd_type",0);
@@ -309,6 +306,7 @@ public class Config {
     public boolean showCollapsedPresences=true;
     public boolean networkAnnotation=true;
     public boolean metaContacts=true;
+    public boolean graphicsMenu=true;
 
     public static Config getInstance(){
 	if (instance==null) {
@@ -374,6 +372,7 @@ public class Config {
             case WINDOWS:
                 greenKeyCode=-5;
                 VirtualList.keyClear=8;
+                graphicsMenu = false;
                 break;
             case MOTO:
                 ghostMotor=true;
@@ -591,6 +590,7 @@ public class Config {
             showCollapsedPresences=inputStream.readBoolean();
             networkAnnotation=inputStream.readBoolean();
             metaContacts=inputStream.readBoolean();
+            graphicsMenu=inputStream.readBoolean();
             
 	    inputStream.close();
             inputStream=null;
@@ -825,6 +825,7 @@ public class Config {
             outputStream.writeBoolean(showCollapsedPresences);
             outputStream.writeBoolean(networkAnnotation);
             outputStream.writeBoolean(metaContacts);
+            outputStream.writeBoolean(graphicsMenu);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean_", 0, true);      
@@ -932,67 +933,70 @@ public class Config {
 	Time.setOffset(gmtOffset);
     }
 
+    public static String platformName;
+    public int phoneManufacturer=NOT_DETECTED;
     
     private final void getPhoneManufacturer() {
         if (phoneManufacturer==NOT_DETECTED) {
-            String platform=getPlatformName();
+            platformName();
+            //String platform=getPlatformName();
             phoneManufacturer=NONE;
 
-            if (platform.endsWith("(NSG)")) {
+            if (platformName.endsWith("(NSG)")) {
                 phoneManufacturer=SIEMENS;
                 return;
-            } else if (platform.startsWith("SIE")) {
+            } else if (platformName.startsWith("SIE")) {
                 phoneManufacturer=SIEMENS2;
                 return;
-            } else if (platform.startsWith("Motorola-EZX")) {
+            } else if (platformName.startsWith("Motorola-EZX")) {
                 phoneManufacturer=MOTOEZX;
                 return;
-            } else if (platform.startsWith("Moto")) {
+            } else if (platformName.startsWith("Moto")) {
                 phoneManufacturer=MOTO;
                 return;
-            } else if (platform.startsWith("SonyE")) {
-                if (platform.startsWith("SonyEricssonM600")) {
+            } else if (platformName.startsWith("SonyE")) {
+                if (platformName.startsWith("SonyEricssonM600")) {
                     phoneManufacturer=SONYE_M600;
                     return;
                 }
                 phoneManufacturer=SONYE;
                 return;
 //#if !ZLIB
-//#             } else if (platform.indexOf("9@9")>-1) {
+//#             } else if (platformName.indexOf("9@9")>-1) {
 //#                 phoneManufacturer=XENIUM99;
 //#                 return;
 //#endif
-            } else if (platform.startsWith("Windows")) {
+            } else if (platformName.startsWith("Windows")) {
                 phoneManufacturer=WINDOWS;
                 return;
-            } else if (platform.startsWith("Nokia9500") || 
-                platform.startsWith("Nokia9300") || 
-                platform.startsWith("Nokia9300i")) {
+            } else if (platformName.startsWith("Nokia9500") || 
+                platformName.startsWith("Nokia9300") || 
+                platformName.startsWith("Nokia9300i")) {
                 phoneManufacturer=NOKIA_9XXX;
                 return;
-            } else if (platform.startsWith("Nokia")) {
+            } else if (platformName.startsWith("Nokia")) {
                 phoneManufacturer=NOKIA;
-                    if (platform.endsWith("5800")) {
+                    if (platformName.endsWith("5800")) {
                           phoneManufacturer=NOKIA_5800;
                           return;
                     }                
                 return;
-            } else if (platform.startsWith("Intent")) {
+            } else if (platformName.startsWith("Intent")) {
                 phoneManufacturer=INTENT;
                 return;
-            } else if (platform.startsWith("wtk") || platform.endsWith("wtk")) {
+            } else if (platformName.startsWith("wtk") || platformName.endsWith("wtk")) {
                 phoneManufacturer=WTK;
                 return;
-            } else if (platform.startsWith("Samsung")) {
+            } else if (platformName.startsWith("Samsung")) {
                 phoneManufacturer=SAMSUNG;
                 return;
-            } else if (platform.startsWith("LG")) {
+            } else if (platformName.startsWith("LG")) {
                 phoneManufacturer=LG;
                 return;
-            } else if (platform.startsWith("j2me")) {
+            } else if (platformName.startsWith("j2me")) {
                 phoneManufacturer=J2ME;
                 return;
-            } else if (platform.startsWith("Jbed")) {
+            } else if (platformName.startsWith("Jbed")) {
                 phoneManufacturer=JBED;
 //#ifdef FILE_IO
                 try { FileIO f=FileIO.createConnection(""); } catch (Exception ex) { }
@@ -1004,7 +1008,7 @@ public class Config {
         }
     }
     
-    public static String getPlatformName() {
+    public void platformName() {
         if (platformName==null) {
             platformName=System.getProperty("microedition.platform");
             
@@ -1079,13 +1083,8 @@ public class Config {
             }
         }
       if(platformName.indexOf("/")>-1){
-          return platformName.substring(0,platformName.indexOf("/"));  
+          platformName = platformName.substring(0,platformName.indexOf("/"));  
       }
-      return platformName;
-    }
-
-    public static String getOs() {
-        return getPlatformName();
     }
     
     public final String getStringProperty(final String key, final String defvalue) {

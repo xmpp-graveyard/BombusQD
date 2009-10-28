@@ -35,7 +35,7 @@ import Client.StaticData;
  *
  * @author EvgS 
  */
-public class BookmarkItem extends IconTextElement{
+public final class BookmarkItem extends IconTextElement{
     
     String desc;
     String jid;

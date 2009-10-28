@@ -88,9 +88,9 @@
 //#           if(i==0||i==4||i==14||i==19
 //#                ||i==29||i==36||i==37
 //#                   ||i==46 || i==59||i==63||i==73) {
-//#               addItem("--"+activity[i] ,i, i);
+//#               addItem("--"+activity[i] ,i, i, false);
 //#           }else{
-//#             addItem(activity[i] ,i, i);
+//#             addItem(activity[i] ,i, i, true);
 //#           }
 //#         }
 //#         addItem(ac.no_activity, 100);

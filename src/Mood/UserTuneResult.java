@@ -37,7 +37,8 @@
 //# import xmpp.XmppError;
 //# 
 //# public class UserTuneResult implements JabberBlockListener {
-//# 
+//#     public void destroy() {
+//#     }
 //#     private Display display;
 //#     private String id;
 //#     

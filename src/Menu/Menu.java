@@ -81,18 +81,23 @@ public class Menu extends VirtualList
         mi.pos=getItemCount();
         menuitems.addElement(mi);
     }
+    
     public void addItem(String label, int index, int iconIndex){
+      addItem(label, index, iconIndex, false); 
+    }
+    
+    public void addItem(String label, int index, int iconIndex, boolean inCommand){
         if(alt!=null){
-          addItem(new MenuItem(label, index, iconIndex, alt));  
+          addItem(new MenuItem(label, index, iconIndex, alt, inCommand));  
         }else{
-          addItem(new MenuItem(label, index, iconIndex, il));
+          addItem(new MenuItem(label, index, iconIndex, il, inCommand));
         }
     }
     public void addItem(String label, int index){
         if(alt!=null){
-          addItem(new MenuItem(label, index, -1, alt)); 
+          addItem(new MenuItem(label, index, -1, alt, false)); 
         }else{
-          addItem(new MenuItem(label, index, -1, il));
+          addItem(new MenuItem(label, index, -1, il, false));
         }        
    }
     

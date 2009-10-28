@@ -70,9 +70,9 @@ public class ActiveContacts
     
     /** Creates a new instance of ActiveContacts */
     public ActiveContacts(Display display, Displayable pView, Contact current) {
-	super();
+	//super();
         activeContacts=null;
-	    activeContacts=new Vector(0);
+	activeContacts=new Vector(0);
         Contact c=null;
          int size=midlet.BombusQD.sd.roster.getHContacts().size();        
             for(int i=0;i<size;i++){    
@@ -127,11 +127,7 @@ public class ActiveContacts
          if(Config.getInstance().useClassicChat){
            new SimpleItemChat(display,midlet.BombusQD.sd.roster,(Contact)c);            
          }else{
-           if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3){
-              display.setCurrent((ContactMessageList)c.cList); 
-           }else{
-	      new ContactMessageList(c,display).setParentView(midlet.BombusQD.sd.roster);     
-           }
+            display.setCurrent(c.getMessageList());
          }                
     }
 

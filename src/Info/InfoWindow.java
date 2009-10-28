@@ -91,7 +91,7 @@ public class InfoWindow
         this.display=display;
 
         name=new MultiLine(Version.getName(), Version.getVersionNumber()+
-                "\n"+Config.getOs()+
+                "\n"+Config.platformName+
                 "\nMobile Jabber client" , super.superWidth);
 
         name.selectable=true;
@@ -106,6 +106,7 @@ public class InfoWindow
         itemsList.addElement(description);
         
         thanks = new MultiLine("Thanks to:","Testing: zaetz,demon(Dmitry Krylov),magnit,Sniffy,NNn,DsXack and many others\n" +
+                "Patches: Vladimir Krukov (aspro)\n" +
                 "Graphics: Xa,Makasim\n" +
                 "Actions icons: Rederick Asher\n" +
                 "Site managment: BiLLy\n" +

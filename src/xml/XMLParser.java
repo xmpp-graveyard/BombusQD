@@ -50,6 +50,7 @@ public class XMLParser {
     
     private StringBuffer sbuf=new StringBuffer(0);
     private StringBuffer tagName=new StringBuffer(0);
+    private StringBuffer xmlChar=new StringBuffer(0);
     
     private Vector attr;
     private String atrName;
@@ -249,7 +250,6 @@ public class XMLParser {
         
     };
     
-    
     private String parsePlainText(StringBuffer sb) throws XMLException { //StringBuffer..
         //1. output text length will be not greather than source
         //2. sb may be destroyed - all calls to parsePlainText succeeds flushing of sb
@@ -257,7 +257,7 @@ public class XMLParser {
         int opos=0;
         int lenn = sb.length();
         char c;
-        StringBuffer xmlChar=new StringBuffer(6);
+        xmlChar.setLength(6);
         while (ipos<lenn) {
             c=sb.charAt(ipos++);
             if (c=='&') { 
@@ -313,7 +313,6 @@ public class XMLParser {
             
         }
         xmlChar.setLength(0);
-        xmlChar=null;
         sb.setLength(opos);
         return sb.toString();
     }

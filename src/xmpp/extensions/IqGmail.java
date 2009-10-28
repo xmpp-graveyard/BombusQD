@@ -36,7 +36,8 @@ import java.util.Enumeration;
 public class IqGmail implements JabberBlockListener {
 
     public IqGmail(){};
-    
+    public void destroy() {
+    }
     public static JabberDataBlock query() {
         JabberDataBlock result=new Iq(null, Iq.TYPE_GET, "mail-request");
         result.addChildNs("query", "google:mail:notify");

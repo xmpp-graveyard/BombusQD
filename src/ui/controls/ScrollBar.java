@@ -66,7 +66,6 @@ public class ScrollBar {
     private boolean hasPointerEvents;
     
     private int minimumHeight=3;
-    private int scrollWidth=Config.getInstance().scrollWidth;
     
     private int colorTop;
     private int colorBar;
@@ -98,13 +97,13 @@ public class ScrollBar {
 
     public void setHasPointerEvents(boolean hasPointerEvents) {
         this.hasPointerEvents = hasPointerEvents;
-	scrollWidth=//если значение пол€ ширины скролла Ѕольше 4,то:
+	midlet.BombusQD.cf.scrollWidth=//если значение пол€ ширины скролла Ѕольше 4,то:
             (Config.getInstance().scrollWidth>4)? Config.getInstance().scrollWidth:
                 ( (hasPointerEvents)? WIDTH_SCROLL_2: 4 );
     }
 
     public int getScrollWidth() {
-        return (Config.getInstance().scrollWidth>4)?Config.getInstance().scrollWidth:scrollWidth;
+        return midlet.BombusQD.cf.scrollWidth;
     }
 
     public boolean pointerPressed(int x, int y, VirtualList v) {
@@ -148,6 +147,7 @@ public class ScrollBar {
 	
 	drawHeight=g.getClipHeight();
 	int drawWidth=g.getClipWidth();
+        int scrollWidth = midlet.BombusQD.cf.scrollWidth;
 	
 	scrollerX=drawWidth-scrollWidth;
 

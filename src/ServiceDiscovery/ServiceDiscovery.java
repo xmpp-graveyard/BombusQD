@@ -240,9 +240,8 @@ public class ServiceDiscovery
         if (!(data instanceof Iq)) return JabberBlockListener.BLOCK_REJECTED;
         String id=data.getAttribute("id");
         if (!id.startsWith("disco")) return JabberBlockListener.BLOCK_REJECTED;
-        
+        //System.out.println(data.toString());        
         if (data.getTypeAttribute().equals("error")) {
-            //System.out.println(data.toString());
             discoIcon=RosterIcons.ICON_ERROR_INDEX;
             mainbarUpdate();
             //redraw();
@@ -271,9 +270,11 @@ public class ServiceDiscovery
 
         if (id.equals(discoId("disco2"))) {
             Vector items=new Vector(0);
-            if (childs!=null)
-            for (Enumeration e=childs.elements(); e.hasMoreElements(); ){
-                JabberDataBlock i=(JabberDataBlock)e.nextElement();
+            if (null != childs) {
+              int size = childs.size();
+              for(int y = 0; y < size; ++y) {
+              //for (Enumeration e=childs.elements(); e.hasMoreElements(); ){
+                JabberDataBlock i=(JabberDataBlock)childs.elementAt(y);
                 if (i.getTagName().equals("item")){
                     String name=i.getAttribute("name");
                     String jid=i.getAttribute("jid");
@@ -288,10 +289,17 @@ public class ServiceDiscovery
                         serv=new Node(name, node);
                     }
                     items.addElement(serv);
+                    name = null;
+                    jid = null;
+                    node = null;
                 }
+              }
             }
-            
+            childs = null;
+            childs = new Vector(0);
+            childs.removeAllElements();
             showResults(items);
+            
         }  else if (id.equals(discoId("disco"))) {
             Vector cmds=new Vector(0);
             boolean showPartialResults=false;
@@ -367,8 +375,11 @@ public class ServiceDiscovery
         super.eventOk();
         Object o= getFocusedObject();
         if (o!=null) 
-        if (o instanceof Contact) {
-            browse( ((Contact) o).jid.getJid(), null );
+        if (o instanceof IconTextElement) {
+            String element = ((IconTextElement)o).getTipString(); //System.out.println("browse " + element );
+            if(null == element) return;
+            browse( element, null );
+            element = null;
         }
         if (o instanceof Node) {
             browse( service, ((Node) o).getNode() );

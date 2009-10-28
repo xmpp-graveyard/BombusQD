@@ -39,53 +39,58 @@ abstract public class IconTextElement implements VirtualElement {
     protected ImageList il;
     protected int ilImageSize=0;
     
-   // static FontClass MFont = FontClass.getInstance();        
-    
     public IconTextElement(ImageList il) {
-        super();
+        //super();
         this.il=il;
 	if (il!=null) ilImageSize=il.getHeight();
     }
     
-    private boolean selectable=true; 
-    public boolean isSelectable() { return selectable; }  
+    public boolean isSelectable() { return true; }  
     public boolean handleEvent(int keyCode) { return false; }
     public int getImageIndex() { return -1; };
-    public int getFontIndex() { return 0; }
+    public boolean getFontIndex() { return false; }
     
     public Font getFont() {
-        return FontCache.getFont((getFontIndex()==0)?false:true,FontCache.roster);
+        return FontCache.getFont(getFontIndex(),FontCache.roster);
     }
 
-    public void drawItem(Graphics g, int ofs, boolean sel){
-       //g.setColor(ColorTheme.getColor(ColorTheme.BALLOON_INK));
+    public void drawItem(Graphics g, int ofs, boolean sel, boolean inCommand){
        g.setFont(getFont());
-       //String str=toString();
-       int offset=4;
-       if (il!=null) {
-            if (getImageIndex()!=-1) {
-                offset+=ilImageSize;
-                il.drawImage(g, getImageIndex(), 2, imageYOfs);
-            }
+       String str = toString();
+       int offset = 4 + (inCommand?ilImageSize:0);
+       if (null != il) {
+           il.drawImage(g, getImageIndex(), offset , imageYOfs);
+           if (getImageIndex()!=-1) offset+=ilImageSize;
        }
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
-       if (toString()!=null){
-         g.drawString(toString(), offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
-       }       
+       if (null != str) g.drawString(str, offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
+    }
+    
+    public void drawItem(Graphics g, int ofs, boolean sel){
+       g.setFont(getFont());
+       String str = toString();
+       int offset=4;
+       if (null != il) {
+           il.drawImage(g, getImageIndex(), offset , imageYOfs);
+           if (getImageIndex()!=-1) offset+=ilImageSize;
+       }
+       g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
+       if (null != str) g.drawString(str, offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
     }
 
     public int getVWidth(){ 
         return getFont().stringWidth(toString())+ilImageSize+4;
     }
     
-    public int getVHeight(){ 
-              itemHeight=(ilImageSize>getFont().getHeight())?ilImageSize:getFont().getHeight();
-              //fontYOfs=(itemHeight-getFont().getHeight())/2;
-              //imageYOfs=(itemHeight-ilImageSize)/2;//?
+    
+    public int getVHeight() {
+        if (0 == itemHeight) {
+            itemHeight = getFont().getHeight();
+            if (null != il) itemHeight = Math.max(itemHeight, il.getHeight());
+        }
         return itemHeight;
     }
-    
-    
+
     public int getItemHeight(){ 
         return itemHeight;
     }

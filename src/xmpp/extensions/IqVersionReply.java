@@ -39,7 +39,8 @@ import Client.*;
  */
 public class IqVersionReply implements JabberBlockListener {
     public IqVersionReply(){};
-
+    public void destroy() {
+    }
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
         String type=data.getTypeAttribute();
@@ -56,7 +57,7 @@ public class IqVersionReply implements JabberBlockListener {
             query.addChild("name", Version.NAME);
             query.addChild("version",Version.getVersionLang());
             if (Config.getInstance().enableVersionOs) {
-                query.addChild("os", Config.getOs());
+                query.addChild("os", Config.platformName);
             }
             
             StaticData.getInstance().roster.theStream.send(reply);
