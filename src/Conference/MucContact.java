@@ -42,24 +42,24 @@ import ui.VirtualList;
 
 /**
  *
- * @author root,aqent
+ * @author root(linux detected!),aqent
  */
 public class MucContact extends Contact {
     
-    public final static short AFFILIATION_OUTCAST=-1;
-    public final static short AFFILIATION_NONE=0;
-    public final static short AFFILIATION_MEMBER=1;
-    public final static short AFFILIATION_ADMIN=2;
-    public final static short AFFILIATION_OWNER=3;
+    public final static byte AFFILIATION_OUTCAST=-1;
+    public final static byte AFFILIATION_NONE=0;
+    public final static byte AFFILIATION_MEMBER=1;
+    public final static byte AFFILIATION_ADMIN=2;
+    public final static byte AFFILIATION_OWNER=3;
     
-    public final static short ROLE_VISITOR=-1;
-    public final static short ROLE_PARTICIPANT=0;
-    public final static short ROLE_MODERATOR=1;
+    public final static byte ROLE_VISITOR=-1;
+    public final static byte ROLE_PARTICIPANT=0;
+    public final static byte ROLE_MODERATOR=1;
 
-    public final static short GROUP_VISITOR=4;
-    public final static short GROUP_MEMBER=3;
-    public final static short GROUP_PARTICIPANT=2;
-    public final static short GROUP_MODERATOR=1;
+    public final static byte GROUP_VISITOR=4;
+    public final static byte GROUP_MEMBER=3;
+    public final static byte GROUP_PARTICIPANT=2;
+    public final static byte GROUP_MODERATOR=1;
 
     public String realJid;
     
@@ -77,6 +77,15 @@ public class MucContact extends Contact {
     public MucContact(String nick, String jid) {
         super(nick, jid, Presence.PRESENCE_OFFLINE, "muc");
         offline_type=Presence.PRESENCE_OFFLINE;
+    }
+    
+    public void destroy(){
+       super.destroy();
+        if(null != realJid) realJid = null;
+        if(null != affiliation) affiliation = null;
+        if(null != role) role = null;
+        if(b.length()>0) b.setLength(0);
+        if(tip.length()>0) tip.setLength(0);
     }
     
     private static StringBuffer b = new StringBuffer(0);//FIX
@@ -284,7 +293,7 @@ public class MucContact extends Contact {
     public void testMeOffline(){
          ConferenceGroup gr=(ConferenceGroup)group;
          if ( gr.selfContact == this ) 
-            StaticData.getInstance().roster.roomOffline(gr);
+            midlet.BombusQD.sd.roster.roomOffline(gr);
     }
 
     public void addMessage(Msg m) {

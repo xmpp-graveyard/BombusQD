@@ -38,7 +38,7 @@
 //#  *
 //#  * @author ad
 //#  */
-//# public class HistoryReader
+//# public final class HistoryReader
 //#     extends MessageList {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_HISTORY");
@@ -91,7 +91,7 @@
 //#         return (listSize>0)?1:0;
 //#     }
 //# 
-//#     public Msg getMessage(int index) {
+//#     protected Msg getMessage(int index) {
 //# 	return thisMsg;
 //#     }
 //#     
@@ -135,13 +135,11 @@
 //#         parsing=true;
 //#         new Thread(new Runnable() {
 //#             public void run() {
-//#                 messages=null;
-//#                 messages=new Vector();
 //#                 thisMsg=hl.getMessage(index);
 //#                 thisMsg.itemCollapsed=false;
 //#                 thisIndex=index;
 //#                 parsing=false;
-//# 
+//#                 initItem(thisMsg, 0);
 //#                 repaint();
 //#             }
 //#         }).start();

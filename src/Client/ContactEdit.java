@@ -165,7 +165,7 @@ public final class ContactEdit
         String grpName="";
         if (c!=null) grpName=c.group.name;
         
-        Vector groups=sd.roster.groups.getRosterGroupNames();
+        Vector groups=sd.roster.contactList.groups.getRosterGroupNames();
         if (groups!=null) {
             tGrpList=new DropChoiceBox(display, SR.MS_GROUP);
             ngroups=groups.size();

@@ -200,9 +200,7 @@ public class BombusQD extends MIDlet implements Runnable
 	else {
           cf.isMinimized=false;
           if(c!=null){
-              if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3) 
-                   display.setCurrent((ContactMessageList)c.cList);
-              else new ContactMessageList(c,display);  
+              display.setCurrent(c.getMessageList());
           }else{
               display.setCurrent(sd.roster);
           }

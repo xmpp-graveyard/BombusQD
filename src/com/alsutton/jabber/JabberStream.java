@@ -195,6 +195,9 @@ public class JabberStream extends XmppParser implements Runnable {
             }
         } catch( Exception e ) {
             System.out.println("rException in parser:");
+//#ifdef CONSOLE 
+//#             midlet.BombusQD.debug.add(" rException in parser" ,10);
+//#endif
             //e.printStackTrace();
             dispatcher.broadcastTerminatedConnection(e);
         };    

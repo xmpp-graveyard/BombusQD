@@ -87,6 +87,11 @@ public class FontCache {
         return big;
     }
 
+    public static Font getRosterFont(boolean isBold) {
+        return FontCache.getFont(isBold, FontCache.roster);
+    }
+
+    public static Font contactSecondLineFont = FontCache.getFont(false, baloon);
     
     public final static Font getFont(boolean isBold, int size) {//bold,cursiv
         switch (size) {

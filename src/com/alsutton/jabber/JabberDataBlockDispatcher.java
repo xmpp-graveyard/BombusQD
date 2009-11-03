@@ -87,8 +87,9 @@ public class JabberDataBlockDispatcher extends Thread
 
   public void addBlockListener(JabberBlockListener listener) {
       synchronized (blockListeners) { 
-          if (blockListeners.indexOf(listener) > 0) return;
-          blockListeners.addElement(listener); 
+          //System.out.println(blockListeners.contains(listener) + "/" + blockListeners.size() + " " + blockListeners.toString());
+          if (blockListeners.contains(listener)) return;
+          blockListeners.addElement(listener);
       }
   }
   public void cancelBlockListener(JabberBlockListener listener) {
@@ -141,17 +142,22 @@ public class JabberDataBlockDispatcher extends Thread
             try {
                 int processResult=JabberBlockListener.BLOCK_REJECTED;
                 int block_size = blockListeners.size();
+                //System.out.println("  -----S:blockListeners>> " + blockListeners.toString());
                 synchronized (blockListeners) {
                     int i=0;
                     while (i<block_size) {
                         processResult=((JabberBlockListener)blockListeners.elementAt(i)).blockArrived(dataBlock);
+                        //System.out.println("    processResult>> " + processResult + " name: "+ ((JabberBlockListener)blockListeners.elementAt(i)) );
                         if (processResult==JabberBlockListener.BLOCK_PROCESSED) break;
                         if (processResult==JabberBlockListener.NO_MORE_BLOCKS) {
-                            blockListeners.removeElementAt(i); break;
+                            blockListeners.removeElementAt(i);
+                            block_size = blockListeners.size();
+                            break;
                         }
                         ++i;
                     }
                 }
+                //System.out.println("  -----E:blockListeners>> " + blockListeners.toString());
                 if (processResult==JabberBlockListener.BLOCK_REJECTED && listener != null ) processResult=listener.blockArrived( dataBlock );
                 if (processResult==JabberBlockListener.BLOCK_REJECTED) {
                     if (dataBlock instanceof Iq) {
@@ -231,7 +237,7 @@ public class JabberDataBlockDispatcher extends Thread
                 for (int i = 0; i < blockListeners.size(); ++i) {
                     ((JabberBlockListener)blockListeners.elementAt(i)).destroy();
                 }
-                blockListeners.removeAllElements();
+                blockListeners.setSize(0);
             }
         } catch (Exception e) {
             e.printStackTrace();

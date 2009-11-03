@@ -135,7 +135,7 @@ public final class MessageParser // implements Runnable
              parseMessage(messageItem, width, messageItem.msg.subject, true);
             }
             parseMessage(messageItem, width, messageItem.msg.toString(), false);
-            messageItem.notifyRepaint();
+            //messageItem.notifyRepaint();
     }
 
     

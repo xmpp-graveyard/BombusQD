@@ -56,18 +56,20 @@
 //# 	try {
 //#             Msg msg=(Msg)stanzas.elementAt(index);
 //# 	    return msg;
-//# 	} catch (Exception e) {}
+//# 	} catch (Exception e) { }
 //# 	return null;
 //#     }
 //# 
 //#     public void add(String msg, int type) {
 //#       if (enabled) {
 //# 	  try {
-//#             Msg stanza=new Msg(type, "local", null, msg.toString());
-//#             stanza.itemCollapsed=true;
-//#             stanzas.addElement(stanza);
-//#             stanza=null;
-//# 	  } catch (Exception e) {}
+//#             if(msg.length()>0) {
+//#               Msg stanza=new Msg(type, "local", null, msg.toString());
+//#               stanza.itemCollapsed=true;
+//#               stanzas.addElement(stanza);
+//#               stanza=null;
+//#             }
+//# 	  } catch (Exception e) { }
 //#        }
 //#     }
 //# 

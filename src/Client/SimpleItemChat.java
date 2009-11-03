@@ -85,16 +85,15 @@ public class SimpleItemChat implements CommandListener {
     
     contact.scroller=scroller;
 
-    int size = contact.msgs.size();
+    int size = contact.chatInfo.msgs.size();
       for (int i = 0; i<size; i++) {
-         String msg = contact.msgs.elementAt(i).toString();
-            if (((Msg)contact.msgs.elementAt(i)).unread==true){
-              ((Msg)contact.msgs.elementAt(i)).unread=false;
+         String msg = contact.chatInfo.msgs.elementAt(i).toString();
+            if (((Msg)contact.chatInfo.msgs.elementAt(i)).unread==true){
+              ((Msg)contact.chatInfo.msgs.elementAt(i)).unread=false;
             }
          StringUtils.addClassicChatMsg(msg,width,scroller);
       }
-    contact.newHighLitedMsgCnt=0;
-    contact.newMsgCnt=0;
+    contact.chatInfo.reEnumCounts();
     
     display.setCurrent(form);  
     this.parentView=pView;

@@ -124,9 +124,8 @@ public class SearchResult
 		    // status returned by jit
 		    if (name.equals("status")) if (!value.equals("offline")) status=Presence.PRESENCE_ONLINE;
                 }
-                Contact serv=new DiscoContact(null, jid, status);
-                serv.group=sd.roster.groups.getGroup(Groups.TYPE_SEARCH_RESULT);
-                serv.subscr="search";
+                Contact serv=new Contact(null, jid, status,"search");
+                serv.setGroup(sd.roster.contactList.groups.getGroup(Groups.TYPE_SEARCH_RESULT));
                 Msg m=new Msg(Msg.MESSAGE_TYPE_IN, jid, "Short info", vcard.toString());
                 m.unread=false;
                 serv.addMessage(m);
@@ -189,11 +188,14 @@ public class SearchResult
         try {
             Contact c=(Contact)getFocusedObject();
             if (c==null) return;
+            display.setCurrent(c.getMessageList());
+            /*
             if(c.cList!=null && Config.getInstance().module_cashe && c.msgs.size()>3){//?
                 display.setCurrent( (ContactMessageList)c.cList );  
             }else{
                 new ContactMessageList(c,display);  
-            }     
+            }
+             */     
             //new ContactMessageList((Contact) getFocusedObject(), display);
         } catch (Exception e) {}
     }

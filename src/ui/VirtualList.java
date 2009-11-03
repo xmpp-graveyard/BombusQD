@@ -1007,7 +1007,7 @@ public abstract class VirtualList
 
     private void drawEnvelop(final Graphics g) {
         g.setColor(getMainBarRGB());
-        int wpos= (width/2);
+        int wpos= width/2;
         int hpos= height-13;
         
         g.drawRect(wpos-4,	hpos, 	8, 	6);
@@ -1018,8 +1018,8 @@ public abstract class VirtualList
     }
     
     private void drawTraffic(final Graphics g, boolean up) {
-        int pos=(up)?(width/2)+3:(width/2)-3;
-        int pos2=(up)?height-4:height-2;
+        int pos= up ? width/2+3 : width/2-3;
+        int pos2= up ? height-4 : height-2;
         
         //g.setColor((up)?0xff0000:0x00ff00);
         g.setColor(getMainBarRGB());

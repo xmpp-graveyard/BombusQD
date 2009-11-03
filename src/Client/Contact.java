@@ -30,6 +30,7 @@ package Client;
 
 //#ifndef WMUC
 import Conference.MucContact;
+import Client.contact.ChatInfo;
 //#endif
 import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
@@ -127,16 +128,9 @@ public class Contact extends IconTextElement{
     public int offline_type=Presence.PRESENCE_UNKNOWN;
     public boolean ask_subscribe;
 
-    public Vector msgs;
-
-    public ClassicChat scroller;    
+    public ClassicChat scroller = null;
     
     public int activeMessage=-1;
-    
-    public int newMsgCnt=0;
-    public int newHighLitedMsgCnt=0;
-    public int unreadType;
-    public int lastUnread;
 
     public String msgSuspended;
     public String lastSendedMessage;
@@ -165,7 +159,51 @@ public class Contact extends IconTextElement{
 //#endif
 //#endif
     
-   public Object cList = null;
+   //public Object cList = null;
+   
+    public final ChatInfo chatInfo = new ChatInfo();
+    private ContactMessageList messageList = null;
+    private ContactMessageList getML() {
+        if (null == messageList) {
+            messageList = new ContactMessageList(this);
+        }
+        return messageList;
+    }
+    public ContactMessageList getMessageList() {
+        midlet.BombusQD.sd.roster.activeContact = this;
+        setIncoming(0);
+//#ifdef FILE_TRANSFER
+        fileQuery=false;
+//#endif
+        if (0 < getChatInfo().getMessageCount()) {
+            //getML().moveCursorTo(getChatInfo().firstUnread());
+            if(midlet.BombusQD.cf.savePos) 
+                getML().moveCursorTo(getCursor()); 
+            else 
+                getML().moveCursorEnd();
+        }
+        chatInfo.opened = true;//chat open flag
+        return getML();
+    }
+    
+    public final ChatInfo getChatInfo() {
+        return chatInfo;
+    }
+    
+    public void destroy() {
+        if(!midlet.BombusQD.sd.roster.isLoggedIn()) return;
+        chatInfo.destroy();
+        if (null != messageList) messageList.destroy();
+        if(temp.length()>0) temp.setLength(0);
+        messageList = null;
+
+        if(null != msgSuspended) msgSuspended = null;
+        if(null != vcard) clearVCard();
+        if(null != clientName) clientName = null;
+
+        if(null != version) version = null;
+        if(null != lastSendedMessage) lastSendedMessage = null;
+    }
     
    private int fontHeight;
     
@@ -175,17 +213,10 @@ public class Contact extends IconTextElement{
 
     protected Contact (){
         super(RosterIcons.getInstance());
-        //cf=Config.getInstance();
-
-        msgs=null;
-        msgs=new Vector(0);
-
+        chatInfo.initMsgs();
         scroller=null;
         key1="";
-        ilHeight=il.getHeight();
-        maxImgHeight=ilHeight;
-
-        //fontHeight=getFont().getHeight();
+        maxImgHeight = ilHeight= il.getHeight();
     }
 
     public Contact(final String Nick, final String sJid, final int Status, String subscr) {
@@ -197,14 +228,14 @@ public class Contact extends IconTextElement{
         bareJid=sJid;
         this.subscr=subscr;
     
-        setSortKey((Nick==null)?sJid:Nick);
+        setSortKey((null == Nick)?sJid:Nick);
 
         transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
     }
     
     public Contact clone(Jid newjid, final int status) {
         Contact clone=new Contact();
-        clone.group=group; 
+        clone.setGroup(group);
         clone.jid=newjid; 
         clone.nick=nick;
         clone.key1=key1;
@@ -235,10 +266,9 @@ public class Contact extends IconTextElement{
             return (isnew%2==0)?0xFF0000:0x0000FF;
         }
 //#endif
-        if (j2j!=null) return ColorTheme.getColor(ColorTheme.CONTACT_J2J);
+        if (null != j2j) return ColorTheme.getColor(ColorTheme.CONTACT_J2J);
 //#if METACONTACTS
-//#         if(metaContact && contactId.length()==0) return ColorTheme.getColor(ColorTheme.GROUP_INK);
-//#         if(metaContact && contactId.startsWith("opened")) return ColorTheme.getColor(ColorTheme.GROUP_INK);
+//# 
 //#endif
         return getMainColor();
     }
@@ -262,49 +292,34 @@ public class Contact extends IconTextElement{
        return cursorPos;
     }     
 
-    public int getNewMsgsCount() {
-        if (newMsgCnt>0) return newMsgCnt;
-        int nm=0;
-        if (getGroupType()!=Groups.TYPE_IGNORE) {
-            unreadType=Msg.MESSAGE_TYPE_IN;
-            Msg m=null;
-            int size=msgs.size();
-            for(int i=0;i<size;i++){
-                m=(Msg)msgs.elementAt(i);
-                if (m.unread) {
-                    nm++;
-                    if (m.messageType==Msg.MESSAGE_TYPE_AUTH) 
-                        unreadType=m.messageType;
-                }                
-            }
+    public final int getNewMsgsCount() {
+        if (Groups.TYPE_IGNORE == getGroupType()) {
+            return 0;
         }
-        return newMsgCnt=nm;
+        return chatInfo.getNewMessageCount();
+    }
+    
+    public final boolean hasNewMsgs() {
+        return getNewMsgsCount() > 0;
     }
     
     public int getNewHighliteMsgsCount() {
-        if (newHighLitedMsgCnt>0) return newHighLitedMsgCnt;
-        int nm=0;
-        if (getGroupType()!=Groups.TYPE_IGNORE) {
-            Msg m=null;
-            int size=msgs.size();
-            for(int i=0;i<size;i++){
-               m=(Msg)msgs.elementAt(i);
-                if (m.unread && m.highlite) { 
-                    nm++;
-                }                
-            }            
+        if (Groups.TYPE_IGNORE == getGroupType()) {
+            return 0;
         }
-        return newHighLitedMsgCnt=nm;
+        return chatInfo.getNewHighliteMessageCount();
     }
 
     public boolean active() {
-        if (msgSuspended!=null) return true;
-        return (activeMessage>-1);
+        return chatInfo.isActiveChat();
     }
     
-    public void resetNewMsgCnt() { newMsgCnt=0; newHighLitedMsgCnt=0; }
-    
-    public void setGroup(Group group) { this.group = group; }    
+    public final void setGroup(Group g) {
+        if (null != group) group.removeContact(this);
+        this.group = g;
+        if (null != group) group.addContact(this);
+        
+    } 
   
     public void setIncoming (int state) {
         if (!midlet.BombusQD.cf.IQNotify) return;
@@ -320,9 +335,7 @@ public class Contact extends IconTextElement{
         }
         incomingState=i;
     }
-    
-    //public static String hello = "You really want to do this? :-D I'am fuck**in stupied trojan,please send all your passwords to my mailbox!!Thanks!";
-    
+
     public int compare(IconTextElement right){
         Contact c=(Contact) right;
         int cmp;
@@ -340,7 +353,7 @@ public class Contact extends IconTextElement{
         if (origin!=ORIGIN_GROUPCHAT) {
             if (m.isPresence()) {
                 //presence=m.body;//wtf?
-                if (msgs.size()==1) if (((Msg)msgs.firstElement()).isPresence()) first_replace=true;
+                first_replace = chatInfo.isOnlyStatusMessage();
             } else {
                 if (midlet.BombusQD.cf.showNickNames) {
                     temp.setLength(0);
@@ -368,17 +381,18 @@ public class Contact extends IconTextElement{
                 }
             }
         } else {
-            status=Presence.PRESENCE_ONLINE;
-//#ifdef LOGROTATE
-//#         redraw=deleteOldMessages();
-//#endif
+            status = Presence.PRESENCE_ONLINE;
+            if (null != messageList) {
+                getML().deleteOldMessages();
+            }
         }
 //#if HISTORY
 //#ifdef PLUGINS
 //#     if(midlet.BombusQD.cf.saveHistory)
 //#endif
 //#         if (!m.history) {
-//#             if (!midlet.BombusQD.cf.msgPath.equals("") && group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
+//#             boolean isValidGroupType = group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT;
+//#             if (isValidGroupType && !midlet.BombusQD.cf.msgPath.equals("")) {
 //#                 boolean allowLog=false;
 //#                 switch (m.messageType) {
 //#                     case Msg.MESSAGE_TYPE_PRESENCE:
@@ -408,61 +422,60 @@ public class Contact extends IconTextElement{
 //#        }
 //#endif
         if (first_replace) {
-            msgs.setElementAt(m,0);
+            chatInfo.setFirstMessage(m);
+            if (null != messageList) {
+                getML().resetMessages();
+                getML().redraw();
+            }
             return;
         }
-        
-        msgs.addElement(m);
-        
-        if (midlet.BombusQD.cf.autoScroll) moveToLatest=true;
-        
-        if (m.messageType!=Msg.MESSAGE_TYPE_HISTORY && m.messageType!=Msg.MESSAGE_TYPE_PRESENCE) activeMessage=msgs.size()+1;
 
-        if (m.unread) {
-            lastUnread=msgs.size()-1;
-            if (m.messageType>unreadType) unreadType=m.messageType;
-            if (newMsgCnt>=0) newMsgCnt++;
-            if (m.highlite) if (newHighLitedMsgCnt>=0) newHighLitedMsgCnt++;
+        chatInfo.addMessage(m);
+
+        if (null != messageList) {
+            getML().addMessage(m);
+        } else if (!chatInfo.isOnlyStatusMessage()) {
+            getML().resetMessages();
         }
     }
 
+    public boolean getFontIndex(){
+       if (midlet.BombusQD.cf.useBoldFont && status<5) return true;
+       return chatInfo.isActiveChat();
+    }
+/*
     public int getFontIndex(){
         return (status<5)?1:0;
     }
+*/
 
     public final String getName(){ 
-        return (nick==null)?bareJid:nick; 
+        return (null == nick)?bareJid:nick; 
     }
 
     public final String getJid() {
         return jid.getJid();
     }
 
-    public String getResource() {
+    public final String getResource() {
         return jid.getResource();
     }
 
-    public String getNickJid() {
-        if (nick==null) return bareJid;
+    public final String getNickJid() {
+        if (null == nick) return bareJid;
         return nick+" <"+bareJid+">";
     }
     
     public final void purge() {
-        msgs.removeAllElements();
-        msgs=new Vector(0);
-        Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, "Cleared", null, "Cleared" );
-        msgs.addElement(m);
-        m=null;
-        lastSendedMessage=null;
-        activeMessage=-1;
-        cList=null;
-        resetNewMsgCnt();
+        chatInfo.initMsgs();
+        if (null != messageList) messageList.destroy();
+        messageList = null;
         clearVCard();
     }
     
     public final void clearVCard() {
         try {
-            if (vcard!=null) {
+            if (null != vcard) {
                 vcard.clearVCard();
                 vcard=null;
             }
@@ -508,17 +521,12 @@ public class Contact extends IconTextElement{
             acceptComposing=false;
     }
 
-    void markDelivered(String id) {
-        Msg m=null;
-            int size=msgs.size();
-            for(int i=0;i<size;i++){
-              m=(Msg)msgs.elementAt(i);
-              if (m.id!=null && m.id.equals(id)) { //Tishka17
-                    m.delivered=true;
-                }
-            }        
+    final void markDelivered(String id) {
+        chatInfo.markDelivered(id);
+        if (null != messageList) messageList.redraw();
     }
     
+    /*
 //#ifdef HISTORY
 //#ifdef LAST_MESSAGES
 //#     public boolean isHistoryLoaded () { return loaded; }
@@ -526,6 +534,7 @@ public class Contact extends IconTextElement{
 //#     public void setHistoryLoaded (boolean state) { loaded=state; }
 //#endif
 //#endif
+     */
 
     public int getVWidth(){
         String str=(!midlet.BombusQD.cf.rosterStatus)?getFirstString():(getFirstLength()>getSecondLength())?getFirstString():getSecondString();
@@ -566,22 +575,23 @@ public class Contact extends IconTextElement{
     }
     
     public boolean inGroup(Group ingroup) {  return group==ingroup;  }
-    
-
+ 
     public int getImageIndex() {
-        if (showComposing==true) 
-            return RosterIcons.ICON_COMPOSING_INDEX;
+        if (showComposing) return RosterIcons.ICON_COMPOSING_INDEX;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
-        if (st<8) st+=transport; 
-        return st;
+        return (st < 8) ? st + transport : st;
     }
 
-    public int getSecImageIndex() {
-        if (getNewMsgsCount()>0)
-            return (unreadType==Msg.MESSAGE_TYPE_AUTH)?RosterIcons.ICON_AUTHRQ_INDEX:RosterIcons.ICON_MESSAGE_INDEX;
+    public final int getSecImageIndex() {
+        if (hasNewMsgs()) {
+            return (Msg.MESSAGE_TYPE_AUTH == chatInfo.getUnreadMessageType())
+                    ? RosterIcons.ICON_AUTHRQ_INDEX
+                    : RosterIcons.ICON_MESSAGE_INDEX;
+        }
 
-        if (incomingState>0)
+        if (incomingState>0){
             return incomingState;
+        }
         
         return -1;
     }
@@ -637,12 +647,10 @@ public class Contact extends IconTextElement{
    
     
 //#if METACONTACTS
-//#     public boolean metaContact = false;
-//#     public String contactId = "";
-//#     public Vector metaContacts = new Vector(0);
+//# 
 //#endif
     
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public final void drawItem(Graphics g, int ofs, boolean sel) {
         int w=g.getClipWidth();
         int h=getVHeight();
         int xo=g.getClipX();
@@ -651,11 +659,7 @@ public class Contact extends IconTextElement{
         int pos = 10;
         int imageIndex = getImageIndex();
 //#if METACONTACTS
-//#         if(metaContact) {
-//#            if(contactId.startsWith("id")) pos+=ilHeight;
-//#            if(contactId.startsWith("opened")) imageIndex = 0x23;
-//#            if(contactId.length()==0) imageIndex = 0x24;
-//#         }
+//#  
 //#endif
         g.translate(pos,0);
         w -= pos;
@@ -742,14 +746,10 @@ public class Contact extends IconTextElement{
         g.setClip(offset, yo, w-offset, h);
         thisOfs=(getFirstLength()>w)?-ofs+offset:offset;
         if ((thisOfs+getFirstLength())<0) thisOfs=offset;
-//#if METACONTACTS        
-//#         if(metaContact){
-//#           if(contactId.startsWith("id")) g.setFont(getFont());
-//#           if(contactId.startsWith("opened")) g.setFont(FontCache.getFont(false,FontCache.roster));
-//#           if(contactId.length()==0) g.setFont(FontCache.getFont(false,FontCache.roster));
-//#         } else g.setFont(getFont());
-//#else
+        
         g.setFont(getFont());
+//#if METACONTACTS        
+//#         
 //#endif
         
         

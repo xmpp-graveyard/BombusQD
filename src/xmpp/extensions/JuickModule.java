@@ -49,13 +49,8 @@
 //#ifdef CONSOLE
 //#       midlet.BombusQD.debug.add("STORE wait::",10);
 //#endif
-//#if METACONTACTS  
-//#        Contact c = midlet.BombusQD.sd.roster.getMetaContact(BOTNAME,-1,-1);
-//#        if(c==null) c = midlet.BombusQD.sd.roster.getContact(BOTNAME,false);
+//#        Contact c = midlet.BombusQD.sd.roster.getContact(BOTNAME,false);
 //#        midlet.BombusQD.sd.roster.messageStore( c ,msg);
-//#else
-//#         
-//#endif
 //#ifdef CONSOLE
 //#       midlet.BombusQD.debug.add("STORE::"+msg.body,10);
 //#endif

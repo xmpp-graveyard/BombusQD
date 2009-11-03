@@ -35,7 +35,6 @@ public class EntityCaps implements JabberBlockListener{
     public int blockArrived(JabberDataBlock data) {
         if (!(data instanceof Iq)) return BLOCK_REJECTED;
         if (!data.getTypeAttribute().equals("get")) return BLOCK_REJECTED;
-
         JabberDataBlock query=data.findNamespace("query", "http://jabber.org/protocol/disco#info");
         if (query==null) return BLOCK_REJECTED;
         String node=query.getAttribute("node");
@@ -50,7 +49,7 @@ public class EntityCaps implements JabberBlockListener{
         JabberDataBlock identity=query.addChild("identity", null);
         identity.setAttribute("category", BOMBUS_ID_CATEGORY);
         identity.setAttribute("type", BOMBUS_ID_TYPE);
-        identity.setAttribute("name", Version.getName());
+        identity.setAttribute("name", "BombusQD");
         int size = features.size();
         for (int i=0; i<size; i++) {
             query.addChild("feature", null).setAttribute("var", (String) features.elementAt(i));
@@ -101,36 +100,33 @@ public class EntityCaps implements JabberBlockListener{
     private final static String BOMBUS_NAMESPACE=Version.getUrl()+"/caps";
     private final static String BOMBUS_ID_CATEGORY="client";
     private final static String BOMBUS_ID_TYPE="mobile";
-    
-    private static Config cf=Config.getInstance();
-    
+
     public static void initCaps() {
-        ver=null;
         features=null;
         features=new Vector(0);
         
         //features MUST be sorted
 //#ifdef PEP
-//#         if (cf.rcvactivity) {
+//#         if (midlet.BombusQD.cf.rcvactivity) {
 //#             features.addElement("http://jabber.org/protocol/activity");
 //#             features.addElement("http://jabber.org/protocol/activity+notify");
 //#         }
 //#endif
         
-        if (cf.eventComposing)
+        if (midlet.BombusQD.cf.eventComposing)
             features.addElement("http://jabber.org/protocol/chatstates"); //xep-0085
 //#ifdef ADHOC
-//#         if (cf.adhoc)
+//#         if (midlet.BombusQD.cf.adhoc)
 //#             features.addElement("http://jabber.org/protocol/commands"); //xep-0050
 //#endif
         features.addElement("http://jabber.org/protocol/disco#info");
  //#ifdef FILE_TRANSFER
-        if (cf.fileTransfer) {
+        if (midlet.BombusQD.cf.fileTransfer) {
             features.addElement("http://jabber.org/protocol/ibb");
         }
  //#endif
 //#ifdef PEP
-//#          if (cf.sndrcvmood) {
+//#          if (midlet.BombusQD.cf.sndrcvmood) {
 //#             features.addElement("http://jabber.org/protocol/mood");
 //#             features.addElement("http://jabber.org/protocol/mood+notify");
 //#          }
@@ -139,14 +135,14 @@ public class EntityCaps implements JabberBlockListener{
         features.addElement("http://jabber.org/protocol/muc");
 //#endif
  //#ifdef FILE_TRANSFER
-        if (cf.fileTransfer) {
+        if (midlet.BombusQD.cf.fileTransfer) {
             features.addElement("http://jabber.org/protocol/si");
             features.addElement("http://jabber.org/protocol/si/profile/file-transfer");
         }
  //#endif
 //#ifdef PEP
 //#ifdef PEP
-//#          if (cf.rcvtune) {
+//#          if (midlet.BombusQD.cf.rcvtune) {
 //#               features.addElement("http://jabber.org/protocol/tune");
 //#               features.addElement("http://jabber.org/protocol/tune+notify");
 //#          }
@@ -159,7 +155,7 @@ public class EntityCaps implements JabberBlockListener{
         features.addElement("jabber:x:data");
          //"jabber:x:event", //DEPRECATED
         features.addElement("urn:xmpp:ping");
-        if (cf.eventDelivery)
+        if (midlet.BombusQD.cf.eventDelivery) 
             features.addElement("urn:xmpp:receipts"); //xep-0184
         features.addElement("urn:xmpp:time");
 

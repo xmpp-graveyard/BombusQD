@@ -29,7 +29,7 @@
 //#  *
 //#  * @author ad,aqent
 //#  */
-//# public class DebugXMLList 
+//# public final class DebugXMLList 
 //#     extends MessageList {
 //# 
 //#     private StaticData sd=StaticData.getInstance();
@@ -94,7 +94,7 @@
 //#         return midlet.BombusQD.debug.stanzas.size();
 //#     }
 //#     
-//#     public Msg getMessage(int index) {
+//#     protected Msg getMessage(int index) {
 //#         Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT, "local", null, null);
 //#         try {
 //#             msg=midlet.BombusQD.debug.msg(index);
@@ -133,13 +133,12 @@
 //#         try {
 //#             if (cursor+1==midlet.BombusQD.debug.stanzas.size()) {
 //#                 midlet.BombusQD.debug.stanzas.removeAllElements();
-//#                 messages=null;
 //#             }
 //#             else {
 //#                 for (int i=0; i<cursor+1; i++)
 //#                     midlet.BombusQD.debug.stanzas.removeElementAt(0);
 //#             }
-//#             messages=new Vector(0);
+//#             messages.removeAllElements();
 //#         } catch (Exception e) { }
 //#         moveCursorHome();
 //#         redraw(); 

@@ -38,7 +38,7 @@ import Colors.ColorTheme;
  *
  * @author Eugene Stahov,aqent
  */
-public class ComplexString extends Vector implements VirtualElement {
+public class ComplexString implements VirtualElement {
 
     public final static int IMAGE     = 0x00000000;
     public final static int COLOR     = 0x01000000; 
@@ -49,31 +49,37 @@ public class ComplexString extends Vector implements VirtualElement {
     public final static int NICK_OFF  = 0x05000000;
 //#endif
     public final static int BOLD = 0x06000000;
-    
-    
     protected Font font=FontCache.getFont(false, FontCache.msg);
 
     private int font_height = font.getHeight();
-    
     private int height;
     private int width;
     private ImageList imageList;
     private int colorBGnd;
     private int color;
     private boolean aniSmile;
+    private Vector elementData = new Vector(0);
     
 
     /** Creates a new instance of ComplexString */
     public ComplexString() {
-        super();
         color=ColorTheme.getColor(ColorTheme.LIST_INK);
         colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
     }
 
-    /** Creates a new instance of ComplexString */
     public ComplexString(ImageList imageList) {
-        this();
+        color=ColorTheme.getColor(ColorTheme.LIST_INK);
+        colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
         this.imageList=imageList;
+    }
+    
+    public void destroy() {
+        int start = elementData.size();
+        //System.out.println("    :::     complex-->elementData:: " + elementData.toString());
+        imageList = null;
+        elementData = null;
+        elementData = new Vector(0);
+        //System.out.println("    :::     complex-->destroy:: " + start + " => 0");
     }
 
     private int imgHeight(){
@@ -108,49 +114,49 @@ public class ComplexString extends Vector implements VirtualElement {
         int fontYOfs=(( getVHeight() - font.getHeight() )>>1);
         int imgWidth = imgWidth();
         
-        if(!midlet.BombusQD.cf.boldNicks){
-            g.setFont(font);
-        }
-
-        for (int index=0; index<elementCount;index++) {
-            if (elementData[index]!=null) {
-                if (elementData[index] instanceof String ){
+        if(!midlet.BombusQD.cf.boldNicks) g.setFont(font);
+        
+        int size = elementData.size();
+        for (int index = 0; index < size; ++index) {
+              if (elementData.elementAt(index)==null) continue;
+              if (elementData.elementAt(index) instanceof String ){
 //#if NICK_COLORS
                     if (nick) {
                         int color=g.getColor();
                         //int randColor=randomColor();
                         bold = midlet.BombusQD.cf.boldNicks?FontCache.getFont(true,font.getSize()):null;    
-                        if(midlet.BombusQD.cf.boldNicks) {
-                            g.setFont(bold);
-                        }
+                        if(midlet.BombusQD.cf.boldNicks) g.setFont(bold);
+                        
                         dw=0;
                         int startDrw = 0;
-                        int len = ((String)elementData[index]).length();
-                           if(((String)elementData[index]).startsWith("<nick>")){
+                        int len = ((String)elementData.elementAt(index)).length();
+                           if(((String)elementData.elementAt(index)).startsWith("<nick>")){
                             len-=6;//hotfix for <nick>,</nick>
                             startDrw=6;
                            }
 
                             if(midlet.BombusQD.cf.boldNicks) {
                               g.setColor(ColorTheme.strong(color));   /*(c1>255) ?*/ /* : color*/
-                              dw=bold.substringWidth(((String)elementData[index]), startDrw, len);
+                              dw=bold.substringWidth(((String)elementData.elementAt(index)), startDrw, len);
                             }else{
                               g.setColor( /*(c1>255) ? ColorTheme.strong(color); :*/ color);
-                              dw=font.substringWidth(((String)elementData[index]), startDrw, len);
+                              dw=font.substringWidth(((String)elementData.elementAt(index)), startDrw, len);
                             }
                             if (ralign) w-=dw;
-                              g.drawSubstring( ((String)elementData[index]), startDrw, len, w,fontYOfs,Graphics.LEFT|Graphics.TOP);
+                              g.drawSubstring( ((String)elementData.elementAt(index)), startDrw, len, w,fontYOfs,Graphics.LEFT|Graphics.TOP);
                             if (!ralign) w+=dw;
 
                         g.setColor(color);
                     } else {
 //#endif
-                        if(midlet.BombusQD.cf.boldNicks) {  g.setFont(font); }
-                        dw=font.stringWidth((String)elementData[index]);  
+                        if(midlet.BombusQD.cf.boldNicks) g.setFont(font);
+                        dw=font.stringWidth((String)elementData.elementAt(index));  
                         if (ralign) w-=dw;
-                          g.drawString((String)elementData[index],w,fontYOfs,Graphics.LEFT|Graphics.TOP);
+                          g.drawString((String)elementData.elementAt(index),w,fontYOfs,Graphics.LEFT|Graphics.TOP);
                           if (underline) {
-                            int y=getVHeight()-1;
+                            int ff = font.getHeight();
+                            if(ff>height) height=ff;
+                            int y = height - 1;
                             g.drawLine(w, y-1, w+dw, y-1);
                             underline=false;
                           }
@@ -159,14 +165,32 @@ public class ComplexString extends Vector implements VirtualElement {
                     }
 //#endif
 
-                } else if ((elementData[index] instanceof Integer)) { // image element or color
-                    int i=((Integer)elementData[index]).intValue();                           
+                } else if (elementData.elementAt(index) instanceof StringBuffer) { 
+                  
+                    g.setFont(font);
+                    StringBuffer sb = (StringBuffer)elementData.elementAt(index);
+                    int sbSize = sb.length();
+                    int sbWidth = font.stringWidth(sb.toString());
+                    char ch;
+                    if (ralign) w -= sbWidth;
+                      int pos = w;
+                      for(int i = 0; i < sbSize; ++i) {
+                        ch = sb.charAt(i);
+                        g.drawChar( ch , pos ,fontYOfs,Graphics.LEFT|Graphics.TOP);
+                        pos += font.charWidth(ch);
+                      }
+                    if (!ralign) w += sbWidth;
+                    sb = null;
+                    
+                } else if ((elementData.elementAt(index) instanceof Integer)) { // image element or color
+                    int i=((Integer)elementData.elementAt(index)).intValue();                           
                     switch (i&0xff000000) {
                         case IMAGE:
                             if (imageList==null) break;
-                              if (ralign) w -= aniSmile? imageList.getWidth(i) : imgWidth; 
+                              int iw = aniSmile ? imageList.getWidth(i) : imgWidth;
+                              if (ralign) w -= iw; 
                               imageList.drawImage(g, i, w, imageYOfs);
-                              if (!ralign) w += aniSmile? imageList.getWidth(i) : imgWidth;
+                              if (!ralign) w += iw;
                             break;
                         case COLOR:
                             g.setColor(0xFFFFFF&i);
@@ -187,29 +211,28 @@ public class ComplexString extends Vector implements VirtualElement {
                             break;
 //#endif
                     }
-                } /* Integer*/ else if (elementData[index] instanceof VirtualElement) { 
+                } else if (elementData.elementAt(index) instanceof VirtualElement) { 
                     int clipw=g.getClipWidth(); 
                     int cliph=g.getClipHeight();
-                    ((VirtualElement)elementData[index]).drawItem(g,0,false);
+                    ((VirtualElement)elementData.elementAt(index)).drawItem(g,0,false);
                     g.setClip(g.getTranslateX(), g.getTranslateY(), clipw, cliph);
+                    
                 }
-            } // if ob!=null
+           // } // if ob!=null
         } // for
     }
 
-
-    
-    
     public int getVWidth() {
         if (width>0) return width;  // cached
         int w=0;
         int imgWidth=imgWidth();
-        for (int index=0; index<elementCount;index++) {
-            if (elementData[index]!=null) {
-                if (elementData[index] instanceof String ) w+= font.stringWidth((String)elementData[index]);
-                else if ((elementData[index] instanceof Integer)&& imageList!=null) {
+        int elementCount = elementData.size();
+        for (int index=0; index<elementCount; ++index) {
+            if (elementData.elementAt(index)!=null) {
+                if (elementData.elementAt(index) instanceof String ) w+= font.stringWidth((String)elementData.elementAt(index));
+                else if ((elementData.elementAt(index) instanceof Integer)&& imageList!=null) {
                     // image element or color
-                    int i=(((Integer)elementData[index]).intValue());
+                    int i=(((Integer)elementData.elementAt(index)).intValue());
                     switch (i&0xff000000) {
                         case IMAGE:
                             w+=imgWidth;
@@ -222,31 +245,44 @@ public class ComplexString extends Vector implements VirtualElement {
     }
 
     public void setElementAt(Object obj, int index) {
-        height=width=0; // discarding cached values
-        if (index>=elementCount) this.setSize(index+1);
-        super.setElementAt(obj, index);
+        height=width=0;
+        if (index>=elementData.size()) elementData.setSize(index+1);
+        elementData.setElementAt(obj, index);
+    }
+    
+    public void setSize(int size){
+        elementData.setSize(size);
+    }
+    
+    public String elementAt(int index){
+        return (String)elementData.elementAt(index);
+    }
+    
+    public boolean isEmpty(){
+        return elementData.isEmpty();
     }
     
     public int getVHeight(){
         if (height!=0) return height;
-        for (int i=0;i<elementCount;i++){
+        int elementCount = elementData.size();
+        for (int i=0; i<elementCount; ++i){
             int h=0;
-            if (elementData[i]==null) continue;
-            if (elementData[i] instanceof String) h=font.getHeight(); 
-            else if (elementData[i] instanceof Integer) {
-                int a=((Integer)elementData[i]).intValue();
+            if (elementData.elementAt(i)==null) continue;
+            if (elementData.elementAt(i) instanceof String) h=font.getHeight(); 
+            else if (elementData.elementAt(i) instanceof Integer) {
+                int a=((Integer)elementData.elementAt(i)).intValue();
                 if ((a&0xff000000) == 0) { h=imageList.getHeight(); }
             }
-            else if (elementData[i] instanceof VirtualElement) h=((VirtualElement)elementData[i]).getVHeight();
+            else if (elementData.elementAt(i) instanceof VirtualElement) h=((VirtualElement)elementData.elementAt(i)).getVHeight();
             if (h>height) height=h;
         }
         return height;
     }
 
     public void addElement(Object obj) {
-        height=0;
-        width=0; // discarding cached values
-        super.addElement(obj);
+        height = width = 0;
+        elementData.addElement(obj);
+        obj = null;
     }
 
     public void addSmile(int imageIndex,int iw) {  addElement(new Integer(imageIndex));  aniSmile = true; }
@@ -270,11 +306,6 @@ public class ComplexString extends Vector implements VirtualElement {
         return true;
     }
     
-    public void clearWHCache() {
-        width=0;
-        height=0;
-    }
-
     public boolean handleEvent(int keyCode) { return false; }
 
 }

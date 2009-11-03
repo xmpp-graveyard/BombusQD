@@ -78,8 +78,8 @@
 //#     /**
 //#      * Creates a new instance of StatsWindow
 //#      */
-//#     public StatsWindow(Display display, Displayable pView) {
-//#         super(display, pView, SR.MS_STATS);
+//#     public StatsWindow(Display display) {
+//#         super(display, midlet.BombusQD.sd.roster , SR.MS_STATS);
 //#         this.display=display;
 //# 
 //#         item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
@@ -103,7 +103,7 @@
 //#         commandState();
 //# 
 //#         attachDisplay(display);
-//#         this.parentView=pView;
+//#         this.parentView=midlet.BombusQD.sd.roster;
 //#     }
 //# 
 //#     

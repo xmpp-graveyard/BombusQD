@@ -74,9 +74,6 @@ public class ScrollBar {
     /** Creates a new instance of ScrollBar */
     public ScrollBar() {
         point_y=-1;
-        colorTop=ColorTheme.getColor(ColorTheme.SCROLL_BGND);
-        colorBar=ColorTheme.getColor(ColorTheme.SCROLL_BAR);
-        colorBorder=ColorTheme.getColor(ColorTheme.SCROLL_BRD);
     }
 
     public void setWindowSize(int windowSize) {
@@ -142,7 +139,11 @@ public class ScrollBar {
     public void pointerReleased(int x, int y, VirtualList v) { point_y=-1; }
     
     public void draw(Graphics g) {
-	
+        
+        colorTop = ColorTheme.getColor(ColorTheme.SCROLL_BGND);
+        colorBar = ColorTheme.getColor(ColorTheme.SCROLL_BAR);
+        colorBorder = ColorTheme.getColor(ColorTheme.SCROLL_BRD);
+        
 	yTranslate=g.getTranslateY();
 	
 	drawHeight=g.getClipHeight();

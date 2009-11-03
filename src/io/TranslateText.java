@@ -206,10 +206,6 @@ public class TranslateText implements Runnable{
                          midlet.BombusQD.sd.roster.me=new MessageEdit(display, pView, c,
                          SR.MS_TRANSLATE+": [" + from + "-" + to + "]"+"\nERROR: invalid translation language pair", true); 
                          break;
-                    case 2: 
-                         midlet.BombusQD.sd.roster.me=new MessageEdit(display, pView, c,
-                         SR.MS_TRANSLATE+": [" + from + "-" + to + "]"+"\nERROR: invalid translation language pair", true);
-                         break;
                  }                    
                 }else{
                 
@@ -225,12 +221,12 @@ public class TranslateText implements Runnable{
                 
                 translated_text=msgt.substring(18,msgt.length());             
                 if(trCMsgList){
-                  Msg tr_mess=(Msg)c.msgs.elementAt(cursor); 
-                    int size=c.msgs.size();        
+                  Msg tr_mess=(Msg)c.chatInfo.msgs.elementAt(cursor); 
+                    int size=c.chatInfo.msgs.size();        
                      for(int k=0;k<size;k++){    
-                         Msg msg=(Msg) c.msgs.elementAt(k);
+                         Msg msg=(Msg) c.chatInfo.msgs.elementAt(k);
                             if (tr_mess==msg) {
-                                 c.msgs.removeElement(msg);
+                                 c.chatInfo.msgs.removeElement(msg);
                                   StringBuffer b=new StringBuffer();
                                   b.append("<==Lang "+from+": " + msg.from +"> "+msg.body+"\n");
 //#if NICK_COLORS
@@ -253,8 +249,9 @@ public class TranslateText implements Runnable{
                                  }                                  
                                  b.append(" "+translated_text);
                                  Msg tr=new Msg(tr_mess.messageType,tr_mess.from,tr_mess.subject,b.toString());
-                                 c.msgs.insertElementAt(tr,cursor);
-                                 new ContactMessageList(c,display);//?  
+                                 c.chatInfo.msgs.insertElementAt(tr,cursor);
+                                 display.setCurrent(c.getMessageList());
+                                 //new ContactMessageList(c);//  
                              }
                     }                    
                 }else{

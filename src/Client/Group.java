@@ -30,7 +30,6 @@ import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.util.*;
 import Colors.ColorTheme;
-import Conference.ConferenceGroup;
 import javax.microedition.lcdui.Graphics;
 import ui.*;
 
@@ -41,122 +40,179 @@ import ui.*;
  */
 public class Group extends IconTextElement {
     String name;
-    public int type; // group index
+    public byte type; // group index
     public boolean visible=true;
-    protected int nContacts;
     protected int onlines;
     
-    public int imageExpandedIndex=RosterIcons.ICON_EXPANDED_INDEX;
-    public int imageCollapsedIndex=RosterIcons.ICON_COLLAPSED_INDEX;
+    public int imageExpandedIndex = RosterIcons.ICON_EXPANDED_INDEX;
+    public int imageCollapsedIndex = RosterIcons.ICON_COLLAPSED_INDEX;
     
-    public Vector contacts;
-    private Vector tcontacts;
+    private Vector contacts = new Vector(0);
+    public Vector visibleContacts = new Vector(0);
     
-    public int tonlines;
-    private int tncontacts;
-    public int unreadMessages=0;
-    
+    private boolean hasUnreadMessages = false;
     protected boolean collapsed;
 
     public Group(String name) {
         super(RosterIcons.getInstance());
-        this.name=name;        
+        this.name=name;
+        sortKey = name.toLowerCase();
+    }
+    
+    public Group(String name, byte type) {
+        super(RosterIcons.getInstance());
+        this.name = name;
+        this.type = type;
+        sortKey = name.toLowerCase();
+    }
+    
+    public void destroy() {
+        if(contacts.size()==0) return;
+        //System.out.println("    :::Group->destroyContacts");
+        visibleContacts.removeAllElements();
+        visibleContacts = null;
+        
+        contacts.removeAllElements();
+        contacts = null;
+       
+        if(null != name) name = null;
+        if(null != sortKey) sortKey = null;
+    }
+    
+    public boolean addContact(Contact c) {
+        if (!contacts.contains(c)) {
+            contacts.addElement(c);
+            if (isOnline(c)) onlines++;
+            return true;
+        }
+        return false;
+    }
+    
+    private final boolean isOnline(Contact c) {
+        return Presence.PRESENCE_OFFLINE > c.status;
+    }
+    
+    public void removeContact(Contact c) {
+        contacts.removeElement(c);
+        if (isOnline(c)) onlines--;
+    }
+    public void updateContact(Contact c, boolean nowOnline, boolean prevOnline) {
+        if (nowOnline && !prevOnline) onlines++;
+        else if (!nowOnline && prevOnline) onlines--;
+    }
+    
+    public Vector getContacts() {
+        return contacts;
     }
     
     public int getColor(){ return ColorTheme.getColor(ColorTheme.GROUP_INK); }
     
-    public int getImageIndex() {
-        return collapsed?imageCollapsedIndex:imageExpandedIndex;
+    public final int getImageIndex() {
+        return collapsed ? imageCollapsedIndex : imageExpandedIndex;
     }
  
-    public int getFontIndex(){
-        return 0;
-    }    
-    
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public final void drawItem(Graphics g, int ofs, boolean sel) {
         int w=g.getClipWidth();
         int h=g.getClipHeight();
         int xo=g.getClipX();
         int yo=g.getClipY();
-        if (collapsed && unreadMessages>0) {
-            w-=il.getWidth();
+
+        if (collapsed && hasNewMsgs()) {
+            w -= il.getWidth();
             il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w,0);
         }
-        g.setClip(xo, yo, w, h);
+
+        g.setFont(getFont());
+        final String str = toStringValue;
+        int offset = 4;
+        final int itemHeight = getVHeight();
+        if ((-1 != getImageIndex()) && (null != il)) {
+            int imgHeight = il.getHeight();
+            int imageYOfs = (itemHeight - imgHeight) >> 2;
+            offset += imgHeight;
+            il.drawImage(g, getImageIndex(), 2, imageYOfs);
+        }
         
-        super.drawItem(g, ofs, sel);
+        g.setClip(xo, yo, w, h);
+        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
+        
+        if (str!=null) {
+            int fontHeight = getFont().getHeight();
+            int fontYOfs = (itemHeight - fontHeight) >> 2;
+            g.drawString(str, offset - ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
+        }
     }
 
-    public String getName() { return name; }
+    public final String getName() { return name; }
     
-    private static StringBuffer mb = new StringBuffer(0);
     
     protected String mainbar(String mainbarStart) {
-        if (this instanceof ConferenceGroup && midlet.BombusQD.cf.dont_loadMC) {
-          return mainbarStart;
-        }
-        mb.setLength(0);
-        mb.append(mainbarStart)
-        .append(" (")        .append(getOnlines())
-        .append("/")
-        .append(getNContacts())
-        .append(")");
-
-        return mb.toString();
+        return mainbarStart + " (" + getOnlines() + '/' + getNContacts() + ')';
     }
     
-    public String toString(){ return mainbar(name);  }
+    protected String toStringValue;
+    public final String toString() {
+        return toStringValue;
+    }
 
-    public void onSelect(){
+    public final void onSelect(){
         collapsed=!collapsed;
+        midlet.BombusQD.sd.roster.setUpdateView();
+        midlet.BombusQD.sd.roster.reEnumRoster();
     }
 
-    public void startCount(){
-	tonlines=0;
-        tncontacts=0;
-        unreadMessages=0;
-        contacts=null;
-	    contacts=new Vector(0);
+    public void updateDinamicInfo() {
+        toStringValue = mainbar(name);
     }
 
-    public void addInGroup(Contact c) {
-        boolean online=c.status<Presence.PRESENCE_OFFLINE;
-	tncontacts++;
-        if (online) tonlines++;
-	// hide offlines whithout new messages
-        unreadMessages+=c.getNewMsgsCount(); 
-	if ( online
-//#if METACONTACTS
-//#                 || c.metaContact
-//#endif
-                || midlet.BombusQD.cf.showOfflineContacts
-                || c.getNewMsgsCount()>0 
-                || type==Groups.TYPE_NOT_IN_LIST 
-                || type==Groups.TYPE_TRANSP
-                || type==Groups.TYPE_VISIBLE
-                || type==Groups.TYPE_SEARCH_RESULT 
-                || c.origin==Contact.ORIGIN_GROUPCHAT )
-            contacts.addElement(c);
+    
+    public final void updateCounters() {
+        hasUnreadMessages = false;
+        int nContacts = contacts.size();
+        if (!visible) {
+            onlines = 0; return;
+        }
+        visibleContacts = new Vector(0);
+        int tonlines = 0;
+        for (int index = 0; index < nContacts; ++index) {
+            Contact c = (Contact)contacts.elementAt(index);
+            boolean isVisible = isOnline(c);
+            if (isVisible) tonlines++;
+            
+            hasUnreadMessages |= c.hasNewMsgs();
+            //System.out.println(index + " :: " + c);
+            if (isVisible || isVisibleContact(c)) visibleContacts.addElement(c);
+        }
+        onlines = tonlines;
+    }
+
+    private final boolean isVisibleContact(Contact c) {
+        // hide offlines whithout new messages
+        return midlet.BombusQD.cf.showOfflineContacts || c.hasNewMsgs()
+                || isAlwaysVisible() || Contact.ORIGIN_GROUPCHAT == c.origin;
+    }
+
+    public final boolean hasNewMsgs() {
+        return hasUnreadMessages;
+    }
+
+    private final boolean isAlwaysVisible() {
+        return type == Groups.TYPE_NOT_IN_LIST || type == Groups.TYPE_TRANSP
+                || type == Groups.TYPE_VISIBLE || type == Groups.TYPE_SEARCH_RESULT;
     }
     
-    void finishCount() {
-	//contacts=tcontacts;
-        onlines=tonlines;
-        nContacts=tncontacts;
-        tcontacts=null;
-    }
-
     public int getNContacts() {
-        return nContacts;
+        return contacts.size();
     }
 
     public int getOnlines() {
         return onlines;
     }
     
+    private String sortKey = null;
     public int compare(IconTextElement right) {
         if (type<((Group)right).type) return -1;
         if (type>((Group)right).type) return 1;
-        return name.toLowerCase().compareTo(((Group)right).name.toLowerCase());
+        return sortKey.compareTo(((Group)right).sortKey);
     }
 }

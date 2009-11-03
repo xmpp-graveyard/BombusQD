@@ -121,6 +121,7 @@ public class AppendNick
               if (c.group==to.group && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
                 nicknames.addElement(c);             
             }
+        sort(nicknames);
         commandState();
         this.parentView=pView;
     }

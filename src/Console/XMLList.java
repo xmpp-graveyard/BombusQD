@@ -132,11 +132,10 @@
 //#     }
 //#     
 //#     public Msg getMessage(int index) {
-//#         Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT, "local", null, null);
 //#         try {
-//#             msg=stanzas.msg(index);
-//#         } catch (Exception e) {}
-//# 	return msg;
+//#            return stanzas.msg(index);
+//#         } catch (Exception e) { }
+//# 	return new Msg(Msg.MESSAGE_TYPE_OUT, "local", null, null);
 //#     }
 //# 
 //#     public void keyGreen(){
@@ -190,13 +189,12 @@
 //#         try {
 //#             if (cursor+1==stanzas.size()) {
 //#                 stanzas.stanzas.removeAllElements();
-//#                 messages=null;
 //#             }
 //#             else {
 //#                 for (int i=0; i<cursor+1; i++)
 //#                     stanzas.stanzas.removeElementAt(0);
 //#             }
-//#             messages=new Vector(0);
+//#             messages.removeAllElements();
 //#         } catch (Exception e) { }
 //#         moveCursorHome();
 //#         redraw(); 

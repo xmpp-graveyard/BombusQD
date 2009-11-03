@@ -117,17 +117,10 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
 	if (isContact) {
 	    Contact contact=(Contact)item;   
             
-            if(contact.metaContact && (contact.contactId==""||contact.contactId=="opened")) return;
-            
             MainBar mainbar=new MainBar(contact);
             setMainBarItem(mainbar);
             int grType = contact.getGroupType();
 
-            if (grType==Groups.TYPE_CONFERENCE) {
-               addItem(SR.MS_LEAVE_ROOM,902, menuIcons.ICON_LEAVE);
-               return;
-            }
- 
         // if(contact.bareJid.equals(StaticData.HELPER_CONTACT)==false){            
 	    if (grType==Groups.TYPE_TRANSP) {
 		addItem(SR.MS_LOGON,5, menuIcons.ICON_ON);
@@ -137,7 +130,7 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
 //#ifdef PLUGINS
 //#                 if (sd.ChangeTransport);
 //#endif
-//#                     addItem(SR.MS_CHANGE_TRANSPORT, menuIcons.ICON_NICK_RESOLVE);
+//#                     addItem(SR.MS_CHANGE_TRANSPORT,915, menuIcons.ICON_NICK_RESOLVE);
 //#endif
 	    }
 
@@ -184,8 +177,7 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
                     addItem(SR.MS_SEEN,894, menuIcons.ICON_ONLINE); 
                 }
                 if (grType!=Groups.TYPE_TRANSP) {
-                    if(!contact.metaContact && !contact.contactId.startsWith("id"))
-                        addItem(SR.MS_EDIT,2, menuIcons.ICON_RENAME);
+                    addItem(SR.MS_EDIT,2, menuIcons.ICON_RENAME);
                 }
 		addItem(SR.MS_SUBSCRIPTION,3, menuIcons.ICON_SUBSCR);
 //		addItem(SR.MS_MOVE,1003, menuIcons.ICON_MOVE);
@@ -374,10 +366,10 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
            JabberDataBlock query_private = query.addChildNs("query", "jabber:iq:private");
            
              JabberDataBlock storage = query_private.addChildNs("storage", "storage:rosternotes");
-               int size = midlet.BombusQD.sd.roster.hContacts.size();
-               synchronized (midlet.BombusQD.sd.roster.hContacts) {
+               int size = midlet.BombusQD.sd.roster.contactList.contacts.size();
+               synchronized (midlet.BombusQD.sd.roster.contactList.contacts) {
                   for(int i=0;i<size;i++){
-                    find = (Contact)midlet.BombusQD.sd.roster.hContacts.elementAt(i); 
+                    find = (Contact)midlet.BombusQD.sd.roster.contactList.contacts.elementAt(i); 
                     if(find.annotations!=null){
                       JabberDataBlock note = storage.addChild("note",find.annotations);
                       note.setAttribute("jid",find.bareJid);
@@ -673,10 +665,10 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
                         new Affiliations(display, parentView, roomJid, (short)(index-10));
                         return;
                     case 22:
-                        midlet.BombusQD.sd.roster.leaveRoom( g );
+                        ((ConferenceGroup)g).leaveRoom();
                         break;
                     case 23:
-                        midlet.BombusQD.sd.roster.reEnterRoom( g );
+                        ((ConferenceGroup)g).reEnterRoom();
                         return; //break;
                     case 46: //conference presence
                         new StatusSelect(display, midlet.BombusQD.sd.roster, ((ConferenceGroup)g).confContact);

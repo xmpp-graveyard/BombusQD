@@ -261,12 +261,14 @@ public class ServiceDiscovery
             if (command2!=null) {
                 command1=command2;
             }
-            if (command1.getAttribute("node").startsWith("http://jabber.org/protocol/rc#")) id="discocmd"; //hack
+            String node = command1.getAttribute("node");
+            if(node != null){
+               if (node.startsWith("http://jabber.org/protocol/rc#")) id="discocmd"; //hack
+            }
         }
-        
         JabberDataBlock query=data.getChildBlock((id.equals("discocmd"))?"command":"query");
         Vector childs=query.getChildBlocks();
-        //System.out.println(id);
+
 
         if (id.equals(discoId("disco2"))) {
             Vector items=new Vector(0);
@@ -284,7 +286,7 @@ public class ServiceDiscovery
                         int resourcePos=jid.indexOf('/');
                         if (resourcePos>-1)
                             jid=jid.substring(0, resourcePos);
-                        serv=new DiscoContact(name, jid, 0);
+                            serv=new DiscoContact(name, jid, 0);
                     } else {
                         serv=new Node(name, node);
                     }
@@ -297,7 +299,6 @@ public class ServiceDiscovery
             }
             childs = null;
             childs = new Vector(0);
-            childs.removeAllElements();
             showResults(items);
             
         }  else if (id.equals(discoId("disco"))) {
@@ -376,13 +377,13 @@ public class ServiceDiscovery
         Object o= getFocusedObject();
         if (o!=null) 
         if (o instanceof IconTextElement) {
-            String element = ((IconTextElement)o).getTipString(); //System.out.println("browse " + element );
-            if(null == element) return;
+            String element = ((IconTextElement)o).getTipString();
+            if(null == element) {
+                browse( service, ((Node) o).getNode() );
+               return;
+            }
             browse( element, null );
             element = null;
-        }
-        if (o instanceof Node) {
-            browse( service, ((Node) o).getNode() );
         }
     }
 	

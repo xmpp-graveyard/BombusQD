@@ -55,7 +55,8 @@ public class IQCommands implements JabberBlockListener {
         if (instance==null) instance=new IQCommands();
         return instance;
     }
-   
+    public void destroy() {
+    }
     StaticData sd = StaticData.getInstance();
     
     /** Creates a new instance of PepListener */
@@ -194,8 +195,7 @@ public class IQCommands implements JabberBlockListener {
 
                                         if (!confGroup.inRoom) continue; // don`t reenter to leaved rooms
 
-                                        if (confGroup.getName().equals(roomName))
-                                            sd.roster.leaveRoom(confGroup);
+                                        if (confGroup.getName().equals(roomName)) ((ConferenceGroup)confGroup).leaveRoom();
                                     } catch (Exception ex) {}
                                 }
                             }

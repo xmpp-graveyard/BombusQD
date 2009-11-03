@@ -52,6 +52,7 @@ public class MessageItem
     private boolean even;
     private boolean smiles;
     private boolean partialParse=false;
+    private int itemHeight = -1;
     
     /** Creates a new instance of MessageItem */
     public MessageItem(Msg msg, VirtualList view, boolean showSmiles) {
@@ -63,12 +64,12 @@ public class MessageItem
 
     public int getVHeight() { 
         if (msg==null) return 0;
-        if (msg.itemHeight<0) msg.itemHeight=getFont().getHeight();
-        if (msg.delivered||msg.search_word) {
+        if (itemHeight<0) itemHeight=getFont().getHeight();
+        if (msg.delivered) {
             int rh=RosterIcons.getInstance().getHeight();
-            if (msg.itemHeight<rh) return rh;
+            if (itemHeight<rh) return rh;
         }
-        return msg.itemHeight; 
+        return itemHeight; 
     }
 
     
@@ -81,27 +82,45 @@ public class MessageItem
     }     
     
     public int getColorBGnd() {
-        return even?ColorTheme.getColor(ColorTheme.LIST_BGND_EVEN):ColorTheme.getColor(ColorTheme.LIST_BGND);    }
+        return ColorTheme.getColor(even ? ColorTheme.LIST_BGND_EVEN : ColorTheme.LIST_BGND);
+    }
     
     public int getColor() { return msg.getColor(); }
     
+    public void parse(VirtualList view) {
+        MessageParser.getInstance().parseMsg(this, view.getListWidth());
+        updateHeight();
+    }
+    
+    public void destroy(){
+        int size = msgLines.size();
+        for(int i = 0; i<size; ++i){
+          ComplexString complexStr = (ComplexString)msgLines.elementAt(i);
+          complexStr.destroy();
+          complexStr = null;
+        }
+        msgLines.removeAllElements();
+        msgLines = null;
+        //System.out.println("    :::     messageItem-->destroyed:: size->" + size + " => " + msgLines);
+    }
 
     public void drawItem(Graphics g, int ofs, boolean selected) {
         int xorg=g.getTranslateX();
         int yorg=g.getTranslateY();
         g.translate(2,0);
         if (msgLines==null) {
-            MessageParser.getInstance().parseMsg(this, view.getListWidth());
+            parse(view);
             return;
         }
-        int size=msgLines.size();
-        for(int i=0;i<size;i++){
+        int size = msg.itemCollapsed ? 1 : msgLines.size();
+        for(int i=0;i<size;++i){
             if (((ComplexString)msgLines.elementAt(i)).isEmpty()) break;
             int h=((ComplexString)msgLines.elementAt(i)).getVHeight();
             int cy=g.getClipY();
 
             if (cy <= h && cy+g.getClipHeight()>0 ) {
               ofs=0;
+              boolean cols = (msg.itemCollapsed && msgLines.size()>1);
               if(midlet.BombusQD.cf.useLowMemory_iconmsgcollapsed==false) { 
                  if(i==0 && !msg.isPresence() && !msg.MucChat){
                           if (msg.delivered) {
@@ -111,12 +130,10 @@ public class MessageItem
                              RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, 0,0);
                              ofs+=23;
                           }
-                          if (msg.itemCollapsed) if (size>1) {
-                             RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
-                          }                           
+                          if (cols) RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
                  }
                  else{
-                   if (msg.itemCollapsed) if (size>1) {
+                   if (cols) {
                              RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
                              g.translate(8,0);
                              //ofs=8;
@@ -124,7 +141,7 @@ public class MessageItem
                 }
               }
               else{
-                   if (msg.itemCollapsed) if (size>1) {
+                   if (cols) {
                              RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
                              g.translate(8,0);
                              //ofs=8;
@@ -148,34 +165,21 @@ public class MessageItem
     
     public void onSelect() {
         msg.itemCollapsed=!msg.itemCollapsed;
-        updateHeight();
         if (partialParse) {
             partialParse=false;
-            MessageParser.getInstance().parseMsg(this, view.getListWidth());
+            parse(view);
         }
-    }
-    
-   
-    byte repaintCounter=0;
-    
-    public void notifyRepaint() {
         updateHeight();
-        //System.out.println(repaintCounter);
-        if ((--repaintCounter)>=0) return;
-        repaintCounter=6;
-        //System.out.println("redraw..");
         view.redraw();
     }
-   
-    
-    public void updateHeight() {
-        int height=0;
-        int size=msgLines.size();
-        for(int i=0;i<size;i++){ 
+
+    private void updateHeight() {
+        int height = 0;
+        int size = msg.itemCollapsed ? Math.min(msgLines.size(), 1) : msgLines.size();
+        for (int i = 0; i < size; ++i) {
             height+=((ComplexString)msgLines.elementAt(i)).getVHeight();
-            if (msg.itemCollapsed) break;            
-        }        
-        msg.itemHeight=height;
+        }
+        itemHeight = height;
     }
 
     public Vector getUrlList() { 
@@ -217,12 +221,13 @@ public class MessageItem
         return msg.getTime();
     }
 //#ifdef SMILES
-    void toggleSmiles() {
+    public void toggleSmiles() {
         smiles=!smiles;
-        MessageParser.getInstance().parseMsg(this, view.getListWidth());  
+        parse(view);
+        view.redraw();
     }
     
-    boolean smilesEnabled() { return smiles; }
+    final boolean smilesEnabled() { return smiles; }
 //#endif
 
     public boolean isSelectable() { return true; }

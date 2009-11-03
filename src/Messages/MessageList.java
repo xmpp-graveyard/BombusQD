@@ -61,15 +61,18 @@ public abstract class MessageList extends VirtualList
 //#endif
     {
 
-    protected Vector messages;
+    protected final Vector messages = new Vector(0);
     
     /** Creates a new instance of MessageList */
-    private MessageItem mi=null;  
+
+    public void destroy() {
+        super.destroy();
+        //System.out.println("    :::MessageList msgList->removeAllMessages");
+        messages.removeAllElements();
+    }
     
     public MessageList() {
         super();
-        messages=null;
-	    messages=new Vector(0);
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
@@ -92,29 +95,60 @@ public abstract class MessageList extends VirtualList
     }
     
     
-    public abstract int getItemCount();
+    protected abstract int getItemCount();
     
-    protected VirtualElement getItemRef(int index) {
-      int size = messages.size();
-	if (size<getItemCount()) messages.setSize(getItemCount());
-	mi=(MessageItem)messages.elementAt(index);
-	if (mi==null) {
-	    mi=new MessageItem(getMessage(index), this, smiles);
+    public VirtualElement getItemRef(int index) {
+        if (messages.size()<getItemCount()) messages.setSize(getItemCount());
+        MessageItem mi = (MessageItem)messages.elementAt(index);
+        if (mi==null) {
+            mi = new MessageItem(getMessage(index), this, smiles);
             mi.setEven( (index & 1) == 0);
-	    messages.setElementAt(mi, index);
-	}
+            mi.parse(this);
+            messages.setElementAt(mi, index);
+        }
         return mi;
     }
+    
+    /*
+    public VirtualElement getItemRef(int index) {
+        if (messages.size()<getItemCount()) {
+            messages.setSize(getItemCount());
+        }
+        MessageItem mi=(MessageItem) messages.elementAt(index);
+        if (null == mi) {
+            try { throw new Exception("getItemCount()"); } catch (Exception e) { e.printStackTrace(); }
+            initItem(getMessage(index), index);
+        }
+        readMessage(mi.msg);
+        return mi;
+    }
+     */
 
-    public abstract Msg getMessage(int index);
+    protected void readMessage(Msg msg) {
+    }
+
+    protected final void initItem(Msg msg, int index) {
+        //System.out.println(msg);
+        if (messages.size()<getItemCount()) {
+            messages.setSize(getItemCount());//?
+        }
+        MessageItem mi = new MessageItem(msg,this,  smiles);
+        mi.setEven( (index & 1) == 0);
+        mi.parse(this);
+        //mi.getColor();
+        messages.setElementAt(mi, index);
+    }
+    
+
+    protected abstract Msg getMessage(int index);
     
     
-    public Msg replaceNickTags(Msg msg){ //NOTE: replace ALL "action-user-msgs" WITH <nick>
+    public Msg replaceNickTags(Msg msg){
          return util.StringUtils.replaceNickTags(msg);
     }     
     
     
-    public void markRead(int msgIndex) {}
+    protected void markRead(int msgIndex) {}
     
     protected boolean smiles;
 
@@ -150,11 +184,12 @@ public abstract class MessageList extends VirtualList
             midlet.BombusQD.sd.roster.activeContact=null;
             destroyView();
         }
+        /*
         if (c==midlet.BombusQD.commands.cmdUrl) {
             try {
                 Vector urls=((MessageItem) getFocusedObject()).getUrlList();
                 new MessageUrl(display, urls); //throws NullPointerException if no urls
-            } catch (Exception e) {/* no urls found */}
+            } catch (Exception e) {}
         }
         if (c==midlet.BombusQD.commands.cmdxmlSkin) {
            try {
@@ -169,15 +204,16 @@ public abstract class MessageList extends VirtualList
 //#         {
 //#             try {
 //#                 midlet.BombusQD.clipboard.add(  replaceNickTags( ((MessageItem)getFocusedObject()).msg )  );
-//#             } catch (Exception e) {/*no messages*/}
+//#             } catch (Exception e) {}
 //#         }
 //#         
 //#         if (c==midlet.BombusQD.commands.cmdCopyPlus) {
 //#             try {
 //#                 midlet.BombusQD.clipboard.append( replaceNickTags(  ((MessageItem)getFocusedObject()).msg  ) );
-//#             } catch (Exception e) {/*no messages*/}
+//#             } catch (Exception e) {}
 //#         }
 //#endif
+       */
     }
 
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat

@@ -126,7 +126,7 @@
 //#ifdef PLUGINS
 //#                 if (sd.Stats)
 //#endif
-//#                     new StatsWindow(display, sd.roster);
+//#                     new StatsWindow(display);
 //#                 break;
 //#endif
 //#endif

@@ -105,7 +105,7 @@ public class InfoWindow
         description.selectable=true;
         itemsList.addElement(description);
         
-        thanks = new MultiLine("Thanks to:","Testing: zaetz,demon(Dmitry Krylov),magnit,Sniffy,NNn,DsXack and many others\n" +
+        thanks = new MultiLine("Thanks to:","Testing: zaetz,balor,demon(Dmitry Krylov),magnit,Sniffy,NNn,DsXack and many others\n" +
                 "Patches: Vladimir Krukov (aspro)\n" +
                 "Graphics: Xa,Makasim\n" +
                 "Actions icons: Rederick Asher\n" +

@@ -143,7 +143,7 @@ public class ArchiveList
 	return archive.size();
     }
     
-    public Msg getMessage(int index) {
+    protected Msg getMessage(int index) {
 	return archive.msg(index);
     }
 
@@ -182,22 +182,19 @@ public class ArchiveList
     
     public void reFresh() {
         archive=new MessageArchive(where);
-        messages=null;
-        messages=new Vector(0);
+        messages.removeAllElements();
     }
 
     private void deleteMessage() {
         archive.delete(cursor);
-        messages=null;
-        messages=new Vector(0);
+        messages.removeAllElements();
     }
     
     private void deleteAllMessages() {
         new AlertBox(SR.MS_ACTION, SR.MS_DELETE_ALL+"?", display, this) {
             public void yes() {
                 archive.deleteAll();
-                messages=null;
-                messages=new Vector(0);
+                messages.removeAllElements();
             }
             public void no() { }
         };

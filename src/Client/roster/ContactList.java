@@ -177,7 +177,7 @@ public final class ContactList {
     public final void updateUI() {
         groups.update();
     }
-    public final Vector getVisibleTree() {
-        return groups.getVisibleTree();
+    public final Vector getVisibleTree(Vector vContacts) {
+        return groups.getVisibleTree(vContacts);
     }
 }

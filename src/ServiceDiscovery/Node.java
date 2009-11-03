@@ -50,6 +50,7 @@ public class Node extends IconTextElement{
     public String getName() { return name; }
     public String getNode() { return node; }
 
-    public String toString() { return (name!=null)? name:node; }    
+    public String toString() { return (name!=null)? name:node; }   
+    //public String getTipString() { return (name!=null)? name:node; }
 }
 //#endif

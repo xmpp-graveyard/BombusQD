@@ -44,25 +44,24 @@ import ui.VirtualList;
 public class Groups implements JabberBlockListener{
     
     Vector groups;
-
-    public final static int TYPE_SELF=0;
-    public final static int TYPE_NO_GROUP=1;
-    public final static int TYPE_COMMON=2;
-    public final static int TYPE_VISIBLE=3;
-    public final static int TYPE_VIP=4;
-    public final static int TYPE_IGNORE=5;
-    public final static int TYPE_MUC=6;    
-    public final static int TYPE_SEARCH_RESULT=7;
-    public final static int TYPE_NOT_IN_LIST=8;
-    public final static int TYPE_TRANSP=9;
-    public final static int TYPE_CONFERENCE=10;    
+    
+    public final static byte TYPE_SELF=0;
+    public final static byte TYPE_NO_GROUP=1;
+    public final static byte TYPE_COMMON=2;
+    public final static byte TYPE_VISIBLE=3;
+    public final static byte TYPE_VIP=4;
+    public final static byte TYPE_IGNORE=5;
+    public final static byte TYPE_MUC=6;    
+    public final static byte TYPE_SEARCH_RESULT=7;
+    public final static byte TYPE_NOT_IN_LIST=8;
+    public final static byte TYPE_TRANSP=9;
 
     public final static String COMMON_GROUP=SR.MS_GENERAL;
     
-    private final static String GROUPSTATE_NS="http://bombus-im.org/groups";
+    private final static String GROUPSTATE_NS="http://bombusmod-qd.wen.ru/groups";
     
+    private Group[] spetialGroup = new Group[10];
     public Groups(){
-        groups=null;
         groups=new Vector(0);
         addGroup(SR.MS_TRANSPORTS, TYPE_TRANSP);
         addGroup(SR.MS_SELF_CONTACT, TYPE_SELF);
@@ -71,74 +70,36 @@ public class Groups implements JabberBlockListener{
         addGroup(SR.MS_IGNORE_LIST, TYPE_IGNORE);
         addGroup(SR.MS_VISIBLE_GROUP, TYPE_VISIBLE);
         addGroup(SR.MS_VIP_GROUP, TYPE_VIP);
-        addGroup(SR.MS_CONFERENCE,TYPE_CONFERENCE);
         addGroup(Groups.COMMON_GROUP, TYPE_NO_GROUP);
     }
-
-    private int rosterContacts;
-    private int rosterOnline;
-    
-    Group grp=null;
-    public void resetCounters(){
-        int size=groups.size();
-        for(int i=0;i<size;i++){  
-            grp =(Group)groups.elementAt(i);
-	    grp.startCount();            
-        }      
-	rosterContacts=0;
-        rosterOnline=0;
-    }
-    
-    public void addToVector(Vector d, int index){
-        Group gr=(Group)groups.elementAt(index);
-        if (!gr.visible) return;
-        int size = gr.contacts.size();
-        if (size>0){
-            d.addElement(gr);
-            if (!gr.collapsed) {
-               for(int i=0;i<size;i++){  
-                  d.addElement(gr.contacts.elementAt(i));        
-               }                   
-            }
+    public void destroy() {
+        for (int i = 0; i < getCount(); ++i) {
+            ((Group)groups.elementAt(i)).destroy();
         }
-	gr.finishCount();
-        
-        if (gr.type>Groups.TYPE_MUC)
-            return; //don't count this contacts
-        
-	rosterContacts+=gr.getNContacts();
-	rosterOnline+=gr.getOnlines();
+        spetialGroup = null;
     }
 
     public Group getGroup(int type) {
-        int size=groups.size();
-        for(int i=0;i<size;i++){  
-            grp =(Group)groups.elementAt(i);
-            if (grp.type==type) return grp;
-        }  
-        return null;
+        return spetialGroup[type];
     }
-    
-    public void collapseGroups(boolean isclp){
-        int size=groups.size();
-        for(int i=0;i<size;i++){  
-            grp =(Group)groups.elementAt(i);
-            grp.collapsed=isclp;
-        }          
+
+    public Enumeration elements(){
+        return groups.elements();
     }
     
     public Group getGroup(String name) {
-        int size=groups.size();
-        for(int i=0;i<size;i++){  
-            grp =(Group)groups.elementAt(i);
+        int size = groups.size();
+        for (int i = 0; i < size; ++i) {
+        //for (Enumeration e=groups.elements();e.hasMoreElements();){
+            Group grp=(Group)groups.elementAt(i);
             if (name.equals(grp.name)) return grp;
-        }  
+        }
         return null;
     }
     
-    public Group addGroup(String name, int type) {
-        Group ng=new Group(name);
-        ng.type=type;
+    public Group addGroup(String name, byte type) {
+        Group ng=new Group(name, type);
+        spetialGroup[type] = ng;
         return addGroup(ng);
     }
     
@@ -150,8 +111,7 @@ public class Groups implements JabberBlockListener{
 
     public Vector getRosterGroupNames(){
         Vector s=new Vector(0);
-        int size = groups.size();
-        for (int i=0; i<size; i++) {
+        for (int i=0; i<groups.size(); i++) {
 	    Group grp=(Group) groups.elementAt(i);
             if (grp.type<TYPE_NO_GROUP) continue;
             if (grp.type>TYPE_IGNORE) continue;
@@ -159,12 +119,13 @@ public class Groups implements JabberBlockListener{
         }
         return s;
     }
+    
     public int getCount() {return groups.size();}
 
     public int getRosterContacts() { return rosterContacts; }
     public int getRosterOnline() { return rosterOnline; }
 
-    void removeGroup(Group g) {
+    public void removeGroup(Group g) {
         groups.removeElement(g);
     }
 
@@ -174,24 +135,18 @@ public class Groups implements JabberBlockListener{
                 JabberDataBlock query=data.findNamespace("query", "jabber:iq:private");
                 if (query==null) 
                     return BLOCK_REJECTED;
-                
                 JabberDataBlock gs=query.findNamespace("gs", GROUPSTATE_NS);
                 if (gs==null || gs.getChildBlocks()==null) 
                     return BLOCK_REJECTED;
-                
-                 Vector childBlocks = new Vector(0); 
-                 childBlocks=gs.getChildBlocks();
-                 int size=childBlocks.size();
-                  for(int i=0;i<size;i++){  
-                    JabberDataBlock item=(JabberDataBlock)childBlocks.elementAt(i);
+                for (Enumeration e=gs.getChildBlocks().elements(); e.hasMoreElements();) {
+                    JabberDataBlock item=(JabberDataBlock)e.nextElement();
                     String groupName=item.getText();
                     boolean collapsed=item.getAttribute("state").equals("collapsed");
-                    grp=getGroup(groupName);
-                    if (grp==null) continue;
-                    grp.collapsed=collapsed;            
-                  }  
-                 childBlocks.setSize(0);
-                childBlocks=null;
+                    Group grp=getGroup(groupName);
+                    if (grp==null) 
+                        continue;
+                    grp.collapsed=collapsed;
+                }
                 midlet.BombusQD.sd.roster.reEnumRoster();
                 return NO_MORE_BLOCKS;
             }
@@ -210,17 +165,93 @@ public class Groups implements JabberBlockListener{
         if (get) {
             midlet.BombusQD.sd.roster.theStream.addBlockListener(this);
         } else {
-                 int size=groups.size();
-                  for(int i=0;i<size;i++){  
-                    grp=(Group)groups.elementAt(i);
-                      if (grp.collapsed) {
-                      gs.addChild("item", grp.getName()).setAttribute("state", "collapsed");
-                     }                     
-                  }            
+            for (Enumeration e=groups.elements(); e.hasMoreElements();) {
+                Group grp=(Group)e.nextElement();
+                if (grp.collapsed) {
+                    gs.addChild("item", grp.getName()).setAttribute("state", "collapsed");
+                }
+            }
         }
         midlet.BombusQD.sd.roster.theStream.send(iq);
-        iq=null;
-        query=null;
-        gs=null;
     }
+    
+    private int rosterContacts;
+    private int rosterOnline;
+
+    public final void update() {
+        // self-contact group
+        Group selfContactGroup = getGroup(TYPE_SELF);
+        selfContactGroup.visible = (midlet.BombusQD.cf.selfContact || selfContactGroup.getContacts().size() > 1);
+        //if (!selfContactGroup.visible) selfContactGroup.visible |= selfContactGroup.hasNewMsgs(); //?? Stupid code
+        
+        // hiddens
+        getGroup(TYPE_IGNORE).visible = midlet.BombusQD.cf.ignore;
+        //getGroup(TYPE_SEARCH_RESULT).visible = true;
+        //getGroup(TYPE_VISIBLE).visible = true;
+        // transports
+        Group transpGroup = getGroup(TYPE_TRANSP);
+        transpGroup.visible = (midlet.BombusQD.cf.showTransports || transpGroup.hasNewMsgs());
+        
+        rosterContacts = 0;
+        rosterOnline = 0;
+        for (int i = 0; i < getCount(); i++) {
+            Group g = (Group)groups.elementAt(i);
+            g.updateCounters();
+            if (g.type >= TYPE_MUC) continue;//dont count muc-contacts
+            rosterContacts += g.getNContacts();
+            rosterOnline += g.getOnlines();
+        }
+    }
+
+    public void addToVector(Vector d, Group gr) {
+        if (!gr.visible) return;
+        if (0 == gr.getNContacts()) return;
+        
+        int groupType = gr.type;
+        if( groupType == TYPE_NO_GROUP || groupType == TYPE_COMMON || groupType == TYPE_SELF){
+            if(0 == gr.onlines && !midlet.BombusQD.cf.showOfflineContacts) return;
+            else if(!midlet.BombusQD.cf.selfContact) return;
+        }
+        
+        d.addElement(gr);
+        Vector contacts = gr.visibleContacts;
+         if (!gr.collapsed) {
+           int size = contacts.size();
+           for(int i=0; i<size; ++i) d.addElement(contacts.elementAt(i));
+        }
+        gr.updateDinamicInfo();
+        //if (gr.type>Groups.TYPE_MUC) return; //don't count this contacts
+    }
+    
+    
+    public final Vector getVisibleTree(Vector vContacts) {//reEnum
+        //Vector vContacts = new Vector(0);
+        for (int i = 0; i < getCount(); i++) {
+            Group g = (Group)groups.elementAt(i);
+            addToVector(vContacts, g);
+        }
+        return vContacts;
+    }
+    
+
+   /*
+    private void addToVector(Vector d, Group gr) {
+        if (!gr.visible) return;
+        if (0 < gr.onlines || gr.type == TYPE_TRANSP  ) {//transports grp
+            if(0 == gr.getNContacts()) return;
+            d.addElement(gr);
+            if (!gr.collapsed) {
+                Vector contacts = gr.visibleContacts;
+                int size = contacts.size();
+                for (int i = 0; i < size; ++i) {
+                    d.addElement(contacts.elementAt(i));
+                }
+            }
+        }
+        gr.updateDinamicInfo();
+        if (gr.type>TYPE_MUC) return;
+    }
+    */
+    
  }
+

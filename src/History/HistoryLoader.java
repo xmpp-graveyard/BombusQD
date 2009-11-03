@@ -69,7 +69,7 @@
 //#        fileMap = getFileMap();
 //#     }
 //#     
-//#     public Msg getMessage(int index) {
+//#     protected Msg getMessage(int index) {
 //#         FileIO f=FileIO.createConnection(fileName);
 //#         try {
 //#             InputStream is=f.openInputStream(); 
