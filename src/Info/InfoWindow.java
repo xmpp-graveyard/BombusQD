@@ -304,18 +304,7 @@ public class InfoWindow
 //#ifdef GRADIENT
 //#         abilitiesList.addElement((String)"GRADIENT");
 //#endif
-//#ifdef HISTORY
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
-//#             abilitiesList.addElement((String)"HISTORY");
-//#endif
-//#ifdef HISTORY_READER
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
-//#             abilitiesList.addElement((String)"HISTORY_READER");
-//#endif
+
 //#ifdef IMPORT_EXPORT
 //#ifdef PLUGINS
 //#         if (sd.IE)
@@ -323,10 +312,7 @@ public class InfoWindow
 //#             abilitiesList.addElement((String)"IMPORT_EXPORT");
 //#endif
 //#ifdef LAST_MESSAGES
-//#ifdef PLUGINS
-//#         if (sd.History)
-//#endif
-//#             abilitiesList.addElement((String)"LAST_MESSAGES");
+//# 
 //#endif
 //#ifdef LOGROTATE
 //#         abilitiesList.addElement((String)"LOGROTATE");

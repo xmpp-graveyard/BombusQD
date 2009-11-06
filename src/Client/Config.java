@@ -109,16 +109,9 @@ public class Config {
 //#     public boolean setAutoStatusMessage=true;
 //#endif
     
-//#ifdef HISTORY
-//#      public String msgPath="";
-//#      public String msgAvatarPath="";
-//#      
-//#      public boolean msgLog=false;
-//#      public boolean msgLogPresence=false;
-//#      public boolean msgLogConf=false;
-//#      public boolean msgLogConfPresence=false;
-//#      public boolean lastMessages=false;
-//#endif
+
+    public String msgAvatarPath="";
+
     public boolean cp1251=true;     
 //#ifndef WMUC
     public String defGcRoom=getStringProperty("defroom", "qd@conference.jabber.ru");
@@ -208,7 +201,6 @@ public class Config {
     public boolean showNickNames = true;
     public boolean fileTransfer=true;
     public boolean adhoc=false;
-    public boolean saveHistory=true;
     
     public boolean oldSE=false;    
     
@@ -434,9 +426,6 @@ public class Config {
 //#ifdef CLIENTS_ICONS
 //#         if(!sd.ClientsIcons) showClientIcon=false;
 //#endif
-//#ifdef HISTORY
-//#         if(!sd.History) saveHistory=false;
-//#endif
 //#endif
     }
     
@@ -481,18 +470,13 @@ public class Config {
             autoFocus=inputStream.readBoolean();
             storeConfPresence=inputStream.readBoolean(); 
             capsState=inputStream.readBoolean();    
-            
-            msgLog=inputStream.readBoolean();
-            msgLogPresence=inputStream.readBoolean();
-            msgLogConfPresence=inputStream.readBoolean();
-            msgLogConf=inputStream.readBoolean();
+
             cp1251=inputStream.readBoolean();
             
             fileTransfer=inputStream.readBoolean(); //newMenu
             lightState=inputStream.readBoolean();
             notifySound=inputStream.readBoolean();
 
-            lastMessages=inputStream.readBoolean();
             setAutoStatusMessage=inputStream.readBoolean();   
             autoScroll=inputStream.readBoolean();
             popUps=inputStream.readBoolean();
@@ -656,7 +640,6 @@ public class Config {
     protected void loadUTF(){
         DataInputStream inputStream=NvStorage.ReadFileRecord("confUtf", 0);
 	try {
-            msgPath=inputStream.readUTF();
             msgAvatarPath=inputStream.readUTF();	    
             defGcRoom=inputStream.readUTF(); 
             lang=inputStream.readUTF(); 
@@ -724,17 +707,12 @@ public class Config {
             outputStream.writeBoolean(storeConfPresence); 
             outputStream.writeBoolean(capsState);    
             
-            outputStream.writeBoolean(msgLog);
-            outputStream.writeBoolean(msgLogPresence);
-            outputStream.writeBoolean(msgLogConfPresence);
-            outputStream.writeBoolean(msgLogConf);//20 
             outputStream.writeBoolean(cp1251);
             
             outputStream.writeBoolean(fileTransfer); //newMenu
             outputStream.writeBoolean(lightState);
             outputStream.writeBoolean(notifySound);
 
-            outputStream.writeBoolean(lastMessages);
             outputStream.writeBoolean(setAutoStatusMessage);   
             outputStream.writeBoolean(autoScroll);
             outputStream.writeBoolean(popUps);
@@ -876,7 +854,6 @@ public class Config {
     public boolean saveUTF(){
        	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
 	try {
-            outputStream.writeUTF(msgPath);
             outputStream.writeUTF(msgAvatarPath);	    
             outputStream.writeUTF(defGcRoom); 
             outputStream.writeUTF(lang); 

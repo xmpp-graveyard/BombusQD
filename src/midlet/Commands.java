@@ -38,12 +38,7 @@ public class Commands {
 //#ifdef FILE_IO
     public static Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 12);
 //#endif
-//#ifdef HISTORY
-//#ifdef HISTORY_READER
-//#     public static Command cmdReadHistory=new Command("Read history", Command.SCREEN, 13);
-//#endif
-//# //        if (midlet.BombusQD.cf.lastMessages && !contact.isHistoryLoaded()) loadRecentList();
-//#endif
+
 //#ifdef CLIPBOARD    
 //#     public static Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
 //#endif
@@ -89,16 +84,13 @@ public class Commands {
         cmdAddSearchQuery.setImg(0x83);
         cmdSelect.setImg(0x60);
         cmdArch.setImg(0x64);
-        cmdCopy.setImg(0x13);
+        cmdCopy.setImg(0x23);
         cmdCopyPlus.setImg(0x23);
         cmdxmlSkin.setImg(0x07);
         cmdUrl.setImg(0x15);
         cmdActions.setImg(0x16);
         cmdSendBuffer.setImg(0x84);
         cmdSaveChat.setImg(0x44);
-//#if HISTORY_READER
-//#         cmdReadHistory.setImg(0x05);
-//#endif
         cmdMyService.setImg(0x27);
 
     }

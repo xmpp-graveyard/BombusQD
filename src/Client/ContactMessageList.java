@@ -31,15 +31,6 @@ package Client;
 import Conference.MucContact;
 import Client.contact.ChatInfo;
 //#endif
-//#ifdef HISTORY
-//# import History.HistoryAppend;
-//#ifdef LAST_MESSAGES
-//# import History.HistoryStorage;
-//#endif
-//#ifdef HISTORY_READER
-//# import History.HistoryReader;
-//#endif
-//#endif
 import Menu.RosterItemActions;
 import Messages.MessageList;
 import Messages.MessageItem;
@@ -111,12 +102,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#ifdef FILE_TRANSFER        
         contact.fileQuery=false;
 //#endif        
-        
-//#ifdef HISTORY
-//#ifdef LAST_MESSAGES
-//#         if (midlet.BombusQD.cf.lastMessages && !loaded) loadRecentList();
-//#endif
-//#endif
+
       resetMessages();
     }
     
@@ -164,19 +150,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
             addInCommand(3,midlet.BombusQD.commands.cmdClrPresences); 
             
             if (!startSelection) addInCommand(3,midlet.BombusQD.commands.cmdSelect); 
-            
-//#ifdef HISTORY
-//#         if (midlet.BombusQD.cf.saveHistory)
-//#             if (midlet.BombusQD.cf.msgPath!=null)
-//#                 if (!midlet.BombusQD.cf.msgPath.equals(""))
-//#                     if (contact.getChatInfo().getMessageCount()>0)
-//#                         addInCommand(3,midlet.BombusQD.commands.cmdSaveChat);  
-//#ifdef HISTORY_READER
-//#         if (midlet.BombusQD.cf.saveHistory && midlet.BombusQD.cf.lastMessages)
-//#             addInCommand(3,midlet.BombusQD.commands.cmdReadHistory); 
-//#endif
-//#endif
-            
+
         //if (contact.getChatInfo().getMessageCount()>0) {
 //#ifdef ARCHIVE
 //#ifdef PLUGINS
@@ -373,17 +347,6 @@ public final class ContactMessageList extends MessageList implements MenuListene
             mess.highlite = mess.selected;
             return;
         }
-//#ifdef HISTORY
-//#ifdef HISTORY_READER
-//#         if (c==midlet.BombusQD.commands.cmdReadHistory) {
-//#             new HistoryReader(midlet.BombusQD.getInstance().display,contact);
-//#             return;
-//#         }
-//#endif
-//#endif
-//#if (FILE_IO && HISTORY)
-//#         if (c==midlet.BombusQD.commands.cmdSaveChat) saveMessages();
-//#endif
         /** login-critical section */
         if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
 
@@ -746,10 +709,8 @@ public final class ContactMessageList extends MessageList implements MenuListene
         if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
         
         try {
-            String msg=new StringBuffer()
-                .append("Quote:\n")
+            String msg=new StringBuffer(0)
                 .append((char)0xab) //
-                .append("")
                 .append(replaceNickTags(getMessage(cursor)).quoteString())
                 .append((char)0xbb)
                 .append("\n")
@@ -791,65 +752,6 @@ public final class ContactMessageList extends MessageList implements MenuListene
         redraw();
     }
     
-    
-//#ifdef HISTORY
-//#ifdef LAST_MESSAGES
-//#     private boolean loaded = false;
-//#     public void loadRecentList() {
-//#         loaded = true;
-//#         HistoryStorage hs = new HistoryStorage(contact.bareJid);
-//#         Vector history = hs.importData();
-//# 
-//#         int start;
-//#         for (int i = Math.max(history.size() - 10, 0); i < history.size(); ++i)  {
-//#             Msg message = (Msg)history.elementAt(i);
-//#             message.history = true;
-//#             addMessage(message);
-//#         }
-//#         history=null;
-//#     }
-//#endif
-//# 
-//#     private void saveMessages() {
-//#         StringBuffer histRecord=new StringBuffer("chatlog_");
-//#ifndef WMUC
-//#         if (contact instanceof MucContact) {
-//#             if (contact.origin>=Contact.ORIGIN_GROUPCHAT) {
-//#                 histRecord.append(contact.bareJid);
-//#             } else {
-//#                 String nick=contact.getJid();
-//#                 int rp=nick.indexOf('/');
-//#                 histRecord.append(nick.substring(rp+1)).append("_").append(nick.substring(0, rp));
-//#                 nick=null;
-//#             }
-//#         } else {
-//#endif
-//#             histRecord.append(contact.bareJid);
-//#ifndef WMUC
-//#         }
-//#endif
-//#         StringBuffer messageList=new StringBuffer(0);
-//#         if (startSelection) {
-//#             for (Enumeration select=msgs.elements(); select.hasMoreElements(); ) {
-//#                 Msg mess=(Msg) select.nextElement();
-//#                 if (mess.selected) {
-//#                     messageList.append(mess.quoteString()).append("\n").append("\n");
-//#                     mess.selected=false;
-//#                     mess.highlite = mess.oldHighlite;
-//#                 }
-//#             }
-//#             startSelection = false;
-//#         } else {
-//#             for (Enumeration cmessages=msgs.elements(); cmessages.hasMoreElements(); ) {
-//#                 Msg message=(Msg) cmessages.nextElement();
-//#                 messageList.append(message.quoteString()).append("\n").append("\n");
-//#             }
-//#         }
-//#         HistoryAppend.getInstance().addMessageList(messageList.toString(), histRecord.toString());
-//#         messageList=null;
-//#         histRecord=null;
-//#     }
-//#endif
     
     private final void smartPurge() {
         int cur=cursor+1;

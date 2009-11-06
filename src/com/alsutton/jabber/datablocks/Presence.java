@@ -203,9 +203,12 @@ public class Presence extends JabberDataBlock {
     }
 
     public String getEntityVer() {
-        if (getChildBlock("c")!=null){
-            if (getChildBlock("c").isJabberNameSpace("http://jabber.org/protocol/caps")) {
-                return (getChildBlock("c").getAttribute("ver").endsWith("=")? null : getChildBlock("c").getAttribute("ver") );
+        JabberDataBlock cc=getChildBlock("c");
+        if (cc!=null){
+            if (cc.isJabberNameSpace("http://jabber.org/protocol/caps")) {
+                String attr = cc.getAttribute("ver");
+                if(attr == null) return null;
+                return (attr.endsWith("=")? null : cc.getAttribute("ver") );
             }
         }
         return null;

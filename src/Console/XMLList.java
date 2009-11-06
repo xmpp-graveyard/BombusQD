@@ -48,9 +48,6 @@
 //# import ui.MainBar;
 //#endif
 //# 
-//#ifdef HISTORY
-//# import History.HistoryAppend;
-//#endif
 //# /**
 //#  *
 //#  * @author ad,aqent
@@ -163,27 +160,8 @@
 //#         if (c==cmdPurge) { 
 //#             clearReadedMessageList();
 //#         }
-//# 
-//#ifdef HISTORY        
-//#         if(c==cmdDebugLog){
-//#            saveMessages();  
-//#         }
-//#endif            
+//#          
 //#     }
-//#     
-//# 
-//#ifdef HISTORY
-//#     private void saveMessages() {
-//#         StringBuffer histRecord=new StringBuffer("XML_DEBUG");
-//#         StringBuffer messageList=new StringBuffer();
-//#          for (int i=0;i<stanzas.size();i++) {
-//#                 Msg mess=(Msg) stanzas.msg(i);
-//#                 messageList.append(mess.quoteString()).append("\n").append("\n");
-//#         }
-//#         HistoryAppend.getInstance().addMessageList(messageList.toString(), histRecord.toString());
-//#     }
-//#endif    
-//# 
 //#     
 //#     private void clearReadedMessageList() {
 //#         try {

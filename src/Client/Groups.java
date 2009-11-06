@@ -208,9 +208,9 @@ public class Groups implements JabberBlockListener{
         if (0 == gr.getNContacts()) return;
         
         int groupType = gr.type;
-        if( groupType == TYPE_NO_GROUP || groupType == TYPE_COMMON || groupType == TYPE_SELF){
+        if( groupType == TYPE_NO_GROUP || groupType == TYPE_COMMON) {
             if(0 == gr.onlines && !midlet.BombusQD.cf.showOfflineContacts) return;
-            else if(!midlet.BombusQD.cf.selfContact) return;
+            if(groupType == TYPE_SELF && !midlet.BombusQD.cf.selfContact) return;
         }
         
         d.addElement(gr);

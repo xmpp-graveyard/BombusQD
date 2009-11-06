@@ -37,9 +37,6 @@ import Fonts.FontCache;
 import images.ClientsIcons;
 //#endif
 import javax.microedition.lcdui.Font;
-//#if HISTORY
-//# import History.HistoryAppend;
-//#endif
 import javax.microedition.lcdui.Graphics;
 import ui.ImageList;
 //#ifdef PEP
@@ -153,14 +150,6 @@ public class Contact extends IconTextElement{
     public boolean fileQuery;
 //#endif
 
-//#ifdef HISTORY
-//#ifdef LAST_MESSAGES
-//#     private boolean loaded;
-//#endif
-//#endif
-    
-   //public Object cList = null;
-   
     public final ChatInfo chatInfo = new ChatInfo();
     private ContactMessageList messageList = null;
     private ContactMessageList getML() {
@@ -386,41 +375,7 @@ public class Contact extends IconTextElement{
                 getML().deleteOldMessages();
             }
         }
-//#if HISTORY
-//#ifdef PLUGINS
-//#     if(midlet.BombusQD.cf.saveHistory)
-//#endif
-//#         if (!m.history) {
-//#             boolean isValidGroupType = group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT;
-//#             if (isValidGroupType && !midlet.BombusQD.cf.msgPath.equals("")) {
-//#                 boolean allowLog=false;
-//#                 switch (m.messageType) {
-//#                     case Msg.MESSAGE_TYPE_PRESENCE:
-//#                         if (origin>=ORIGIN_GROUPCHAT) {
-//#                             if (midlet.BombusQD.cf.msgLogConfPresence)
-//#                                 allowLog=true;
-//#                         } else  if (midlet.BombusQD.cf.msgLogPresence) {
-//#                             allowLog=true;
-//#                         }
-//#                         break;
-//#                     case Msg.MESSAGE_TYPE_HISTORY:
-//#                         break;
-//#                     default:
-//#                         if (origin>=ORIGIN_GROUPCHAT && midlet.BombusQD.cf.msgLogConf) allowLog=true;
-//#                         if (origin<ORIGIN_GROUPCHAT && midlet.BombusQD.cf.msgLog) allowLog=true;
-//#                 }
-//# 
-//#ifndef WMUC
-//#                 if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact)
-//#                      allowLog=false;
-//#endif
-//#                 
-//#                 if (allowLog) {
-//#                         HistoryAppend.getInstance().addMessage(m, midlet.BombusQD.cf.lastMessages, bareJid);
-//#                 }
-//#             }
-//#        }
-//#endif
+        
         if (first_replace) {
             chatInfo.setFirstMessage(m);
             if (null != messageList) {
@@ -526,16 +481,7 @@ public class Contact extends IconTextElement{
         if (null != messageList) messageList.redraw();
     }
     
-    /*
-//#ifdef HISTORY
-//#ifdef LAST_MESSAGES
-//#     public boolean isHistoryLoaded () { return loaded; }
-//#     
-//#     public void setHistoryLoaded (boolean state) { loaded=state; }
-//#endif
-//#endif
-     */
-
+    
     public int getVWidth(){
         String str=(!midlet.BombusQD.cf.rosterStatus)?getFirstString():(getFirstLength()>getSecondLength())?getFirstString():getSecondString();
         int wft=getFont().stringWidth(str);

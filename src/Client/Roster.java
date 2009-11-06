@@ -126,9 +126,6 @@ import ui.controls.form.CheckBox;
 //#ifdef SERVICE_DISCOVERY
 //# import ServiceDiscovery.ServiceDiscovery;
 //#endif
-//#ifdef HISTORY
-//# import History.HistoryConfig;
-//#endif
 //# import Colors.ColorConfigForm;
 //# import VCard.VCard;
 //# import AutoTasks.AutoTaskForm;
@@ -309,26 +306,6 @@ public class Roster
 //#     private Command cmdDifficulty=new Command("Difficulty Level", Command.SCREEN, 45);//2
 //#     //private Command cmdTools=new Command(SR.MS_TOOLS, Command.SCREEN, 1);//2
 //#       private Command cmdOptions=new Command(SR.MS_OPTIONS, Command.SCREEN, 16);
-//#      /*
-//#ifdef HISTORY      
-//#       private Command cmdHistory=new Command(SR.MS_HISTORY_OPTIONS, Command.SCREEN, 17);
-//#endif      
-//#       private Command cmdFonts=new Command(SR.MS_FONTS_OPTIONS, Command.SCREEN, 18);   
-//#ifdef USER_KEYS      
-//#       private Command cmdHotkeys=new Command(SR.MS_CUSTOM_KEYS, Command.SCREEN, 18);
-//#endif      
-//#       private Command cmdColors=new Command(SR.MS_COLOR_TUNE, Command.SCREEN, 19);
-//#ifdef IMPORT_EXPORT      
-//#       private Command cmdBackup=new Command(SR.MS_IMPORT_EXPORT, Command.SCREEN, 20);
-//#endif                                    
-//#       private Command cmdNotices=new Command(SR.MS_NOTICES_OPTIONS, Command.SCREEN, 21);
-//#ifdef AUTOTASK      
-//#       private Command cmdAtasks=new Command(SR.MS_AUTOTASKS, Command.SCREEN, 21);
-//#endif          
-//#ifdef HISTORY       
-//#       private Command cmdAvatars=new Command(SR.MS_AVATARS, Command.SCREEN, 43);
-//#endif
-//#       */
 //#       
 //#     private Command cmdMyJabber=new Command(SR.MS_MY_JABBER, Command.SCREEN, 22); //1
 //#       private Command cmdVcard=new Command(SR.MS_VCARD, Command.SCREEN, 23);
@@ -426,28 +403,7 @@ public class Roster
 //#              }
 //#endif    
 //#         }
-//#         //addCommand(cmdTools);  cmdTools.setImg(0x03);
-//#               /*addInCommand(2,cmdOptions);   cmdOptions.setImg(MenuIcons.ICON_SETTINGS);
-//#               
-//#ifdef HISTORY                 
-//#               if (midlet.BombusQD.cf.saveHistory){ addInCommand(2,cmdHistory);   cmdHistory.setImg(MenuIcons.ICON_HISTORY); }
-//#endif               
-//#               addInCommand(2,cmdFonts);     cmdFonts.setImg(MenuIcons.ICON_FONTS);
-//#ifdef USER_KEYS           
-//#                if (midlet.BombusQD.cf.userKeys){ addInCommand(2,cmdHotkeys); cmdHotkeys.setImg(MenuIcons.ICON_KEYS); }
-//#endif              
-//#               addInCommand(2,cmdColors); cmdColors.setImg(MenuIcons.ICON_COLOR_TUNE);
-//#ifdef IMPORT_EXPORT              
-//#               addInCommand(2,cmdBackup); cmdBackup.setImg(0x23);
-//#endif              
-//#               addInCommand(2,cmdNotices); cmdNotices.setImg(MenuIcons.ICON_NOTIFY);
-//#ifdef AUTOTASK               
-//#               addInCommand(2,cmdAtasks); cmdAtasks.setImg(MenuIcons.ICON_TASKS);
-//#endif                           
-//#ifdef HISTORY               
-//#               addInCommand(2,cmdAvatars); cmdAvatars.setImg(0x14);
-//#endif      
-//#               */
+//# 
 //#         addCommand(cmdMyService); cmdMyService.setImg(MenuIcons.ICON_ITEM_ACTIONS); 
 //#               addInCommand(3,cmdAlert); cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
 //#               addInCommand(3,cmdArchive); cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
@@ -575,23 +531,7 @@ public class Roster
 //#            else if(c==cmdMood){ new MoodList(display);  }
 //#            else if(c==cmdActivity){ new ActivityMenu(display, this); }
 //#endif           
-//#         /*
-//#ifdef HISTORY          
-//#            else if(c==cmdHistory){ new HistoryConfig(display, this);  }
-//#endif         
-//#            else if(c==cmdFonts){  new ConfigFonts(display, this); }
-//#ifdef USER_KEYS           
-//#            else if(c==cmdHotkeys){ new userKeysList(display);  }
-//#endif          
-//#            else if(c==cmdColors){ new ColorConfigForm(display, this); }
-//#ifdef IMPORT_EXPORT         
-//#            else if(c==cmdBackup){ new IE.IEMenu(display, midlet.BombusQD.sd.roster);  }
-//#endif         
-//#            else if(c==cmdNotices){ new AlertCustomizeForm(display, this);  } 
-//#ifdef AUTOTASK         
-//#            else if(c==cmdAtasks){ new AutoTaskForm(display, this);  }
-//#endif  
-//#          */ 
+//# 
 //#ifdef STATS        
 //#            else if(c==cmdStats){  new StatsWindow(display);  }
 //#endif                        
@@ -599,13 +539,7 @@ public class Roster
 //#                  midlet.BombusQD.sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
 //#                  midlet.BombusQD.sd.roster.doReconnect();     
 //#            }
-//#         /*
-//#ifdef HISTORY         
-//#            else if(c==cmdAvatars){
-//#              new ConfigAvatar(display,this);
-//#            }
-//#endif    
-//#          */     
+//#  
 //#if SASL_XGOOGLETOKEN        
 //#            else if(c==cmdGmail){ 
 //#              midlet.BombusQD.sd.roster.theStream.send(IqGmail.query());
@@ -1911,10 +1845,10 @@ public class Roster
 //#                         
 //#endif
                         if(c==null) c=getContact(jid, false); // drop unwanted vcards
-//#if FILE_IO && HISTORY
-//#                                 if(midlet.BombusQD.cf.autoSaveVcard) {//check img in fs?
-//#                                     cashePhoto(vc,c);
-//#                                 }
+//#if FILE_IO
+                                if(midlet.BombusQD.cf.autoSaveVcard) {//check img in fs?
+                                    cashePhoto(vc,c);
+                                }
 //#endif                              
                         if (c!=null) {
                             c.vcard=vc;
@@ -1965,27 +1899,6 @@ public class Roster
                     
                 
                 if ( type.equals( "result" ) ) {
-                  /*
-                  if(id.equals("checkers")) {
-                   JabberDataBlock query=data.getChildBlock("query");
-                    if (query!=null){
-//#ifdef CHECKERS
-//#                        //lets play?
-//#                         if (query.isJabberNameSpace("checkers")) {
-//#                             if(query.getAttribute("state").equals("start")){
-//#                               Contact c=getContact(from, true);
-//#                               c.setCheckers(0);
-//#                               c.addMessage(new Msg(Msg.MESSAGE_TYPE_IN, from, null, SR.GAME_CHECKERS_MSG));
-//#                               repaint();
-//#                              return JabberBlockListener.BLOCK_PROCESSED;
-//#                             }
-//#                         }
-//# 
-//#endif
-                    }
-                   }
-                  */
-                    
                     //fix
                     if(id.equals("delacc")) { 
                         JabberDataBlock reg=data.findNamespace("query","jabber:iq:register");
@@ -2547,7 +2460,7 @@ public class Roster
                         if(statusCode==201) {
                          new QueryConfigForm(display,from.substring(0,index));                          
                         }
-                       } else { status = null; }
+                       }
                      
                     MucContact c = null;
                     Contact room = null;
@@ -2577,12 +2490,11 @@ public class Roster
 //#ifdef PLUGINS
 //#                     if (midlet.BombusQD.sd.ClientsIcons)
 //#endif
-                        if (midlet.BombusQD.cf.showClientIcon) {//check for error
-                            if (pr.hasEntityCaps()) {
-                                if (pr.getEntityNode()!=null)
-                                    getClientIcon(c, pr.getEntityNode());
-                                if (pr.getEntityVer()!=null)
-                                    c.version=pr.getEntityVer();
+                        
+                        if (pr.hasEntityCaps()) {
+                            if (pr.getTypeIndex() != Presence.PRESENCE_ERROR) {
+                                if (pr.getEntityNode()!=null) getClientIcon(c, pr.getEntityNode());
+                                if (pr.getEntityVer()!=null) c.version=pr.getEntityVer();
                             }
                         }
 //#endif
@@ -2693,12 +2605,9 @@ public class Roster
                                 if (pr.hasEntityCaps()) {
                                     if (pr.getEntityNode()!=null) {
                                         ClientsIconsData.getInstance().processData(c, pr.getEntityNode());
-                                        if (pr.getEntityVer()!=null)
-                                            c.version=pr.getEntityVer();
+                                        if (pr.getEntityVer()!=null) c.version=pr.getEntityVer();
                                     }
-                                } else if (c.jid.hasResource()) {
-                                    ClientsIconsData.getInstance().processData(c, c.getResource().substring(1));
-                                }
+                                } else if (c.jid.hasResource()) ClientsIconsData.getInstance().processData(c, c.getResource().substring(1));
 //#endif
                             JabberDataBlock j2j=pr.findNamespace("x", "j2j:history");
                             if (j2j!=null) {

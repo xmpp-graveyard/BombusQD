@@ -27,10 +27,6 @@
 
 package Client.contact;
 
-//#if HISTORY
-//# import Client.*;
-//# import History.HistoryAppend;
-//#endif
 import Client.Msg;
 import javax.microedition.lcdui.Graphics;
 import java.util.Enumeration;

@@ -223,7 +223,7 @@ public class MessageItem
 //#ifdef SMILES
     public void toggleSmiles() {
         smiles=!smiles;
-        parse(view);
+        if(!msg.itemCollapsed) parse(view);
         view.redraw();
     }
     

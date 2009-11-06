@@ -123,7 +123,6 @@ public class SR {
     public   static String MS_HEAP_MONITOR = loadString( "heap monitor" );
     public   static String MS_MESSAGE = loadString( "Message" );
     public   static String MS_OTHER = loadString( "<Other>" );
-    public   static String MS_HISTORY = loadString( "history -" );
     public   static String MS_APPEND = loadString( "Append" );
     public   static String MS_ACTIVE_CONTACTS = loadString( "Active Contacts" );
     public   static String MS_SELECT_NICKNAME = loadString( "Select nickname" );

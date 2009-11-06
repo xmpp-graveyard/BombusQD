@@ -22,9 +22,6 @@
 //# import ui.MainBar;
 //#endif
 //# 
-//#ifdef HISTORY
-//# import History.HistoryAppend;
-//#endif
 //# /**
 //#  *
 //#  * @author ad,aqent

@@ -221,7 +221,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
         avatars = new PluginBox(SR.MS_avatarStr, cf.module_avatars, true){ public void doAction(boolean st){ cf.module_avatars=st; } };
         itemsList.addElement(avatars);           
         history = new PluginBox(SR.MS_historyStr, cf.module_history, true){ public void doAction(boolean st){ cf.module_history=st; } };
-        itemsList.addElement(history); 
+        //itemsList.addElement(history); 
         
         //cashe = new PluginBox(SR.MS_casheStr, cf.module_cashe){ public void doAction(boolean st){ cf.module_cashe=st; } };
         //itemsList.addElement(cashe); 
@@ -292,7 +292,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
            display.setCurrent(new Colors.ColorConfigForm(display, this));
           }         
           else if(type==SR.MS_historyStr){
-           display.setCurrent(new History.HistoryConfig(display, this));
+           //display.setCurrent(new History.HistoryConfig(display, this));
           }
           else if(type==SR.MS_fontsStr){
            display.setCurrent(new Fonts.ConfigFonts(display, this));
