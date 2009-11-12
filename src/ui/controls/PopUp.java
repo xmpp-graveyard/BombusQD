@@ -275,6 +275,8 @@ public class PopUp {
              pixelArray[i] = alpha_;
           }
            graph.drawRGB(pixelArray, 0, width, widthBorder,heightBorder, popUpWidth, popUpHeight, true);
+           pixelArray = null;
+           pixelArray = new int[0];
            graph.drawRect(widthBorder,heightBorder,popUpWidth,popUpHeight);
          }else{
           graph.setColor(getColorBgnd());

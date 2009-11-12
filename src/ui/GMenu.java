@@ -272,11 +272,25 @@ public class GMenu extends Canvas {
           }
           g.drawRGB(pixelArray, 0, width, 0 , 0 , width, height, true);
           g.drawRect(-1,-1,width+1,height+1);
+          pixelArray = null;
+          pixelArray = new int[0];
         }
         
-       
-       gm.xcoodr=7;//(g.getClipWidth() - w)/2;
-       gm.ycoodr= g.getClipHeight() - hitem - 10;
+       switch(midlet.BombusQD.cf.graphicsMenuPosition){
+           case 0:
+               gm.xcoodr = (g.getClipWidth() - w)/2;
+               gm.ycoodr = (g.getClipHeight()- mHfh)/2;
+               break;
+           case 1:
+               gm.xcoodr=7;
+               gm.ycoodr= g.getClipHeight() - hitem - 10;
+               break;
+           case 2:
+               gm.xcoodr= g.getClipWidth() - w - 7;
+               gm.ycoodr= g.getClipHeight() - hitem - 10;
+               break;
+       }
+
        //(g.getClipHeight()- mHfh)/2;
      /*   
        if(eventMenu){
@@ -304,6 +318,8 @@ public class GMenu extends Canvas {
           }
           g.drawRGB(pixelArray, 0, w, 0 , 0 , w, mHfh, true);
           g.drawRoundRect(0,0,w,mHfh,10,10);
+          pixelArray = null;
+          pixelArray = new int[0];
         }else{
           g.setColor(ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_BGNG_ARGB));     
           g.fillRoundRect(1 , 1 , w - 1, mHfh - 1,10,10);

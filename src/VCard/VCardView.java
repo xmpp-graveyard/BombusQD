@@ -91,6 +91,7 @@ public class VCardView
     private SimpleString noPhoto=new SimpleString(SR.MS_NO_PHOTO, false);
     private SimpleString badFormat=new SimpleString(SR.MS_UNSUPPORTED_FORMAT, false);
     private SimpleString photoTooLarge=new SimpleString(SR.MS_PHOTO_TOO_LARGE, false);
+    
 
     private LinkString refresh;
     
@@ -106,6 +107,7 @@ public class VCardView
     Command cmdSavePhoto = new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
 //#endif
     Command cmdDelPhoto  = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
+    Command cmdDelVcard  = new Command(SR.MS_DELETE_VCARD, Command.SCREEN,6);
 
     /** Creates a new instance of VCardView */
     private Contact c;
@@ -196,6 +198,9 @@ public class VCardView
      
      
     public void commandAction(Command c, Displayable d) {
+        if (c==cmdDelVcard){
+            this.c.clearVCard();
+        }
         if (c==cmdDelPhoto) {
             vcard.dropPhoto(); 
             this.c.img_vcard=null;
@@ -285,6 +290,7 @@ public class VCardView
 //#endif
                 addCommand(cmdDelPhoto); cmdDelPhoto.setImg(0x41);
             }
+            addCommand(cmdDelVcard);
 //#ifdef CLIPBOARD
 //#             if (Config.getInstance().useClipBoard) {
 //#                 addCommand(cmdCopy); cmdCopy.setImg(0x13);

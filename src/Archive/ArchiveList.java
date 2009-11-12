@@ -45,6 +45,7 @@ import locale.SR;
 import Client.Contact;
 import Client.MessageEdit;
 import ui.controls.AlertBox;
+import Messages.MessageItem;
 
 /**
  *
@@ -74,6 +75,12 @@ public class ArchiveList
     private TextBox tb;
     
     Contact cc;
+    
+    public void eventOk(){
+       MessageItem mi = (MessageItem)messages.elementAt(cursor);
+       mi.onSelect();
+    }
+    
     /** Creates a new instance of ArchiveList */
     public ArchiveList(Display display, int caretPos, int where, TextField tf, TextBox tb, Contact cc) {
  	super();

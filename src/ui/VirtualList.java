@@ -556,7 +556,15 @@ public abstract class VirtualList
                 g.setColor(el.getColorBGnd());
 
                 if (sel) {
-                    drawCursor(g, itemMaxWidth , lh);
+                    int elS = -1;
+                    int elE = itemMaxWidth;
+                    if(el instanceof Contact) {
+                       elS = 10;
+                       Contact c = (Contact)el;
+                       if(!c.hasPhoto) elE = el.getVWidth() + 15;
+                       c = null;
+                    }
+                    drawCursor(g, itemMaxWidth , lh , elS , elE);
                 /*    
                     if(midlet.BombusQD.cf.animateMenuAndRoster){
                       if(itemIndex==0) { 
@@ -587,6 +595,7 @@ public abstract class VirtualList
                 
                 itemIndex++;
 		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;
+                el = null;
             }
         } catch (Exception e) { }
 /*       
@@ -817,31 +826,43 @@ public abstract class VirtualList
     }    
     
         
-    protected void drawCursor (Graphics g, int width, int height) {
-     if(Config.getInstance().cursor_bgnd!=0){
+    protected void drawCursor (Graphics g, int width, int height, int elS, int elE) {
+     int x = 0;
+     if(Config.getInstance().cursor_bgnd!=0) {
             int alpha_=getARGB();
+            if(elS != -1 && elE != 1){
+                x = elS;
+                width = elE;
+            }
             int[] pixelArray = new int[width * height];
             int lengntp = pixelArray.length;
             for(int i = 0; i < lengntp; i++){
                pixelArray[i] = alpha_;
             }
-            g.drawRGB(pixelArray, 0, width, 0 , 0 , width, height, true);
+            g.drawRGB(pixelArray, 0, width, x , 0 , width, height, true);
+            pixelArray = null;
+            pixelArray = new int[0];
              //g.drawRect(1,1,width-1,height-1);
       }
      else
      {           
         if(midlet.BombusQD.cf.gradient_cursor){
-             fon=new Gradient(0, 0, width, height, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
+             if(elS != -1 && elE != 1){
+                x = elS;
+                width = elE;
+             }
+             fon=new Gradient(x, 0, width, height, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
                   ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);
              fon.paint(g);
         }else
         {
          int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
          int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);  
+           if(elS != -1 && elE != 1) x = elS;
            g.setColor(cursorBGnd);
-           g.fillRoundRect(0, 0, width, height,8,8);
+           g.fillRoundRect(x, 0, x == 0 ? width : elE, height,8,8);
            g.setColor(cursorOutline);
-           g.drawRoundRect(0, 0, width-1, height-1, 8, 8);
+           g.drawRoundRect(x, 0, x == 0 ? width-1 : elE, height-1, 8, 8);
          }  
      }
    }
@@ -1052,18 +1073,44 @@ public abstract class VirtualList
             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
         }
     }
+    
+    private void drawMainPanel (final Graphics g) {    
+        int h=mainbar.getVHeight()+1;
+        g.setClip(0,0, width, h);
+//#ifdef GRADIENT
+//#          if (getMainBarBGnd()!=getMainBarBGndBottom()) {
+//#             int c = midlet.BombusQD.cf.gradientBarLigth?1:-1;
+//#             int[] backPic = getBarBgnd(width, h,
+//#                     transformColorLight(getMainBarBGnd(), c*midlet.BombusQD.cf.gradientBarLight1), 
+//#                     transformColorLight(getMainBarBGndBottom(), c*midlet.BombusQD.cf.gradientBarLight2));
+//#             g.drawRGB(backPic, 0, width, 0, 0 , width, h, false);
+//#             backPic = null;
+//#             backPic = new int[0];
+//#          } else {
+//#              g.setColor(getMainBarBGnd());
+//#              g.fillRect(0, 0, width, h);
+//#          }
+//#else
+            g.setColor(getMainBarBGnd());
+            g.fillRect(0, 0, width, h);
+//#endif
+        g.setColor(getMainBarRGB());
+        mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
+    }
+
 //#ifndef MENU
     private void drawInfoPanel (final Graphics g) {
         int h=infobar.getVHeight()+1;
-
         g.setClip(0,0, width, h);
 //#ifdef GRADIENT
-//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-//#             if (iHeight!=h) {
-//#                 grIB=new Gradient(0, 0, width, h, getMainBarBGnd(), getMainBarBGndBottom(), false);
-//#                 iHeight=h;
-//#             }
-//#             grIB.paint(g);
+//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {//32,102
+//#             int c = midlet.BombusQD.cf.gradientBarLigth?1:-1;
+//#             int[] backPic = getInfoBarBgnd(width, h,
+//#                     transformColorLight(getMainBarBGnd(), c*midlet.BombusQD.cf.gradientBarLight1), 
+//#                     transformColorLight(getMainBarBGndBottom(), c*midlet.BombusQD.cf.gradientBarLight2));
+//#             g.drawRGB(backPic, 0, width, 0, 0 , width, h, false);
+//#             backPic = null;
+//#             backPic = new int[0];
 //#         } else {
 //#             g.setColor(getMainBarBGnd());
 //#             g.fillRect(0, 0, width, h);
@@ -1078,29 +1125,131 @@ public abstract class VirtualList
     }
 //#endif
     
-    private void drawMainPanel (final Graphics g) {    
-        int h=mainbar.getVHeight()+1;
-        g.setClip(0,0, width, h);
-//#ifdef GRADIENT
-//#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {
-//#             if (mHeight!=h) {
-//#                 grMB=new Gradient(0, 0, width, h, getMainBarBGndBottom(), getMainBarBGnd(), false);
-//#                 mHeight=h;
-//#             }
-//#             grMB.paint(g);
-//#         } else {
-//#             g.setColor(getMainBarBGnd());
-//#             g.fillRect(0, 0, width, h);
-//#         }
-//#else
-            g.setColor(getMainBarBGnd());
-            g.fillRect(0, 0, width, h);
-//#endif
+   //Gradients from http://www.jimm.org/nightly/0.6.091008/jimm_src.zip
+    
+   private static int transformColorLight(int color, int light)
+   {
+		int r = (color & 0xFF) + light;
+		int g = ((color & 0xFF00) >> 8) + light;
+		int b = ((color & 0xFF0000) >> 16) + light;
+		if (r < 0) r = 0;
+		if (r > 255) r = 255;
+		if (g < 0) g = 0;
+		if (g > 255) g = 255;
+		if (b < 0) b = 0;
+		if (b > 255) b = 255;
+		return r | (g << 8) | (b << 16);
+   }
+    
         
-        g.setColor(getMainBarRGB());
-        mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
+    private static int[] infoBarBackground;
+    private static int lastInfoHeightChange = -1;
+    private static int infoBarLatestColor1 = -1;
+    private static int infoBarLatestColor2 = -1;
+    private static int[] getInfoBarBgnd(int width, int height, int color1, int color2)
+    {
+		if (lastInfoHeightChange==height &&
+                        color1 == infoBarLatestColor1 && color2 == infoBarLatestColor1 && infoBarBackground != null) return infoBarBackground; 
+                
+		int width2 = width/2;
+		int width3 = width/3;
+		int idx = 0;
+                int r,g,b,dist,diff,new_r,new_g,new_b,color = 0;
+
+                lastInfoHeightChange=height;
+                infoBarBackground = new int[height*width];
+		int r1 = ((color1 & 0xFF0000) >> 16);
+		int g1 = ((color1 & 0x00FF00) >> 8);
+		int b1 = (color1 & 0x0000FF);
+		int r2 = ((color2 & 0xFF0000) >> 16);
+		int g2 = ((color2 & 0x00FF00) >> 8);
+		int b2 = (color2 & 0x0000FF);
+
+		for (int y = height; y > 0; y--)
+		  {
+			r = y * (r2 - r1) / (height-1) + r1;
+			g = y * (g2 - g1) / (height-1) + g1;
+			b = y * (b2 - b1) / (height-1) + b1;
+			for (int x = width; x > 0; x--)
+			{
+				dist = x-width2;
+				if (dist < 0) dist = -dist;
+				dist = width3-dist;
+				if (dist < 0) dist = 0;
+				diff = 96*dist/width3;
+                                
+				new_r = r+diff;
+				new_g = g+diff;
+				new_b = b+diff;
+				if (new_r < 0) new_r = 0;
+				if (new_r > 255) new_r = 255;
+				if (new_g < 0) new_g = 0;
+				if (new_g > 255) new_g = 255;
+				if (new_b < 0) new_b = 0;
+				if (new_b > 255) new_b = 255;
+				color = (new_r << 16) | (new_g << 8) | (new_b);
+				infoBarBackground[idx++] = color;
+			  }
+		    }
+	   infoBarLatestColor1 = color1;
+           infoBarLatestColor2 = color2;
+       return infoBarBackground;
+    }
+        
+  
+    private static int[] menuBarBackground;
+    private static int lastHeightChange = -1;
+    private static int barLatestColor1 = -1;
+    private static int barLatestColor2 = -1;   
+    private static int[] getBarBgnd(int width, int height, int color1, int color2)
+    {
+		if (lastHeightChange == height &&
+                        color1 == barLatestColor1 && color2 == barLatestColor2 && menuBarBackground != null) return menuBarBackground;      
+
+                lastHeightChange=height;
+		menuBarBackground = new int[height*width];
+		int r1 = ((color1 & 0xFF0000) >> 16);
+		int g1 = ((color1 & 0x00FF00) >> 8);
+		int b1 = (color1 & 0x0000FF);
+		int r2 = ((color2 & 0xFF0000) >> 16);
+		int g2 = ((color2 & 0x00FF00) >> 8);
+		int b2 = (color2 & 0x0000FF);
+		int width2 = width/2;
+		int width3 = width/3;
+		int idx = 0;
+                int r,g,b,dist,diff,new_r,new_g,new_b,color = 0;
+		  for (int y = 0; y < height; y++)
+		  {
+			r = y * (r2 - r1) / (height-1) + r1;
+			g = y * (g2 - g1) / (height-1) + g1;
+			b = y * (b2 - b1) / (height-1) + b1;
+			for (int x = 0; x < width; x++)
+			{
+				dist = x-width2;
+				if (dist < 0) dist = -dist;
+				dist = width3-dist;
+				if (dist < 0) dist = 0;
+				diff = 96*dist/width3;
+                                
+				new_r = r+diff;
+				new_g = g+diff;
+				new_b = b+diff;
+				if (new_r < 0) new_r = 0;
+				if (new_r > 255) new_r = 255;
+				if (new_g < 0) new_g = 0;
+				if (new_g > 255) new_g = 255;
+				if (new_b < 0) new_b = 0;
+				if (new_b > 255) new_b = 255;
+				color = (new_r << 16) | (new_g << 8) | (new_b);
+				menuBarBackground[idx++] = color;
+			  }
+		    }
+	   barLatestColor1 = color1;
+           barLatestColor2 = color2;
+       return menuBarBackground;
     }
 
+    
     public void moveCursorHome(){
         stickyWindow=true;
         if (cursor>0) cursor=getNextSelectableRef(-1);

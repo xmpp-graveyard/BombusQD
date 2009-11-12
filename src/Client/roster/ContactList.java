@@ -74,21 +74,23 @@ public final class ContactList {
     public void removeContact(Contact c) {
         c.destroy();
         contacts.removeElement(c);
-        if (null != c.group) {
-            c.group.removeContact(c);
-        }
+        if (null != c.group) c.group.removeContact(c);
+    }
+    
+    public void addContact(Contact c, boolean self) {
+        if(c.group == null) return;
+        if (self) contacts.insertElementAt(c,0);
     }
     
     public void addContact(Contact c) {
-        if (!contacts.contains(c)) {
-            contacts.addElement(c);
-        }
+        if (!contacts.contains(c)) contacts.addElement(c);
     }
 
     private Contact selfContact = null;
     public Contact getSelfContact() {
         return selfContact;
     }
+    
     public Contact getSelfContact(Jid selfJid) {
         Contact selfContact = findContact(contacts, selfJid, false);
         if (null == selfContact) {

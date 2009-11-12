@@ -50,7 +50,7 @@ import java.util.*;
  *
  * @author Eugene Stahov,aqent
  */
-public class MessageEdit 
+public final class MessageEdit 
         implements CommandListener//, Runnable
 {
     private Display display;
@@ -95,24 +95,66 @@ public class MessageEdit
 //#if TEMPLATES
 //#     protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7); 
 //#endif  
-  
+
+    public void replaceText(Contact to, String bodyNew, Displayable pView){
+        this.parentView=pView;
+        this.to = to;
+         switch(midlet.BombusQD.cf.msgEditType){
+            case 0: t.setString(bodyNew); break;
+            case 1: textField.setString(bodyNew); break;
+         }
+         setText(bodyNew,to,pView);
+    }
+    
+    public void setText(String body, Contact to, Displayable pView){
+       this.body = body; 
+       this.parentView=pView;
+       this.to = to;
+       switch(midlet.BombusQD.cf.msgEditType){
+            case 0: 
+                t.setTitle(to.toString());
+                t.setString(body);
+                if (Config.getInstance().capsState) t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
+//#ifdef CLIPBOARD
+//#                 if (midlet.BombusQD.cf.useClipBoard) {
+//#                    if (!midlet.BombusQD.clipboard.isEmpty()) t.addCommand(cmdPasteText);
+//#                 }
+//#endif   
+                  if (to.origin>=4) t.addCommand(cmdInsNick);//Contact.ORIGIN_GROUPCHAT==4
+                  if (to.origin==4) t.addCommand(cmdSubj);
+                  if (to.lastSendedMessage!=null) t.addCommand(cmdLastMessage);
+                display.setCurrent(t);
+                break;
+            case 1:
+                form.setTitle(to.toString());
+                textField.setString(body);
+//#ifdef CLIPBOARD
+//#                 if (midlet.BombusQD.cf.useClipBoard) {
+//#                   if (!midlet.BombusQD.clipboard.isEmpty()) form.addCommand(cmdPasteText);
+//#                 }
+//#endif  
+                  if (to.origin>=4) form.addCommand(cmdInsNick);
+                  if (to.origin==4) form.addCommand(cmdSubj);
+                  if (to.lastSendedMessage!=null) form.addCommand(cmdLastMessage);
+                display.setCurrent(form);
+                break;
+       }
+    }
 
     
  //************OLD MsgEdit************   
     public TextBox t;
-    public MessageEdit(Display display, Displayable pView, Contact to, String body) {
-       this.to=to;
-       this.display=display;
-       this.parentView=pView;
+    public MessageEdit(Display display) {
+       this.display = display;
        if (midlet.BombusQD.cf.runningMessage)
        {
-          t=new TextBox(to.toString(), body, 4096 , TextField.ANY);
+          t=new TextBox("", body, 4096 , TextField.ANY);
           ticker = new Ticker("BombusQD");
           t.setTicker(ticker);
        }
-       else{
+       else {
         int maxSize=4096;
-        t=new TextBox(to.toString(), null, maxSize, TextField.ANY);
+        t=new TextBox("", null, maxSize, TextField.ANY);
         try {
             maxSize=t.setMaxSize(4096);
             if (body!=null) {
@@ -122,6 +164,7 @@ public class MessageEdit
             }
         } catch (Exception e) {}
        }
+
 //#ifdef DETRANSLIT
 //#         dt=DeTranslit.getInstance();
 //#endif
@@ -135,9 +178,6 @@ public class MessageEdit
 //#endif
         t.addCommand(cmdTranslate);
 
-        if (to.origin>=Contact.ORIGIN_GROUPCHAT){
-            t.addCommand(cmdInsNick);
-        }
 //#ifdef DETRANSLIT
 //#         t.addCommand(cmdSendInTranslit);
 //#         t.addCommand(cmdSendInDeTranslit);
@@ -150,24 +190,8 @@ public class MessageEdit
 //#endif
         t.addCommand(cmdPaste);
 //#endif
-//#ifdef CLIPBOARD
-//#         if (midlet.BombusQD.cf.useClipBoard) {
-//#             if (!midlet.BombusQD.clipboard.isEmpty())
-//#                 t.addCommand(cmdPasteText);
-//#         }
-//#endif        
-       
-        if (to.origin==Contact.ORIGIN_GROUPCHAT){
-                t.addCommand(cmdSubj);
-        }
-        
-        if (to.lastSendedMessage!=null){
-                t.addCommand(cmdLastMessage);
-        }
-                
+
         t.setCommandListener(this);
-        if (Config.getInstance().capsState)
-            t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
 //#ifdef RUNNING_MESSAGE
 //#         /*
 //#        if(midlet.BombusQD.cf.useLowMemory_msgedit==false){ 
@@ -178,8 +202,6 @@ public class MessageEdit
 //#else
     new Thread(this).start() ;
 //#endif
-        display.setCurrent(t);
-        this.parentView=pView;
     }    
 //************OLD MsgEdit************   
     
@@ -189,16 +211,10 @@ public class MessageEdit
     public Form form;
     public Ticker ticker = null; 
     public TextField textField = null;//default msgEdit
-    public StringItem messageItem = null; //show latest message for default msgEdit
-
     
-    public MessageEdit(Display display, Displayable pView, Contact to, String body, boolean altMsgEdit) {
-       this.to=to;
-       this.display=display;
-       this.parentView=pView;
-       
-       form = new Form(to.bareJid);
-       
+    public MessageEdit(Display display,boolean altMsgEdit) {
+       this.display = display;
+       form = new Form("");
 //#ifdef DETRANSLIT
 //#         dt=DeTranslit.getInstance();
 //#endif
@@ -238,9 +254,6 @@ public class MessageEdit
 //#endif 
        form.addCommand(cmdTranslate);
 
-       if (to.origin>=Contact.ORIGIN_GROUPCHAT){
-            form.addCommand(cmdInsNick);
-       }
 //#ifdef DETRANSLIT
 //#        form.addCommand(cmdSendInTranslit);
 //#        form.addCommand(cmdSendInDeTranslit);
@@ -253,26 +266,11 @@ public class MessageEdit
 //#endif
        form.addCommand(cmdPaste);
 //#endif
-//#ifdef CLIPBOARD
-//#        if (midlet.BombusQD.cf.useClipBoard) {
-//#             if (!midlet.BombusQD.clipboard.isEmpty())
-//#                 form.addCommand(cmdPasteText);
-//#        }
-//#endif        
-       if (to.origin==Contact.ORIGIN_GROUPCHAT){
-              form.addCommand(cmdSubj);
-       }
-       if (to.lastSendedMessage!=null){
-              form.addCommand(cmdLastMessage);
-       }
        form.setCommandListener(this);
-      
-      display.setCurrent(form);
-      this.parentView=pView;
     }
     
     public void commandAction(Command c, Displayable d){
-        
+        if(to == null) return;
         if(midlet.BombusQD.cf.msgEditType>0){
           body=textField.getString();
         }else{
@@ -454,11 +452,6 @@ public class MessageEdit
                   midlet.BombusQD.sd.roster.sendMessage(to, id, body, subj, comp,false);
                   to.msgSuspended=null;                  
                  }
-                if(textField!=null) textField=null;
-                if(ticker!=null) ticker=null;
-                if(messageItem!=null) messageItem=null;
-                if(t!=null) t=null;
-                if(form!=null) form=null;
             }
         } catch (Exception e) { }
     }    

@@ -183,8 +183,6 @@ public class Config {
     public boolean notifyPicture=false;
     public boolean useBoldFont=false;
 
-    public boolean notifyWhenMessageType = false;
-
 //#ifdef CLIPBOARD
 //#     public boolean useClipBoard = true;
 //#endif
@@ -299,6 +297,12 @@ public class Config {
     public boolean networkAnnotation=true;
     public boolean metaContacts=true;
     public boolean graphicsMenu=true;
+    public int graphicsMenuPosition=1;
+    
+    public boolean createMessageByFive = false;
+    public boolean gradientBarLigth = true;
+    public int gradientBarLight1=20;
+    public int gradientBarLight2=50;
 
     public static Config getInstance(){
 	if (instance==null) {
@@ -493,7 +497,6 @@ public class Config {
             useTabs=inputStream.readBoolean();
             useBoldFont=inputStream.readBoolean();
             
-            notifyWhenMessageType=inputStream.readBoolean();
             IQNotify=inputStream.readBoolean(); //IRC_LIKE
             sndrcvmood=inputStream.readBoolean(); 
             useClipBoard=inputStream.readBoolean();
@@ -503,6 +506,8 @@ public class Config {
             executeByNum=inputStream.readBoolean();
             showNickNames=inputStream.readBoolean();
             adhoc=inputStream.readBoolean();
+            createMessageByFive=inputStream.readBoolean();
+            gradientBarLigth=inputStream.readBoolean();
             
 	    inputStream.close();
             inputStream=null;
@@ -624,7 +629,10 @@ public class Config {
             avatar_cashe_size=inputStream.readInt();
             //difficulty_level=inputStream.readInt();
             maxAvatarWidth=inputStream.readInt();
-            msgEditType=inputStream.readInt();             
+            msgEditType=inputStream.readInt();    
+            graphicsMenuPosition=inputStream.readInt();
+            gradientBarLight1=inputStream.readInt();
+            gradientBarLight2=inputStream.readInt();
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -729,7 +737,6 @@ public class Config {
             outputStream.writeBoolean(useTabs);
             outputStream.writeBoolean(useBoldFont);//40
             
-            outputStream.writeBoolean(notifyWhenMessageType);
             outputStream.writeBoolean(IQNotify); //IRC_LIKE
             outputStream.writeBoolean(sndrcvmood); 
             outputStream.writeBoolean(useClipBoard);
@@ -739,6 +746,8 @@ public class Config {
             outputStream.writeBoolean(executeByNum);
             outputStream.writeBoolean(showNickNames);
             outputStream.writeBoolean(adhoc);
+            outputStream.writeBoolean(createMessageByFive);
+            outputStream.writeBoolean(gradientBarLigth);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean", 0, true);      
@@ -847,6 +856,9 @@ public class Config {
             //outputStream.writeInt(difficulty_level);
             outputStream.writeInt(maxAvatarWidth);//32     
             outputStream.writeInt(msgEditType);
+            outputStream.writeInt(graphicsMenuPosition);
+            outputStream.writeInt(gradientBarLight1);
+            outputStream.writeInt(gradientBarLight2);
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confInt", 0, true);        
     }

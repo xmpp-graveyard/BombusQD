@@ -110,9 +110,7 @@ public abstract class XmppParser implements XMLEventListener {
      */
     
     public void plainTextEncountered(String text) {
-        if( currentBlock != null ) {
-            currentBlock.setText( text );
-        }
+        if( currentBlock != null ) currentBlock.setText( text );
     }
 
     

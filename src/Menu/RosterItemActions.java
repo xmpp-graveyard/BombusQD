@@ -136,6 +136,15 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
 
 
 	    addItem(SR.MS_VCARD,1, menuIcons.ICON_VCARD);
+            if(contact.vcard!=null){
+             addItem(SR.MS_DELETE_VCARD,88, menuIcons.ICON_VCARD, true);
+             addItem(SR.MS_DELETE_ALL_VCARD,89, menuIcons.ICON_VCARD, true);
+            }
+              if(contact.img_vcard!=null){
+                addItem(SR.MS_DELETE_AVATAR_VCARD,90, menuIcons.ICON_VCARD, true);
+                addItem(SR.MS_DELETE_ALL_AVATAR_VCARD,91, menuIcons.ICON_VCARD, true);
+              }
+            
             addItem(SR.MS_FEATURES,250,menuIcons.ICON_INFO);
 
 //#ifdef POPUPS
@@ -450,6 +459,28 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
                     }
                     VCard.request(c.bareJid, c.getJid());
                     break;
+                case 88:
+                    c.clearVCard();
+                    break;
+                case 89:
+                    int size = midlet.BombusQD.sd.roster.contactList.contacts.size();
+                    for (int i = 0; i < size; ++i) {
+                      Contact cntc = (Contact) midlet.BombusQD.sd.roster.contactList.contacts.elementAt(i);
+                      if (cntc.vcard==null) continue;
+                      cntc.clearVCard();
+                    }
+                    break;      
+                case 90:
+                    c.img_vcard = null;
+                    break;
+                case 91:
+                    size = midlet.BombusQD.sd.roster.contactList.contacts.size();
+                    for (int i = 0; i < size; ++i) {
+                      Contact cntc = (Contact) midlet.BombusQD.sd.roster.contactList.contacts.elementAt(i);
+                      if (cntc.img_vcard==null) continue;
+                      cntc.img_vcard = null;
+                    }
+                    break;                
                 case 2:
                     new ContactEdit(display, midlet.BombusQD.sd.roster, c );
                     return; //break;

@@ -360,7 +360,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
         if (c==midlet.BombusQD.commands.cmdQuote) Quote();
         if (c==midlet.BombusQD.commands.cmdReply) {
             if(contact.getJid().indexOf("juick@juick.com")>-1){
-                Reply(); return;                  
+                Reply(false); return;                  
             } else checkOffline();
         }
         if(c==midlet.BombusQD.commands.cmdAddSearchQuery) {
@@ -444,18 +444,6 @@ public final class ContactMessageList extends MessageList implements MenuListene
         keyGreen();
     }
     
-    public void keyGreen(){
-        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
-//#ifdef RUNNING_MESSAGE
-//#         switch(midlet.BombusQD.cf.msgEditType){
-//#          case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(midlet.BombusQD.getInstance().display, this, contact, contact.msgSuspended); break;
-//#          case 1: midlet.BombusQD.sd.roster.me=new MessageEdit(midlet.BombusQD.getInstance().display, this, contact, contact.msgSuspended, true); break;
-//#         }        
-//#else
-    new MessageEdit(display, this, contact, contact.msgSuspended);
-//#endif
-    }
-    
     protected void keyClear(){
         if (!messages.isEmpty()) clearReadedMessageList();
     }
@@ -532,13 +520,69 @@ public final class ContactMessageList extends MessageList implements MenuListene
            }
        } catch (Exception e) { msg = null; }
        
-       if(!found&&msg!=null) new ui.controls.AlertBox(msg.from,
+       if(!found&&msg!=null) { new ui.controls.AlertBox(msg.from,
            SR.MS_ALERT_CONTACT_OFFLINE, midlet.BombusQD.getInstance().display, this) {
-           public void yes() { Reply(); }
+           public void yes() { Reply(true); }
            public void no() { }
-       }; else Reply();
+         };
+       } else Reply(true);
        msg=null;
     }
+    
+    
+    public void keyGreen(){
+        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
+//#ifdef RUNNING_MESSAGE
+//#         showMsgEdit(contact.msgSuspended);
+//#else
+    new MessageEdit(display, this, contact, contact.msgSuspended);
+//#endif
+    }
+
+    private void showMsgEdit(String msgText){
+      midlet.BombusQD.sd.roster.createMessageEdit(contact, msgText , this);  
+    }
+    
+    private void Reply(boolean check) {
+        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
+        
+        try {
+            Msg msg = getMessage(cursor);
+            if(msg != null) msg=replaceNickTags(msg);
+            if (msg==null ||
+                msg.messageType == Msg.MESSAGE_TYPE_OUT ||
+                msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
+                keyGreen();
+            else{
+//#ifdef RUNNING_MESSAGE
+//#                String messg = msg.from+": "; 
+//#ifdef JUICK.COM                
+//#                if(msg.messageType==Msg.MESSAGE_TYPE_JUICK){
+//#                     messg=util.StringUtils.replaceNickTags(msg.id);
+//#                }
+//#endif          
+//#              if(messg==null) messg = "";
+//#                
+//#              if(contact.msgSuspended != null && check) {
+//#                final String msgText = messg;
+//#                ui.controls.AlertBox obj =  new ui.controls.AlertBox(msg.from, "Message Buffer is not empty.Clear it?",
+//#                        midlet.BombusQD.getInstance().display, this) {
+//#                    public void yes() { showMsgEdit(msgText); }
+//#                    public void no()  { keyGreen(); }
+//#                }; 
+//#                obj = null;
+//#                return;
+//#              }
+//#                
+//#              showMsgEdit(messg);
+//#             }
+//#             
+//#else
+            new MessageEdit(display, this, contact, msg.from+": ");
+//#endif
+        } catch (Exception e) {/*no messages*/}
+    }
+    
     
     
     public void keyPressed(int keyCode) {
@@ -549,13 +593,21 @@ public final class ContactMessageList extends MessageList implements MenuListene
      }
      if(midlet.BombusQD.cf.find_text==false){        
         if (keyCode==KEY_POUND) {
-           if(msgs.size()==0) {
-              switch(midlet.BombusQD.cf.msgEditType){
-                 case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(midlet.BombusQD.getInstance().display, this, contact, ""); break;
-                 case 1: midlet.BombusQD.sd.roster.me=new MessageEdit(midlet.BombusQD.getInstance().display, this, contact, "", true); break;
-              }
-              return;
-           }
+           answer();
+           return;
+        }
+      }
+      super.keyPressed(keyCode);
+   }
+    
+    
+    public void eventOk(){
+          if(midlet.BombusQD.cf.createMessageByFive) answer();
+          else ((MessageItem)getFocusedObject()).onSelect();
+    }
+
+    
+    private void answer() {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
                 checkOffline();
@@ -565,18 +617,17 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#ifdef JUICK.COM
 //#             else{
 //#               if(contact.getJid().indexOf("juick@juick.com")>-1){
-//#                 Reply(); return;                  
+//#                 Reply(false); return;                  
 //#               }
 //#             }
 //#endif             
 //#endif
             keyGreen();
             return;
-        }
-      }
-      super.keyPressed(keyCode);
-   }
+    }
 
+    
+    
     public void userKeyPressed(int keyCode) {
      if(midlet.BombusQD.cf.find_text){//next rev
           String whatPress = "<[4]..[6]>";  
@@ -671,40 +722,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#endif      
 
 //#endif
-    
-    private void Reply() {
-        if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
-        
-        try {
-            Msg msg = getMessage(cursor);
-            if(msg != null) msg=replaceNickTags(msg);
-            if (msg==null ||
-                msg.messageType == Msg.MESSAGE_TYPE_OUT ||
-                msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
-                keyGreen();
-            else{
-//#ifdef RUNNING_MESSAGE
-//#                String messg = msg.from+": "; 
-//#ifdef JUICK.COM                
-//#                if(msg.messageType==Msg.MESSAGE_TYPE_JUICK){
-//#                     messg=util.StringUtils.replaceNickTags(msg.id);
-//#                }
-//#endif          
-//#              if(messg==null) messg = "";
-//#                
-//#              switch(midlet.BombusQD.cf.msgEditType){
-//#                  case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(midlet.BombusQD.getInstance().display, this, contact, messg); break;
-//#                  case 1: midlet.BombusQD.sd.roster.me=new MessageEdit(midlet.BombusQD.getInstance().display, this, contact, messg, true); break;
-//#              }                
-//#              //midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, messg);
-//#             }
-//#             
-//#else
-            new MessageEdit(display, this, contact, msg.from+": ");
-//#endif
-        } catch (Exception e) {/*no messages*/}
-    }
-    
+
     private void Quote() {
         if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
         
@@ -716,11 +734,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
                 .append("\n")
                 .toString();
 //#ifdef RUNNING_MESSAGE
-//#              switch(midlet.BombusQD.cf.msgEditType){
-//#                  case 0: midlet.BombusQD.sd.roster.me=new MessageEdit(midlet.BombusQD.getInstance().display, this, contact, msg); break;
-//#                  case 1: midlet.BombusQD.sd.roster.me=new MessageEdit(midlet.BombusQD.getInstance().display, this, contact, msg, true); break;
-//#              }             
-//#             //midlet.BombusQD.sd.roster.me=new MessageEdit(display, this, contact, msg);
+//#                 showMsgEdit(msg);
 //#else
             new MessageEdit(display, this, contact, msg);
 //#endif

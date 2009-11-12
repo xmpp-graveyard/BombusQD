@@ -66,13 +66,6 @@
 //#     public Command cmdClear = new Command(SR.MS_CLEAR, Command.SCREEN, 2);
 //#     public Command cmdSave = new Command(SR.MS_SAVE, Command.OK, 3);   
 //#     
-//#ifdef CLIPBOARD
-//#ifndef MENU
-//#     public Command cmdCopy = new Command(SR.MS_COPY, Command.OK, 1);
-//#endif
-//#     private ClipBoard clipboard=ClipBoard.getInstance();
-//#endif
-//#     
 //#     MultiLine item=null;
 //#     
 //#     /**
@@ -113,7 +106,7 @@
 //#         for (int i=0;i<itemsList.size();i++) {
 //#             copy.append(((MultiLine)itemsList.elementAt(i)).toString()+"\n");
 //#         }
-//#         clipboard.setClipBoard(copy.toString());
+//#         midlet.BombusQD.clipboard.setClipBoard(copy.toString());
 //#         destroyView();
 //#     }
 //#endif
@@ -121,7 +114,7 @@
 //#  
 //#     public void commandAction(Command command, Displayable displayable) {
 //#ifdef CLIPBOARD
-//# 	if (command==cmdCopy) {
+//# 	if (command==midlet.BombusQD.commands.cmdCopy) {
 //# 	    cmdCopy();
 //# 	} else
 //#endif
@@ -149,7 +142,7 @@
 //#         removeCommand(cmdOk);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
-//#             addCommand(cmdCopy); cmdCopy.setImg(0x13);
+//#             addCommand(midlet.BombusQD.commands.cmdCopy);
 //#         }
 //#endif
 //#         addCommand(cmdClear); cmdClear.setImg(0x13);

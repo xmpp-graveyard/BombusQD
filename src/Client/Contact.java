@@ -349,7 +349,7 @@ public class Contact extends IconTextElement{
                     temp.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
                         temp.append(" (");
                         temp.append(m.getTime());
-                        temp.append(")");
+                        temp.append(')');
                     if (m.subject!=null) temp.append(m.subject);
                     m.subject=temp.toString();
                     temp.setLength(0);
@@ -384,8 +384,10 @@ public class Contact extends IconTextElement{
             }
             return;
         }
-
+        
         chatInfo.addMessage(m);
+        
+        if(chatInfo.opened || m.messageType == Msg.MESSAGE_TYPE_OUT) chatInfo.reEnumCounts();
 
         if (null != messageList) {
             getML().addMessage(m);
@@ -481,25 +483,32 @@ public class Contact extends IconTextElement{
         if (null != messageList) messageList.redraw();
     }
     
-    
+    public int getVWidth(){
+        int wft = getFirstLength();
+        if (midlet.BombusQD.cf.rosterStatus) {
+            int sl = getSecondLength();
+            wft = Math.max(wft, sl);
+        }
+        return wft + il.getWidth() + 4 + (hasClientIcon()?ClientsIcons.getInstance().getWidth():0);
+    }
+    /*
     public int getVWidth(){
         String str=(!midlet.BombusQD.cf.rosterStatus)?getFirstString():(getFirstLength()>getSecondLength())?getFirstString():getSecondString();
         int wft=getFont().stringWidth(str);
         str=null;
         return wft+il.getWidth()+4 +(hasClientIcon()?ClientsIcons.getInstance().getWidth():0);
     }
+     */
     
     public String toString() { return getFirstString(); }
 
     public int getSecondLength() {
-        if (getSecondString()==null) return 0;
-        if (getSecondString().equals("")) return 0;
+        if (getSecondString()==null || getSecondString().equals("")) return 0;
         return getFont().stringWidth(getSecondString());
     }
     
     public int getFirstLength() {
-        if (getFirstString()==null) return 0;
-        if (getFirstString().equals("")) return 0;
+        if (getFirstString()==null || getFirstString().equals("") ) return 0;
         return getFont().stringWidth(getFirstString());
     }
     

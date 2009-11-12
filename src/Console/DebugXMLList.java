@@ -21,6 +21,7 @@
 //#ifdef CONSOLE 
 //# import ui.MainBar;
 //#endif
+//# import Messages.MessageItem;
 //# 
 //# /**
 //#  *
@@ -89,6 +90,11 @@
 //# 
 //#     public int getItemCount() {
 //#         return midlet.BombusQD.debug.stanzas.size();
+//#     }
+//#     
+//#     public void eventOk(){
+//#        MessageItem mi = (MessageItem)messages.elementAt(cursor);
+//#        mi.onSelect();
 //#     }
 //#     
 //#     protected Msg getMessage(int index) {

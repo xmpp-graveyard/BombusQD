@@ -69,7 +69,7 @@ public class Gradient {
 	}
 	
 	private void paintV(Graphics g) {
-		for(int i2 = x1; i2 <= x2 - 1; i2++) {
+		for(int i2 = x1; i2 <= x2 - 1; ++i2) {
                     int gCol[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, x1, x2 - 1);
                     g.setColor(gCol[0], gCol[1], gCol[2]);
                     g.drawLine(i2, y1, i2, y2);
@@ -77,7 +77,7 @@ public class Gradient {
 	}
     
 	private void paintH(Graphics g) {
-		for(int i2 = y1; i2 <= y2 - 1; i2++) {
+		for(int i2 = y1; i2 <= y2 - 1; ++i2) {
                     int ai[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, y1, y2 - 1);
                     g.setColor(ai[0], ai[1], ai[2]);
                     g.drawLine(x1, i2, x2 - 1, i2);
@@ -86,7 +86,7 @@ public class Gradient {
         
             
 	public void paintWidth(Graphics g, int width) {
-		for(int i2 = y1; i2 <= y2 - 1; i2++) {
+		for(int i2 = y1; i2 <= y2 - 1; ++i2) {
                     int ai[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, y1, y2 - 1);
                     g.setColor(ai[0], ai[1], ai[2]);
                     g.drawLine(x1, i2, width-1, i2);

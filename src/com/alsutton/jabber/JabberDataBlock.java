@@ -137,8 +137,7 @@ public class JabberDataBlock
           childBlocks=null;
 	      childBlocks = new Vector(0);
       }
-      if (childBlocks.size()<MAX_CHILDS)
-	  childBlocks.addElement( newData );
+      if (childBlocks.size()<MAX_CHILDS) childBlocks.addElement( newData );
   }
   
   /**

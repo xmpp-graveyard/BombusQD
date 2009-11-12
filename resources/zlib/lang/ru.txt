@@ -692,3 +692,10 @@ Keypress idle timeout	Таймаут после нажатия(сек.)
 Message screen brightness	Яркость при сообщении
 Message idle timeout	Таймаут после сообщения(сек.)
 Metacontacts	Метаконтакты%Позволяют сгруппировать несколько jid'ов одного человека в группу.Для включения/отключения необходимо переподключиться.
+Use 5 key to create Message	Клавиша 5 для создания сообщения
+Use Light to draw panels	Светлый градиент панелей
+MainBar Gradient Light #	Градиент панелей #
+Graphisc Menu Screen Position	Позиция графического меню
+[center]	[По центру]
+[Left:     ]	[Слева:     ]
+[    :Right]	[    :Справа]

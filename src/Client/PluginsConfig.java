@@ -59,182 +59,148 @@ import java.util.*;
 public final class PluginsConfig extends DefForm implements MenuListener
 {
     private Display display;
-    
-    private static CheckBox showOfflineContacts;
-    private static CheckBox selfContact;
-    private static CheckBox showTransports;
-    private static CheckBox ignore;
-    private static CheckBox collapsedGroups;
-    private static CheckBox autoFocus;
-    private static CheckBox showResources;
-    private static CheckBox useBoldFont;
-    private static CheckBox rosterStatus;
-//#ifdef CLIENTS_ICONS
-    private static CheckBox showClientIcon;
-//#endif
-    private static CheckBox dont_loadMC;
-    private static CheckBox gradient_cursor;    
-    private static DropChoiceBox subscr;
-    private static DropChoiceBox nil;
-//#ifdef SMILES
-    private static CheckBox smiles;
-//#endif
-    private static CheckBox eventComposing;
-    private static CheckBox capsState;
-    private static CheckBox storeConfPresence;
-    private static CheckBox showCollapsedPresences;
-    private static CheckBox timePresence;
-    private static CheckBox autoScroll;
-    private static CheckBox useTabs;
-//#ifdef PEP
-//#     private static CheckBox sndrcvmood;
-//#     private static CheckBox rcvtune;
-//#     private static CheckBox rcvactivity;
-//#endif
-//#ifdef RUNNING_MESSAGE
-//#     private static CheckBox notifyWhenMessageType;
-//#     private static CheckBox runningMessage;
-//#endif
-//#ifdef POPUPS
-    private static CheckBox popUps;
-//#endif
-    private static CheckBox graphicsMenu;
-    private static CheckBox showBaloons;
-    private static CheckBox animatedSmiles;
-    private static CheckBox eventDelivery;
-    private static CheckBox networkAnnotation;
-    private static CheckBox metaContacts;
-    private static CheckBox executeByNum;
-    private static CheckBox sendMoodInMsg;
-    private static CheckBox savePos;
-    private static CheckBox boldNicks;    
-    private static CheckBox selectOutMessages;
-    private static DropChoiceBox msgEditType;
-//#ifdef DETRANSLIT
-//#     private static CheckBox autoDetranslit;
-//#endif
-//#ifdef CLIPBOARD
-//#     private static CheckBox useClipBoard;
-//#endif
-//#if LOGROTATE
-//#     private static NumberInput messageCountLimit;
-//#endif
-    private static NumberInput messageLimit;
-    private static CheckBox autoLogin;
-    private static CheckBox useLowMemory_msgedit;
-    private static CheckBox useLowMemory_userotator;  
-  //private static CheckBox animateMenuAndRoster;
-    private static CheckBox useLowMemory_iconmsgcollapsed;
-    private static CheckBox iconsLeft;    
-    private static CheckBox autoJoinConferences;
-    private static NumberInput reconnectCount;
-    private static NumberInput reconnectTime;
-    private static CheckBox nokiaReconnectHack;
-//#ifdef FILE_TRANSFER
-    private static CheckBox fileTransfer;
-//#endif
-//#ifdef ADHOC
-//#     private static CheckBox adhoc;
-//#endif
-    private static CheckBox fullscr;
-    private static CheckBox memMon;
-    private static CheckBox enableVersionOs;
-    private static CheckBox queryExit;
-
-    private static CheckBox popupFromMinimized;
-    private static NumberInput fieldGmt; 
-    private static NumberInput scrollWidth; 
-    private static CheckBox drawScrollBgnd;    
-    private static DropChoiceBox textWrap;
-    private static DropChoiceBox langFiles;
-    private static DropChoiceBox bgnd_image;    
-//#ifdef AUTOSTATUS
-//#     private static DropChoiceBox autoAwayType;
-//#     private static NumberInput fieldAwayDelay; 
-//#     private static CheckBox awayStatus;
-//#endif
-    private static DropChoiceBox panels;
-    private static CheckBox drawMenuCommand;
-    private static CheckBox showNickNames;
-    private static CheckBox oldSE;
-    
-    private static CheckBox useClassicChat; 
-    private static CheckBox use_phone_theme;
-    private static NumberInput classic_chat_height;     
-    private static NumberInput line_count;    
-    
-    private static Vector langs[];
-    
-
-    private static PluginBox contacts;    
-    private static PluginBox messages;    
-    private static PluginBox network;
-    private static PluginBox graphics;    
-    private static PluginBox app;
-    private static PluginBox userKeys;    
-    private static PluginBox autostatus;
-    private static PluginBox classicchat;
-    private static PluginBox debug;     
-    private static PluginBox theme;  
-    private static PluginBox cashe;  
-    
-    private static PluginBox history;
-    private static PluginBox fonts; 
-//#ifdef IMPORT_EXPORT
-//#     private static PluginBox ie;  
-//#endif
-    private static PluginBox notify; 
-    private static PluginBox tasks;
-    private static PluginBox avatars;      
-
-    private final Config cf = midlet.BombusQD.cf;
     private int pos = -1;
+    private static Config cf = midlet.BombusQD.cf;
          
+    private static void initItems(){
+       if(showOfflineContacts == null) {
+         System.out.println("init Items;");
+         showOfflineContacts = new CheckBox(SR.MS_OFFLINE_CONTACTS, cf.showOfflineContacts);
+         selfContact = new CheckBox(SR.MS_SELF_CONTACT, cf.selfContact);
+         showTransports = new CheckBox(SR.MS_TRANSPORTS, cf.showTransports);
+         ignore = new CheckBox(SR.MS_IGNORE_LIST, cf.ignore);
+         collapsedGroups = new CheckBox(SR.MS_COLLAPSED_GROUPS, cf.collapsedGroups);
+         autoFocus = new CheckBox(SR.MS_AUTOFOCUS, cf.autoFocus);
+         showResources = new CheckBox(SR.MS_SHOW_RESOURCES, cf.showResources);
+         useBoldFont = new CheckBox(SR.MS_BOLD_FONT, cf.useBoldFont);
+         rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus);
+//#ifdef CLIENTS_ICONS
+         showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon);
+//#endif
+         //dont_loadMC;
+         gradient_cursor = new CheckBox(SR.MS_GRADIENT_CURSOR,cf.gradient_cursor);    
+         smiles = new CheckBox(SR.MS_SMILES, cf.smiles);
+
+         eventComposing = new CheckBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); 
+         capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); 
+         storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); 
+         createMessageByFive = new CheckBox(SR.MS_USE_FIVE_TO_CREATEMSG, cf.createMessageByFive); 
+         showCollapsedPresences = new CheckBox(SR.MS_COLLAPSE_PRESENCE, cf.showCollapsedPresences); 
+         timePresence = new CheckBox(SR.MS_SHOW_PRS_TIME, cf.timePresence);
+         autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll);
+         useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); 
+         autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); 
+//#ifdef PEP        
+//#           sndrcvmood = new CheckBox(SR.MS_USERMOOD, cf.sndrcvmood);
+//#           rcvtune = new CheckBox(SR.MS_USERTUNE, cf.rcvtune); 
+//#           rcvactivity = new CheckBox(SR.MS_USERACTIVITY, cf.rcvactivity);
+//#endif
+          runningMessage = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.runningMessage);//ticker obj
+          popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); 
+
+          graphicsMenu = new CheckBox(SR.MS_GR_MENU, cf.graphicsMenu);
+          showBaloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); 
+          animatedSmiles = new CheckBox(SR.MS_ANI_SMILES, cf.animatedSmiles); 
+          eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); 
+          networkAnnotation = new CheckBox(SR.MS_CONTACT_ANNOTATIONS, cf.networkAnnotation);
+          metaContacts = new CheckBox(SR.MS_METACONTACTS +"[FROZEN]", cf.metaContacts);
+          executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); 
+          //sendMoodInMsg = new CheckBox(SR.MS_MOOD_IN_MSG, cf.sendMoodInMsg);
+          savePos = new CheckBox(SR.MS_SAVE_CURSOR, cf.savePos);
+          boldNicks = new CheckBox(SR.MS_BOLD_AND_COLORS_NICKS, cf.boldNicks); 
+          selectOutMessages = new CheckBox(SR.MS_SELECT_OUT_MESSAGES, cf.selectOutMessages);
+          useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); 
+
+          autoLogin = new CheckBox(SR.MS_AUTOLOGIN, cf.autoLogin); 
+          useLowMemory_userotator = new CheckBox(SR.MS_ANIMATION, cf.useLowMemory_userotator);
+          useLowMemory_iconmsgcollapsed = new CheckBox(SR.MS_ICON_COLP, cf.useLowMemory_iconmsgcollapsed);
+          iconsLeft = new CheckBox(SR.MS_CLIENT_ICONS_LEFT, cf.iconsLeft);
+          autoJoinConferences = new CheckBox(SR.MS_AUTO_CONFERENCES, cf.autoJoinConferences); 
+          nokiaReconnectHack = new CheckBox(SR.MS_NOKIA_RECONNECT_HACK, cf.nokiaReconnectHack);
+//#ifdef FILE_TRANSFER
+          fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
+//#endif   
+//#ifdef ADHOC
+//#           adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc); 
+//#endif
+          fullscr = new CheckBox(SR.MS_FULLSCREEN, cf.fullscreen); 
+          memMon = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor);
+          enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs);
+          queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); 
+          popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
+          drawScrollBgnd = new CheckBox(SR.MS_BGND_SCROLL,cf.drawScrollBgnd); 
+          gradientBarLigth = new CheckBox(SR.MS_USE_LIGHT_TO_DRWPANELS, cf.gradientBarLigth);
+//#ifdef AUTOSTATUS
+//#           awayStatus=new CheckBox(SR.MS_AUTOSTATUS_MESSAGE, cf.setAutoStatusMessage);
+//#endif
+          drawMenuCommand = new CheckBox(SR.MS_SHOW_TIME_TRAFFIC, cf.showTimeTraffic); 
+          showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); 
+          oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
+          useClassicChat = new CheckBox(SR.MS_CLCHAT_ON, cf.useClassicChat);
+          use_phone_theme = new CheckBox(SR.MS_CLCHAT_BGNG_PHONE, cf.use_phone_theme);
+          
+          
+          gradientBarLight1=new TrackItem(cf.gradientBarLight1/10, 20, null);
+          gradientBarLight2=new TrackItem(cf.gradientBarLight2/10, 20, null);
+          
+          
+          gradient_light1 = new SimpleString(SR.MS_MAINBAR_GRADIENTLIGHT+"1", true);
+          gradient_light2 = new SimpleString(SR.MS_MAINBAR_GRADIENTLIGHT+"2", true);
+
+       }
+    }
+    
+    private static SimpleString gradient_light1;
+    private static SimpleString gradient_light2;
+    
+    
     public PluginsConfig(Display display, Displayable pView) {
         super(display, pView, SR.MS_MODULES_CONFIG);
         this.display=display;
-             
-        contacts = new PluginBox(SR.MS_contactStr, cf.module_contacts, false){ public void doAction(boolean st){ cf.module_contacts=st; } };
+        initItems();
+          contacts = new PluginBox(SR.MS_contactStr, cf.module_contacts, false){ public void doAction(boolean st){ cf.module_contacts=st; } };
+          messages = new PluginBox(SR.MS_msgStr, cf.module_messages, false){ public void doAction(boolean st){ cf.module_messages=st; } };
+          notify = new PluginBox(SR.MS_notifyStr, cf.module_notify, false){ public void doAction(boolean st){ cf.module_notify=st; } };
+          network = new PluginBox(SR.MS_netStr, cf.module_network, false){ public void doAction(boolean st){ cf.module_network=st; } };
+          app = new PluginBox(SR.MS_appStr, cf.module_app, false){ public void doAction(boolean st){ cf.module_app=st; } };
+          graphics = new PluginBox(SR.MS_grStr, cf.module_graphics, false){ public void doAction(boolean st){ cf.module_graphics=st; } };
+          theme = new PluginBox(SR.MS_cthemesStr, cf.module_theme, false){ public void doAction(boolean st){ cf.module_theme=st; } };
+          fonts = new PluginBox(SR.MS_fontsStr, cf.module_fonts, false){ public void doAction(boolean st){ cf.module_fonts=st; } };
+          autostatus = new PluginBox(SR.MS_astatusStr, cf.module_autostatus, true){ public void doAction(boolean st){ cf.module_autostatus=st; } };
+          userKeys = new PluginBox(SR.MS_hotkeysStr, cf.userKeys, true){ public void doAction(boolean st){ cf.userKeys=st; } };
+          avatars = new PluginBox(SR.MS_avatarStr, cf.module_avatars, true){ public void doAction(boolean st){ cf.module_avatars=st; } };
+          history = new PluginBox(SR.MS_historyStr, cf.module_history, true){ public void doAction(boolean st){ cf.module_history=st; } };
+ //#ifdef IMPORT_EXPORT         
+//#           ie = new PluginBox(SR.MS_ieStr, cf.module_ie, true){ public void doAction(boolean st){ cf.module_ie=st; } };         
+//#endif
+          tasks = new PluginBox(SR.MS_taskstr, cf.module_tasks, true){ public void doAction(boolean st){ cf.module_tasks=st; } };
+          classicchat = new PluginBox(SR.MS_clchatStr, cf.module_classicchat, true){ public void doAction(boolean st){ cf.module_classicchat=st; } };
+          debug = new PluginBox(SR.MS_DEBUG_MENU, cf.debug, true){ public void doAction(boolean st){ cf.debug=st; } };
+        
+        
         itemsList.addElement(contacts);
-        messages = new PluginBox(SR.MS_msgStr, cf.module_messages, false){ public void doAction(boolean st){ cf.module_messages=st; } };
         itemsList.addElement(messages);
-        notify = new PluginBox(SR.MS_notifyStr, cf.module_notify, false){ public void doAction(boolean st){ cf.module_notify=st; } };
         itemsList.addElement(notify); 
-        network = new PluginBox(SR.MS_netStr, cf.module_network, false){ public void doAction(boolean st){ cf.module_network=st; } };
         itemsList.addElement(network);
-        app = new PluginBox(SR.MS_appStr, cf.module_app, false){ public void doAction(boolean st){ cf.module_app=st; } };
         itemsList.addElement(app); 
-        graphics = new PluginBox(SR.MS_grStr, cf.module_graphics, false){ public void doAction(boolean st){ cf.module_graphics=st; } };
         itemsList.addElement(graphics);
-        theme = new PluginBox(SR.MS_cthemesStr, cf.module_theme, false){ public void doAction(boolean st){ cf.module_theme=st; } };
         itemsList.addElement(theme);
-        fonts = new PluginBox(SR.MS_fontsStr, cf.module_fonts, false){ public void doAction(boolean st){ cf.module_fonts=st; } };
         itemsList.addElement(fonts);
 
         SimpleString str = new SimpleString(SR.MS_ADVANCED_OPT, true);
         itemsList.addElement(str);
-        
-        autostatus = new PluginBox(SR.MS_astatusStr, cf.module_autostatus, true){ public void doAction(boolean st){ cf.module_autostatus=st; } };
         itemsList.addElement(autostatus);  
-        userKeys = new PluginBox(SR.MS_hotkeysStr, cf.userKeys, true){ public void doAction(boolean st){ cf.userKeys=st; } };
         itemsList.addElement(userKeys); 
-        avatars = new PluginBox(SR.MS_avatarStr, cf.module_avatars, true){ public void doAction(boolean st){ cf.module_avatars=st; } };
         itemsList.addElement(avatars);           
-        history = new PluginBox(SR.MS_historyStr, cf.module_history, true){ public void doAction(boolean st){ cf.module_history=st; } };
         //itemsList.addElement(history); 
         
         //cashe = new PluginBox(SR.MS_casheStr, cf.module_cashe){ public void doAction(boolean st){ cf.module_cashe=st; } };
         //itemsList.addElement(cashe); 
 //#ifdef IMPORT_EXPORT         
-//#         ie = new PluginBox(SR.MS_ieStr, cf.module_ie, true){ public void doAction(boolean st){ cf.module_ie=st; } };
 //#         itemsList.addElement(ie);  
 //#endif
-        tasks = new PluginBox(SR.MS_taskstr, cf.module_tasks, true){ public void doAction(boolean st){ cf.module_tasks=st; } };
         itemsList.addElement(tasks); 
-        classicchat = new PluginBox(SR.MS_clchatStr, cf.module_classicchat, true){ public void doAction(boolean st){ cf.module_classicchat=st; } };
         itemsList.addElement(classicchat); 
-
-        debug = new PluginBox(SR.MS_DEBUG_MENU, cf.debug, true){ public void doAction(boolean st){ cf.debug=st; } };
         itemsList.addElement(debug);
 
         setCommandListener(this);
@@ -329,10 +295,158 @@ public final class PluginsConfig extends DefForm implements MenuListener
        display.setCurrent(parentView);
        cf.saveToStorage();
     }
+   
+
+    private static CheckBox showOfflineContacts;
+    private static CheckBox selfContact;
+    private static CheckBox showTransports;
+    private static CheckBox ignore;
+    private static CheckBox collapsedGroups;
+    private static CheckBox autoFocus;
+    private static CheckBox showResources;
+    private static CheckBox useBoldFont;
+    private static CheckBox rosterStatus;
+//#ifdef CLIENTS_ICONS
+    private static CheckBox showClientIcon;
+//#endif
+    private static CheckBox dont_loadMC;
+    private static CheckBox gradient_cursor;  
+//#ifdef SMILES
+    private static CheckBox smiles;
+//#endif    
+    private static CheckBox eventComposing;
+    private static CheckBox capsState;
+    private static CheckBox storeConfPresence;
+    private static CheckBox createMessageByFive;
+    private static CheckBox showCollapsedPresences;
+    private static CheckBox timePresence;
+    private static CheckBox autoScroll;
+    private static CheckBox useTabs;
+//#ifdef DETRANSLIT
+//#     private static CheckBox autoDetranslit;
+//#endif
+    
+//#ifdef PEP
+//#     private static CheckBox sndrcvmood;
+//#     private static CheckBox rcvtune;
+//#     private static CheckBox rcvactivity;
+//#endif
+    
+//#ifdef RUNNING_MESSAGE
+//#     private static CheckBox runningMessage;
+//#endif
+//#ifdef POPUPS
+    private static CheckBox popUps;
+//#endif
+
+    private static CheckBox graphicsMenu;
+    private static CheckBox showBaloons;
+    private static CheckBox animatedSmiles;
+    private static CheckBox eventDelivery;
+    private static CheckBox networkAnnotation;
+    private static CheckBox metaContacts;
+    private static CheckBox executeByNum;
+    private static CheckBox sendMoodInMsg;
+    private static CheckBox savePos;
+    private static CheckBox boldNicks;    
+    private static CheckBox selectOutMessages;
+//#ifdef CLIPBOARD
+//#     private static CheckBox useClipBoard;
+//#endif
+    
+    private static CheckBox autoLogin;
+    private static CheckBox useLowMemory_userotator;  
+  //private static CheckBox animateMenuAndRoster;
+    private static CheckBox useLowMemory_iconmsgcollapsed;
+    private static CheckBox iconsLeft;    
+    private static CheckBox autoJoinConferences;
+    
+    private static CheckBox nokiaReconnectHack;
+//#ifdef FILE_TRANSFER
+    private static CheckBox fileTransfer;
+//#endif
+//#ifdef ADHOC
+//#     private static CheckBox adhoc;
+//#endif
+    
+    private static CheckBox fullscr;
+    private static CheckBox memMon;
+    private static CheckBox enableVersionOs;
+    private static CheckBox queryExit;
+    private static CheckBox popupFromMinimized;
+    private static CheckBox drawScrollBgnd; 
+    private static CheckBox gradientBarLigth;
+//#ifdef AUTOSTATUS
+//#     private static CheckBox awayStatus;
+//#endif
+    private static CheckBox drawMenuCommand;
+    private static CheckBox showNickNames;
+    private static CheckBox oldSE;
+    private static CheckBox useClassicChat; 
+    private static CheckBox use_phone_theme;
+    
+
+    private static TrackItem gradientBarLight1; 
+    private static TrackItem gradientBarLight2; 
+    
+
+    
+    
+    
+    
+    
     
     
     
 
+    private static DropChoiceBox subscr;
+    private static DropChoiceBox nil;
+    private static DropChoiceBox msgEditType;
+//#if LOGROTATE
+//#     private static NumberInput messageCountLimit;
+//#endif
+    private static NumberInput messageLimit;
+    private static NumberInput reconnectCount;
+    private static NumberInput reconnectTime;
+    private static NumberInput fieldGmt; 
+    private static NumberInput scrollWidth; 
+    private static DropChoiceBox textWrap;
+    private static DropChoiceBox langFiles;
+    private static DropChoiceBox bgnd_image;    
+    private static DropChoiceBox graphicsMenuPosition;  
+//#ifdef AUTOSTATUS
+//#     private static DropChoiceBox autoAwayType;
+//#     private static NumberInput fieldAwayDelay; 
+//#endif
+    private static DropChoiceBox panels;
+    private static NumberInput classic_chat_height;     
+    private static NumberInput line_count;    
+    
+    private static Vector langs[];
+    
+
+    private static PluginBox contacts;    
+    private static PluginBox messages;    
+    private static PluginBox network;
+    private static PluginBox graphics;    
+    private static PluginBox app;
+    private static PluginBox userKeys;    
+    private static PluginBox autostatus;
+    private static PluginBox classicchat;
+    private static PluginBox debug;     
+    private static PluginBox theme;  
+    private static PluginBox cashe;  
+    
+    private static PluginBox history;
+    private static PluginBox fonts; 
+//#ifdef IMPORT_EXPORT
+//#     private static PluginBox ie;  
+//#endif
+    private static PluginBox notify; 
+    private static PluginBox tasks;
+    private static PluginBox avatars;  
+
+    
  ////Configure Module
  class ConfigModule extends DefForm implements MenuListener
  {
@@ -359,27 +473,16 @@ public final class PluginsConfig extends DefForm implements MenuListener
           itemsList.addElement(nil);
           itemsList.addElement(new SpacerItem(2));
           
-           showOfflineContacts = new CheckBox(SR.MS_OFFLINE_CONTACTS, cf.showOfflineContacts);
-           itemsList.addElement(showOfflineContacts);
-             selfContact = new CheckBox(SR.MS_SELF_CONTACT, cf.selfContact); 
+             itemsList.addElement(showOfflineContacts);
              itemsList.addElement(selfContact);
-               showTransports = new CheckBox(SR.MS_TRANSPORTS, cf.showTransports); 
-               itemsList.addElement(showTransports);
-                 showResources = new CheckBox(SR.MS_SHOW_RESOURCES, cf.showResources);
-                 itemsList.addElement(showResources);
-                  useBoldFont = new CheckBox(SR.MS_BOLD_FONT, cf.useBoldFont);
-                  itemsList.addElement(useBoldFont);
-                   showClientIcon = new CheckBox(SR.MS_SHOW_CLIENTS_ICONS, cf.showClientIcon);
-                   itemsList.addElement(showClientIcon);
-                     iconsLeft = new CheckBox(SR.MS_CLIENT_ICONS_LEFT, cf.iconsLeft);
-                     itemsList.addElement(iconsLeft);
-                       autoFocus = new CheckBox(SR.MS_AUTOFOCUS, cf.autoFocus);
-                       itemsList.addElement(autoFocus);
-                       
-                       rosterStatus = new CheckBox(SR.MS_SHOW_STATUSES, cf.rosterStatus);
-                       itemsList.addElement(rosterStatus);
-                       ignore = new CheckBox(SR.MS_IGNORE_LIST, cf.ignore);
-                       itemsList.addElement(ignore);
+             itemsList.addElement(showTransports);
+             itemsList.addElement(showResources);
+             itemsList.addElement(useBoldFont);
+             itemsList.addElement(showClientIcon);
+             itemsList.addElement(iconsLeft);
+             itemsList.addElement(autoFocus);
+             itemsList.addElement(rosterStatus);
+             itemsList.addElement(ignore);
          }
          else if(type==SR.MS_msgStr){//or chat
             msgEditType=new DropChoiceBox(display, SR.MS_MSG_EDIT_TYPE);
@@ -388,10 +491,8 @@ public final class PluginsConfig extends DefForm implements MenuListener
 	    msgEditType.setSelectedIndex(cf.msgEditType);
             itemsList.addElement(msgEditType);
             itemsList.addElement(new SpacerItem(3));  
-               runningMessage = new CheckBox(SR.MS_RUNNING_MESSAGE, cf.runningMessage);//ticker obj
-               itemsList.addElement(runningMessage);                               
-               notifyWhenMessageType = new CheckBox(SR.MS_NOTIFY_MSGEDIT, cf.notifyWhenMessageType); 
-               itemsList.addElement(notifyWhenMessageType);                               
+            itemsList.addElement(runningMessage);                               
+            
                   itemsList.addElement(new SpacerItem(3));
                   textWrap=new DropChoiceBox(display, SR.MS_TEXTWRAP);
                   textWrap.append(SR.MS_TEXTWRAP_CHARACTER);
@@ -399,90 +500,58 @@ public final class PluginsConfig extends DefForm implements MenuListener
 	          textWrap.setSelectedIndex(cf.textWrap);
                   itemsList.addElement(textWrap);
                   itemsList.addElement(new SpacerItem(3));
-                      messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
-                      itemsList.addElement(messageLimit);
-                      itemsList.addElement(new SpacerItem(3));
-                  
-           storeConfPresence = new CheckBox(SR.MS_STORE_PRESENCE, cf.storeConfPresence); 
-           itemsList.addElement(storeConfPresence);
-             showCollapsedPresences = new CheckBox(SR.MS_COLLAPSE_PRESENCE, cf.showCollapsedPresences); 
+                  messageLimit=new NumberInput(display, SR.MS_MESSAGE_COLLAPSE_LIMIT, Integer.toString(cf.messageLimit), 200, 1000);
+                  itemsList.addElement(messageLimit);
+                  itemsList.addElement(new SpacerItem(3));
+                
+             itemsList.addElement(createMessageByFive);
+             itemsList.addElement(storeConfPresence);
              itemsList.addElement(showCollapsedPresences);
-           
-           
-             autoScroll = new CheckBox(SR.MS_AUTOSCROLL, cf.autoScroll);
+
              itemsList.addElement(autoScroll);
-               timePresence = new CheckBox(SR.MS_SHOW_PRS_TIME, cf.timePresence);
-               itemsList.addElement(timePresence);
-                   autoDetranslit = new CheckBox(SR.MS_AUTODETRANSLIT, cf.autoDeTranslit); 
-                   itemsList.addElement(autoDetranslit);
-                     showNickNames = new CheckBox(SR.MS_SHOW_NACKNAMES, cf.showNickNames); 
-                     itemsList.addElement(showNickNames);
-                       savePos = new CheckBox(SR.MS_SAVE_CURSOR, cf.savePos);
-                       itemsList.addElement(savePos); 
-                        boldNicks = new CheckBox(SR.MS_BOLD_AND_COLORS_NICKS, cf.boldNicks); 
-                         itemsList.addElement(boldNicks);
-                          selectOutMessages = new CheckBox(SR.MS_SELECT_OUT_MESSAGES, cf.selectOutMessages); 
-                          itemsList.addElement(selectOutMessages);                         
-
-                              useLowMemory_iconmsgcollapsed = new CheckBox(SR.MS_ICON_COLP, cf.useLowMemory_iconmsgcollapsed);
-                              itemsList.addElement(useLowMemory_iconmsgcollapsed);
-                                smiles = new CheckBox(SR.MS_SMILES, cf.smiles);
-                                itemsList.addElement(smiles);
-                                  animatedSmiles = new CheckBox(SR.MS_ANI_SMILES, cf.animatedSmiles); 
-                                  if(cf.ANIsmilesDetect) itemsList.addElement(animatedSmiles);                                
-                                   capsState = new CheckBox(SR.MS_CAPS_STATE, cf.capsState); 
-                                   itemsList.addElement(capsState);
-
-                                        useTabs = new CheckBox(SR.MS_EMULATE_TABS, cf.useTabs); 
-                                        itemsList.addElement(useTabs);
-                                          useClipBoard = new CheckBox(SR.MS_CLIPBOARD, cf.useClipBoard); 
-                                          itemsList.addElement(useClipBoard);
+             itemsList.addElement(timePresence);
+             itemsList.addElement(autoDetranslit);
+             itemsList.addElement(showNickNames);
+             itemsList.addElement(savePos); 
+             itemsList.addElement(boldNicks);
+             itemsList.addElement(selectOutMessages);                         
+             itemsList.addElement(useLowMemory_iconmsgcollapsed);
+             itemsList.addElement(smiles);
+             if(cf.ANIsmilesDetect) itemsList.addElement(animatedSmiles);                                
+             itemsList.addElement(capsState);
+             itemsList.addElement(useTabs);
+             itemsList.addElement(useClipBoard);
          }
          else if(type==SR.MS_netStr){//
 //#ifdef PEP        
-//#             itemsList.addElement(new SimpleString(SR.MS_PEP, true));
-//#               sndrcvmood = new CheckBox(SR.MS_USERMOOD, cf.sndrcvmood);
-//#               itemsList.addElement(sndrcvmood);
-//#                 rcvtune = new CheckBox(SR.MS_USERTUNE, cf.rcvtune); 
-//#                 itemsList.addElement(rcvtune);
-//#                   rcvactivity = new CheckBox(SR.MS_USERACTIVITY, cf.rcvactivity);
-//#                   itemsList.addElement(rcvactivity);
+//#                    itemsList.addElement(new SimpleString(SR.MS_PEP, true));
+//#                    itemsList.addElement(sndrcvmood);
+//#                    itemsList.addElement(rcvtune);
+//#                    itemsList.addElement(rcvactivity);
 //#endif
                    itemsList.addElement(new SpacerItem(10));
                    itemsList.addElement(new SimpleString(SR.MS_MESSAGES, true));
-                     eventComposing = new CheckBox(SR.MS_COMPOSING_EVENTS, cf.eventComposing); 
-                     itemsList.addElement(eventComposing);
-                         eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); 
-                         itemsList.addElement(eventDelivery);
-                           networkAnnotation = new CheckBox(SR.MS_CONTACT_ANNOTATIONS, cf.networkAnnotation);
-                           itemsList.addElement(networkAnnotation);
-                             metaContacts = new CheckBox(SR.MS_METACONTACTS +"[FROZEN]", cf.metaContacts);
-                             itemsList.addElement(metaContacts);
-                           //sendMoodInMsg = new CheckBox(SR.MS_MOOD_IN_MSG, cf.sendMoodInMsg);
-                           //itemsList.addElement(sendMoodInMsg);
+                   itemsList.addElement(eventComposing);
+                   itemsList.addElement(eventDelivery);
+                   itemsList.addElement(networkAnnotation);
+                   itemsList.addElement(metaContacts);
+                   //itemsList.addElement(sendMoodInMsg);
                           
-                         itemsList.addElement(new SpacerItem(10));
-                         itemsList.addElement(new SimpleString(SR.MS_RECONNECT, true));//сеть
+                   itemsList.addElement(new SpacerItem(10));
+                   itemsList.addElement(new SimpleString(SR.MS_RECONNECT, true));//сеть
         
-	                 reconnectCount=new NumberInput(display, SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 0, 100);
-                         itemsList.addElement(reconnectCount);
-                         reconnectTime=new NumberInput(display, SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); 
-                         itemsList.addElement(reconnectTime);
-                         nokiaReconnectHack = new CheckBox(SR.MS_NOKIA_RECONNECT_HACK, cf.nokiaReconnectHack);
-                         itemsList.addElement(nokiaReconnectHack);
+	           reconnectCount=new NumberInput(display, SR.MS_RECONNECT_COUNT_RETRY, Integer.toString(cf.reconnectCount), 0, 100);
+                   itemsList.addElement(reconnectCount);
+                   reconnectTime=new NumberInput(display, SR.MS_RECONNECT_WAIT, Integer.toString(cf.reconnectTime), 1, 60 ); 
+                   itemsList.addElement(reconnectTime);
+                   itemsList.addElement(nokiaReconnectHack);
 //#ifdef FILE_TRANSFER
-                         fileTransfer = new CheckBox(SR.MS_FILE_TRANSFERS, cf.fileTransfer); 
-                         
-                         itemsList.addElement(fileTransfer);   
+                   itemsList.addElement(fileTransfer);   
 //#endif                         
-                         adhoc = new CheckBox(SR.MS_ADHOC, cf.adhoc); 
-                         itemsList.addElement(adhoc);
+                   itemsList.addElement(adhoc);
 
          } 
          else if(type==SR.MS_grStr){
-          graphicsMenu = new CheckBox(SR.MS_GR_MENU, cf.graphicsMenu);
-          itemsList.addElement(graphicsMenu);
-          
           panels=new DropChoiceBox(display, SR.MS_PANELS);
           panels.append(SR.MS_NO_BAR+" : "+SR.MS_NO_BAR);
           panels.append(SR.MS_MAIN_BAR+" : "+SR.MS_NO_BAR);
@@ -493,7 +562,25 @@ public final class PluginsConfig extends DefForm implements MenuListener
           panels.append(SR.MS_NO_BAR+" : "+SR.MS_MAIN_BAR);
     	  panels.setSelectedIndex(cf.panelsState);
           itemsList.addElement(panels);
+
+           itemsList.addElement(gradientBarLigth); 
+           itemsList.addElement(gradient_light1);
+           itemsList.addElement(new SpacerItem(2));
+           itemsList.addElement(gradientBarLight1);
+           
+           itemsList.addElement(gradient_light2);
+           itemsList.addElement(new SpacerItem(2));
+           itemsList.addElement(gradientBarLight2);
+           itemsList.addElement(graphicsMenu);
           
+           graphicsMenuPosition=new DropChoiceBox(display, SR.MS_GRAPHICSMENU_POS);
+           graphicsMenuPosition.append(SR.MS_GRMENU_CENTER); //0
+           graphicsMenuPosition.append(SR.MS_GRMENU_LEFT);//1
+           graphicsMenuPosition.append(SR.MS_GRMENU_RIGHT);//2
+           graphicsMenuPosition.setSelectedIndex(cf.graphicsMenuPosition);
+           itemsList.addElement(graphicsMenuPosition);  
+
+             
            itemsList.addElement(new SpacerItem(3));
            bgnd_image=new DropChoiceBox(display, "*"+SR.MS_TYPE_BACKGROUND);
            bgnd_image.append(SR.MS_BGND_NONE); //0
@@ -503,46 +590,33 @@ public final class PluginsConfig extends DefForm implements MenuListener
            bgnd_image.setSelectedIndex(cf.bgnd_image);
            itemsList.addElement(bgnd_image);                     
            itemsList.addElement(new SpacerItem(3));                   
-	         scrollWidth=new NumberInput(display, SR.MS_SCROLL_WIDTH, Integer.toString(cf.scrollWidth), 4, 25); 
-                 itemsList.addElement(scrollWidth);   
-                 itemsList.addElement(new SpacerItem(3));
-                 
-             useLowMemory_userotator = new CheckBox(SR.MS_ANIMATION, cf.useLowMemory_userotator);
-             itemsList.addElement(useLowMemory_userotator);
-              gradient_cursor  = new CheckBox(SR.MS_GRADIENT_CURSOR,cf.gradient_cursor); 
-              itemsList.addElement(gradient_cursor);
-               memMon = new CheckBox(SR.MS_HEAP_MONITOR, cf.memMonitor);
-               itemsList.addElement(memMon);
-                 drawScrollBgnd = new CheckBox(SR.MS_BGND_SCROLL,cf.drawScrollBgnd); 
-                 itemsList.addElement(drawScrollBgnd);  
-                   drawMenuCommand = new CheckBox(SR.MS_SHOW_TIME_TRAFFIC, cf.showTimeTraffic); 
-                   itemsList.addElement(drawMenuCommand);
-                       popUps = new CheckBox(SR.MS_POPUPS, cf.popUps); 
-                       itemsList.addElement(popUps);
-                         showBaloons = new CheckBox(SR.MS_SHOW_BALLONS, cf.showBalloons); 
-                         itemsList.addElement(showBaloons);
+	   scrollWidth=new NumberInput(display, SR.MS_SCROLL_WIDTH, Integer.toString(cf.scrollWidth), 4, 25); 
+           itemsList.addElement(scrollWidth);   
+           itemsList.addElement(new SpacerItem(3));      
+
+           itemsList.addElement(useLowMemory_userotator);
+           itemsList.addElement(gradient_cursor);
+           itemsList.addElement(memMon);
+           itemsList.addElement(drawScrollBgnd);  
+           itemsList.addElement(drawMenuCommand);
+           itemsList.addElement(popUps);
+           itemsList.addElement(showBaloons);
+           
          }
          else if(type==SR.MS_appStr){
-           itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
-           autoLogin = new CheckBox(SR.MS_AUTOLOGIN, cf.autoLogin); 
-           itemsList.addElement(autoLogin);
-             autoJoinConferences = new CheckBox(SR.MS_AUTO_CONFERENCES, cf.autoJoinConferences); 
+            
+             itemsList.addElement(new SimpleString(SR.MS_STARTUP_ACTIONS, true));
+             itemsList.addElement(autoLogin);
              itemsList.addElement(autoJoinConferences); 
-               collapsedGroups = new CheckBox(SR.MS_COLLAPSED_GROUPS, cf.collapsedGroups);
-               itemsList.addElement(collapsedGroups);
-                 fullscr = new CheckBox(SR.MS_FULLSCREEN, cf.fullscreen); 
-                 itemsList.addElement(fullscr);
-                   enableVersionOs = new CheckBox(SR.MS_SHOW_HARDWARE, cf.enableVersionOs);
-                   itemsList.addElement(enableVersionOs);
-                      queryExit = new CheckBox(SR.MS_CONFIRM_EXIT, cf.queryExit); 
-                      itemsList.addElement(queryExit);
-                          oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
+             itemsList.addElement(collapsedGroups);
+             itemsList.addElement(fullscr);
+             itemsList.addElement(enableVersionOs);
+             itemsList.addElement(queryExit);
+             
                           if (phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE); 
                                if (cf.allowMinimize) {
-                                   popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
                                    itemsList.addElement(popupFromMinimized);
                                }
-                               executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); 
                                itemsList.addElement(executeByNum);
                                
                                itemsList.addElement(new SpacerItem(10));
@@ -582,15 +656,12 @@ public final class PluginsConfig extends DefForm implements MenuListener
            itemsList.addElement(autoAwayType);
              fieldAwayDelay=new NumberInput(display, "*"+SR.MS_AWAY_PERIOD, Integer.toString(cf.autoAwayDelay), 1, 60);
              itemsList.addElement(fieldAwayDelay);
-               awayStatus=new CheckBox(SR.MS_AUTOSTATUS_MESSAGE, cf.setAutoStatusMessage);
-               itemsList.addElement(awayStatus);            
+             itemsList.addElement(awayStatus);            
 
          } 
          else if(type==SR.MS_clchatStr){
            itemsList.addElement(new SimpleString(SR.MS_CLCHAT_ON, true));
-             useClassicChat = new CheckBox(SR.MS_CLCHAT_ON, cf.useClassicChat);
              itemsList.addElement(useClassicChat);
-               use_phone_theme = new CheckBox(SR.MS_CLCHAT_BGNG_PHONE, cf.use_phone_theme);
                itemsList.addElement(use_phone_theme);        
                  classic_chat_height=new NumberInput(display,SR.MS_CLCHAT_HEIGHT, Integer.toString(cf.classic_chat_height), 80, 320);
                  itemsList.addElement(classic_chat_height);
@@ -649,11 +720,15 @@ public final class PluginsConfig extends DefForm implements MenuListener
          }
          else if(type==SR.MS_msgStr){
             cf.msgEditType=msgEditType.getSelectedIndex();
+            if(cf.runningMessage != runningMessage.getValue()){
+               cf.runningMessage=!cf.runningMessage;
+               midlet.BombusQD.sd.roster.createMessageEdit(true);
+            }
             cf.runningMessage=runningMessage.getValue();
-            cf.notifyWhenMessageType=notifyWhenMessageType.getValue();
             cf.textWrap=textWrap.getSelectedIndex();                              
             cf.messageLimit=Integer.parseInt(messageLimit.getValue());
       
+            cf.createMessageByFive=createMessageByFive.getValue();
             cf.storeConfPresence=storeConfPresence.getValue();
             cf.showCollapsedPresences=showCollapsedPresences.getValue();
             cf.autoScroll=autoScroll.getValue();
@@ -700,8 +775,12 @@ public final class PluginsConfig extends DefForm implements MenuListener
             cf.adhoc=adhoc.getValue(); 
          } 
          else if(type==SR.MS_grStr){
+           cf.panelsState=panels.getSelectedIndex(); 
+           cf.gradientBarLigth=gradientBarLigth.getValue();
+           cf.gradientBarLight1=gradientBarLight1.getValue()*10;
+           cf.gradientBarLight2=gradientBarLight2.getValue()*10;
            cf.graphicsMenu=graphicsMenu.getValue();
-           cf.panelsState=panels.getSelectedIndex();             
+           cf.graphicsMenuPosition=graphicsMenuPosition.getSelectedIndex();
            cf.bgnd_image=bgnd_image.getSelectedIndex();
            cf.scrollWidth=Integer.parseInt(scrollWidth.getValue());
            

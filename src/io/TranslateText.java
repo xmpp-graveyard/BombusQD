@@ -197,16 +197,8 @@ public class TranslateText implements Runnable{
                //System.out.println(str);
                 //fixit
                 if(str.indexOf("invalid translation language pair")>-1){
-                 switch(midlet.BombusQD.cf.msgEditType){
-                    case 0:
-                         midlet.BombusQD.sd.roster.me=new MessageEdit(display, pView, c,
-                         SR.MS_TRANSLATE+": [" + from + "-" + to + "]"+"\nERROR: invalid translation language pair");
-                         break;
-                    case 1: 
-                         midlet.BombusQD.sd.roster.me=new MessageEdit(display, pView, c,
-                         SR.MS_TRANSLATE+": [" + from + "-" + to + "]"+"\nERROR: invalid translation language pair", true); 
-                         break;
-                 }                    
+                  midlet.BombusQD.sd.roster.replaceMessageEditText(c, SR.MS_TRANSLATE+": [" + from + "-" + to + "]"+
+                         "\nERROR: invalid translation language pair", pView);             
                 }else{
                 
                 int i = str.indexOf("\"translatedText\":\"");
@@ -254,19 +246,10 @@ public class TranslateText implements Runnable{
                                  //new ContactMessageList(c);//  
                              }
                     }                    
-                }else{
-                 switch(midlet.BombusQD.cf.msgEditType){
-                    case 0:
-                         midlet.BombusQD.sd.roster.me=new MessageEdit(display, pView, c, translated_text);
-                         break;
-                    case 1: 
-                         midlet.BombusQD.sd.roster.me=new MessageEdit(display, pView, c, translated_text, true);
-                         break;
-                    case 2: 
-                         midlet.BombusQD.sd.roster.me=new MessageEdit(display, pView, c, translated_text, true);
-                         break;
-                 }
-               }
+                }else {
+                    midlet.BombusQD.sd.roster.replaceMessageEditText(c, translated_text, pView);
+                    //midlet.BombusQD.sd.roster.createMessageEdit(c, translated_text, pView);
+                } 
              }
              // is.close();
              // os.close();

@@ -205,6 +205,20 @@ public class SR {
     public   static String MS_NEW_ACCOUNT = loadString( "Add Profile" );
     public   static String MS_SELF_CONTACT = loadString( "self-contact" );
     public   static String MS_VCARD = loadString( "vCard" );
+    public   static String MS_DELETE_VCARD = loadString( "vCard: delete current" );
+    public   static String MS_DELETE_ALL_VCARD = loadString( "vCard: delete ALL" );
+    public   static String MS_DELETE_AVATAR_VCARD = loadString( "User Avatar: delete current" );
+    public   static String MS_DELETE_ALL_AVATAR_VCARD = loadString( "User Avatar: delete from ALL vcards" );
+    
+    public   static String MS_USE_FIVE_TO_CREATEMSG = loadString( "Use 5 key to create Message");
+    public   static String MS_USE_LIGHT_TO_DRWPANELS = loadString( "Use Light to draw panels");
+    public   static String MS_MAINBAR_GRADIENTLIGHT = loadString( "MainBar Gradient Light #");
+    public   static String MS_GRAPHICSMENU_POS = loadString( "Graphisc Menu Screen Position");
+    public   static String MS_GRMENU_CENTER = loadString( "[center]");
+    public   static String MS_GRMENU_LEFT = loadString( "[Left:     ]");
+    public   static String MS_GRMENU_RIGHT = loadString( "[    :Right]");
+    
+    
     public   static String MS_SET_SUBJECT = loadString( "Set Subject" );
     //public   static String MS_TOOLS = loadString( "Options>" );
     public   static String MS_PORT = loadString( "Port" );

@@ -188,11 +188,7 @@ public class Roster
     
     
     public Vector bookmarks;
-    
-//#ifdef RUNNING_MESSAGE
-//#     public MessageEdit me=null;
-//#endif
-    
+
     private StatusList sl;
     public int myStatus=midlet.BombusQD.cf.loginstatus;
     private static String myMessage;
@@ -232,11 +228,25 @@ public class Roster
 //#endif    
     static String hashcheck = StringUtils.calcHash();
 
+    private static MessageEdit messageEdit;
+    private static MessageEdit altmessageEdit;
+
+    public void createMessageEdit(boolean reCreate){
+         if(reCreate) 
+             messageEdit = altmessageEdit = null;
+         
+         if(null == messageEdit && null == altmessageEdit) {
+             messageEdit = new MessageEdit(display);
+             altmessageEdit = new MessageEdit(display, true);
+         }
+    }
+    
     
     public Roster(Display display) {
         super();
 
         this.display=display;
+        createMessageEdit(false);
 
         splash = SplashScreen.getInstance(display);
          
@@ -536,8 +546,8 @@ public class Roster
 //#            else if(c==cmdStats){  new StatsWindow(display);  }
 //#endif                        
 //#            else if(c==cmdReconnect){ 
-//#                  midlet.BombusQD.sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
-//#                  midlet.BombusQD.sd.roster.doReconnect();     
+//#                  errorLog(SR.MS_SIMULATED_BREAK);
+//#                  doReconnect();
 //#            }
 //#  
 //#if SASL_XGOOGLETOKEN        
@@ -1169,7 +1179,7 @@ public class Roster
  
      public final Contact getContact(final String jid, boolean createInNIL) {
         Jid J = new Jid(jid);
-        Contact c = findContact(J, true); //System.out.println("getContact()=>" + jid + " C: " + c + " createInNIL: " + createInNIL);
+        Contact c = findContact(J, true);
         if (null != c) return c;
          c = findContact(J, false);
          Group grp = null; //System.out.println("findContact()=>" + c);
@@ -1182,17 +1192,30 @@ public class Roster
              c.setGroup(grp);
              addContact(c);
               */
-            c = new Contact(null, jid, Presence.PRESENCE_ONLINE, "none" ); /*"not-in-list"*/
+            c = new Contact(null, jid, Presence.PRESENCE_OFFLINE, "none" ); /*"not-in-list"*/
             c.origin=Contact.ORIGIN_PRESENCE;
             c.setGroup(contactList.groups.getGroup(Groups.TYPE_NOT_IN_LIST));
             addContact(c);
          } else { 
              
+            /*
+            System.out.println("   getContact=>" + jid + " C: " + c + " createInNIL: " + createInNIL + " || " + c.origin + "" +Contact.ORIGIN_ROSTER
+                + " c.group: " +c.group);
+            System.out.println("   getContact Type=>"+c.group.type+Groups.TYPE_SELF);
+             */
+             
             if (c.origin == Contact.ORIGIN_ROSTER) {
                 c.origin = Contact.ORIGIN_ROSTERRES;
                 c.setStatus(Presence.PRESENCE_OFFLINE);
-                c.jid = J;
-                c.setNick(c.getNick());
+                
+                if(c.group.type == Groups.TYPE_SELF) {
+                    c = new Contact(null, jid, Presence.PRESENCE_OFFLINE, "none" );
+                    c.setGroup(contactList.groups.getGroup(Groups.TYPE_SELF));
+                    addContact(c,true);
+                } else {
+                 c.jid = J;
+                 c.setNick(c.getNick());
+                }
                 //System.out.println("add resource");
             } else {
                 c = c.clone(J, Presence.PRESENCE_OFFLINE);
@@ -1205,7 +1228,10 @@ public class Roster
          return c;
      }
      
-    
+     public void addContact(Contact c, boolean ttt) {
+        contactList.addContact(c, true);
+        setModified();
+     }
      public void addContact(Contact c) {
         contactList.addContact(c);
         setModified();
@@ -2346,6 +2372,7 @@ public class Roster
                     if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
                         m.messageType=Msg.MESSAGE_TYPE_OUT;
                         m.unread=false;
+                        m.highlite=midlet.BombusQD.cf.selectOutMessages;
                     } else {
 //#ifdef LIGHT_CONTROL
 //#                         CustomLight.message();
@@ -3065,33 +3092,46 @@ public class Roster
 //#endif
     }
 
+
     private Displayable createMsgList(){
         Object e=getFocusedObject();
         if (e instanceof Contact) {
-         Contact c = (Contact)e;
-             return c.getMessageList();
+           return ((Contact)e).getMessageList();
         }
         return null;
     }
-     
+
+    public void replaceMessageEditText(Contact to, String bodyNew, Displayable pview){
+         switch(midlet.BombusQD.cf.msgEditType){
+            case 0: 
+                messageEdit.replaceText(to, bodyNew, pview);
+                break;
+            case 1: 
+                altmessageEdit.replaceText(to, bodyNew, pview); 
+                break;
+         }
+    }
+
+    public void createMessageEdit(Contact c, String body, Displayable pview){
+         switch(midlet.BombusQD.cf.msgEditType){
+            case 0:
+                if(messageEdit.ticker!=null) messageEdit.ticker.setString("BombusQD");
+                messageEdit.setText(body, c, pview);
+                break;
+            case 1: 
+                if(altmessageEdit.ticker!=null) altmessageEdit.ticker.setString("BombusQD");
+                altmessageEdit.setText(body, c, pview);
+                break;
+         }
+    }
+    
     protected void keyGreen(){
         if (!isLoggedIn()) return;
         Displayable pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
-//#ifdef RUNNING_MESSAGE
-//#                if(midlet.BombusQD.cf.useClassicChat){
-//#                  new SimpleItemChat(display,this,c);
-//#                }else{
-//#                  switch(midlet.BombusQD.cf.msgEditType){
-//#                      case 0: me = new MessageEdit(display, pview, c, c.msgSuspended); break;
-//#                      case 1: me = new MessageEdit(display, pview, c, c.msgSuspended, true); break;
-//#                  }
-//#                }                
-//# 
-//#else
-         new MessvageEdit(display, pview, c, c.msgSuspended);
-//#endif
+               if(!midlet.BombusQD.cf.useClassicChat) createMessageEdit(c, c.msgSuspended, pview);
+               else new SimpleItemChat(display,this,c);
             c.msgSuspended=null;
         }
     }
@@ -3731,34 +3771,24 @@ public class Roster
 
 //#ifdef RUNNING_MESSAGE
 //#     void setTicker(Contact c, String message,String msgTime) {
-//#        if (midlet.BombusQD.cf.runningMessage || midlet.BombusQD.cf.notifyWhenMessageType) {
-//#             if (me!=null){
-//#                 if (me.to==c){
-//#                    message  = StringUtils.replaceNickTags(message);
-//#                    if (midlet.BombusQD.cf.runningMessage) {
-//#                        if(me.ticker==null) return;
-//#                        me.ticker.setString(message);
+//#        if (midlet.BombusQD.cf.runningMessage) {
+//#             switch(midlet.BombusQD.cf.msgEditType){
+//#                case 0: 
+//#                    if (messageEdit==null) return;
+//#                    if (messageEdit.to==c) {
+//#                         message = StringUtils.replaceNickTags(message);
+//#                         if(messageEdit.ticker==null) return;
+//#                         messageEdit.ticker.setString(message);
 //#                    }
-//#                    //Runned Message
-//#                    if(message.length()>100) message = message.substring(0,100) + "..";
-//#                    if(midlet.BombusQD.cf.msgEditType==1) {
-//#                       if(me.form==null) return;
-//#                       me.messageItem = new javax.microedition.lcdui.StringItem(msgTime, message);
-//#                       if(me.form.get(0)!=null){//!null-default
-//#                         if(me.form.get(0) instanceof javax.microedition.lcdui.StringItem){
-//#                           me.form.delete(0);
-//#                           me.form.delete(0);
-//#                           me.form.insert(0,me.messageItem);
-//#                           me.form.insert(1,me.textField);
-//#                         }
-//#                         else{
-//#                           me.form.delete(0);
-//#                           me.form.insert(0,me.messageItem);
-//#                           me.form.insert(1,me.textField);
-//#                         }
-//#                       }
-//#                    }
-//#                 }
+//#                    break;
+//#                case 1:
+//#                    if (altmessageEdit==null) return;
+//#                      if (altmessageEdit.to==c) {
+//#                         message = StringUtils.replaceNickTags(message);
+//#                         if(altmessageEdit.ticker==null) return;
+//#                         altmessageEdit.ticker.setString(message);
+//#                      }
+//#                    break;
 //#             }
 //#         }
 //#     }
@@ -3826,6 +3856,7 @@ public class Roster
                         .append(contactList.getContactCount())
                         .append(')');
                   mainbar.setElementAt( counts , 3);
+                  selfContact().setStatus(myStatus);
 
                 if (cursor<0) cursor=0;
 

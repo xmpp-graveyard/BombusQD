@@ -68,33 +68,33 @@ public class FormField {
             } 
             else if (type.equals("boolean")) {
                 boolean set=false;
-                if (body.equals("1")) set=true;
-                if (body.equals("true")) set=true;
-                formItem = new CheckBox(label,set);
+                JabberDataBlock desc = field.getChildBlock("desc");
+                if (body.equals("1") || body.equals("true")) set=true;
+                formItem = new CheckBox( label + ( desc==null?"":"%"+desc.getText() ) ,set);
             }
             else if (type.equals("list-single")) {
                 DropChoiceBox listsingle=new DropChoiceBox(display, label);
                 optionsList=null;
                 optionsList=new Vector(0);
                 int size = field.getChildBlocks().size();
-                int index = 0;
+                int index = -1;
                 for (int i=0; i<size; i++) {
                     JabberDataBlock option=(JabberDataBlock)field.getChildBlocks().elementAt(i);
                     if (option.getTagName().equals("option")) {
                         String value=option.getChildBlockText("value");
                         String label=option.getAttribute("label");//русский текст
+                        
                         if (label==null) {//Имя
                             label=value;
                             listsingle.append(value);
-                        }else{
+                        }else {
                             listsingle.append(label);
                         }
-                         optionsList.addElement(value);
-                        if (body.equals(value)){
-                             index = i-1;
-                             listsingle.setSelectedIndex(index);
-                        }
-                         formItem = listsingle;
+                        optionsList.addElement(value);
+                        index++;
+                        //System.out.println("   add->"+label+"->"+value + " INDEX: "+index);
+                        if (body.equals(value)) listsingle.setSelectedIndex(index);
+                        formItem = listsingle;
                     }
                 }
                 //[<instructions>Choose a username and password to register with this server</instructions>, <username/>, <password/>]
@@ -102,7 +102,7 @@ public class FormField {
                 DropChoiceBox listmulti=new DropChoiceBox(display, label);
                 optionsList=new Vector(0);
                 int size = field.getChildBlocks().size();
-                int index = 0;
+                int index = -1;
                 for (int i=0; i<size; i++) {
                     JabberDataBlock option=(JabberDataBlock)field.getChildBlocks().elementAt(i);
                     if (option.getTagName().equals("option")) {
@@ -115,10 +115,8 @@ public class FormField {
                             listmulti.append(label);
                         }
                         optionsList.addElement(value);
-                        if (body.equals(value)){
-                             index = i-1;
-                             listmulti.setSelectedIndex(index);
-                        }                        
+                        index++;
+                        if (body.equals(value)) listmulti.setSelectedIndex(index);
                        formItem =  listmulti;
                     }
                 }

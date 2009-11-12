@@ -30,9 +30,10 @@ package xml;
 
 import java.io.ByteArrayOutputStream;
 import java.util.*;
+import java.io.IOException;
 
 public class XMLParser {
-    private final static int MAX_BIN_DATASIZE=64*1024; //64 KB - experimental
+    private final static int MAX_BIN_DATASIZE=40*1024; //40 KB - experimental
         
     private final static int PLAIN_TEXT=0;
     private final static int TAGNAME=1;
@@ -55,7 +56,7 @@ public class XMLParser {
     private Vector attr;
     private String atrName;
     
-    ByteArrayOutputStream baos;
+    private static ByteArrayOutputStream baos;
     int ibuf;
     int padding;
     /** Creates a new instance of XMLParser */
@@ -69,7 +70,7 @@ public class XMLParser {
         
     }
  
-    public void parse(byte indata[], int size) throws XMLException{
+    public void parse(byte indata[], int size) throws XMLException,IOException {
         int dptr=0;
         char c;
         while (size>0) {
@@ -81,8 +82,7 @@ public class XMLParser {
                     if (c=='<') {
                         state=TAGNAME;
                         
-                        if (sbuf.length()>0) 
-                            eventListener.plainTextEncountered( parsePlainText(sbuf) ); 
+                        if (sbuf.length()>0) eventListener.plainTextEncountered( parsePlainText(sbuf) ); 
                         
                         sbuf.setLength(0);
                         tagName.setLength(0);
@@ -217,14 +217,11 @@ public class XMLParser {
                 else if (c == '<') {
                     try { 
                         baos.close();
-                        
-                        if (baos.size()<MAX_BIN_DATASIZE)
-                            eventListener.binValueEncountered( baos.toByteArray() );
-                        else
-                            eventListener.binValueEncountered( new byte[1] );
+                        if (baos.size()<MAX_BIN_DATASIZE) eventListener.binValueEncountered( baos.toByteArray() );
+                        else eventListener.binValueEncountered( new byte[1] );
+                        baos = null;
                     } catch (Exception ex) { ex.printStackTrace(); }
                     
-                    baos=null;
                     sbuf.setLength(0);
                     tagName.setLength(0);
                     state=TAGNAME;

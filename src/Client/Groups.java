@@ -210,7 +210,6 @@ public class Groups implements JabberBlockListener{
         int groupType = gr.type;
         if( groupType == TYPE_NO_GROUP || groupType == TYPE_COMMON) {
             if(0 == gr.onlines && !midlet.BombusQD.cf.showOfflineContacts) return;
-            if(groupType == TYPE_SELF && !midlet.BombusQD.cf.selfContact) return;
         }
         
         d.addElement(gr);
@@ -232,26 +231,5 @@ public class Groups implements JabberBlockListener{
         }
         return vContacts;
     }
-    
-
-   /*
-    private void addToVector(Vector d, Group gr) {
-        if (!gr.visible) return;
-        if (0 < gr.onlines || gr.type == TYPE_TRANSP  ) {//transports grp
-            if(0 == gr.getNContacts()) return;
-            d.addElement(gr);
-            if (!gr.collapsed) {
-                Vector contacts = gr.visibleContacts;
-                int size = contacts.size();
-                for (int i = 0; i < size; ++i) {
-                    d.addElement(contacts.elementAt(i));
-                }
-            }
-        }
-        gr.updateDinamicInfo();
-        if (gr.type>TYPE_MUC) return;
-    }
-    */
-    
  }
 

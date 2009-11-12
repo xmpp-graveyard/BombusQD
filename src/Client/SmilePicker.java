@@ -180,12 +180,12 @@ public class SmilePicker
         }
     }
 
-    public void drawCursor (Graphics g, int width, int height){
+    public void drawCursor (Graphics g, int width, int height,int elS,int elE){
         int x=xBorder+(xCursor*imgWidth);
         g.setColor(getColorBGnd());
         g.fillRect(0,0,width, height);
         g.translate(x,0);
-        super.drawCursor(g, imgWidth, lineHeight);
+        super.drawCursor(g, imgWidth, lineHeight, -1, -1);
         g.translate(-x,0);
     } 
 
