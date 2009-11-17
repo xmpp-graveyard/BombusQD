@@ -219,7 +219,7 @@ public class ClassicChat extends CustomItem implements ItemCommandListener
    {
      int action = getGameAction(keyCode);
      if(keyCode==Canvas.KEY_NUM3){
-       new ActiveContacts(display, pView , contact);     
+       midlet.BombusQD.sd.roster.createActiveContacts(pView, contact);
      }      
           switch (action) {
               case Canvas.LEFT:
@@ -239,7 +239,7 @@ public class ClassicChat extends CustomItem implements ItemCommandListener
                   msgsDown();
                   break;
               case Canvas.FIRE:
-                  new ActiveContacts(display, pView , contact);
+                  midlet.BombusQD.sd.roster.createActiveContacts(pView, contact);
                   break;
           }
       repaint();

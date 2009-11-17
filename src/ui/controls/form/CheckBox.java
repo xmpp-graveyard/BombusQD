@@ -49,18 +49,27 @@ public class CheckBox
     private boolean otherWindow=false;    
     private int colorItem;
     private int width = 0;
+    private boolean isHistory = false;
     
     Vector checkBox = new Vector(0);
     GMenuConfig gm = GMenuConfig.getInstance();
     
-    public CheckBox(String text, boolean state,boolean otherWindow) {
+    public void destroy(){
+       checkBox = null;
+       text = text_undo = null;
+       //System.out.println("    -->"+text+"/"+text_undo+"/"+checkBox);
+    }
+    
+    public CheckBox(String text, boolean state,boolean otherWindow,boolean isHistory) {
         super(RosterIcons.getInstance());
-        if(text.indexOf("%")>-1){
-          this.text=text.substring(text.indexOf("%"),text.length());
-          this.text_undo=text.substring(0,text.indexOf("%"));
+        int index = text.indexOf("%");
+        if(index>-1){
+          this.text=text.substring(index,text.length());
+          this.text_undo=text.substring(0,index);
         }else{
           this.text=text;
         }
+        this.isHistory=isHistory;
         this.state=state;
         this.otherWindow=otherWindow;
         colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
@@ -91,6 +100,10 @@ public class CheckBox
     int fontHeight=getFont().getHeight();
     
 
+    public int getVWidth(){
+        return isHistory?-1:width;
+    }
+    
     public void drawItem(Graphics g, int ofs, boolean sel){
        Font f = getFont();
        g.setFont(f);
@@ -106,6 +119,7 @@ public class CheckBox
        if (toString()!=null){
         Vector lines=(Vector)checkBox.elementAt(0);   
         int size=lines.size(); 
+        width = f.stringWidth(toString());
         g.clipRect(offset, 0, g.getClipWidth(), getVHeight());
         int y = 0;
          if(state){

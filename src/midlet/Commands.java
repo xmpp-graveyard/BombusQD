@@ -58,6 +58,10 @@ public class Commands {
     public static Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
     public static Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);    
   
+    
+    public static Command cmdHistory = new Command("History", Command.SCREEN, 101);
+    public static Command cmdHistory1 = new Command("Show History", Command.SCREEN, 102);
+    
 //#ifdef JUICK.COM   
 //#     /*
 //#     public static Command cmdJuickLastPopular = new Command("", Command.SCREEN, 101);//#
@@ -92,6 +96,9 @@ public class Commands {
         cmdSendBuffer.setImg(0x84);
         cmdSaveChat.setImg(0x44);
         cmdMyService.setImg(0x27);
+        
+        cmdHistory.setImg(0x64);
+        cmdHistory1.setImg(0x64);
 
     }
         

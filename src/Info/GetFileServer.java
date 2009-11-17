@@ -129,10 +129,10 @@ public class GetFileServer
                 if (versions[0].elementAt(i)==null) continue;
                 String name=(String)versions[0].elementAt(i);
                 if(i==0){
-                   itemsList.addElement(new CheckBox(name.concat(Version.getVersionNumber()), true, true)); 
+                   itemsList.addElement(new CheckBox(name.concat(Version.getVersionNumber()), true, true, false)); 
                 }else{
                   if(name.startsWith("*")){
-                   itemsList.addElement(new CheckBox(name, true, true));
+                   itemsList.addElement(new CheckBox(name, true, true, false));
                   }
                   else if(name.startsWith("#")){
                      icq.addElement(name.substring(1,name.length()));

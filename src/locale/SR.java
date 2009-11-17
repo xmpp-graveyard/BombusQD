@@ -742,6 +742,13 @@ public class SR {
     public static String MS_FIND_TEXT = loadString("Find Text");    
     public static String MS_END_SEARCH = loadString( "End search!");
     
+    public static String MS_MSGBUFFER_NOT_EMPTY = loadString( "Message Buffer is not empty.Clear it?" );
+    public static String MS_MULTI_MESSAGE = loadString( "Create Multi Message" );
+    public static String MS_SORT_TYPE = loadString( "Sort Type" );
+    public static String MS_SORT_TYPE_DEF = loadString( "OFF (default)" );
+    public static String MS_SORT_TYPE_STATUS = loadString( "By status" );
+    public static String MS_SORT_TYPE_MSGS = loadString( "By Msgs count" );
+    
     public static String MS_MOOD_IN_MSG = loadString( "Send Mood in Msg" );
     public static String MS_ADVANCED_OPT = loadString( "Advanced Options" );
     public static String MS_ANIMATION = loadString( "Turn OFF Animation"); 

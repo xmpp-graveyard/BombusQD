@@ -237,14 +237,18 @@ public abstract class VirtualList
     }
     
     protected int getElementIndexAt(int yPos){
+       try {
         int end=getItemCount()-1;
         if (end<0) return -1;
         int begin=0;
-        while (end-begin>1) {
+          while (end-begin>1) {
             int index=(end+begin)/2;
+            if(index==-1) index = 0;
             if (yPos<itemLayoutY[index]) end=index; else begin=index;
-        }
-        return (yPos<itemLayoutY[end])? begin:end;
+          }
+          return (yPos<itemLayoutY[end])? begin:end;
+       } catch (Exception e) {}
+       return 0;
     }
     
     public int win_top;
@@ -544,12 +548,16 @@ public abstract class VirtualList
         
 
         try {
-            while ((itemYpos=itemLayoutY[itemIndex]-win_top)<winHeight) {
+            //System.out.println("itemLayoutY.length ==> " + itemLayoutY.length + "<" + itemIndex+"?");
+            count = Math.min(count, itemLayoutY.length);//aspro
+            if(itemIndex==-1) itemIndex = 0;
+            while ((itemIndex < count) &&
+                    ((itemYpos = itemLayoutY[itemIndex] - win_top) < winHeight)) { 
                 VirtualElement el=getItemRef(itemIndex);
+                if(el == null) continue;
                 
                 boolean sel=(itemIndex==cursor);
                 int lh=el.getVHeight();
-                
                 setAbsOrg(g, 0, itemBorder[0]);
                 g.setClip(0,0, itemMaxWidth, winHeight); 
                 g.translate(0,itemYpos);
@@ -588,16 +596,17 @@ public abstract class VirtualList
                     }
                 }
                 
-                
                 g.setColor(el.getColor());
                 g.clipRect(0, 0, itemMaxWidth, lh);
                 el.drawItem(g, (sel)?offset:0, sel);
                 
-                itemIndex++;
+                ++itemIndex;
 		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;
                 el = null;
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+          //System.out.println("Exception Vlist 1 -> "+e.getMessage()+" -> "+e.toString());
+        }
 /*       
         if(updown) //плавное перемещение курсора
         {
@@ -914,6 +923,7 @@ public abstract class VirtualList
                 cursor=getNextSelectableRef(-1);
             }
             if (!cursorInWindow()) {
+                if(cursor==-1) cursor = 0;
                 cursor=getElementIndexAt(itemLayoutY[cursor]-winHeight);
                 if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) 
                     fitCursorByTop();
@@ -941,6 +951,7 @@ public abstract class VirtualList
                     cursor=lastItemNum;
             } else {
                 if (cursorInWindow()==false) {
+                    if(cursor==-1) cursor = 0;
                     cursor=getElementIndexAt(itemLayoutY[cursor]+winHeight);//yPos
                     if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) 
                         fitCursorByTop();
@@ -1284,6 +1295,7 @@ public abstract class VirtualList
     
     protected void fitCursorByTop(){
         try {
+            if(cursor==-1) cursor = 0;
             int top=itemLayoutY[cursor];
             if (top<win_top) win_top=top;   
             if (((VirtualElement)getFocusedObject()).getVHeight()<=winHeight) {
@@ -1367,6 +1379,7 @@ public abstract class VirtualList
 
         int il=itemLayoutY[cursor+1]-winHeight;
         if (il>win_top) win_top=il;
+        if(cursor==-1) cursor = 0;
         il=itemLayoutY[cursor];
         if (il<win_top) win_top=il;
       repaint();
@@ -1595,14 +1608,6 @@ public abstract class VirtualList
 //#                    }else{
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
 //#                        display.setCurrent(c.getMessageList());
-//#                        /*
-//#                        if(c.cList!=null && midlet.BombusQD.cf.module_cashe && c.msgs.size()>3 ){
-//#                           display.setCurrent( (ContactMessageList)c.cList );
-//#                        }else{
-//#                           new ContactMessageList(c,display);  
-//#                        }
-//#                         */
-//#                       //new ContactMessageList(sd.roster.getContact(popup.getContact(), false),display);
 //#                    }                
 //#                 popup.next();
 //#                 return;
@@ -1956,6 +1961,7 @@ public abstract class VirtualList
                 return false;
             }
             
+            if(cursor==-1) cursor = 0;
             int remainder=itemLayoutY[cursor+1]-win_top;
             if (remainder<=winHeight) {
                 return false;
@@ -1980,6 +1986,7 @@ public abstract class VirtualList
 
             if (!cursorInWindow()) { return false; }
             
+            if(cursor==-1) cursor = 0;
             int remainder=win_top-itemLayoutY[cursor];
             if (remainder<=0) return false;
             if (remainder<=winHeight) {
@@ -1996,6 +2003,7 @@ public abstract class VirtualList
     
     public boolean cursorInWindow(){
         try {
+            if(cursor==-1) cursor = 0;
             int y1=itemLayoutY[cursor]-win_top;
             int y2=itemLayoutY[cursor+1]-win_top;
             if (y1>=winHeight) return false;
@@ -2041,11 +2049,66 @@ public abstract class VirtualList
         return width-scrollbar.getScrollWidth()-2;
     }
 
+    public final static void sort(Vector sortVector, int itemType ,int sortType){
+        try {
+            int size = sortVector.size();
+            int status,f,i;
+            Contact find;
+            switch(itemType){
+                case 0:
+                //ActiveContacts
+                     switch(sortType){
+                       case 0:
+                       //by status
+                          sort(sortVector);
+                          break;
+                       case 1:
+                       //by messageCount
+                         int nextCount = 0;
+                         Contact c = null;
+                         try {
+                          Vector newSort = new Vector(0);
+                            for (f = 0; f < sortVector.size(); ++f) {
+                              int cIndex = 0;
+                              for (i = 0; i < sortVector.size(); ++i) {
+                                 find = (Contact)sortVector.elementAt(i);
+                                 int msgNext = find.chatInfo.getNewMessageCount();
+                                 if(msgNext > nextCount){
+                                    nextCount = msgNext;
+                                    cIndex = sortVector.indexOf(find);
+                                    //c = find; //<-BIG_BARA_BUM!!!
+                                 }
+                              } 
+                             c = (Contact)sortVector.elementAt(cIndex);
+                             sortVector.removeElement(c);
+                             newSort.insertElementAt(c,0);
+                             nextCount = f = 0;
+                            }
+                            nextCount = newSort.size();
+                            for (f = 0; f < nextCount; ++f) sortVector.insertElementAt(newSort.elementAt(f),0);
+                            newSort = null;
+                            find = null;
+                            if(c!=null) c = null;
+                         } catch(OutOfMemoryError eom) { 
+//#ifdef CONSOLE 
+//#                            if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("::VList->sort->contactByMsgs",10);
+//#endif
+                         } catch (Exception e) {}
+                         break;
+                     }
+                    break;
+                case 1: //Bookmarks
+                    break;                    
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    
     public final static void sort(Vector sortVector){
         try {
-            //synchronized (sortVector) {
                 int f, i;
                 IconTextElement left, right;
+                if(sortVector == null) return;
                 int size=sortVector.size();
                 for (f = 1; f < size; f++) {
                     left=(IconTextElement)sortVector.elementAt(f);
@@ -2060,7 +2123,6 @@ public abstract class VirtualList
                     }
                     sortVector.setElementAt(left,i+1);
                 }
-           // }
         } catch (Exception e) {
             e.printStackTrace(); /* ClassCastException */
         }

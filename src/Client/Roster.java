@@ -230,6 +230,13 @@ public class Roster
 
     private static MessageEdit messageEdit;
     private static MessageEdit altmessageEdit;
+    private static ActiveContacts activeContacts = null;
+    
+
+    public void createActiveContacts(Displayable pView, Contact current){
+        activeContacts.setActiveContacts(pView, current);
+        display.setCurrent(activeContacts);
+    }
 
     public void createMessageEdit(boolean reCreate){
          if(reCreate) 
@@ -240,6 +247,26 @@ public class Roster
              altmessageEdit = new MessageEdit(display, true);
          }
     }
+    
+
+    public void updateBarsFont() {
+        mainbar=new MainBar(4, null, null, false);
+        MainBar secondBar=new MainBar("", true);
+        setMainBarItem(mainbar);
+        setInfoBarItem(secondBar);  
+        
+        mainbar.addRAlign();
+        mainbar.addElement(null);
+        mainbar.addElement(null);
+        mainbar.addElement(null);
+
+        secondBar.addElement(null);
+        secondBar.addRAlign();
+        secondBar.addElement(null);
+        
+        updateMainBar();
+    }
+    
     
     
     public Roster(Display display) {
@@ -275,6 +302,7 @@ public class Roster
 //#             messageActivity();
 //#endif
         Messages.MessageParser.restart();
+        if(activeContacts == null) activeContacts = new ActiveContacts(display, this); 
     }
     
     public void setLight(boolean state) {
@@ -612,7 +640,9 @@ public class Roster
 //menu actions    
 
     public void cmdMinimize() { BombusQD.getInstance().hideApp(true, null);  }
-    public void cmdActiveContacts() { new ActiveContacts(display, this, null); }
+    public void cmdActiveContacts() { 
+      createActiveContacts(this, null);
+    }
     public void cmdAccount(){ new AccountSelect(display, this, false,-1); }
     public void cmdStatus() { currentReconnect=0; new StatusSelect(display, this, null); }
     public void cmdAlert() { new AlertProfile(display, this); }
@@ -753,11 +783,14 @@ public class Roster
     
     private final static Integer icon_msg = new Integer(RosterIcons.ICON_MESSAGE_INDEX);
     private final static Integer icon_progress = new Integer(RosterIcons.ICON_PROGRESS_INDEX);
+    private Integer myStatusIcon = new Integer(myStatus);
     
     private void updateMainBar(){
         int profile=midlet.BombusQD.cf.profile;
-        Object state = querysign ? icon_progress : new Integer(myStatus);
-        Object en = (profile>0) ? new Integer(profile+RosterIcons.ICON_PROFILE_INDEX+1):null;
+        
+        if(myStatus != lastOnlineStatus) myStatusIcon = new Integer(myStatus);
+        
+        Object en = (profile>0) ? new Integer(profile + RosterIcons.ICON_PROFILE_INDEX + 1):null;
 
         if(0 != messageCount) {
             mainbar.setElementAt(icon_msg, 0); 
@@ -766,11 +799,10 @@ public class Roster
              mainbar.setElementAt(null, 0); 
              mainbar.setElementAt(null, 1); 
         }
-        mainbar.setElementAt(state, 2);
+        mainbar.setElementAt(querysign ? icon_progress : myStatusIcon, 2);
         mainbar.setElementAt(en, 5);
         
         if (null != en) en = null;
-        if (null != state) state = null;
         if (phoneManufacturer==Config.WINDOWS) {
             if (messageCount==0) setTitle("BombusQD");
             else setTitle("BombusQD "+getHeaderString());
@@ -795,26 +827,7 @@ public class Roster
         redraw();
     }
     
-    public void updateBarsFont() {
-        mainbar=new MainBar(4, null, null, false);
-        MainBar secondBar=new MainBar("", true);
-        setMainBarItem(mainbar);
-        setInfoBarItem(secondBar);  
-        
-        mainbar.addRAlign();
-        mainbar.addElement(null);
-        mainbar.addElement(null);
-        mainbar.addElement(null);
 
-        secondBar.addElement(null);
-        secondBar.addRAlign();
-        secondBar.addElement(null);
-        
-        updateMainBar();
-    }
-    
-    
-    
     public void countMsgs(){
       countNewMsgs();
     }
@@ -929,7 +942,6 @@ public class Roster
         reEnumerator.setModified();
     }
     public void reEnumRoster() {
-         if(theStream == null) return;
          reEnumerator.queueEnum();
      }
     public Vector getHContacts() {return contactList.contacts;}
@@ -993,6 +1005,7 @@ public class Roster
    private void sortContacts(Vector sortVector){
         try {
             //synchronized (sortVector) {
+                if(sortVector == null) return;
                 int f, i;
                 IconTextElement left, right;
                 int size = sortVector.size();//gContacts.size();
@@ -2000,14 +2013,14 @@ public class Roster
                                  JabberDataBlock get_query = data.findNamespace("query","http://jabber.org/protocol/stats");
                                  String server_name = data.getAttribute("from");
                                  Vector statistics = new Vector(0);
-                                 statistics.addElement(new CheckBox(SR.MS_STATICSTICS +":%"+server_name, true, true));
+                                 statistics.addElement(new CheckBox(SR.MS_STATICSTICS +":%"+server_name, true, true, false));
                                  int size=get_query.getChildBlocks().size();
                                   try {
                                       for (int i=0;i<size;i++){
                                              JabberDataBlock value=(JabberDataBlock)get_query.getChildBlocks().elementAt(i);
                                              String vname = value.getAttribute("name");
                                              String vvalue = value.getAttribute("value");                         
-                                             statistics.addElement(new CheckBox(vname + ":%"+ vvalue, true, true));
+                                             statistics.addElement(new CheckBox(vname + ":%"+ vvalue, true, true, false));
                                       }
                                  } catch (Exception e) {} 
                                  new CommandForm(display,this,5,server_name,null,statistics);
@@ -2765,11 +2778,10 @@ public class Roster
            Contact search;
            for(int i=0;i<size;i++) {
              search = (Contact)contactList.contacts.elementAt(i);
-             if(c==search){
-                active = search.active();
-             }
+             if(c==search) active = search.active();
            }
           search=null;
+          hContacts=null;
         }
         if(active==false) return;
         
@@ -3112,6 +3124,13 @@ public class Roster
          }
     }
 
+    public void createMultiMessage(Displayable pview,Vector contacts){
+         switch(midlet.BombusQD.cf.msgEditType){
+            case 0: messageEdit.setText(pview, contacts, true); break;
+            case 1:  altmessageEdit.setText(pview, contacts, true); break;
+         }
+    }
+    
     public void createMessageEdit(Contact c, String body, Displayable pview){
          switch(midlet.BombusQD.cf.msgEditType){
             case 0:
@@ -3187,14 +3206,14 @@ public class Roster
                 new SimpleItemChat(display,this,c);
               } else{
                 display.setCurrent(c.getMessageList());
-              }                
+              }  
+            c = null;
         } else{
             cleanupGroup();
             reEnumRoster();
             redraw();//???
         }       
     }        
-    
 
     public void keyPressed(int keyCode){
         super.keyPressed(keyCode);
@@ -3272,7 +3291,7 @@ public class Roster
                 break;
                 
             case KEY_NUM3:
-                new ActiveContacts(display, this, null);
+                createActiveContacts(this, null);
                 break;
             case KEY_NUM9:
                 if (getItemCount()==0)
@@ -3824,10 +3843,12 @@ public class Roster
         }
 
         public void update() {
+            if(theStream == null) return;
             try {
                 Object focused = (desiredFocus == null) ? getFocusedObject() : desiredFocus;
                 reinit(focused);
-                desiredFocus = null;
+                if(desiredFocus!=null) desiredFocus = null;
+                focused = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }

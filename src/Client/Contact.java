@@ -33,6 +33,7 @@ import Conference.MucContact;
 import Client.contact.ChatInfo;
 //#endif
 import Fonts.FontCache;
+import History.HistoryStorage;
 //#ifdef CLIENTS_ICONS
 import images.ClientsIcons;
 //#endif
@@ -52,7 +53,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Image;
 import util.StringUtils; 
-
+import javax.microedition.rms.RecordStore;
 
 public class Contact extends IconTextElement{
 
@@ -337,6 +338,33 @@ public class Contact extends IconTextElement{
 
     private static StringBuffer temp = new StringBuffer(0);
     
+    private static RecordStore recordStore = null;
+    public final static int SAVE_RMS_STORE = 0;
+    public final static int CLEAR_RMS_STORE = 1;
+    public final static int CLOSE_RMS_STORE = 2;
+    public final static int READ_ALL_DATA = 3;
+    
+    public void recordStore(int type, RecordStore rs){
+      switch(type){
+          case SAVE_RMS_STORE: 
+              recordStore = rs;
+              break;
+          case CLEAR_RMS_STORE: 
+              recordStore = HistoryStorage.clearRecordStore(rs);
+              break;
+          case CLOSE_RMS_STORE: 
+              recordStore = HistoryStorage.closeStore(rs);
+              break;
+          case READ_ALL_DATA:
+              if (recordStore == null){
+                  recordStore = HistoryStorage.openRecordStore(this, recordStore);
+                  if(null == recordStore) return;
+              }
+              HistoryStorage.getAllData(this, recordStore);
+              break;
+      } 
+    }
+    
     public void addMessage(Msg m) {
         boolean first_replace=false;
         if (origin!=ORIGIN_GROUPCHAT) {
@@ -386,6 +414,12 @@ public class Contact extends IconTextElement{
         }
         
         chatInfo.addMessage(m);
+        
+        if (group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
+          boolean allowLog = (origin<ORIGIN_GROUPCHAT);
+          if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact) allowLog=false;
+          if(allowLog) HistoryStorage.addText(this, m, recordStore);
+        }
         
         if(chatInfo.opened || m.messageType == Msg.MESSAGE_TYPE_OUT) chatInfo.reEnumCounts();
 

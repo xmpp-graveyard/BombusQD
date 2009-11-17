@@ -172,6 +172,8 @@ public class DiscoForm extends DefForm {
         //System.out.println("SEND: "+req.toString());
         //if (listener!=null) stream.addBlockListener(listener);
         stream.send(req);
+        req = null;
+        qry = null;
         destroyView();
     }
 

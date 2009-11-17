@@ -101,7 +101,6 @@ public class AccountSelect
         super();
         this.display=display;
         this.status=status;
-        midlet.BombusQD.debug.add("::AccountSelect super() "+Integer.toString(status),10);
         String str = "";
         switch(status){
             case 0: str = "(online)"; break;

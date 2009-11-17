@@ -39,8 +39,8 @@ import Alerts.AlertCustomize;
  * @author Eugene Stahov
  */
 public class EventNotify 
-        implements Runnable
-	,PlayerListener
+        implements //Runnable,
+        PlayerListener
 {
     
     private int vibraLength;
@@ -108,12 +108,13 @@ public class EventNotify
              }
         }
 
-	if (toneSequence) new Thread(this).start();
+	if (toneSequence) run();//new Thread(this).start();
     }
     
     public void run(){
         try {
-            for (int i=0; i<tone.length(); ) {
+            int len = tone.length();
+            for (int i=0; i<len; ) {
                 int note=(tone.charAt(i++)-'A')+12*(tone.charAt(i++)-'0');
                 int duration=150;
                 Manager.playTone(note, duration, sndVolume);

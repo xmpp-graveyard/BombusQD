@@ -222,28 +222,22 @@ public class StringUtils {
         return out.toString();
     }
 
-    
+
     public static Vector parseBoxString(String value,int availWidth,Font font) {
-        StringBuffer out=new StringBuffer(value);
-        int vi = 0;
-        int size = out.length();//nick%aqent.: Вах 8-D
-        //while (vi<size) {
-        ///    if (out.charAt(vi)<0x03) out.deleteCharAt(vi);
-        //    else vi++;
-        //}
-        value=out.toString();
-        Vector lines=new Vector(0);
+        Vector lines = new Vector(0);
         char[] valueChars = value.toCharArray();
         int startPos = 0;
         int lastSpacePos = -1;
         int lastSpacePosLength = 0;
         int currentLineWidth = 0;
         int len = valueChars.length;
-        for (int i = 0; i < len; i++) {
+        String object = null;
+        for (int i = 0; i < len; ++i) {
             char c = valueChars[i];
             currentLineWidth += font.charWidth(c);
             if (c == '%' || c == '\n') {
-                lines.addElement( new String( valueChars, startPos, i - startPos ) );
+                object = new String( valueChars, startPos, i - startPos );
+                lines.addElement( object );
                 lastSpacePos = -1;
                 startPos = i+1;
                 currentLineWidth = 0;
@@ -251,18 +245,23 @@ public class StringUtils {
             } else if (currentLineWidth >= availWidth && i > 0) {
                 if ( lastSpacePos == -1 ) {
                     i--;
-                    lines.addElement( new String( valueChars, startPos, i - startPos ) );
+                    object = new String( valueChars, startPos, i - startPos );
+                    lines.addElement( object );
                     startPos =  i;
                     currentLineWidth = 0;
                 } else {
                     currentLineWidth -= lastSpacePosLength;
-                    lines.addElement( new String( valueChars, startPos, lastSpacePos - startPos ) );
+                    object = new String( valueChars, startPos, lastSpacePos - startPos );
+                    lines.addElement( object );
                     startPos =  lastSpacePos + 1;
                     lastSpacePos = -1;
                 }
             }
         } 
-        lines.addElement( new String( valueChars, startPos, valueChars.length - startPos ) );
+        object = new String( valueChars, startPos, valueChars.length - startPos );
+        lines.addElement( object );
+        valueChars = null;
+        object = null;
         return lines;
     }
     

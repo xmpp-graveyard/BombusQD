@@ -194,6 +194,8 @@ public class GMenu extends Canvas {
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_REGISTERING)>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_MY_JABBER)>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SERVICE)>-1
+              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SORT_TYPE)>-1
+              || gm.commandslist[gm.itemCursorIndex].indexOf("History")>-1
               ){
               drawAllItems(g,gm.menuCommandsIn,gm.commandslistIn,gm.itemCursorIndexIn);
            }
@@ -222,10 +224,12 @@ public class GMenu extends Canvas {
    private void eventOk(){
     cursorY=0;       
      if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_NEW_ACCOUNT)>-1 ||
-        gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_MY_JABBER)>-1){
+        gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_MY_JABBER)>-1 ||
+        gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SORT_TYPE)>-1){
           GMenuIn(gm.cmdfirstList); eventMenu=true; return;
      } 
-     else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_REGISTERING)>-1){
+     else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_REGISTERING)>-1
+          || gm.commandslist[gm.itemCursorIndex].indexOf("History")>-1 ) {
           GMenuIn(gm.cmdsecondList); eventMenu=true; return;   
      } 
      else if (gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SERVICE)>-1){            

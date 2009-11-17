@@ -53,29 +53,66 @@ import ui.MainBar;
 //# import util.ClipBoard;
 //#endif
 
-public class CommandForm extends DefForm
+public final class CommandForm extends DefForm
 {
     private Display display;
     private Displayable parentView;
-    private TextInput textbox;
+    private static TextInput textbox;
     
     
-    private Object obj;
-    private Object res;  
-    private int type=-1;
+    private static Object obj;
+    private static Object res;  
+    private static int type=-1;
     
-    public Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
+    private static StringBuffer sb = new StringBuffer(0);
     private static final int DESTROY_ROOM=0;
     private static final int DELETE_ACCOUNT=1;    
     private static final int CHANGE_PASS_ACC=2; 
     private static final int _CHANGE_PASS_RMS=3;  
     private static final int _DEL_ACCOUNT_FROM_RMS=4;
     private static final int STATS_ITEM=5;
-    
+    private static final int HISTORY_ITEM=6;
     
     public CommandForm(){};
     
-    public CommandForm(Display display, Displayable pView,int type,String title,Object obj,Object res) {
+    public void destroy(){
+        int size = itemsList.size();
+        int i;
+        CheckBox cb;
+         for (i = 0; i < size; ++i) {
+          cb = (CheckBox)itemsList.elementAt(i);
+          cb.destroy();
+         }
+        itemsList.removeAllElements();
+        sb.setLength(0);
+        cb = null;
+        if(obj != null) obj = null;  
+        if(res != null) res = null;
+    }
+    
+    public void addObject(Object res, int current, int size){
+        sb.setLength(0);
+        if(current != 0) {
+            sb.append("Loading...")
+              .append(current)
+              .append('/')
+              .append(size);
+            mainbar.setElementAt( sb.toString() , 0);
+            itemsList.addElement((CheckBox)res);
+        } else {
+           sb.append(res);//for destroyView check
+           mainbar.setElementAt(res, 0);
+        }
+    }
+    
+    public void setParentView(Contact c) {
+        mainbar.setElementAt( c.bareJid , 0);
+        midlet.BombusQD.getInstance().display.setCurrent(this);
+        moveCursorHome();
+        this.parentView = c.getMessageList();
+    }    
+    
+    public CommandForm(Display display, Displayable pView,int type, String title, Object obj, Object res) {
         super(display, pView, title);
         
         this.display=display;
@@ -102,7 +139,7 @@ public class CommandForm extends DefForm
                 StringBuffer info = new StringBuffer();
                 info.append((String)obj);
                 info.append(SR.MS_NEW_PASSWORD+":%"+(String)res);
-                itemsList.addElement(new CheckBox(info.toString(), true, true));
+                itemsList.addElement(new CheckBox(info.toString(), true, true, false));
                 itemsList.addElement(new SimpleString(SR.MS_COPY+"?", true));
                 itemsList.addElement(new SimpleString(SR.MS_EDIT_ACCOUNT_MSG, true));                
                 break;
@@ -112,13 +149,15 @@ public class CommandForm extends DefForm
                 itemsList.addElement(new SimpleString(SR.MS_DELETE+"?", true));                
                 break;
             } 
+            case HISTORY_ITEM:
             case STATS_ITEM:{
                 if(res!=null){
                     Vector get = (Vector)res;
                     int size = get.size();
-                    for(int i=0;i<size;i++){
+                    for(int i=0; i < size; ++i){
                       itemsList.addElement((CheckBox)get.elementAt(i));
                     }
+                    get = null;
                 }
                 break;                
             }
@@ -128,11 +167,20 @@ public class CommandForm extends DefForm
          textbox=new TextInput(display,field_text, "",null,TextField.ANY);  
          itemsList.addElement(textbox);    
         }
-        setMainBarItem(new MainBar(title));
-        attachDisplay(display);
-        this.parentView=pView;
+        
+        mainbar = new MainBar(title);
+        setMainBarItem(mainbar);
+        
+        if(title.length()>0){
+          attachDisplay(display);
+          this.parentView=pView;
+        }
     }
-
+    
+    public void destroyView() {
+        if(sb.length()>0) destroy();
+	if (display!=null) display.setCurrent(parentView);
+    }
     
     public void cmdOk() {
           switch(type){
@@ -195,7 +243,11 @@ public class CommandForm extends DefForm
                   destroyView();
                   break;
             }
-               
+            case HISTORY_ITEM:
+            {
+                  destroyView();
+                  break;
+            }
           }
     }
 

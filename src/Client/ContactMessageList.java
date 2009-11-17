@@ -134,6 +134,12 @@ public final class ContactMessageList extends MessageList implements MenuListene
         addCommand(midlet.BombusQD.commands.cmdMessage); 
         if (contact.origin!=Contact.ORIGIN_GROUPCHAT) addCommand(midlet.BombusQD.commands.cmdActions); 
         
+
+        //if(...){
+            addCommand(midlet.BombusQD.commands.cmdHistory); 
+            addInCommand(2,midlet.BombusQD.commands.cmdHistory1); 
+        //}
+        
         if (contact.getChatInfo().getMessageCount()>0) {
 //#ifndef WMUC
             if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT
@@ -255,6 +261,10 @@ public final class ContactMessageList extends MessageList implements MenuListene
     public void commandAction(Command c, Displayable d){
         //super.commandAction(c,d);
 	//cf.clearedGrMenu=true;	
+        if(c==midlet.BombusQD.commands.cmdHistory1){
+            contact.recordStore(contact.READ_ALL_DATA, null);
+        }
+        
         if (c==midlet.BombusQD.commands.cmdxmlSkin) {
            try {
                if (((MessageItem)getFocusedObject()).msg.body.indexOf("xmlSkin")>-1) {
@@ -389,7 +399,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
                 new RosterItemActions(midlet.BombusQD.getInstance().display, this, contact, -1);
         }
 	if (c==midlet.BombusQD.commands.cmdActive) {
-            new ActiveContacts(midlet.BombusQD.getInstance().display, this, null); 
+            midlet.BombusQD.sd.roster.createActiveContacts(this, contact); 
         }
         
         if (c==midlet.BombusQD.commands.cmdSubscribe) midlet.BombusQD.sd.roster.doSubscribe(contact);
@@ -565,7 +575,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#                
 //#              if(contact.msgSuspended != null && check) {
 //#                final String msgText = messg;
-//#                ui.controls.AlertBox obj =  new ui.controls.AlertBox(msg.from, "Message Buffer is not empty.Clear it?",
+//#                ui.controls.AlertBox obj =  new ui.controls.AlertBox(msg.from, SR.MS_MSGBUFFER_NOT_EMPTY,
 //#                        midlet.BombusQD.getInstance().display, this) {
 //#                    public void yes() { showMsgEdit(msgText); }
 //#                    public void no()  { keyGreen(); }
@@ -699,7 +709,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
                 break;
             case KEY_NUM3:
                 contact.chatInfo.opened = false;
-                new ActiveContacts(midlet.BombusQD.getInstance().display, contact.getMessageList() , contact);
+                midlet.BombusQD.sd.roster.createActiveContacts(this, contact);
                 contact.setCursor(cursor);
                 break;        
             case KEY_NUM9:

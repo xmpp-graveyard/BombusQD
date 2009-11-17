@@ -238,6 +238,9 @@
 //#     public static String loadString(String key) {
 //#         if (action==null) {
 //#             String file="/lang/"+midlet.BombusQD.cf.getInstance().lang+".activity.txt";
+//#ifdef CONSOLE 
+//#             if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("::loadActivity->"+file,10);
+//#endif
 //#             System.out.println(file);
 //#             action=new StringLoader().hashtableLoader(file);
 //#             if (action==null) {

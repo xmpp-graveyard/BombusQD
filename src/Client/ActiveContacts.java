@@ -53,7 +53,7 @@ import Conference.ConferenceGroup;
  *
  * @author EvgS,aqent
  */
-public class ActiveContacts 
+public final class ActiveContacts 
     extends VirtualList
     implements
 //#ifndef MENU_LISTENER
@@ -64,36 +64,77 @@ public class ActiveContacts
 {
     
     Vector activeContacts;
+    private Display display;
+    private MainBar mainbar;
+    private Displayable parentView;
+    
+    private int sortType = -1;
+    public static boolean isActive = false;
     
     private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
     private Command cmdOk=new Command(SR.MS_SELECT, Command.SCREEN, 1);
+    private Command cmdCreateMultiMessage=new Command(SR.MS_MULTI_MESSAGE, Command.SCREEN, 3);
+    private Command cmdSortType=new Command(SR.MS_SORT_TYPE, Command.SCREEN, 4);
+    private Command cmdSortDefault=new Command(SR.MS_SORT_TYPE_DEF, Command.SCREEN, 5);
+    private Command cmdSortByStatus=new Command(SR.MS_SORT_TYPE_STATUS, Command.SCREEN, 6);
+    private Command cmdSortByMsgsCount=new Command(SR.MS_SORT_TYPE_MSGS, Command.SCREEN, 7);
+
+    
+    private long lasttime = 0;
+    private long current = 0;
+    
+    public void sort(){
+        current = System.currentTimeMillis();
+        if(lasttime==0) lasttime = System.currentTimeMillis() + 10000;
+        //System.out.println( (current - lasttime) );
+        if( (current - lasttime) < 500 ) { //0.5sec
+          lasttime = current;
+          return;
+        }        
+        switch(sortType) {
+            case -1: break;
+            case 0: sort(activeContacts, 0, 0); break;//byStatus
+            case 1: sort(activeContacts, 0, 1); break;//byMsgsCount
+        }
+        lasttime = current;
+    }
+    
+    public void setActiveContacts(Displayable pView, Contact current){
+        this.parentView=pView;
+        
+        activeContacts = null;
+	activeContacts = new Vector(0);
+        Contact c = null;
+        
+        Vector hContacts = midlet.BombusQD.sd.roster.getHContacts();
+        int size=hContacts.size();   
+        for(int i=0;i<size;i++){    
+           c=(Contact)hContacts.elementAt(i);
+           if (c.active()) activeContacts.addElement(c);
+        }
+        if (getItemCount()==0) return;
+        //System.out.println(activeContacts.toString());
+
+        isActive = true;
+        sort();
+        mainbar.setElementAt( Integer.toString(getItemCount()) , 0 );
+	try {
+           focusToContact(current);
+           hContacts = null;
+        } catch (Exception e) { }
+    }
+    
     
     /** Creates a new instance of ActiveContacts */
-    public ActiveContacts(Display display, Displayable pView, Contact current) {
+    public ActiveContacts(Display display, Displayable pView) {
 	//super();
-        activeContacts=null;
-	activeContacts=new Vector(0);
-        Contact c=null;
-         int size=midlet.BombusQD.sd.roster.getHContacts().size();        
-            for(int i=0;i<size;i++){    
-                c=(Contact)midlet.BombusQD.sd.roster.getHContacts().elementAt(i);
-                if (c.active()) activeContacts.addElement(c);             
-            }
-	if (getItemCount()==0) return;
-	
-        MainBar mainbar=new MainBar(2, String.valueOf(getItemCount()), " ", false);
+        this.display = display;
+
+        mainbar=new MainBar(2, String.valueOf(getItemCount()), " ", false);
         mainbar.addElement(SR.MS_ACTIVE_CONTACTS);
         setMainBarItem(mainbar);
 
 	commandState();
-
-	try {
-            int focus=activeContacts.indexOf(current);
-            moveCursorTo(focus);
-        } catch (Exception e) {}
-
-	attachDisplay(display);
-        this.parentView=pView;
     }
     
     public void commandState() {
@@ -101,13 +142,18 @@ public class ActiveContacts
         menuCommands.removeAllElements();
 //#endif
         addCommand(cmdOk); cmdOk.setImg(0x43);
+        addCommand(cmdCreateMultiMessage); cmdCreateMultiMessage.setImg(0x81);
+        addCommand(cmdSortType); cmdSortType.setImg(0x64);
+          addInCommand(1,cmdSortDefault); cmdSortDefault.setImg(0x64);
+          addInCommand(1,cmdSortByStatus); cmdSortByStatus.setImg(0x64);
+          addInCommand(1,cmdSortByMsgsCount); cmdSortByMsgsCount.setImg(0x64);
     }
     
 //#ifdef MENU_LISTENER
     
 //#ifdef GRAPHICS_MENU        
 //#     public int showGraphicsMenu() {
-//#         new GMenu(display, parentView, this, null, menuCommands);
+//#         new GMenu(display, parentView, this, null, menuCommands, cmdfirstList, null, null);  
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.ACTIVE_CONTACTS;        
 //#         return GMenu.ACTIVE_CONTACTS;
 //#     }
@@ -117,30 +163,51 @@ public class ActiveContacts
 
 //#endif
 
-    protected int getItemCount() { return activeContacts.size(); }
+    protected int getItemCount() { 
+        if(activeContacts==null) return 0;
+        return activeContacts.size();
+    }
     protected VirtualElement getItemRef(int index) { 
 	return (VirtualElement) activeContacts.elementAt(index);
     }
 
     public void eventOk() {
 	Contact c=(Contact)getFocusedObject();
-         if(Config.getInstance().useClassicChat){
-           new SimpleItemChat(display,midlet.BombusQD.sd.roster,(Contact)c);            
-         }else{
-            display.setCurrent(c.getMessageList());
-         }                
+        isActive = false;
+         if(Config.getInstance().useClassicChat) 
+             new SimpleItemChat(display,midlet.BombusQD.sd.roster,(Contact)c);            
+         else
+             display.setCurrent(c.getMessageList());
     }
 
     public void commandAction(Command c, Displayable d) {
 	if (c==cmdCancel) destroyView();
 	if (c==cmdOk) eventOk();
+        if (c==cmdCreateMultiMessage) {
+            isActive = false;
+            midlet.BombusQD.sd.roster.createMultiMessage(this,activeContacts);
+        }
+        if (c==cmdSortDefault) {
+           sortType = -1;
+           //sort(activeContacts);
+        }
+        if (c==cmdSortByStatus) {
+           sortType = 0;
+           sort();
+        }
+        if (c==cmdSortByMsgsCount) {
+           sortType = 1;
+           sort();
+        }
     }
+
 
     public void keyPressed(int keyCode) {
         kHold=0;
 //#ifdef POPUPS
         VirtualList.popup.next();
 //#endif
+        sort();
 	if (keyCode==KEY_NUM3) {
             destroyView();
         } else if (keyCode==KEY_NUM0) {
@@ -178,13 +245,21 @@ public class ActiveContacts
     }
     
     protected void keyClear () {
-        Contact c=(Contact)getFocusedObject();
-        c.purge();
-        activeContacts.removeElementAt(cursor);
-        getMainBarItem().setElementAt(String.valueOf(getItemCount()), 0);
+       Contact c = (Contact)getFocusedObject();
+       try{
+          c.purge();
+           activeContacts.removeElementAt(cursor);
+           mainbar.setElementAt(Integer.toString(getItemCount()), 0);
+          c = null;
+       } catch (Exception e){
+//#ifdef CONSOLE 
+//#           if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("::ActiveContacts->Exception->"+c,10);
+//#endif
+       }
     }
     
     public void destroyView(){
+        isActive = false;
         midlet.BombusQD.sd.roster.reEnumRoster();
         display.setCurrent(parentView);
     }

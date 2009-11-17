@@ -66,6 +66,7 @@ import Client.ContactMessageList;
 //#ifdef LIGHT_CONTROL
 //# import LightControl.*;
 //#endif
+import History.HistoryStorage;
 
 /** Entry point class
  *
@@ -179,6 +180,7 @@ public class BombusQD extends MIDlet implements Runnable
         if(sd.roster==null){
           sd.roster=new Roster(display);
         }
+        HistoryStorage hs = new HistoryStorage(); 
 //#ifdef STATS
 //#         Stats.getInstance().loadFromStorage();
 //#endif         

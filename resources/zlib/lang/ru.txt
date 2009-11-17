@@ -699,3 +699,9 @@ Graphisc Menu Screen Position	Позиция графического меню
 [center]	[По центру]
 [Left:     ]	[Слева:     ]
 [    :Right]	[    :Справа]
+Message Buffer is not empty.Clear it?	Черновик содержит сообщение,стереть?
+Create Multi Message	Мульти-сообщение
+Sort Type	Сортировка
+OFF (default)	По умолчанию
+By status	По статусу
+By Msgs count	По кол-ву сообщений
