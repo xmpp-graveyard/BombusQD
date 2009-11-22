@@ -180,14 +180,12 @@ public class SmilePicker
         }
     }
 
-    public void drawCursor (Graphics g, int width, int height,int elS,int elE){
-        int x=xBorder+(xCursor*imgWidth);
-        g.setColor(getColorBGnd());
-        g.fillRect(0,0,width, height);
-        g.translate(x,0);
-        super.drawCursor(g, imgWidth, lineHeight, -1, -1);
-        g.translate(-x,0);
-    } 
+    public void drawCursor (Graphics g, int x0, int y0, int width, int height){ //Tishka17
+         int x=xBorder+(xCursor*imgWidth);
+         g.setColor(getColorBGnd());
+         g.fillRect(0,y0,width, height);
+         super.drawCursor(g, x+x0,y0,imgWidth, lineHeight);
+     } 
 
     protected void drawBalloon(final Graphics g, int balloon, final String text) {
         if (cursor==0) balloon+=lineHeight+Balloon.getHeight();

@@ -265,17 +265,21 @@ public class ComplexString implements VirtualElement {
     public int getVHeight(){
         if (height!=0) return height;
         int elementCount = elementData.size();
+        if (elementCount == 0) return -1;
+        int h=0;
+        Object obj;
         for (int i=0; i<elementCount; ++i){
-            int h=0;
-            if (elementData.elementAt(i)==null) continue;
-            if (elementData.elementAt(i) instanceof String) h=font.getHeight(); 
-            else if (elementData.elementAt(i) instanceof Integer) {
-                int a=((Integer)elementData.elementAt(i)).intValue();
-                if ((a&0xff000000) == 0) { h=imageList.getHeight(); }
+            obj = elementData.elementAt(i);
+            if (obj==null) continue;
+            if (obj instanceof String) h=font.getHeight(); 
+            else if (obj instanceof Integer) {
+                int a=((Integer)obj).intValue();
+                if ((a&0xff000000) == 0) h=imageList.getHeight();
             }
-            else if (elementData.elementAt(i) instanceof VirtualElement) h=((VirtualElement)elementData.elementAt(i)).getVHeight();
+            else if (obj instanceof VirtualElement) h=((VirtualElement)obj).getVHeight();
             if (h>height) height=h;
         }
+        obj = null;
         return height;
     }
 

@@ -1,5 +1,27 @@
 /*
  * HistoryStorage.java
+ *
+ * Copyright (c) 2009, Alexej Kotov (aqent), http://bombusmod-qd.wen.ru
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * You can also redistribute and/or modify this program under the
+ * terms of the Psi License, specified in the accompanied COPYING
+ * file, as published by the Psi Project; either dated January 1st,
+ * 2005, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
 
 package History;
@@ -15,22 +37,203 @@ import javax.microedition.lcdui.*;
 import javax.microedition.rms.RecordStore;
 import javax.microedition.rms.RecordEnumeration;
 import javax.microedition.rms.RecordFilter;
-
+//#if FILE_IO
+import io.file.FileIO;
+import java.io.IOException;
+import java.io.OutputStream;
+import util.Strconv;
+//#endif
+import util.DeTranslit;
+import util.StringUtils;
+import Client.ContactMessageList;
 /**
  *
  * @author aqent
  */
 public final class HistoryStorage {
     
-    private final static Contact c = null;
-    private final static String store = "store_";
-    private static CommandForm cmd = null;
-
     /** Creates a new instance of HistoryStorage */
     public HistoryStorage() {
       if(cmd==null) cmd = new CommandForm(midlet.BombusQD.getInstance().display, midlet.BombusQD.sd.roster, 6 , "" , null, null);
     }
+    private final static Contact c = null;
+    private final static String store = "store_";//link this with selfjid
+    private static CommandForm cmd = null;
+    private static ContactMessageList messageList = null;
+
+    public static void addText(Contact c, Msg message, ContactMessageList msgList)
+    {
+        if (midlet.BombusQD.cf.module_history==false) return;
+        messageList = msgList;
+        switch(HistoryConfig.getInstance().historyTypeIndex) {
+            case 0:
+                //System.out.println("add to->RMS");
+                addRMSrecord(c, message, messageList.getRecordStore() );
+                break;
+            case 1:
+                //System.out.println("add to->FS");
+                addFSMessage(message, c.bareJid);
+                if(true) return;
+                break;
+            case 2:
+                //System.out.println("add to->SERVER");
+                if(true) return;
+                break;
+        }
+   }
     
+   public static void loadData(Contact c, RecordStore recordStore) {
+        if (midlet.BombusQD.cf.module_history==false) return;
+        switch(HistoryConfig.getInstance().historyTypeIndex) {
+            case 0:
+                startTimer(recordStore, c, 20);
+                //System.out.println("get->RMS");
+                break;
+            case 1:
+                //System.out.println("get->FS");
+                if(true) return;
+                break;
+            case 2:
+                //System.out.println("get->SERVER");
+                if(true) return;
+                break;
+        }
+   }
+    
+    
+//#if FILE_IO
+    private static FileIO file;
+    private static OutputStream os;
+    private static byte[] bodyMessage;
+    private static StringBuffer buf = new StringBuffer(0);
+    
+    private static String createBody(Msg m) {
+        //String fromName=midlet.BombusQD.sd.account.getUserName();
+        //if (m.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=m.from;
+
+        buf.setLength(0);
+        switch(m.messageType){
+             case Msg.MESSAGE_TYPE_IN:
+                    buf.append('<')
+                          .append('-');
+                    break;
+             case Msg.MESSAGE_TYPE_OUT:
+                    buf.append('-')
+                          .append('>');
+                    break;
+             case Msg.MESSAGE_TYPE_ERROR:
+                    buf.append('!');
+                    break;
+             case Msg.MESSAGE_TYPE_SUBJ:
+                    if (m.subject!=null) {
+                       buf.append('*')
+                             .append(m.subject)
+                             .append('\r')
+                             .append('\n');
+                    }
+                    break;
+        }
+        buf.append(' ')
+           .append('[')
+           .append(m.getDayTime())
+           .append(']')
+           .append(' ');
+            
+        buf.append(m.body)
+           .append('\r')
+           .append('\n');
+        /*
+         <- [date gmt] message
+         -> [date gmt] message
+         *SUBJECT
+         */
+        return (HistoryConfig.getInstance().cp1251) ? Strconv.convUnicodeToCp1251(buf.toString()) : buf.toString();
+    }
+    
+    private static void addFSMessage(Msg m, String filename) {
+       bodyMessage = createBody(m).getBytes();
+       filename = (HistoryConfig.getInstance().transliterateFilenames) ? DeTranslit.getInstance().translit(filename) : filename;
+       
+       buf.setLength(0);
+       buf.append(HistoryConfig.getInstance().historyPath)
+                   .append(StringUtils.replaceBadChars(filename))
+                   .append(".txt");
+       filename = buf.toString();
+       
+       file = FileIO.createConnection(filename);
+
+        try {
+            os = file.openOutputStream(0);
+            if(bodyMessage.length > 0) os.write(bodyMessage);
+            os.close();
+            os.flush();
+            file.close();
+            file = null;
+            os = null;
+        } catch (IOException ex) {
+            try {
+                file.close();
+                file = null;
+            } catch (IOException ex2) { }
+        }
+        filename = null;
+        bodyMessage = null;
+        bodyMessage = new byte[0];
+    }
+    
+//#endif
+    
+    
+    private static ByteArrayOutputStream baos = null;
+    private static DataOutputStream das = null;
+    private static byte[] buffer = null;
+    private static byte[] textData = null;
+    
+    private final static int SAVE_RMS_STORE = 0;
+    private final static int CLEAR_RMS_STORE = 1;
+    private final static int CLOSE_RMS_STORE = 2;
+    private final static int READ_ALL_DATA = 3;
+    
+    synchronized private static void addRMSrecord(Contact c, Msg message, RecordStore recordStore) {
+        buffer = textData = null;
+        int len;
+        try {
+              if(null == recordStore) {
+                            String rName = getRSName(c.bareJid);
+                            if(rName.length()>30) rName = rName.substring(0,30);
+                            recordStore = RecordStore.openRecordStore(rName, true);
+                            messageList.getRmsData(SAVE_RMS_STORE, recordStore);//save
+                            rName = null;
+              }
+              baos = new ByteArrayOutputStream();
+              das = new DataOutputStream(baos);
+              das.writeUTF(message.getDayTime());
+              das.writeUTF(message.body);
+                        
+            textData = baos.toByteArray();
+            len = textData.length;
+
+            buffer = new byte[len+1];
+            System.arraycopy(textData, 0, buffer, 1, len);
+            recordStore.addRecord(buffer, 0, buffer.length);
+
+         } catch (Exception ex) {
+                 ex.printStackTrace();
+         } finally {
+                  if (recordStore != null) {
+                    messageList.getRmsData(CLOSE_RMS_STORE, recordStore);
+                    recordStore = null;
+                  }
+                  try{
+                     textData = buffer = null;
+                     buffer = new byte[0];
+                     textData = new byte[0];
+                     if (dis != null)  { das.close(); das = null; }
+                     if (baos != null) { baos.close(); baos = null; }
+                  } catch (Exception e) { }
+        }
+    }
+
     public static RecordStore openRecordStore(Contact c, RecordStore recordStore) {
       try {
         if (recordStore != null) {
@@ -53,7 +256,6 @@ public final class HistoryStorage {
        return null;
     }  
     
-
     public static RecordStore clearRecordStore(RecordStore recordStore) {
         try {
             int size = recordStore.getNumRecords();
@@ -69,50 +271,18 @@ public final class HistoryStorage {
          }
     }
 
+    private static int getRecordCount(RecordStore recordStore) {	
+       try {
+         return recordStore.getNumRecords();
+       } catch (Exception e) {  return -1; }
+    }
     
-    
-    private static ByteArrayOutputStream baos = null;
-    private static DataOutputStream das = null;
-    synchronized public static void addText(Contact c, Msg message, RecordStore recordStore)
-    {
-        byte[] buffer, textData;
-        int len;
-        try {
-              if(null == recordStore) {
-                            String rName = getRSName(c.bareJid);
-                            if(rName.length()>30) rName = rName.substring(0,30);
-                            recordStore = RecordStore.openRecordStore(rName, true);
-                            c.recordStore(c.SAVE_RMS_STORE, recordStore);//save
-                            rName = null;
-              }
-              baos = new ByteArrayOutputStream();
-              das = new DataOutputStream(baos);
-              das.writeUTF(message.getDayTime());
-              das.writeUTF(message.body);
-                        
-            textData = baos.toByteArray();
-            len = textData.length;
-
-            buffer = new byte[len+1];
-            System.arraycopy(textData, 0, buffer, 1, len);
-            recordStore.addRecord(buffer, 0, buffer.length);
-
-         } catch (Exception ex) {
-                 ex.printStackTrace();
-         } finally {
-                  if (recordStore != null) {
-                    c.recordStore(c.CLOSE_RMS_STORE, recordStore);
-                    recordStore = null;
-                  }
-                  try{
-                     if (dis != null)  { das.close(); das = null; }
-                     if (baos != null) { baos.close(); baos = null; }
-                  } catch (Exception e) { }
-        }
-   }
-    
+    private static String getRSName(String bareJid) {
+       return store + bareJid;
+    }
     
 
+    
     private static Timer timer;
     private static void startTimer(RecordStore rs, Contact c, int repeatTime) {
        if ( timer == null) {
@@ -156,7 +326,6 @@ public final class HistoryStorage {
          try {
               byte[] msgData = null;
               size = recordStore.getNumRecords();
-              if(size == 0) stopTimer();
               try {
                    for (i=0; i < 5; ++i) {
                     posRecord++;
@@ -180,10 +349,15 @@ public final class HistoryStorage {
             } finally {
                 if(posRecord == size){
                    timeE = System.currentTimeMillis();
-                   
+                   stopTimer();
                    try{
                      sb.setLength(0);
-                     sb.append("RMS: ")
+                     if(size == 0) {
+                        sb.append("RMS record empty.");
+                        posRecord = -1;
+                     }
+                     else {
+                      sb.append("RMS: ")
                        .append(recordStore.getName())
                        .append("%Stats:\nSize->")
                        .append(recordStore.getSize())
@@ -195,16 +369,16 @@ public final class HistoryStorage {
                        .append("\nLoad Time-> ")
                        .append(Long.toString(timeE - timeS))
                        .append(" msec");
-                     
+                     }
                      addCheckBox = new CheckBox( sb.toString() , true, true, true);
                      cmd.addObject(addCheckBox, posRecord, size);
                      cmd.addObject(c.bareJid, 0, 0);
+                     
+                     sb.setLength(0);
                    } catch (Exception e) { }
-                   
-                  stopTimer();
                   addCheckBox = null;
                   if (recordStore != null) {
-                    c.recordStore(c.CLOSE_RMS_STORE, recordStore);
+                    messageList.getRmsData(CLOSE_RMS_STORE, recordStore);
                     recordStore = null;
                   }
                     try{
@@ -214,22 +388,5 @@ public final class HistoryStorage {
                 }
             }
       }
-    }
-  
-
-    public static void getAllData(Contact c, RecordStore recordStore) {
-       startTimer(recordStore, c, 20);
-    }
-
-   
-    public static int getRecordCount(RecordStore recordStore) {	
-       try {
-         return recordStore.getNumRecords();
-       } catch (Exception e) {  return -1; }
-    }
-
-    
-    private static String getRSName(String bareJid) {
-       return store + bareJid;
     }
 }

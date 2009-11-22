@@ -50,7 +50,7 @@ public class IqVersionReply implements JabberBlockListener {
             if (query==null) return BLOCK_REJECTED;
             
             Contact c=StaticData.getInstance().roster.getContact( data.getAttribute("from"), false);
-            c.setIncoming(Contact.INC_VIEWING);
+            c.setIncoming(Constants.INC_VIEWING);
             
             Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
             reply.addChild(query);

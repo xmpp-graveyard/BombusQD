@@ -280,7 +280,7 @@ public class VCardView
 //#else
     super.commandState(); 
 //#endif
-        removeCommand(cmdOk);
+        removeCommand(midlet.BombusQD.commands.cmdOk);
         removeCommand(cmdCancel);
         
         if (vcard!=null) {

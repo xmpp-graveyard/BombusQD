@@ -90,23 +90,43 @@ import javax.microedition.lcdui.TextField;
  *
  * @author EvgS,aqent
  */
-public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify {
+public final class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify {
 
     Object item=null;
 
     private int action;
 
     ActionsIcons menuIcons=ActionsIcons.getInstance();
-    
-    
+
+    private MainBar mainbar;
 //#ifdef PEP
 //#     EventPublish publishEvent = new EventPublish();
 //#endif        
 
     /** Creates a new instance of RosterItemActions */
-    public RosterItemActions(Display display, Displayable pView, Object item, int action) {
-        super(item.toString(), ActionsIcons.getInstance() ,null);
-
+    public RosterItemActions(Display display, Displayable pView) {
+        super("init", ActionsIcons.getInstance() ,null);
+        mainbar = new MainBar("init");
+        setMainBarItem(mainbar);
+        this.display = display;
+    }
+    
+    public void showActions(Displayable pView,Object item, int action){
+        menuitems.removeAllElements();
+        redraw();
+        setItems(pView,item,action);
+	if (getItemCount()>0) {
+            if (action<0) {
+                attachDisplay(display);
+                this.parentView=pView;
+            } else try {
+                this.display=display;
+                doAction(action);
+            } catch (Exception e) { }
+        }
+    }
+    
+    private void setItems(Displayable pView,Object item, int action) {
         this.item=item;
         this.action=action;
         if (!midlet.BombusQD.sd.roster.isLoggedIn()) return;
@@ -116,11 +136,10 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
         
 	if (isContact) {
 	    Contact contact=(Contact)item;   
-            
-            MainBar mainbar=new MainBar(contact);
-            setMainBarItem(mainbar);
             int grType = contact.getGroupType();
+            boolean originGroupchat = (contact.origin==Constants.ORIGIN_GROUPCHAT);
 
+            mainbar.setElementAt(contact.bareJid, 0);
         // if(contact.bareJid.equals(StaticData.HELPER_CONTACT)==false){            
 	    if (grType==Groups.TYPE_TRANSP) {
 		addItem(SR.MS_LOGON,5, menuIcons.ICON_ON);
@@ -134,8 +153,7 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
 //#endif
 	    }
 
-
-	    addItem(SR.MS_VCARD,1, menuIcons.ICON_VCARD);
+	    if(!originGroupchat) addItem(SR.MS_VCARD,1, menuIcons.ICON_VCARD);
             if(contact.vcard!=null){
              addItem(SR.MS_DELETE_VCARD,88, menuIcons.ICON_VCARD, true);
              addItem(SR.MS_DELETE_ALL_VCARD,89, menuIcons.ICON_VCARD, true);
@@ -159,10 +177,10 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
                }
            }   
 
-            addItem(SR.MS_CLIENT_INFO,0, menuIcons.ICON_VERSION);
+            if(!originGroupchat) addItem(SR.MS_CLIENT_INFO,0, menuIcons.ICON_VERSION);
 
 //#ifdef SERVICE_DISCOVERY
-	    addItem(SR.MS_COMMANDS,30, menuIcons.ICON_COMMAND);
+	    if(!originGroupchat) addItem(SR.MS_COMMANDS,30, menuIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
 //#             if (midlet.BombusQD.cf.useClipBoard) {
@@ -173,13 +191,13 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
 //#             }
 //#endif
             addItem(SR.MS_SEND_COLOR_SCHEME, 912, menuIcons.ICON_SEND_COLORS);
-            if (contact.status<Presence.PRESENCE_OFFLINE) {
+            if (contact.status<Presence.PRESENCE_OFFLINE && !originGroupchat) {
                 addItem(SR.MS_TIME,891, menuIcons.ICON_TIME);
                 addItem(SR.MS_IDLE,889, menuIcons.ICON_IDLE);
                 addItem(SR.MS_PING,893, menuIcons.ICON_PING);
             }
 	    
-	    if (grType!=Groups.TYPE_SELF && grType!=Groups.TYPE_SEARCH_RESULT && contact.origin<Contact.ORIGIN_GROUPCHAT) {
+	    if (grType!=Groups.TYPE_SELF && grType!=Groups.TYPE_SEARCH_RESULT && contact.origin<Constants.ORIGIN_GROUPCHAT) {
 		if (contact.status<Presence.PRESENCE_OFFLINE) {
                     addItem(SR.MS_ONLINE_TIME,890, menuIcons.ICON_ONLINE);    
                 } else {
@@ -194,8 +212,7 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
 		addItem(SR.MS_DIRECT_PRESENCE,45, menuIcons.ICON_SET_STATUS);
 	    }
          //}
-	    if (contact.origin==Contact.ORIGIN_GROUPCHAT) 
-                return;
+	    if (originGroupchat) return;
 //#ifndef WMUC
             boolean onlineConferences=true;
 
@@ -205,7 +222,7 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
                 
                 
                 int myAffiliation=selfContact.affiliationCode;
-                if (myAffiliation==MucContact.AFFILIATION_OWNER) 
+                if (myAffiliation==Constants.AFFILIATION_OWNER) 
                     myAffiliation++; // allow owner to change owner's affiliation
 
             
@@ -214,22 +231,22 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
                 //invite
                 if (mc.realJid!=null) {
                     //if (onlineConferences)
-                    if (selfContact.roleCode==MucContact.ROLE_MODERATOR || myAffiliation==MucContact.AFFILIATION_MEMBER){
+                    if (selfContact.roleCode==Constants.ROLE_MODERATOR || myAffiliation==Constants.AFFILIATION_MEMBER){
                         addItem(SR.MS_INVITE,40, menuIcons.ICON_INVITE);
                     }
                 }
                 //invite                
                 
-                if (selfContact.roleCode==MucContact.ROLE_MODERATOR) {
-                    if(mc.roleCode<MucContact.ROLE_MODERATOR)
+                if (selfContact.roleCode==Constants.ROLE_MODERATOR) {
+                    if(mc.roleCode<Constants.ROLE_MODERATOR)
                         addItem(SR.MS_KICK,8, menuIcons.ICON_KICK);
                     
-                    if (myAffiliation>=MucContact.AFFILIATION_ADMIN && mc.affiliationCode<myAffiliation)
+                    if (myAffiliation>=Constants.AFFILIATION_ADMIN && mc.affiliationCode<myAffiliation)
                         addItem(SR.MS_BAN,9, menuIcons.ICON_BAN);
                     
-                    if (mc.affiliationCode<MucContact.AFFILIATION_ADMIN) 
+                    if (mc.affiliationCode<Constants.AFFILIATION_ADMIN) 
                         /* 5.1.1 *** A moderator MUST NOT be able to revoke voice privileges from an admin or owner. */ 
-                    if (mc.roleCode==MucContact.ROLE_VISITOR) addItem(SR.MS_GRANT_VOICE,31, menuIcons.ICON_VOICE);
+                    if (mc.roleCode==Constants.ROLE_VISITOR) addItem(SR.MS_GRANT_VOICE,31, menuIcons.ICON_VOICE);
                     else addItem(SR.MS_REVOKE_VOICE, 32, menuIcons.ICON_DEVOICE);
                 }
 //#ifdef REQUEST_VOICE
@@ -241,35 +258,35 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
 //#                     }
 //#  		}
 //#endif
-                if (myAffiliation>=MucContact.AFFILIATION_ADMIN) {
+                if (myAffiliation>=Constants.AFFILIATION_ADMIN) {
                     // admin use cases
                     
                     //roles
-                    if (mc.affiliationCode<MucContact.AFFILIATION_ADMIN) 
+                    if (mc.affiliationCode<Constants.AFFILIATION_ADMIN) 
                         /* 5.2.1 ** An admin or owner MUST NOT be able to revoke moderation privileges from another admin or owner. */ 
-                    if (mc.roleCode==MucContact.ROLE_MODERATOR) 
+                    if (mc.roleCode==Constants.ROLE_MODERATOR) 
                         addItem(SR.MS_REVOKE_MODERATOR,31, menuIcons.ICON_MEMBER);
                     else 
                         addItem(SR.MS_GRANT_MODERATOR,33, menuIcons.ICON_ADMIN);
                     
                     //affiliations
                     if (mc.affiliationCode<myAffiliation) {
-                        if (mc.affiliationCode!=MucContact.AFFILIATION_NONE) 
+                        if (mc.affiliationCode!=Constants.AFFILIATION_NONE) 
                             addItem(SR.MS_UNAFFILIATE,36, menuIcons.ICON_DEMEMBER);
                         /* 5.2.2 */
-                        if (mc.affiliationCode!=MucContact.AFFILIATION_MEMBER) 
+                        if (mc.affiliationCode!=Constants.AFFILIATION_MEMBER) 
                             addItem(SR.MS_GRANT_MEMBERSHIP,35, menuIcons.ICON_MEMBER);
                     }
                     
                     
                //m.addItem(new MenuItem("Set Affiliation",15));
                 }
-                if (myAffiliation>=MucContact.AFFILIATION_OWNER) {
+                if (myAffiliation>=Constants.AFFILIATION_OWNER) {
                     // owner use cases
-                    if (mc.affiliationCode!=MucContact.AFFILIATION_ADMIN) 
+                    if (mc.affiliationCode!=Constants.AFFILIATION_ADMIN) 
                         addItem(SR.MS_GRANT_ADMIN,37, menuIcons.ICON_ADMIN);
                     
-                    if (mc.affiliationCode!=MucContact.AFFILIATION_OWNER) 
+                    if (mc.affiliationCode!=Constants.AFFILIATION_OWNER) 
                         addItem(SR.MS_GRANT_OWNERSHIP,38, menuIcons.ICON_OWNER);
                 }
                 if (mc.realJid!=null && mc.status<Presence.PRESENCE_OFFLINE) {
@@ -320,11 +337,11 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
                 } else {
                     addItem(SR.MS_DIRECT_PRESENCE,46, menuIcons.ICON_SET_STATUS);
                     addItem(SR.MS_CHANGE_NICKNAME,23, menuIcons.ICON_CHANGE_NICK);
-		    if (self.affiliationCode>=MucContact.AFFILIATION_OWNER) {
+		    if (self.affiliationCode>=Constants.AFFILIATION_OWNER) {
 			addItem(SR.MS_CONFIG_ROOM,10, menuIcons.ICON_CONFIGURE);
                         addItem(SR.MS_DESTROY_ROOM,49,menuIcons.ICON_OUTCASTS);
                     }
-		    if (self.affiliationCode>=MucContact.AFFILIATION_ADMIN) {
+		    if (self.affiliationCode>=Constants.AFFILIATION_ADMIN) {
 			addItem(SR.MS_OWNERS,11, menuIcons.ICON_OWNERS);
 			addItem(SR.MS_ADMINS,12, menuIcons.ICON_ADMINS);
 			addItem(SR.MS_MEMBERS,13, menuIcons.ICON_MEMBERS);
@@ -351,17 +368,6 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
             }
 //#endif
  	}
-	if (getItemCount()>0) {
-            if (action<0) {
-                attachDisplay(display);
-                this.parentView=pView;
-            } else try {
-                this.display=display; // to invoke dialog Y/N
-                doAction(action);
-            } catch (Exception e) { 
-                //e.printStackTrace();
-            }
-        }
         moveCursorTo(Config.getInstance().cursorPos[1]);            
      }
      
@@ -628,7 +634,7 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
 //#                         if (body2!=null && body2.length()>0) {
 //#                             midlet.BombusQD.sd.roster.sendMessage(c, id2, body2, null, null,false);
 //#                             
-//#                             if (c.origin<Contact.ORIGIN_GROUPCHAT) c.addMessage(msg2);
+//#                             if (c.origin<Constants.ORIGIN_GROUPCHAT) c.addMessage(msg2);
 //#                         }
 //#                     } catch (Exception e) {
 //#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"clipboard NOT sended"));
@@ -648,7 +654,7 @@ public class RosterItemActions extends Menu implements MIDPTextBox.TextBoxNotify
                             for (Enumeration cJ=midlet.BombusQD.sd.roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
                                 try {
                                     MucContact mcN=(MucContact)cJ.nextElement();
-                                    if (mcN.origin==Contact.ORIGIN_GROUPCHAT && mcN.status==Presence.PRESENCE_ONLINE)
+                                    if (mcN.origin==Constants.ORIGIN_GROUPCHAT && mcN.status==Presence.PRESENCE_ONLINE)
                                         onlineConferences=true;
                                 } catch (Exception e) {}
                             }

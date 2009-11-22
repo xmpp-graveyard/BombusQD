@@ -35,6 +35,7 @@ import Client.Roster;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import xmpp.XmppError;
+import Client.Constants;
 
 /**
  *
@@ -67,7 +68,7 @@ public final class ConferenceGroup extends Group{
         confContact.commonPresence = false; //disable reenter after reconnect
         midlet.BombusQD.sd.roster.sendPresence(selfContact.getJid(), "unavailable", null, true);
         inRoom = false;
-        midlet.BombusQD.sd.roster.roomOffline(this);
+        midlet.BombusQD.sd.roster.roomOffline(this, false);
     }
 
     public void reEnterRoom() {
@@ -133,7 +134,7 @@ public final class ConferenceGroup extends Group{
         }
 
         selfContact.setGroup(this);
-        selfContact.origin = Contact.ORIGIN_GC_MYSELF;
+        selfContact.origin = Constants.ORIGIN_GC_MYSELF;
         selfContact.setNick(selfContact.getNick());
         
         this.selfContact = selfContact;
@@ -150,7 +151,7 @@ public final class ConferenceGroup extends Group{
             }
             mucContact.setGroup(this);
             mucContact.transport = RosterIcons.ICON_GROUPCHAT_INDEX; //FIXME: убрать хардкод
-            mucContact.origin = Contact.ORIGIN_GROUPCHAT;
+            mucContact.origin = Constants.ORIGIN_GROUPCHAT;
             mucContact.setNick(mucContact.getNick());
             confContact = mucContact;
             mucContact = null;
@@ -163,7 +164,7 @@ public final class ConferenceGroup extends Group{
         if (null == c) {
             String nick = jid.substring(jid.indexOf('/') + 1);
             c = new MucContact(nick, jid);
-            c.origin = Contact.ORIGIN_GC_MEMBER;
+            c.origin = Constants.ORIGIN_GC_MEMBER;
             c.setNick(c.getNick());
             midlet.BombusQD.sd.roster.addContact(c);
             nick = null;

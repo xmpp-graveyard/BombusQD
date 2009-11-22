@@ -73,9 +73,10 @@
 //#         return instance;
 //#     }
 //# 
-//#     public int getMoodIngex(String mood) {
-//#         for (int i=0; i<moodKey.size(); i++) {
-//#             if (mood.equals((String)moodKey.elementAt(i))) return i;
+//#     public byte getMoodIngex(String mood) {
+//#         int size = moodKey.size();
+//#         for (int i=0; i<size; ++i) {
+//#             if (mood.equals((String)moodKey.elementAt(i))) return (byte)i;
 //#         }
 //#         return -1;
 //#     }

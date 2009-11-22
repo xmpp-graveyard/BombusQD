@@ -415,10 +415,13 @@ public final class MessageEdit
 //#                }
 //#             }
 //#             if(sendInTranslit) this.sendInTranslit = false;
+//#             if(sendInDeTranslit) this.sendInDeTranslit = false;
 //#             multiMessage = false;
 //#        } 
 //#        else {
 //#          if(to.msgSuspended==null) send();
+//#          if(sendInTranslit) this.sendInTranslit = false;
+//#          if(sendInDeTranslit) this.sendInDeTranslit = false;
 //#        }
 //#        if(evil) this.evil = false;
 //#endif
@@ -452,7 +455,7 @@ public final class MessageEdit
             if(evil) msg.body="(!)"+msg.body;                 
             msg.id=id;
 
-            if (to.origin!=Contact.ORIGIN_GROUPCHAT) {
+            if (to.origin!=Constants.ORIGIN_GROUPCHAT) {
                 to.addMessage(msg);
                 comp="active";
             }

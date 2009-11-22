@@ -59,6 +59,8 @@ import io.TranslateSelect;
 //# import ui.GMenuConfig;
 //#endif
 import Colors.ColorTheme;
+import javax.microedition.rms.RecordStore;
+import History.HistoryStorage;
 
 public final class ContactMessageList extends MessageList implements MenuListener,MIDPTextBox.TextBoxNotify {
     
@@ -86,8 +88,41 @@ public final class ContactMessageList extends MessageList implements MenuListene
         msgs.removeAllElements();
         msgs = null;
     }
+    
+    
+    private RecordStore recordStore = null;
+    public RecordStore getRecordStore(){
+       return recordStore;
+    }
+    public void storeMessage(Msg msgObj) {
+       HistoryStorage.addText(contact, msgObj, this);
+    }
+    public void getRmsData(int type, RecordStore rs){
+      switch(type){
+          case 0: 
+              //SAVE_RMS_STORE
+              recordStore = rs;
+              break;
+          case 1: 
+              //CLEAR_RMS_STORE
+              recordStore = HistoryStorage.clearRecordStore(rs);
+              break;
+          case 2: 
+              //CLOSE_RMS_STORE
+              recordStore = HistoryStorage.closeStore(rs);
+              break;
+          case 3: 
+              //READ_ALL_DATA
+              if (recordStore == null){
+                  recordStore = HistoryStorage.openRecordStore(contact, recordStore);
+                  if(null == recordStore) return;
+              }
+              HistoryStorage.loadData(contact, recordStore);
+              break;
+      } 
+    }
+    
     /** Creates a new instance of MessageList */
-
     public ContactMessageList(Contact contact) {
         this.contact=contact;
         midlet.BombusQD.sd.roster.activeContact=contact;
@@ -132,17 +167,27 @@ public final class ContactMessageList extends MessageList implements MenuListene
         } catch (Exception e) {}
         
         addCommand(midlet.BombusQD.commands.cmdMessage); 
-        if (contact.origin!=Contact.ORIGIN_GROUPCHAT) addCommand(midlet.BombusQD.commands.cmdActions); 
+        if (contact.origin!=Constants.ORIGIN_GROUPCHAT) addCommand(midlet.BombusQD.commands.cmdActions); 
         
 
-        //if(...){
+        if(midlet.BombusQD.cf.module_history){
             addCommand(midlet.BombusQD.commands.cmdHistory); 
-            addInCommand(2,midlet.BombusQD.commands.cmdHistory1); 
-        //}
+            switch(History.HistoryConfig.getInstance().historyTypeIndex) {
+              case 0:
+                addInCommand(2,midlet.BombusQD.commands.cmdHistoryRMS); 
+                break;
+              case 1:
+                addInCommand(2,midlet.BombusQD.commands.cmdHistoryFS); 
+                break;
+              case 2:
+                addInCommand(2,midlet.BombusQD.commands.cmdHistorySERVER); 
+                break;
+            }
+        }
         
         if (contact.getChatInfo().getMessageCount()>0) {
 //#ifndef WMUC
-            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT
+            if (contact instanceof MucContact && contact.origin==Constants.ORIGIN_GROUPCHAT
                     || contact.getJid().indexOf("juick@juick.com")>-1 ) {
                 addCommand(midlet.BombusQD.commands.cmdReply);
             }
@@ -261,10 +306,15 @@ public final class ContactMessageList extends MessageList implements MenuListene
     public void commandAction(Command c, Displayable d){
         //super.commandAction(c,d);
 	//cf.clearedGrMenu=true;	
-        if(c==midlet.BombusQD.commands.cmdHistory1){
-            contact.recordStore(contact.READ_ALL_DATA, null);
+        if(c==midlet.BombusQD.commands.cmdHistoryRMS) {
+            getRmsData(3, null); //READ_ALL_DATA
         }
-        
+        if(c==midlet.BombusQD.commands.cmdHistoryFS) {
+
+        }
+        if(c==midlet.BombusQD.commands.cmdHistorySERVER) {
+
+        }      
         if (c==midlet.BombusQD.commands.cmdxmlSkin) {
            try {
                if (((MessageItem)getFocusedObject()).msg.body.indexOf("xmlSkin")>-1) {
@@ -393,10 +443,10 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#ifndef WMUC
             if (contact instanceof MucContact) {
                 MucContact mc=(MucContact) contact;
-                new RosterItemActions(midlet.BombusQD.getInstance().display, this, mc, -1);
+                midlet.BombusQD.sd.roster.showUserActions(this, mc, -1);
             } else
 //#endif
-                new RosterItemActions(midlet.BombusQD.getInstance().display, this, contact, -1);
+                midlet.BombusQD.sd.roster.showUserActions(this, contact, -1);
         }
 	if (c==midlet.BombusQD.commands.cmdActive) {
             midlet.BombusQD.sd.roster.createActiveContacts(this, contact); 
@@ -419,7 +469,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#             try {
 //#                 if (body!=null && body.length()>0) {
 //#                     midlet.BombusQD.sd.roster.sendMessage(contact, id, body, null, null,false);
-//#                     if (contact.origin<Contact.ORIGIN_GROUPCHAT) contact.addMessage(msg);
+//#                     if (contact.origin<Constants.ORIGIN_GROUPCHAT) contact.addMessage(msg);
 //#                 }
 //#             } catch (Exception e) {
 //#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,SR.MS_CLIPBOARD_SENDERROR));
@@ -446,7 +496,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     public void eventLongOk(){
         super.eventLongOk();
 //#ifndef WMUC
-        if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+        if (contact instanceof MucContact && contact.origin==Constants.ORIGIN_GROUPCHAT) {
             checkOffline(); 
             return;
         }
@@ -619,7 +669,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     
     private void answer() {
 //#ifndef WMUC
-            if (contact instanceof MucContact && contact.origin==Contact.ORIGIN_GROUPCHAT) {
+            if (contact instanceof MucContact && contact.origin==Constants.ORIGIN_GROUPCHAT) {
                 checkOffline();
                 return;
             }

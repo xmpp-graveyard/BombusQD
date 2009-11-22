@@ -82,10 +82,11 @@ public class StringUtils {
     }      
     
     
+    private static StringBuffer buffer = new StringBuffer(0);
     public static String stringReplace(String aSearch, String aFind, String aReplace) {
     	int pos = aSearch.indexOf(aFind);
     	if (pos != -1) {
-            StringBuffer buffer = new StringBuffer();
+            buffer.setLength(0);
             int lastPos = 0;
              while (pos != -1) {
                     buffer.append(aSearch.substring(lastPos, pos)).append(aReplace);
@@ -350,13 +351,13 @@ public class StringUtils {
         return out.toString();
     }
 
-    public static String processError(Presence presence, int presenceType, ConferenceGroup group, MucContact muc) {
+    public static String processError(Presence presence, byte presenceType, ConferenceGroup group, MucContact muc) {
         XmppError xe=XmppError.findInStanza(presence);
         int errCode=xe.getCondition();
 
         //ConferenceGroup grp=(ConferenceGroup)group;//? 
         if (presenceType>=Presence.PRESENCE_OFFLINE) 
-            muc.testMeOffline();
+            muc.testMeOffline(true);
         if (errCode!=XmppError.CONFLICT || presenceType>=Presence.PRESENCE_OFFLINE)
             muc.setStatus(presenceType);
 

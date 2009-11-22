@@ -63,35 +63,35 @@ public class GMenu extends Canvas {
    BombusQD bm = BombusQD.getInstance();
 
    
-   public final static int MAIN_MENU_ROSTER=1;
-   public final static int ACCOUNT_SELECT_MENU=2;
-   public final static int ALERT_CUSTOMIZE_FORM=3;
-   public final static int ALERT_PROFILE=4;
-   public final static int ACTIVE_CONTACTS=5;//
-   public final static int CONFIG_FORM=6;
-   public final static int CONTACT_MSGS_LIST=7;//
-   public final static int SEARCH_FORM=8;
-   public final static int SMILE_PEAKER=9;
-   public final static int STATUS_SELECT=10;  
-   public final static int APPEND_NICK=11;
-   public final static int BOOKMARKS=12;  
-   public final static int CONFERENCE_FORM=13; 
-   public final static int HISTORY_CONFIG=14; 
-   public final static int INFO_WINDOW=16;
-   public final static int MESSAGE_LIST=17;
-   public final static int PRIVACY_MODIFY_LIST=18;  
-   public final static int PRIVACY_SELECT=19;
-   public final static int SERVICE_DISCOVERY=20; 
-   public final static int STATS_WINDOW=21;  
-   public final static int VCARD_EDIT=22;  
-   public final static int VCARD_VIEW=23; 
-   public final static int BROWSER=24; 
-   public final static int TRANSFER_MANAGER=25; 
-   public final static int DEF_FORM=26;
-   public final static int TEXTLISTBOX=27;
-   public final static int USERKEYSLIST=28; 
-   public final static int RECONNECT=30; 
-   public final static int NEWVECTORCHAT=31; 
+   public final static byte MAIN_MENU_ROSTER=1;
+   public final static byte ACCOUNT_SELECT_MENU=2;
+   public final static byte ALERT_CUSTOMIZE_FORM=3;
+   public final static byte ALERT_PROFILE=4;
+   public final static byte ACTIVE_CONTACTS=5;//
+   public final static byte CONFIG_FORM=6;
+   public final static byte CONTACT_MSGS_LIST=7;//
+   public final static byte SEARCH_FORM=8;
+   public final static byte SMILE_PEAKER=9;
+   public final static byte STATUS_SELECT=10;  
+   public final static byte APPEND_NICK=11;
+   public final static byte BOOKMARKS=12;  
+   public final static byte CONFERENCE_FORM=13; 
+   public final static byte HISTORY_CONFIG=14; 
+   public final static byte INFO_WINDOW=16;
+   public final static byte MESSAGE_LIST=17;
+   public final static byte PRIVACY_MODIFY_LIST=18;  
+   public final static byte PRIVACY_SELECT=19;
+   public final static byte SERVICE_DISCOVERY=20; 
+   public final static byte STATS_WINDOW=21;  
+   public final static byte VCARD_EDIT=22;  
+   public final static byte VCARD_VIEW=23; 
+   public final static byte BROWSER=24; 
+   public final static byte TRANSFER_MANAGER=25; 
+   public final static byte DEF_FORM=26;
+   public final static byte TEXTLISTBOX=27;
+   public final static byte USERKEYSLIST=28; 
+   public final static byte RECONNECT=30; 
+   public final static byte NEWVECTORCHAT=31; 
    
    
    
@@ -195,7 +195,7 @@ public class GMenu extends Canvas {
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_MY_JABBER)>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SERVICE)>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SORT_TYPE)>-1
-              || gm.commandslist[gm.itemCursorIndex].indexOf("History")>-1
+              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_HISTORY_OPTIONS)>-1
               ){
               drawAllItems(g,gm.menuCommandsIn,gm.commandslistIn,gm.itemCursorIndexIn);
            }
@@ -229,7 +229,7 @@ public class GMenu extends Canvas {
           GMenuIn(gm.cmdfirstList); eventMenu=true; return;
      } 
      else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_REGISTERING)>-1
-          || gm.commandslist[gm.itemCursorIndex].indexOf("History")>-1 ) {
+          || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_HISTORY_OPTIONS)>-1 ) {
           GMenuIn(gm.cmdsecondList); eventMenu=true; return;   
      } 
      else if (gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SERVICE)>-1){            
@@ -295,24 +295,6 @@ public class GMenu extends Canvas {
                break;
        }
 
-       //(g.getClipHeight()- mHfh)/2;
-     /*   
-       if(eventMenu){
-           g.setFont(font);
-           int w3 = font.stringWidth(gm.commandslist[gm.itemCursorIndex]) + 8;
-           int x3 = (w - w3)/2 + gm.xcoodr;
-           g.setColor(0x000000);
-           g.drawRect( x3 , gm.ycoodr - fh , w3 , fh);           
-           g.setColor(ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_BGNG_ARGB));
-           g.fillRect( x3 + 1, gm.ycoodr - fh + 1, w3 - 1, fh - 1);
-           g.setColor(ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_FONT));
-           g.drawString( gm.commandslist[gm.itemCursorIndex] , x3 + 4 , gm.ycoodr - fh + 1, g.LEFT|g.TOP);
-       }
-      */
-
-       g.translate(gm.xcoodr,gm.ycoodr);
-       g.setClip(0,0,w+1,mHfh+40);//?
-
        int alpha_menu=ColorTheme.getARGB(true);
         if (alpha_menu!=-1){
           int[] pixelArray = new int[w * mHfh];  
@@ -320,20 +302,24 @@ public class GMenu extends Canvas {
           for(int i = 0; i < lengntp; i++){
             pixelArray[i] = alpha_menu;
           }
-          g.drawRGB(pixelArray, 0, w, 0 , 0 , w, mHfh, true);
-          g.drawRoundRect(0,0,w,mHfh,10,10);
+          g.drawRGB(pixelArray, 0, w, gm.xcoodr , gm.ycoodr , w, mHfh, true);
+          g.drawRoundRect(gm.xcoodr,gm.ycoodr,w,mHfh,10,10);
           pixelArray = null;
           pixelArray = new int[0];
         }else{
           g.setColor(ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_BGNG_ARGB));     
-          g.fillRoundRect(1 , 1 , w - 1, mHfh - 1,10,10);
+          //g.fillRoundRect(1 , 1 , w - 1, mHfh - 1,10,10);
+          g.fillRoundRect(gm.xcoodr+1 , gm.ycoodr+1, w - 1, mHfh - 1,10,10);//Tishka17
         }
+       
+         g.translate(gm.xcoodr,gm.ycoodr);
+         g.setClip(0,0,w+1,mHfh+40);//?
         
           g.setColor(0x000000);
           g.drawRoundRect(0,0 , w, mHfh,10,10);
 
 
-          if(midlet.BombusQD.cf.gradient_cursor){ //Tishka17
+        if(midlet.BombusQD.cf.gradient_cursor){ //Tishka17
             int yc = 1 + (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh);
             fon=new Gradient(1, yc, w, yc+fh, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
                   ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);

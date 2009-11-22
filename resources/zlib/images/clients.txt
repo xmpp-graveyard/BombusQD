@@ -1,4 +1,5 @@
-﻿http://bombusmod.net.ru/caps,http://BombusMod.net.ru	BombusMod
+﻿//max-127
+http://bombusmod.net.ru/caps,http://BombusMod.net.ru	BombusMod
 http://bombus-im.org/java	Bombus
 http://bombus-im.org/ng,http://bombus-im.org/ng#0.0.5.430,http://bombus-im.org/ng#0.0.5.431,http://bombus-im.org/ng#0.0.5.432	Bombus-NG
 http://psi-im.org/caps	Psi

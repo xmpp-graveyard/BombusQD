@@ -288,7 +288,7 @@ public class AlertCustomizeForm
     super.commandState(); 
 //#endif
         removeCommand(cmdCancel);
-        removeCommand(cmdOk);
+        removeCommand(midlet.BombusQD.commands.cmdOk);
         if (playable()>-1)
             addCommand(cmdTest); cmdTest.setImg(0x54);
         addCommand(cmdSave); cmdSave.setImg(0x44);

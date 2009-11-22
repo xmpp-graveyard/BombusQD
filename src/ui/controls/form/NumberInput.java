@@ -43,6 +43,10 @@ public class NumberInput
     /**
      * Creates a new instance of NumberInput
      */
+    public void destroy(){
+       if(initValue.length()>0) initValue = null;
+    }
+    
     public NumberInput(Display display, String caption, String text, int min, int max) {
         super(display, caption, text, null, (min<0)?TextField.DECIMAL:TextField.NUMERIC);
         this.min=min;

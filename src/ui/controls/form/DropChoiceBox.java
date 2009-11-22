@@ -65,6 +65,10 @@ public class DropChoiceBox
 
     private int itemHeight=0;
     
+    public void destroy(){
+       items.removeAllElements();
+       if(caption.length()>0) caption = null;
+    }
     /**
      * Creates a new instance of ChoiceBox
      */

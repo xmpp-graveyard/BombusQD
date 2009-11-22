@@ -77,7 +77,7 @@
 //#         //if (!data.getTypeAttribute().equals("headline")) return BLOCK_REJECTED;
 //#         
 //#         boolean  tuneVaule=false;
-//#         int moodIndex=-1;        
+//#         byte moodIndex=-1;        
 //# 
 //#         JabberDataBlock event=data.findNamespace("event", "http://jabber.org/protocol/pubsub#event");
 //#         if (event==null) {         

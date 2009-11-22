@@ -34,6 +34,7 @@ import Client.StaticData;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
+import Client.Constants;
 import locale.SR;
 import Client.Msg;
 import util.StringUtils;
@@ -46,28 +47,13 @@ import ui.VirtualList;
  */
 public class MucContact extends Contact {
     
-    public final static byte AFFILIATION_OUTCAST=-1;
-    public final static byte AFFILIATION_NONE=0;
-    public final static byte AFFILIATION_MEMBER=1;
-    public final static byte AFFILIATION_ADMIN=2;
-    public final static byte AFFILIATION_OWNER=3;
-    
-    public final static byte ROLE_VISITOR=-1;
-    public final static byte ROLE_PARTICIPANT=0;
-    public final static byte ROLE_MODERATOR=1;
-
-    public final static byte GROUP_VISITOR=4;
-    public final static byte GROUP_MEMBER=3;
-    public final static byte GROUP_PARTICIPANT=2;
-    public final static byte GROUP_MODERATOR=1;
-
     public String realJid;
     
     public String affiliation;
     public String role;
     
-    public short roleCode;
-    public short affiliationCode;
+    public byte roleCode;
+    public byte affiliationCode;
     
     public boolean commonPresence=true;
     
@@ -90,25 +76,35 @@ public class MucContact extends Contact {
     
     private static StringBuffer b = new StringBuffer(0);//FIX
     
+    public static String getAffiliationLocale(int aff) {
+        switch (aff) {
+            case Constants.AFFILIATION_NONE: return SR.MS_AFFILIATION_NONE;
+            case Constants.AFFILIATION_MEMBER: return SR.MS_AFFILIATION_MEMBER;
+            case Constants.AFFILIATION_ADMIN: return SR.MS_AFFILIATION_ADMIN;
+            case Constants.AFFILIATION_OWNER: return SR.MS_AFFILIATION_OWNER;
+        }
+        return null;
+    }
+    
     public String processPresence(JabberDataBlock xmuc, Presence presence) {
         String from=jid.getJid();
        
-        int presenceType=presence.getTypeIndex();
+        byte presenceType=presence.getTypeIndex();
         
         if (presenceType==Presence.PRESENCE_ERROR) return StringUtils.processError(presence, presenceType, (ConferenceGroup) group, this);
         
         JabberDataBlock item=xmuc.getChildBlock("item");   
 
         String tempRole=item.getAttribute("role");
-        if (tempRole.equals("visitor")) roleCode=ROLE_VISITOR;
-   else if (tempRole.equals("participant")) roleCode=ROLE_PARTICIPANT;
-   else if (tempRole.equals("moderator")) roleCode=ROLE_MODERATOR;
+        if (tempRole.equals("visitor")) roleCode=Constants.ROLE_VISITOR;
+   else if (tempRole.equals("participant")) roleCode=Constants.ROLE_PARTICIPANT;
+   else if (tempRole.equals("moderator")) roleCode=Constants.ROLE_MODERATOR;
         
         String tempAffiliation=item.getAttribute("affiliation");
-        if (tempAffiliation.equals("owner")) affiliationCode=AFFILIATION_OWNER;
-   else if (tempAffiliation.equals("admin")) affiliationCode=AFFILIATION_ADMIN;
-   else if (tempAffiliation.equals("member")) affiliationCode=AFFILIATION_MEMBER;
-   else if (tempAffiliation.equals("none")) affiliationCode=AFFILIATION_NONE;
+        if (tempAffiliation.equals("owner")) affiliationCode=Constants.AFFILIATION_OWNER;
+   else if (tempAffiliation.equals("admin")) affiliationCode=Constants.AFFILIATION_ADMIN;
+   else if (tempAffiliation.equals("member")) affiliationCode=Constants.AFFILIATION_MEMBER;
+   else if (tempAffiliation.equals("none")) affiliationCode=Constants.AFFILIATION_NONE;
         
         boolean roleChanged= !tempRole.equals(role);
         boolean affiliationChanged=!tempAffiliation.equals(affiliation);
@@ -119,19 +115,18 @@ public class MucContact extends Contact {
         tempAffiliation=null;
 
         setSortKey(getNick());
-
         switch (roleCode) {
-            case ROLE_MODERATOR:
+            case Constants.ROLE_MODERATOR:
                 transport=RosterIcons.ICON_MODERATOR_INDEX;
-                key0=GROUP_MODERATOR;
+                key0=Constants.GROUP_MODERATOR;
                 break;
-            case ROLE_VISITOR:
+            case Constants.ROLE_VISITOR:
                 transport=RosterIcons.getInstance().getTransportIndex("vis");
-                key0=GROUP_VISITOR;
+                key0=Constants.GROUP_VISITOR;
                 break;
             default:
-                transport=(affiliation.equals("member"))? 0 :RosterIcons.getInstance().getTransportIndex("vis");
-                key0=(affiliation.equals("member"))?GROUP_MEMBER:GROUP_PARTICIPANT;
+                transport=affiliation.equals("member")? 0 :RosterIcons.getInstance().getTransportIndex("vis");
+                key0=(affiliation.equals("member")?Constants.GROUP_MEMBER:Constants.GROUP_PARTICIPANT);
         }
         
         JabberDataBlock statusBlock=xmuc.getChildBlock("status");
@@ -190,12 +185,12 @@ public class MucContact extends Contact {
                     if (!reason.equals(""))
                         b.append("(").append(reason).append(")");
 
-                    testMeOffline();
+                    testMeOffline(true);
                     break;
                 case 321:
                 case 322:
                     b.append((statusCode==321)?SR.MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM:SR.MS_HAS_BEEN_KICKED_BECAUSE_ROOM_BECAME_MEMBERS_ONLY);
-                    testMeOffline();
+                    testMeOffline(true);
                     break;
                 default:
                     if (tempRealJid!=null)
@@ -206,7 +201,7 @@ public class MucContact extends Contact {
                     if (statusText.length()>0)
                         b.append(" (").append(statusText).append(")");
 
-                    testMeOffline();
+                    testMeOffline(false);
             } 
         } else {
             if (this.status==Presence.PRESENCE_OFFLINE) {
@@ -216,11 +211,11 @@ public class MucContact extends Contact {
                 }
                 
                 b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
-                
-                if (affiliationCode!=AFFILIATION_MEMBER) b.append(getRoleLocale(roleCode));
+
+                if (affiliationCode!=Constants.AFFILIATION_MEMBER) b.append(getRoleLocale(roleCode));
 
                  if (!affiliation.equals("none")) {
-                    if (roleCode!=ROLE_PARTICIPANT) b.append(SR.MS_AND);
+                    if (roleCode!=Constants.ROLE_PARTICIPANT) b.append(SR.MS_AND);
   
                     b.append(getAffiliationLocale(affiliationCode));
                 }
@@ -255,25 +250,16 @@ public class MucContact extends Contact {
         return b.toString();
     }
 
+
     public static String getRoleLocale(int rol) {
         switch (rol) {
-            case ROLE_VISITOR: return SR.MS_ROLE_VISITOR;
-            case ROLE_PARTICIPANT: return SR.MS_ROLE_PARTICIPANT;
-            case ROLE_MODERATOR: return SR.MS_ROLE_MODERATOR;
+            case Constants.ROLE_VISITOR: return SR.MS_ROLE_VISITOR;
+            case Constants.ROLE_PARTICIPANT: return SR.MS_ROLE_PARTICIPANT;
+            case Constants.ROLE_MODERATOR: return SR.MS_ROLE_MODERATOR;
         }
         return null;
     }
-    
-    public static String getAffiliationLocale(int aff) {
-        switch (aff) {
-            case AFFILIATION_NONE: return SR.MS_AFFILIATION_NONE;
-            case AFFILIATION_MEMBER: return SR.MS_AFFILIATION_MEMBER;
-            case AFFILIATION_ADMIN: return SR.MS_AFFILIATION_ADMIN;
-            case AFFILIATION_OWNER: return SR.MS_AFFILIATION_OWNER;
-        }
-        return null;
-    }
-    
+
     private static StringBuffer tip = new StringBuffer(0);
     
     public String getTipString() {
@@ -290,10 +276,11 @@ public class MucContact extends Contact {
         return (tip.length()==0)? null:tip.toString();
     }
 
-    public void testMeOffline(){
+    public void testMeOffline(boolean isKick){
          ConferenceGroup gr=(ConferenceGroup)group;
+         if(isKick) midlet.BombusQD.getInstance().display.setCurrent(midlet.BombusQD.sd.roster);
          if ( gr.selfContact == this ) 
-            midlet.BombusQD.sd.roster.roomOffline(gr);
+            midlet.BombusQD.sd.roster.roomOffline(gr, true);
     }
 
     public void addMessage(Msg m) {

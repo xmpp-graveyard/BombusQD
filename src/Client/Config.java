@@ -303,7 +303,8 @@ public class Config {
     public boolean gradientBarLigth = true;
     public int gradientBarLight1=20;
     public int gradientBarLight2=50;
-
+    public boolean autoLoadTransports = true;
+    
     public static Config getInstance(){
 	if (instance==null) {
 	    instance=new Config();
@@ -508,6 +509,7 @@ public class Config {
             adhoc=inputStream.readBoolean();
             createMessageByFive=inputStream.readBoolean();
             gradientBarLigth=inputStream.readBoolean();
+            autoLoadTransports=inputStream.readBoolean();
             
 	    inputStream.close();
             inputStream=null;
@@ -748,6 +750,7 @@ public class Config {
             outputStream.writeBoolean(adhoc);
             outputStream.writeBoolean(createMessageByFive);
             outputStream.writeBoolean(gradientBarLigth);
+            outputStream.writeBoolean(autoLoadTransports);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean", 0, true);      

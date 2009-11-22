@@ -42,7 +42,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 import ui.VirtualElement;
 import ui.VirtualList;
-
+import Client.Constants;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
@@ -94,7 +94,7 @@ public class AppendNick
         int size=StaticData.getInstance().roster.getHContacts().size();        
             for(int i=0;i<size;i++){    
               Contact c=(Contact)StaticData.getInstance().roster.getHContacts().elementAt(i);
-              if (c.group==to.group && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
+              if (c.group==to.group && c.origin>Constants.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
                 nicknames.addElement(c);             
             }
         commandState();
@@ -118,7 +118,7 @@ public class AppendNick
         int size=StaticData.getInstance().roster.getHContacts().size();        
             for(int i=0;i<size;i++){    
               Contact c=(Contact)StaticData.getInstance().roster.getHContacts().elementAt(i);
-              if (c.group==to.group && c.origin>Contact.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
+              if (c.group==to.group && c.origin>Constants.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
                 nicknames.addElement(c);             
             }
         sort(nicknames);

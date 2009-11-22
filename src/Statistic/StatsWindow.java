@@ -139,7 +139,7 @@
 //#     super.commandState(); 
 //#endif
 //#         removeCommand(cmdCancel);
-//#         removeCommand(cmdOk);
+//#         removeCommand(midlet.BombusQD.commands.cmdOk);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             addCommand(midlet.BombusQD.commands.cmdCopy);

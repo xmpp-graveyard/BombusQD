@@ -35,7 +35,7 @@ import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.*;
 import locale.SR;
-
+import Client.Constants;
 /**
  *
  * @author EvgS
@@ -66,7 +66,7 @@ public class IqTimeReply implements JabberBlockListener{
                 query.addChild("tzo", ui.Time.tzOffset());
             }
             Contact c=StaticData.getInstance().roster.getContact( data.getAttribute("from"), false);
-            c.setIncoming(Contact.INC_VIEWING);
+            c.setIncoming(Constants.INC_VIEWING);
             Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
             reply.addChild(query);
 

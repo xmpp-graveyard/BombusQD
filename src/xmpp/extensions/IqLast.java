@@ -36,7 +36,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.*;
 import locale.SR;
 import ui.Time;
-
+import Client.Constants;
 /**
  *
  * @author EvgS
@@ -60,7 +60,7 @@ public class IqLast implements JabberBlockListener {
             if (query==null) return BLOCK_REJECTED;
             
             Contact c=StaticData.getInstance().roster.getContact( data.getAttribute("from"), false);
-            c.setIncoming(Contact.INC_VIEWING);
+            c.setIncoming(Constants.INC_VIEWING);
             
             long last=(Time.utcTimeMillis() - StaticData.getInstance().roster.lastMessageTime)/1000;
 

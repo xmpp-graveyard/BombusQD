@@ -58,9 +58,10 @@ public class DeTranslit {
     }
     
     public static String translit(String src) {
-        if (translit[0].size()<1) return src;
+        int size = translit[0].size();
+        if (size<1) return src;
         if (src==null) return null;
-        for (int i=0; i<translit[0].size(); i++) {
+        for (int i=0; i<size; ++i) {
             src=StringUtils.stringReplace(src, (String) translit[1].elementAt(i), (String) translit[0].elementAt(i));
 	}
         return src;

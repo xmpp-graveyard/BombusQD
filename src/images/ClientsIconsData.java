@@ -62,29 +62,31 @@ public class ClientsIconsData {
     
     private ClientsIconsData() { }
 
-    private static int getClientIDByCaps(String caps) {
+    private static byte getClientIDByCaps(String caps) {
         if (clients.length==0) return -1;
         caps=caps.toLowerCase();
-        for (int i=0; i<clients[0].size(); i++) {
-            String client=((String) clients[0].elementAt(i)).toLowerCase();
-            if (client.indexOf(",")>-1) {
+        byte clientsSize = (byte)clients[0].size();
+        String client;
+        for (byte i=0; i<clientsSize; ++i) {//max-127 clients
+            client = ((String) clients[0].elementAt(i)).toLowerCase();
+            if (client.indexOf(',')>-1) {
                 boolean parse = true;
                 int pos=0;
                 while (parse) {
                     if (pos>-1) {
-                        int endpos=client.indexOf(",", pos);
-                        String eqStr=(endpos<0)?client.substring(pos):client.substring(pos, endpos);
-                        if (caps.indexOf(eqStr)>-1) return i;
+                        int endpos=client.indexOf(',', pos);
+                        client = (endpos<0)?client.substring(pos):client.substring(pos, endpos);
+                        if (caps.indexOf(client)>-1) return i;
                         
-                        pos=client.indexOf(",", pos+1);
+                        pos=client.indexOf(',', pos+1);
                         if (pos<0) parse=false; else pos=pos+1;
                     } else parse=false;
                 }
             } else {
-                if (caps.indexOf(client)>-1)
-                    return i;
+                if (caps.indexOf(client)>-1) return i;
             }
 	}
+        client = null;
         return -1;
     }
     

@@ -98,7 +98,7 @@ public class LightConfigForm
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
-        addCommand(cmdOk); //cmdOk.setImg(0x43);
+        addCommand(midlet.BombusQD.commands.cmdOk); //cmdOk.setImg(0x43);
         addCommand(cmdCancel);
     }
    

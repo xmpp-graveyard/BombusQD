@@ -81,7 +81,7 @@ public class Presence extends JabberDataBlock {
         }
     }
 
-    private int presenceCode;
+    private byte presenceCode;
     
     private StringBuffer presenseText = new StringBuffer(0);
   
@@ -172,7 +172,7 @@ public class Presence extends JabberDataBlock {
         return "presence";
     }
 
-    public int getTypeIndex() {
+    public byte getTypeIndex() {
         return presenceCode;
     }
 
@@ -214,20 +214,20 @@ public class Presence extends JabberDataBlock {
         return null;
     }
 
-    public final static int PRESENCE_ONLINE=0;
-    public final static int PRESENCE_CHAT=1;
-    public final static int PRESENCE_AWAY=2;
-    public final static int PRESENCE_XA=3;
-    public final static int PRESENCE_DND=4;
-    public final static int PRESENCE_OFFLINE=5;
-    public final static int PRESENCE_ASK=6;
-    public final static int PRESENCE_UNKNOWN=7;
-    public final static int PRESENCE_INVISIBLE=RosterIcons.ICON_INVISIBLE_INDEX;
-    public final static int PRESENCE_ERROR=RosterIcons.ICON_ERROR_INDEX;
-    public final static int PRESENCE_TRASH=RosterIcons.ICON_TRASHCAN_INDEX;
-    public final static int PRESENCE_AUTH=-1;
-    public final static int PRESENCE_AUTH_ASK=-2;
-    public final static int PRESENCE_SAME=-100;
+    public final static byte PRESENCE_ONLINE=0;
+    public final static byte PRESENCE_CHAT=1;
+    public final static byte PRESENCE_AWAY=2;
+    public final static byte PRESENCE_XA=3;
+    public final static byte PRESENCE_DND=4;
+    public final static byte PRESENCE_OFFLINE=5;
+    public final static byte PRESENCE_ASK=6;
+    public final static byte PRESENCE_UNKNOWN=7;
+    public final static byte PRESENCE_INVISIBLE=RosterIcons.ICON_INVISIBLE_INDEX;
+    public final static byte PRESENCE_ERROR=RosterIcons.ICON_ERROR_INDEX;
+    public final static byte PRESENCE_TRASH=RosterIcons.ICON_TRASHCAN_INDEX;
+    public final static byte PRESENCE_AUTH=-1;
+    public final static byte PRESENCE_AUTH_ASK=-2;
+    public final static byte PRESENCE_SAME=-100;
 
     public final static String PRS_OFFLINE="unavailable";
     public final static String PRS_ERROR="error";

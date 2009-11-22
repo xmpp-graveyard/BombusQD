@@ -105,6 +105,13 @@ public final class CommandForm extends DefForm
         }
     }
     
+    public void setParentView(String title, Displayable pView) {
+        mainbar.setElementAt( title , 0);
+        midlet.BombusQD.getInstance().display.setCurrent(this);
+        moveCursorHome();
+        this.parentView = pView;
+    } 
+    
     public void setParentView(Contact c) {
         mainbar.setElementAt( c.bareJid , 0);
         midlet.BombusQD.getInstance().display.setCurrent(this);

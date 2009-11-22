@@ -66,7 +66,7 @@ import Client.ContactMessageList;
 //#ifdef LIGHT_CONTROL
 //# import LightControl.*;
 //#endif
-import History.HistoryStorage;
+import History.*;
 
 /** Entry point class
  *
@@ -170,6 +170,7 @@ public class BombusQD extends MIDlet implements Runnable
         //cf.path_skin="";
         
         SR.loaded();
+        HistoryConfig.getInstance().loadFromStorage();
         FontClass.getInstance().Init(cf.drwd_fontname);  
         
 //#ifdef LIGHT_CONTROL

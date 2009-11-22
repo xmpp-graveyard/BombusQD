@@ -212,7 +212,7 @@ Save history	Сохранять историю
 Save presences	Сохранять статусы
 Save conference history	Сохранять историю конференции
 Save conference presences	Сохранять статусы конференции
-convert to cp1251	Сохранять в windows-1251
+convert to cp1251	Кодировка windows-1251
 History folder	Папка истории
 Copy	Копировать
 Paste	Вставить
@@ -705,3 +705,12 @@ Sort Type	Сортировка
 OFF (default)	По умолчанию
 By status	По статусу
 By Msgs count	По кол-ву сообщений
+Auto-Load Transports after connect	Автозагрузка транспортов после подключения%Подключает транспорты контакт листа после подключения к серверу
+Type History	Тип хранения сообщений
+History in RMS	История в памяти телефона
+History in FS	История в Файловой системе
+History on server	История на сервере
+vCard: delete current	Визитка: удалить текущую
+vCard: delete ALL	Визитка: удалить ВСЕ
+User Avatar: delete current	Аватар: удалить текущий
+User Avatar: delete from ALL vcards	Аватар: удалить ВСЕ

@@ -226,11 +226,10 @@
 //#          "writing"      
 //#     };   
 //#     
-//#     public static int getIconIndex(String str) {
-//#         for (int i=0; i<NAMES.length;i++) {
-//#             if(str.equals(NAMES[i])){
-//#                 return i;
-//#             }
+//#     public static byte getIconIndex(String str) {
+//#         int len = NAMES.length;
+//#         for (int i=0; i<len;i++) {
+//#             if(str.indexOf(NAMES[i])>-1) return (byte)i;
 //#         }
 //#         return -1;
 //#     }    

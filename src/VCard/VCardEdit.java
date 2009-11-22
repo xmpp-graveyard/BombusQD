@@ -264,7 +264,7 @@ public class VCardEdit
 //#else
     super.commandState(); 
 //#endif
-        removeCommand(cmdOk);
+        removeCommand(midlet.BombusQD.commands.cmdOk);
         removeCommand(cmdCancel);
         
         addCommand(cmdPublish); cmdPublish.setImg(0x50);

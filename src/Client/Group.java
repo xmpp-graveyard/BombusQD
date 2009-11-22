@@ -44,8 +44,8 @@ public class Group extends IconTextElement {
     public boolean visible=true;
     protected int onlines;
     
-    public int imageExpandedIndex = RosterIcons.ICON_EXPANDED_INDEX;
-    public int imageCollapsedIndex = RosterIcons.ICON_COLLAPSED_INDEX;
+    public byte imageExpandedIndex = RosterIcons.ICON_EXPANDED_INDEX;
+    public byte imageCollapsedIndex = RosterIcons.ICON_COLLAPSED_INDEX;
     
     private Vector contacts = new Vector(0);
     public Vector visibleContacts = new Vector(0);
@@ -189,7 +189,7 @@ public class Group extends IconTextElement {
     private final boolean isVisibleContact(Contact c) {
         // hide offlines whithout new messages
         return midlet.BombusQD.cf.showOfflineContacts || c.hasNewMsgs()
-                || isAlwaysVisible() || Contact.ORIGIN_GROUPCHAT == c.origin;
+                || isAlwaysVisible() || Constants.ORIGIN_GROUPCHAT == c.origin;
     }
 
     public final boolean hasNewMsgs() {

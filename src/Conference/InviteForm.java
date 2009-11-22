@@ -42,6 +42,7 @@ import ui.controls.form.SimpleString;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.TextInput;
+import Client.Constants;
 
 public class InviteForm
         extends DefForm {
@@ -65,7 +66,8 @@ public class InviteForm
         for (Enumeration c=StaticData.getInstance().roster.getHContacts().elements(); c.hasMoreElements(); ) {
             try {
                 MucContact mc=(MucContact)c.nextElement();
-                if (mc.origin==Contact.ORIGIN_GROUPCHAT && mc.status==Presence.PRESENCE_ONLINE) {
+
+                if (mc.origin==Constants.ORIGIN_GROUPCHAT && mc.status==Presence.PRESENCE_ONLINE) {
                     conferenceList.append(mc.getJid());
                     conferences.addElement(mc.getJid());
                 }

@@ -33,7 +33,6 @@ import Conference.MucContact;
 import Client.contact.ChatInfo;
 //#endif
 import Fonts.FontCache;
-import History.HistoryStorage;
 //#ifdef CLIENTS_ICONS
 import images.ClientsIcons;
 //#endif
@@ -53,48 +52,35 @@ import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Image;
 import util.StringUtils; 
-import javax.microedition.rms.RecordStore;
 
 public class Contact extends IconTextElement{
 
 //#if USE_ROTATOR
-    private int isnew=0;
+    private byte isnew=0;
     public void setNewContact() { this.isnew = 10; }
 //#endif
 
 //#ifdef PEP    
-//#     public int pepMood=-1;
+//#     public byte pepMood=-1;//0..127
 //#     public String pepMoodName=null;
 //#     public String pepMoodText=null;
 //#     public boolean pepTune;
 //#     public String pepTuneText=null;
 //#ifdef PEP
 //#     public String activity=null;
-//#     public int activ=-1;   
+//#     public byte activ=-1;//0..127
 //#endif
 //#endif
     public String annotations=null;    
-    
-    public final static short ORIGIN_ROSTER=0;
-    public final static short ORIGIN_ROSTERRES=1;
-    public final static short ORIGIN_CLONE=2;
-    public final static short ORIGIN_PRESENCE=3;
-    public final static short ORIGIN_GROUPCHAT=4;
-//#ifndef WMUC
-    public final static short ORIGIN_GC_MEMBER=5;
-    public final static short ORIGIN_GC_MYSELF=6;
-//#endif
 
-    
     private String nick;
     private String statusString;
     
     public Jid jid;
     public String bareJid; // for roster/subscription manipulating
-    public int status;
     public int priority = 0;
     public Group group;
-    public int transport;
+
     
     public String getNick() { return nick; }
     public String getStatus() { return statusString; }
@@ -111,31 +97,24 @@ public class Contact extends IconTextElement{
     
     public short deliveryType;
     
-    public short incomingState=INC_NONE;
-    
-    public final static short INC_NONE=0;
-    public final static short INC_APPEARING=1;
-    public final static short INC_VIEWING=2;
-    
-    protected short key0;
+    public byte incomingState=0;//INC_NONE=0
+
+    protected byte key0;
     protected String key1;
 
     public byte origin;
     
     public String subscr;
-    public int offline_type=Presence.PRESENCE_UNKNOWN;
     public boolean ask_subscribe;
 
     public ClassicChat scroller = null;
     
-    public int activeMessage=-1;
-
     public String msgSuspended;
     public String lastSendedMessage;
     
     public VCard vcard;
 //#ifdef CLIENTS_ICONS
-    public int client=-1;
+    public byte client=-1;
     public String clientName=null;
 //#endif
 
@@ -166,7 +145,6 @@ public class Contact extends IconTextElement{
         fileQuery=false;
 //#endif
         if (0 < getChatInfo().getMessageCount()) {
-            //getML().moveCursorTo(getChatInfo().firstUnread());
             if(midlet.BombusQD.cf.savePos) 
                 getML().moveCursorTo(getCursor()); 
             else 
@@ -231,7 +209,7 @@ public class Contact extends IconTextElement{
         clone.key1=key1;
         clone.subscr=subscr;
         clone.offline_type=offline_type;
-        clone.origin=ORIGIN_CLONE; 
+        clone.origin=Constants.ORIGIN_CLONE;
         clone.status=status; 
         clone.transport=RosterIcons.getInstance().getTransportIndex(newjid.getTransport()); //<<<<
 //#ifdef PEP
@@ -283,9 +261,7 @@ public class Contact extends IconTextElement{
     }     
 
     public final int getNewMsgsCount() {
-        if (Groups.TYPE_IGNORE == getGroupType()) {
-            return 0;
-        }
+        if (Groups.TYPE_IGNORE == getGroupType()) return 0;
         return chatInfo.getNewMessageCount();
     }
     
@@ -294,9 +270,7 @@ public class Contact extends IconTextElement{
     }
     
     public int getNewHighliteMsgsCount() {
-        if (Groups.TYPE_IGNORE == getGroupType()) {
-            return 0;
-        }
+        if (Groups.TYPE_IGNORE == getGroupType()) return 0;
         return chatInfo.getNewHighliteMessageCount();
     }
 
@@ -314,12 +288,12 @@ public class Contact extends IconTextElement{
     public void setIncoming (int state) {
         if (!midlet.BombusQD.cf.IQNotify) return;
 
-        short i=0;
+        byte i=0;
         switch (state){
-            case INC_APPEARING:
-                i=RosterIcons.ICON_APPEARING_INDEX;
+            case Constants.INC_APPEARING:
+                i=RosterIcons.ICON_APPEARING_INDEX; 
                 break;
-            case INC_VIEWING:
+            case Constants.INC_VIEWING:
                 i=RosterIcons.ICON_VIEWING_INDEX;
                 break;
         }
@@ -337,37 +311,9 @@ public class Contact extends IconTextElement{
     }
 
     private static StringBuffer temp = new StringBuffer(0);
-    
-    private static RecordStore recordStore = null;
-    public final static int SAVE_RMS_STORE = 0;
-    public final static int CLEAR_RMS_STORE = 1;
-    public final static int CLOSE_RMS_STORE = 2;
-    public final static int READ_ALL_DATA = 3;
-    
-    public void recordStore(int type, RecordStore rs){
-      switch(type){
-          case SAVE_RMS_STORE: 
-              recordStore = rs;
-              break;
-          case CLEAR_RMS_STORE: 
-              recordStore = HistoryStorage.clearRecordStore(rs);
-              break;
-          case CLOSE_RMS_STORE: 
-              recordStore = HistoryStorage.closeStore(rs);
-              break;
-          case READ_ALL_DATA:
-              if (recordStore == null){
-                  recordStore = HistoryStorage.openRecordStore(this, recordStore);
-                  if(null == recordStore) return;
-              }
-              HistoryStorage.getAllData(this, recordStore);
-              break;
-      } 
-    }
-    
     public void addMessage(Msg m) {
         boolean first_replace=false;
-        if (origin!=ORIGIN_GROUPCHAT) {
+        if (origin!=Constants.ORIGIN_GROUPCHAT){
             if (m.isPresence()) {
                 //presence=m.body;//wtf?
                 first_replace = chatInfo.isOnlyStatusMessage();
@@ -416,9 +362,9 @@ public class Contact extends IconTextElement{
         chatInfo.addMessage(m);
         
         if (group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
-          boolean allowLog = (origin<ORIGIN_GROUPCHAT);
-          if (origin!=ORIGIN_GROUPCHAT && this instanceof MucContact) allowLog=false;
-          if(allowLog) HistoryStorage.addText(this, m, recordStore);
+          boolean allowLog = (origin<Constants.ORIGIN_GROUPCHAT);
+          if (origin!=Constants.ORIGIN_GROUPCHAT && this instanceof MucContact) allowLog=false;
+          if(allowLog) getML().storeMessage(m);
         }
         
         if(chatInfo.opened || m.messageType == Msg.MESSAGE_TYPE_OUT) chatInfo.reEnumCounts();
@@ -508,8 +454,7 @@ public class Contact extends IconTextElement{
     public void setStatus(int status) {
         setIncoming(0);
         this.status = status;
-        if (status>=Presence.PRESENCE_OFFLINE) 
-            acceptComposing=false;
+        if (status>=Presence.PRESENCE_OFFLINE) acceptComposing=false;
     }
 
     final void markDelivered(String id) {
@@ -548,8 +493,8 @@ public class Contact extends IconTextElement{
     
     public String getFirstString() {
         if (!midlet.BombusQD.cf.showResources) return (nick==null)?getJid():nick;
-        else if (origin>ORIGIN_GROUPCHAT) return nick;
-        else if (origin==ORIGIN_GROUPCHAT) return getJid();
+        else if (origin>Constants.ORIGIN_GROUPCHAT) return nick;
+        else if (origin==Constants.ORIGIN_GROUPCHAT) return getJid();
         return (nick==null)?getJid():nick+jid.getResource(); 
     }
     
@@ -565,6 +510,9 @@ public class Contact extends IconTextElement{
     
     public boolean inGroup(Group ingroup) {  return group==ingroup;  }
  
+    public int transport;
+    public int status;
+    public int offline_type=Presence.PRESENCE_UNKNOWN;
     public int getImageIndex() {
         if (showComposing) return RosterIcons.ICON_COMPOSING_INDEX;
         int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
@@ -577,11 +525,7 @@ public class Contact extends IconTextElement{
                     ? RosterIcons.ICON_AUTHRQ_INDEX
                     : RosterIcons.ICON_MESSAGE_INDEX;
         }
-
-        if (incomingState>0){
-            return incomingState;
-        }
-        
+        if (incomingState>0) return incomingState;
         return -1;
     }
     

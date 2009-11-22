@@ -153,7 +153,7 @@ public class InfoWindow
 //#endif
         
 //#ifndef MENU
-        super.removeCommand(super.cmdOk);
+        super.removeCommand(midlet.BombusQD.commands.cmdOk);
 //#ifdef CLIPBOARD
 //#         if (Config.getInstance().useClipBoard) {
 //#             addCommand(cmdOk); cmdOk.setImg(0x43);

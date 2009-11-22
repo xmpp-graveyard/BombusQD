@@ -29,7 +29,6 @@
 
 package ui;
 import Colors.ColorTheme;
-
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
 import Client.*;
@@ -46,17 +45,12 @@ import util.StringUtils;
 //# import ui.keys.userKeyExec;
 //#endif
 import java.util.*;
-import java.util.Vector;
 
 //#ifdef MENU_LISTENER
 import Menu.Command;
 import Menu.MenuListener;
 //#endif
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Timer;
-import midlet.BombusQD;
-import Conference.ConferenceGroup;
 //#ifdef LIGHT_CONTROL
 //# import LightControl.CustomLight;
 //#endif
@@ -162,31 +156,31 @@ public abstract class VirtualList
 
     public static final short SIEMENS_GREEN=-11;
     
-    public static final short NOKIA_PEN=-50;
+    public static final byte NOKIA_PEN=-50;
 
-    public static final short MOTOE680_VOL_UP=-9;
-    public static final short MOTOE680_VOL_DOWN=-8;
-    public static final short MOTOE680_REALPLAYER=-6;
-    public static final short MOTOE680_FMRADIO=-7;
+    public static final byte MOTOE680_VOL_UP=-9;
+    public static final byte MOTOE680_VOL_DOWN=-8;
+    public static final byte MOTOE680_REALPLAYER=-6;
+    public static final byte MOTOE680_FMRADIO=-7;
     
     public static final short MOTOROLA_FLIP=-200;
     
-    public static final short SE_FLIPOPEN_JP6=-30;
-    public static final short SE_FLIPCLOSE_JP6=-31;
-    public static final short SE_GREEN=-10;
+    public static final byte SE_FLIPOPEN_JP6=-30;
+    public static final byte SE_FLIPCLOSE_JP6=-31;
+    public static final byte SE_GREEN=-10;
     
-    public static final short SIEMENS_FLIPOPEN=-24;
-    public static final short SIEMENS_FLIPCLOSE=-22;
+    public static final byte SIEMENS_FLIPOPEN=-24;
+    public static final byte SIEMENS_FLIPCLOSE=-22;
     
-    public static final short SIEMENS_VOLUP=-13;
-    public static final short SIEMENS_VOLDOWN=-14;
+    public static final byte SIEMENS_VOLUP=-13;
+    public static final byte SIEMENS_VOLDOWN=-14;
     
-    public static final short SIEMENS_CAMERA=-20;
-    public static final short SIEMENS_MPLAYER=-21;
+    public static final byte SIEMENS_CAMERA=-20;
+    public static final byte SIEMENS_MPLAYER=-21;
 
-    public static short keyClear=-8;
+    public static byte keyClear=-8;
     public static short keyVolDown=0x1000;
-    public static short keyBack=-11;
+    public static byte keyBack=-11;
     public static short greenKeyCode=SIEMENS_GREEN;
     
     public static boolean fullscreen=true;
@@ -352,6 +346,7 @@ public abstract class VirtualList
 
         setFullScreenMode(fullscreen);
 
+        itemBorder=null;
         itemBorder=new int[32];
 
         scrollbar=new ScrollBar();
@@ -471,11 +466,10 @@ public abstract class VirtualList
 //#ifdef BACK_IMAGE
 //#         if(midlet.BombusQD.cf.bgnd_image==1){
 //#          if (gm.img!=null) {
-//# 			for (int xx = 0; xx < width; xx += gm.imgWidth){
-//# 				for (int yy = 0; yy < height; yy += gm.imgHeight){
-//# 					g.drawImage(gm.img, xx, yy, Graphics.LEFT|Graphics.TOP);   
-//#                                         //System.out.println(xx+" "+yy);
-//#                                 }
+//#                         int imgW = gm.imgWidth;
+//#                         int imgH = gm.imgHeight;
+//# 			for (int xx = 0; xx < width; xx += imgW){
+//# 			   for (int yy = 0; yy < height; yy += imgH) g.drawImage(gm.img, xx, yy, Graphics.LEFT|Graphics.TOP);   
 //#                         }
 //#           }
 //#         }
@@ -504,12 +498,12 @@ public abstract class VirtualList
                 if (infobar!=null) {
                     iHeight=infobar.getVHeight();
                     itemBorder[0]=iHeight;
-                    drawInfoPanel(g);
+                    drawInfoPanel(g, 0);
                 }
             } else {
                 if (mainbar!=null) {
                     itemBorder[0]=mHeight; 
-                    drawMainPanel(g);
+                    drawMainPanel(g, 0);
                 }
             }
         }
@@ -545,95 +539,46 @@ public abstract class VirtualList
    
         int baloon=-1;
         int itemYpos;
-        
-
+        int drawYpos;
         try {
-            //System.out.println("itemLayoutY.length ==> " + itemLayoutY.length + "<" + itemIndex+"?");
             count = Math.min(count, itemLayoutY.length);//aspro
             if(itemIndex==-1) itemIndex = 0;
+            VirtualElement el;
+            int lh;
             while ((itemIndex < count) &&
                     ((itemYpos = itemLayoutY[itemIndex] - win_top) < winHeight)) { 
-                VirtualElement el=getItemRef(itemIndex);
+                el=getItemRef(itemIndex);
                 if(el == null) continue;
                 
+                drawYpos = itemBorder[0] + itemYpos;
                 boolean sel=(itemIndex==cursor);
-                int lh=el.getVHeight();
-                setAbsOrg(g, 0, itemBorder[0]);
-                g.setClip(0,0, itemMaxWidth, winHeight); 
-                g.translate(0,itemYpos);
+                
+                lh = el.getVHeight();
+                setAbsOrg(g,0,0);
+                g.setClip(0, itemBorder[0], itemMaxWidth, winHeight);
                 g.setColor(el.getColorBGnd());
 
                 if (sel) {
-                    int elS = -1;
-                    int elE = itemMaxWidth;
-                    if(el instanceof Contact) {
-                       elS = 10;
-                       Contact c = (Contact)el;
-                       if(!c.hasPhoto) elE = el.getVWidth() + 15;
-                       c = null;
-                    }
-                    drawCursor(g, itemMaxWidth , lh , elS , elE);
-                /*    
-                    if(midlet.BombusQD.cf.animateMenuAndRoster){
-                      if(itemIndex==0) { 
-                           drawCursor(g, itemMaxWidth , lh, true);
-                      } else {
-                          if(el.getVWidth()==-1){ drawCursor(g, itemMaxWidth , lh, true);  }
-                          else{ 
-                              drawCursor(g, itemMaxWidth , lh, false);
-                          }
-                      }
-                    }else{
-                      drawCursor(g, itemMaxWidth , lh, true);  
-                    }
-                 */
-                   baloon=g.getTranslateY();
+                    drawCursor(g, 0, drawYpos, itemMaxWidth , lh);
+                    baloon=drawYpos;
                 } else {
 //#ifdef BACK_IMAGE
-//#                     if (gm.img==null && gm.bgnd==null && midlet.BombusQD.cf.bgnd_image!=2) {
+//#                     if (gm.img==null && gm.bgnd==null && midlet.BombusQD.cf.bgnd_image!=2) g.fillRect(0, drawYpos, itemMaxWidth, lh);
 //#endif
-                      g.fillRect(0,0, itemMaxWidth, lh); //clear field       
-                    }
                 }
-                
+                g.translate(0, drawYpos);
                 g.setColor(el.getColor());
                 g.clipRect(0, 0, itemMaxWidth, lh);
                 el.drawItem(g, (sel)?offset:0, sel);
                 
                 ++itemIndex;
 		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;
-                el = null;
             }
+            el = null;
         } catch (Exception e) {
           //System.out.println("Exception Vlist 1 -> "+e.getMessage()+" -> "+e.toString());
         }
-/*       
-        if(updown) //плавное перемещение курсора
-        {
-             setAbsOrg(g, 0, 0);
-             g.setClip(0,0, itemMaxWidth, winHeight); 
-             g.translate(0,16);
-             
-            int itemHeightNow = getItemRef(getElementIndexAt(cursorPosNew-1)).getVHeight();
-            itemYposition = getItemRef(getElementIndexAt(cursorPosNew)).getVHeight();
-            
-            System.out.println(" "+itemHeightNow+" "+itemYposition);
-            
-              VirtualElement el=getItemRef(getElementIndexAt(cursorPosNew));
-              h2=el.getVHeight();
-              g.setClip(0, cursorLowY, itemMaxWidth, el.getVHeight());
-              g.setColor(0x00ff00);
-              g.fillRect(0, cursorLowY, itemMaxWidth, el.getVHeight() );
-              System.out.println("g.fillRect(0,"+cursorLowY + ","+itemMaxWidth + ","+el.getVHeight()+");"); 
-              
-              //if(cursorLowY>=cursorPageYend)..stop
-              //g.translate(0,cursorLowY);
-              //drawCursor(g, itemMaxWidth , el.getVHeight() , true);
-              //int indexNext = getElementIndexAt(cursorPageYend);
-              //.out.println(cursorLowY+" cursorPageYend "+cursorPageYend + " H:"+el.getVHeight() + "   "+indexNext);               
-              //itemIndex=indexNext=cursor;
-        }     
- */   
+        
         int clrH=height-displayedBottom;
 
         if ( clrH>0
@@ -661,14 +606,14 @@ public abstract class VirtualList
 
         setAbsClip(g, width, height);
         
-        drawHeapMonitor(g, itemBorder[0]); //heap monitor
-        
+        if (memMonitor) drawHeapMonitor(g, itemBorder[0]); //heap monitor
 
         if (paintBottom) {
             if (reverse) {
                 if (mainbar!=null) {
-                    setAbsOrg(g, 0, height-mHeight);
-                    drawMainPanel(g);
+                    g.translate( g.getTranslateX(), g.getTranslateY() );
+                    //setAbsOrg(g, 0, 0);
+                    drawMainPanel(g,height-mHeight);
 //#ifdef MENU_LISTENER
                     if (hasPointerEvents())
                         ar.init(width, height, mHeight);
@@ -676,8 +621,9 @@ public abstract class VirtualList
                 }
             } else {
                 if (infobar!=null) {
-                    setAbsOrg(g, 0, height-iHeight);
-                    drawInfoPanel(g);
+                    //setAbsOrg(g, 0, 0);
+                    g.translate( g.getTranslateX(), g.getTranslateY() );
+                    drawInfoPanel(g,height-iHeight);
 //#ifdef MENU_LISTENER
                     if (hasPointerEvents())
                         ar.init(width, height, iHeight);
@@ -822,11 +768,11 @@ public abstract class VirtualList
 
              
     
-    private int getARGB() {
+    private static int getARGB() {
       int ccolor = ColorTheme.getColor(ColorTheme.CURSOR_BGND);
       int red, green, blue,alpha;
       long tmp; 
-      int alpha_ = Config.getInstance().cursor_bgnd;
+      int alpha_ = midlet.BombusQD.cf.cursor_bgnd;
       red = ColorTheme.getRed(ccolor);
       green = ColorTheme.getGreen(ccolor);
       blue = ColorTheme.getBlue(ccolor);
@@ -834,79 +780,46 @@ public abstract class VirtualList
       return (int)tmp;
     }    
     
+    
+    private static int[] cursorBgnd;
+    private static int lastHeight = 0;
+    private static int lastWidth = 0;
+    private static int[] getCursorBgnd(int w, int h)
+    {
+      if(lastHeight == h && lastWidth == w) return cursorBgnd;
+         int alpha_ = getARGB();
+         cursorBgnd = null;
+         cursorBgnd = new int[w * h];
+         int lengntp = cursorBgnd.length;
+         for(int i = 0; i < lengntp; ++i) cursorBgnd[i] = alpha_;
+      lastHeight = h;
+      lastWidth = w;
+      return cursorBgnd;
+    }
         
-    protected void drawCursor (Graphics g, int width, int height, int elS, int elE) {
-     int x = 0;
-     if(Config.getInstance().cursor_bgnd!=0) {
-            int alpha_=getARGB();
-            if(elS != -1 && elE != 1){
-                x = elS;
-                width = elE;
-            }
-            int[] pixelArray = new int[width * height];
-            int lengntp = pixelArray.length;
-            for(int i = 0; i < lengntp; i++){
-               pixelArray[i] = alpha_;
-            }
-            g.drawRGB(pixelArray, 0, width, x , 0 , width, height, true);
-            pixelArray = null;
-            pixelArray = new int[0];
-             //g.drawRect(1,1,width-1,height-1);
+     protected void drawCursor (Graphics g, int x0, int y0, int width, int height) { //Tishka17
+     if(midlet.BombusQD.cf.cursor_bgnd!=0) {
+            cursorBgnd = getCursorBgnd(width,height);
+            g.drawRGB(cursorBgnd, 0, width, x0 , y0 , width, height, true);
       }
      else
      {           
         if(midlet.BombusQD.cf.gradient_cursor){
-             if(elS != -1 && elE != 1){
-                x = elS;
-                width = elE;
-             }
-             fon=new Gradient(x, 0, width, height, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
+             fon=new Gradient(x0, y0, width+x0, height+y0, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
                   ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);
              fon.paint(g);
         }else
         {
          int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
          int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);  
-           if(elS != -1 && elE != 1) x = elS;
            g.setColor(cursorBGnd);
-           g.fillRoundRect(x, 0, x == 0 ? width : elE, height,8,8);
+           g.fillRoundRect(x0, y0, width , height,8,8);
            g.setColor(cursorOutline);
-           g.drawRoundRect(x, 0, x == 0 ? width-1 : elE, height-1, 8, 8);
+           g.drawRoundRect(x0, y0, width-1, height-1, 8, 8);
          }  
      }
    }
-
- 
-/*    
-    protected void drawCursor (Graphics g, int width, int height,boolean firstItem) {
-        //currentWidth = width;
-       if(firstItem){
-          drawCursor (g,width,height);
-       } 
-       else
-       {
-        g.fillRect(0, 0, cursorX, height);
-        if(midlet.BombusQD.cf.gradient_cursor){
-          fon=new Gradient(0, 0, cursorX, height, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
-                  ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);
-          fon.paint(g);
-        }
-        else{
-         int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
-         int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);            
-           if (cursorBGnd!=0x010101) {
-            g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
-            g.fillRoundRect(0, 0, cursorX, height, 6, 6);
-           }
-           if (cursorOutline!=0x010101) {
-            g.setColor(cursorOutline);
-            g.drawRoundRect(0, 0, cursorX-1, height-1, 6, 6);
-           }            
-        }
-       }
-    }
- */
-
+     
     
    public void pageLeft() {
         if (getItemCount()==0)
@@ -1078,59 +991,58 @@ public abstract class VirtualList
     }    
 
     private void drawHeapMonitor(final Graphics g, int y) {
-        if (memMonitor) {
             int ram=(int)(((long)Runtime.getRuntime().freeMemory()*width)/(long)Runtime.getRuntime().totalMemory());
             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_TOTAL));  g.fillRect(0,y,width,1);
             g.setColor(ColorTheme.getColor(ColorTheme.HEAP_FREE));  g.fillRect(0,y,ram,1);
-        }
     }
     
-    private void drawMainPanel (final Graphics g) {    
+    private void drawMainPanel (final Graphics g, int y) {    
         int h=mainbar.getVHeight()+1;
-        g.setClip(0,0, width, h);
+        //g.setClip(0,y, width, h);
 //#ifdef GRADIENT
 //#          if (getMainBarBGnd()!=getMainBarBGndBottom()) {
 //#             int c = midlet.BombusQD.cf.gradientBarLigth?1:-1;
 //#             int[] backPic = getBarBgnd(width, h,
 //#                     transformColorLight(getMainBarBGnd(), c*midlet.BombusQD.cf.gradientBarLight1), 
 //#                     transformColorLight(getMainBarBGndBottom(), c*midlet.BombusQD.cf.gradientBarLight2));
-//#             g.drawRGB(backPic, 0, width, 0, 0 , width, h, false);
+//#             g.drawRGB(backPic, 0, width, 0, y, width, h, false);//Tishka17
 //#             backPic = null;
 //#             backPic = new int[0];
 //#          } else {
 //#              g.setColor(getMainBarBGnd());
-//#              g.fillRect(0, 0, width, h);
+//#              g.fillRect(0, y, width, h);
 //#          }
 //#else
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
 //#endif
+        setAbsOrg(g, 0, y);
         g.setColor(getMainBarRGB());
         mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
     }
 
 //#ifndef MENU
-    private void drawInfoPanel (final Graphics g) {
+    private void drawInfoPanel (final Graphics g, int y) {
         int h=infobar.getVHeight()+1;
-        g.setClip(0,0, width, h);
+        //g.setClip(0,y, width, h);
 //#ifdef GRADIENT
 //#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {//32,102
 //#             int c = midlet.BombusQD.cf.gradientBarLigth?1:-1;
 //#             int[] backPic = getInfoBarBgnd(width, h,
 //#                     transformColorLight(getMainBarBGnd(), c*midlet.BombusQD.cf.gradientBarLight1), 
 //#                     transformColorLight(getMainBarBGndBottom(), c*midlet.BombusQD.cf.gradientBarLight2));
-//#             g.drawRGB(backPic, 0, width, 0, 0 , width, h, false);
+//#             g.drawRGB(backPic, 0, width, 0, y , width, h, false);//Tishka17
 //#             backPic = null;
 //#             backPic = new int[0];
 //#         } else {
 //#             g.setColor(getMainBarBGnd());
-//#             g.fillRect(0, 0, width, h);
+//#             g.fillRect(0, y, width, h);
 //#         }
 //#else
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
 //#endif
-
+        setAbsOrg(g, 0, y);
         g.setColor(getMainBarRGB());
         infobar.drawItem(g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
     }
@@ -1508,6 +1420,9 @@ public abstract class VirtualList
     public Vector cmdsecondList=new Vector(0);
     public Vector cmdThirdList=new Vector(0);    
 
+    public boolean contains(Command command) {
+        return menuCommands.contains(command);
+    }    
     
     public void addCommand(Command command) {
         if (menuCommands.indexOf(command)<0) menuCommands.addElement(command);
@@ -1603,7 +1518,7 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#         if (keyCode==greenKeyCode) {
 //#             if (popup.getContact()!=null) {
-//#                    if(Config.getInstance().useClassicChat){
+//#                    if(midlet.BombusQD.cf.useClassicChat){
 //#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
 //#                    }else{
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
@@ -1780,7 +1695,7 @@ public abstract class VirtualList
 //#ifdef POPUPS
         if (keyCode==greenKeyCode) {
             if (popup.getContact()!=null) {
-                   if(Config.getInstance().useClassicChat){
+                   if(midlet.BombusQD.cf.useClassicChat){
                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
                    }else{
                       new ContactMessageList(sd.roster.getContact(popup.getContact(), false),display);
@@ -2168,7 +2083,7 @@ class TimerTaskRotate extends Thread{
     public static void startRotate(int max, VirtualList list){
         if(list==null) return;
         //Windows mobile J9 hanging test
-        if (Config.getInstance().phoneManufacturer==Config.WINDOWS) {
+        if (midlet.BombusQD.cf.phoneManufacturer==Config.WINDOWS) {
             list.showBalloon=true;
             list.offset=0;
             return;

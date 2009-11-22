@@ -16,6 +16,7 @@ import locale.SR;
  */
 public class Commands {
     
+    public static Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
     
     //MessageList
     public static Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN /*Command.SCREEN*/,337);    
@@ -59,9 +60,10 @@ public class Commands {
     public static Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);    
   
     
-    public static Command cmdHistory = new Command("History", Command.SCREEN, 101);
-    public static Command cmdHistory1 = new Command("Show History", Command.SCREEN, 102);
-    
+    public static Command cmdHistory = new Command(SR.MS_HISTORY_OPTIONS, Command.SCREEN, 101);
+    public static Command cmdHistoryRMS = new Command("Show RMS History", Command.SCREEN, 102);
+    public static Command cmdHistoryFS = new Command("Show FS History", Command.SCREEN, 103);
+    public static Command cmdHistorySERVER = new Command("Show Server History", Command.SCREEN, 104);
 //#ifdef JUICK.COM   
 //#     /*
 //#     public static Command cmdJuickLastPopular = new Command("", Command.SCREEN, 101);//#
@@ -74,6 +76,8 @@ public class Commands {
 //#endif 
 
     private static void setImages(){
+        cmdOk.setImg(0x60);
+                
         cmdSelect.setImg(0x60);
         cmdResume.setImg(0x80);
         cmdSubscribe.setImg(0x43);
@@ -98,7 +102,9 @@ public class Commands {
         cmdMyService.setImg(0x27);
         
         cmdHistory.setImg(0x64);
-        cmdHistory1.setImg(0x64);
+        cmdHistoryRMS.setImg(0x64);
+        cmdHistoryFS.setImg(0x64);
+        cmdHistorySERVER.setImg(0x64);
 
     }
         

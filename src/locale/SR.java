@@ -217,7 +217,7 @@ public class SR {
     public   static String MS_GRMENU_CENTER = loadString( "[center]");
     public   static String MS_GRMENU_LEFT = loadString( "[Left:     ]");
     public   static String MS_GRMENU_RIGHT = loadString( "[    :Right]");
-    
+    public   static String MS_AUTOCONNECT_TRANSPORTS = loadString( "Auto-Load Transports after connect" );   
     
     public   static String MS_SET_SUBJECT = loadString( "Set Subject" );
     //public   static String MS_TOOLS = loadString( "Options>" );
@@ -253,6 +253,12 @@ public class SR {
     public   static String MS_IS_NOW=loadString(" is now ");    
     public  static String MS_ERROR=loadString("error");
     public static String MS_SELECT_HISTORY_FOLDER=loadString("Select history folder");
+    
+    public   static String MS_HISTORY_TYPE = loadString( "Type History" );
+    public   static String MS_HISTORY_RMS = loadString( "History in RMS" );
+    public   static String MS_HISTORY_FS = loadString( "History in FS" );
+    public   static String MS_HISTORY_SERVER = loadString( "History on server" ); 
+    
     //public static String MS_NEW_MENU=loadString("show new menu");
     public static String MS_SOUND_VOLUME=loadString("Sound volume");
     public static String MS_LANGUAGE=loadString("Language");

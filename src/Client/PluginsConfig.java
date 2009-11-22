@@ -51,6 +51,7 @@ import util.StringLoader;
 import java.util.Vector;
 import images.SmilesIcons;
 import ui.ImageList;
+import History.HistoryConfig;
 import java.util.*;
 /**
  *
@@ -64,7 +65,6 @@ public final class PluginsConfig extends DefForm implements MenuListener
          
     private static void initItems(){
        if(showOfflineContacts == null) {
-         System.out.println("init Items;");
          showOfflineContacts = new CheckBox(SR.MS_OFFLINE_CONTACTS, cf.showOfflineContacts);
          selfContact = new CheckBox(SR.MS_SELF_CONTACT, cf.selfContact);
          showTransports = new CheckBox(SR.MS_TRANSPORTS, cf.showTransports);
@@ -130,6 +130,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
           popupFromMinimized = new CheckBox(SR.MS_ENABLE_POPUP, cf.popupFromMinimized);
           drawScrollBgnd = new CheckBox(SR.MS_BGND_SCROLL,cf.drawScrollBgnd); 
           gradientBarLigth = new CheckBox(SR.MS_USE_LIGHT_TO_DRWPANELS, cf.gradientBarLigth);
+          autoLoadTransports = new CheckBox(SR.MS_AUTOCONNECT_TRANSPORTS, cf.autoLoadTransports);
 //#ifdef AUTOSTATUS
 //#           awayStatus=new CheckBox(SR.MS_AUTOSTATUS_MESSAGE, cf.setAutoStatusMessage);
 //#endif
@@ -189,10 +190,10 @@ public final class PluginsConfig extends DefForm implements MenuListener
 
         SimpleString str = new SimpleString(SR.MS_ADVANCED_OPT, true);
         itemsList.addElement(str);
+        itemsList.addElement(history); 
         itemsList.addElement(autostatus);  
         itemsList.addElement(userKeys); 
         itemsList.addElement(avatars);           
-        //itemsList.addElement(history); 
         
         //cashe = new PluginBox(SR.MS_casheStr, cf.module_cashe){ public void doAction(boolean st){ cf.module_cashe=st; } };
         //itemsList.addElement(cashe); 
@@ -212,7 +213,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
     }
     
     public void commandAction(Command command, Displayable displayable) {
-        if(command==cmdOk){
+        if(command==midlet.BombusQD.commands.cmdOk){
             cmdOk();
         } else super.commandAction(command, displayable);
     }
@@ -258,7 +259,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
            display.setCurrent(new Colors.ColorConfigForm(display, this));
           }         
           else if(type==SR.MS_historyStr){
-           //display.setCurrent(new History.HistoryConfig(display, this));
+           display.setCurrent(new HistoryConfig(display, this));
           }
           else if(type==SR.MS_fontsStr){
            display.setCurrent(new Fonts.ConfigFonts(display, this));
@@ -376,6 +377,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
     private static CheckBox popupFromMinimized;
     private static CheckBox drawScrollBgnd; 
     private static CheckBox gradientBarLigth;
+    private static CheckBox autoLoadTransports;
 //#ifdef AUTOSTATUS
 //#     private static CheckBox awayStatus;
 //#endif
@@ -523,6 +525,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
              itemsList.addElement(useClipBoard);
          }
          else if(type==SR.MS_netStr){//
+                   itemsList.addElement(autoLoadTransports);
 //#ifdef PEP        
 //#                    itemsList.addElement(new SimpleString(SR.MS_PEP, true));
 //#                    itemsList.addElement(sndrcvmood);
@@ -755,6 +758,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
             cf.useClipBoard=useClipBoard.getValue();
          }
          else if(type==SR.MS_netStr){
+            cf.autoLoadTransports=autoLoadTransports.getValue();
 //#ifdef PEP             
 //#             cf.sndrcvmood=sndrcvmood.getValue();
 //#             cf.rcvtune=rcvtune.getValue();
@@ -846,6 +850,17 @@ public final class PluginsConfig extends DefForm implements MenuListener
       destroyView();
     }
     public void destroyView(){
+        int size = itemsList.size();
+        Object obj;
+        for(int i = 0; i < size; ++i){
+            obj = (Object)itemsList.elementAt(i);
+            if(obj instanceof DropChoiceBox) ((DropChoiceBox)obj).destroy();
+            if(obj instanceof NumberInput) ((NumberInput)obj).destroy();
+        }
+        contacts = messages = notify = network = app = graphics = theme = fonts = null;//?
+        autostatus =  avatars = history =  ie = tasks = classicchat = debug = null;//?
+
+        itemsList.removeAllElements();
         display.setCurrent(parentView);
     }    
  }

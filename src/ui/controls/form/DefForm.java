@@ -65,7 +65,6 @@ public class DefForm
     
     public Vector itemsList=new Vector(0);
 
-    public Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
     public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
 
     public int superWidth;
@@ -109,7 +108,7 @@ public class DefForm
 	if (command==cmdCancel) {
 	    cmdCancel();
 	}
-	if (command==cmdOk) {
+	if (command==midlet.BombusQD.commands.cmdOk) {
             cmdOk();
         }
     }
