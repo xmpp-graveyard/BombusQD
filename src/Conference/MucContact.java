@@ -278,17 +278,18 @@ public class MucContact extends Contact {
 
     public void testMeOffline(boolean isKick){
          ConferenceGroup gr=(ConferenceGroup)group;
-         if(isKick) midlet.BombusQD.getInstance().display.setCurrent(midlet.BombusQD.sd.roster);
-         if ( gr.selfContact == this ) 
+         if ( gr.selfContact == this ) {
+            if(isKick) midlet.BombusQD.sd.roster.showRoster();
             midlet.BombusQD.sd.roster.roomOffline(gr, true);
+         }
     }
 
     public void addMessage(Msg m) {
         super.addMessage(m);
         switch (m.messageType) {
-            case Msg.MESSAGE_TYPE_IN:
-            case Msg.MESSAGE_TYPE_OUT:
-            case Msg.MESSAGE_TYPE_HISTORY: break;
+            case Constants.MESSAGE_TYPE_IN:
+            case Constants.MESSAGE_TYPE_OUT:
+            case Constants.MESSAGE_TYPE_HISTORY: break;
             default: return;
         }
         lastMessageTime=m.dateGmt;

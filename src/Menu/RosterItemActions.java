@@ -99,9 +99,6 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
     ActionsIcons menuIcons=ActionsIcons.getInstance();
 
     private MainBar mainbar;
-//#ifdef PEP
-//#     EventPublish publishEvent = new EventPublish();
-//#endif        
 
     /** Creates a new instance of RosterItemActions */
     public RosterItemActions(Display display, Displayable pView) {
@@ -111,9 +108,14 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
         this.display = display;
     }
     
+    private void updateMainBar(Object item){
+        mainbar = new MainBar(item);
+        setMainBarItem(mainbar);
+        mainbar = null;
+    }
+    
     public void showActions(Displayable pView,Object item, int action){
-        menuitems.removeAllElements();
-        redraw();
+        updateMainBar(item);
         setItems(pView,item,action);
 	if (getItemCount()>0) {
             if (action<0) {
@@ -139,7 +141,6 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
             int grType = contact.getGroupType();
             boolean originGroupchat = (contact.origin==Constants.ORIGIN_GROUPCHAT);
 
-            mainbar.setElementAt(contact.bareJid, 0);
         // if(contact.bareJid.equals(StaticData.HELPER_CONTACT)==false){            
 	    if (grType==Groups.TYPE_TRANSP) {
 		addItem(SR.MS_LOGON,5, menuIcons.ICON_ON);
@@ -397,6 +398,10 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
     }
     
     
+    public void destroyView(){
+        menuitems.removeAllElements();
+        display.setCurrent(parentView);
+    }
     
      public void eventOk(){
          try {
@@ -418,28 +423,6 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
         Config.getInstance().cursorPos[1]=cursor;
         if (isContact) to=(index<3)? c.getJid() : c.bareJid;
             switch (index) {
-//#ifdef CHECKERS
-//#                /* 
-//#                 case 220:
-//#                     sd.roster.theStream.send(new IqCheckers(c.getJid(), true));
-//#                     new Checkers(display, c, true);  //запуск wait экрана                 
-//#                     break;
-//#                 case 221:
-//#                     c.setCheckers(-1);
-//#                     sd.roster.theStream.send(new IqCheckers(c.getJid()));
-//#                     break;  
-//#                 case 222:
-//#                     JabberDataBlock jdb = new Iq(c.getJid(), 2, "checkers");
-//#                     jdb.addChildNs("query", "checkers").setAttribute("state", "game_ok");
-//#                     c.setIncoming(Contact.INC_NONE);
-//#                     new Checkers(display, c, false);
-//#                     sd.roster.theStream.send(jdb);
-//#                     break;
-//#                 case 223: //resume:
-//#                     //new Checkers(display, c, false, false);
-//#                     break;  
-//#                 */                            
-//#endif                
                 case 0: // version
                     midlet.BombusQD.sd.roster.setQuerySign(true);
                     midlet.BombusQD.cf.flagQuerySign=true;
@@ -562,27 +545,6 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                 case 900:
                     midlet.BombusQD.sd.roster.leaveAllMUCs();
                     break;
-//#ifdef PEP                    
-//#                     /*
-//#                 case 911:
-//#                    new AlertBox("Send form", "Send my Moods+Actions+Music(PEP) to all contacts(YES-recommended)?", display, this) {
-//#                        public void yes() {
-//#                           publishEvent.publishActivity(cf.actCat,cf.actDescr,cf.actText);
-//#                           publishEvent.publishMood(cf.moodText,cf.moodName);
-//#                        }
-//#                        public void no() { }
-//#                   };  
-//#                   break;
-//#                      */
-//# 
-//#                 case 913:
-//#                           publishEvent.stopMusic();
-//#                           Config.getInstance().track=0;
-//#                           c.pepTune=false;
-//#                           c.pepTuneText=null;
-//#                   break;  
-//#endif                    
-                    
 //#ifdef CLIPBOARD
 //#                 case 892: //Copy JID
 //#ifndef WMUC
@@ -611,9 +573,9 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 
                     try {
                         midlet.BombusQD.sd.roster.sendMessage(c, id, body, null, null,false);
-                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"scheme sended"));
+                        c.addMessage(new Msg(Constants.MESSAGE_TYPE_OUT,from,null,"scheme sended"));
                     } catch (Exception e) {
-                        c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,"scheme NOT sended"));
+                        c.addMessage(new Msg(Constants.MESSAGE_TYPE_OUT,from,null,"scheme NOT sended"));
                         //e.printStackTrace();
                     }
                 break;
@@ -626,7 +588,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 //#                     String from2=midlet.BombusQD.sd.account.toString();
 //# 
 //#                     String id2=String.valueOf((int) System.currentTimeMillis());
-//#                     Msg msg2=new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,body2);
+//#                     Msg msg2=new Msg(Constants.MESSAGE_TYPE_OUT,from2,null,body2);
 //#                     msg2.id=id2;
 //#                     msg2.itemCollapsed=true;
 //# 
@@ -637,7 +599,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 //#                             if (c.origin<Constants.ORIGIN_GROUPCHAT) c.addMessage(msg2);
 //#                         }
 //#                     } catch (Exception e) {
-//#                         c.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from2,null,"clipboard NOT sended"));
+//#                         c.addMessage(new Msg(Constants.MESSAGE_TYPE_OUT,from2,null,"clipboard NOT sended"));
 //#                     }
 //#                     break;
 //#endif

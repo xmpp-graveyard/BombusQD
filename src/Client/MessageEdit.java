@@ -435,7 +435,7 @@ public final class MessageEdit
     private void send(String body,String subj) {
         String comp = null;
         String id = String.valueOf((int) System.currentTimeMillis());
-        Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, midlet.BombusQD.sd.account.toString() , subj, body);
+        Msg msg = new Msg(Constants.MESSAGE_TYPE_OUT, midlet.BombusQD.sd.account.toString() , subj, body);
 
         if (body!=null) body=body.trim();
 //#ifdef DETRANSLIT

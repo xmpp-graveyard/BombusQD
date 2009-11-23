@@ -126,7 +126,7 @@ public class SearchResult
                 }
                 Contact serv=new Contact(null, jid, status,"search");
                 serv.setGroup(sd.roster.contactList.groups.getGroup(Groups.TYPE_SEARCH_RESULT));
-                Msg m=new Msg(Msg.MESSAGE_TYPE_IN, jid, "Short info", vcard.toString());
+                Msg m=new Msg(Constants.MESSAGE_TYPE_IN, jid, "Short info", vcard.toString());
                 m.unread=false;
                 serv.addMessage(m);
                 
@@ -153,7 +153,7 @@ public class SearchResult
     public void touchRigthPressed(){ destroyView(); }
     
     public void destroyView(){
-       if (display!=null) display.setCurrent(midlet.BombusQD.sd.roster);
+       if (display!=null) midlet.BombusQD.sd.roster.showRoster();
     }
     
 //#ifdef GRAPHICS_MENU        
@@ -189,14 +189,6 @@ public class SearchResult
             Contact c=(Contact)getFocusedObject();
             if (c==null) return;
             display.setCurrent(c.getMessageList());
-            /*
-            if(c.cList!=null && Config.getInstance().module_cashe && c.msgs.size()>3){//?
-                display.setCurrent( (ContactMessageList)c.cList );  
-            }else{
-                new ContactMessageList(c,display);  
-            }
-             */     
-            //new ContactMessageList((Contact) getFocusedObject(), display);
         } catch (Exception e) {}
     }
 }

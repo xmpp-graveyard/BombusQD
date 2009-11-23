@@ -16,6 +16,7 @@
 //# import com.alsutton.jabber.datablocks.Iq;
 //# import java.util.Vector;
 //# import Client.Contact;
+//# import Client.Constants;
 //# 
 //# /**
 //#  *
@@ -68,7 +69,7 @@
 //#         boolean lastMessages = body.startsWith("Last messages:");
 //# 
 //#         if( lastMessages || lastPopularMessages) {
-//#           message = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null ,"<nick>[Last" + (lastMessages?" ":" popular ") + "messages]</nick>" );
+//#           message = new Msg(Constants.MESSAGE_TYPE_JUICK, BOTNAME , null ,"<nick>[Last" + (lastMessages?" ":" popular ") + "messages]</nick>" );
 //#           storeMessage(message);
 //#           boolean parse = false;
 //#           for (i = 0; i < len; i++) {
@@ -95,7 +96,7 @@
 //#                          j=j-1;
 //#                          while(c!=')') { j++;  c = body.charAt(j);  bufMsg.append(c); } //include replies
 //#                        }
-//#                        message = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null , bufMsg.toString() );
+//#                        message = new Msg(Constants.MESSAGE_TYPE_JUICK, BOTNAME , null , bufMsg.toString() );
 //#                        message.id = id.append(' ').toString();
 //#                        storeMessage(message);
 //#                          bufMsg.setLength(0);
@@ -209,7 +210,7 @@
 //#                               buf.append(message_id.toString());
 //#                           }
 //#                            
-//#                           m = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null , buf.toString() );
+//#                           m = new Msg(Constants.MESSAGE_TYPE_JUICK, BOTNAME , null , buf.toString() );
 //#                           m.id = message_id.toString();
 //#                           storeMessage(m);
 //#                           buf.setLength(0);
@@ -220,12 +221,12 @@
 //#                            */
 //#                         }
 //#                     }else {
-//#                        m = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null , "none messages." );
+//#                        m = new Msg(Constants.MESSAGE_TYPE_JUICK, BOTNAME , null , "none messages." );
 //#                        storeMessage(m);                        
 //#                     }
 //#                 }
 //#                 if ( type.equals( "error" ) ) {
-//#                    m = new Msg(Msg.MESSAGE_TYPE_JUICK, BOTNAME , null , "<nick>error:</nick> "+data.toString());
+//#                    m = new Msg(Constants.MESSAGE_TYPE_JUICK, BOTNAME , null , "<nick>error:</nick> "+data.toString());
 //#                    storeMessage(m);                     
 //#                 }
 //#                return null;
@@ -241,7 +242,7 @@
 //#                  //if (juickUnameNs!=null) juickUnameNs.getText();
 //#                  
 //#                  JabberDataBlock juickNs = data.findNamespace("juick",NS_MESSAGE);
-//#                  m.messageType=Msg.MESSAGE_TYPE_JUICK;
+//#                  m.messageType=Constants.MESSAGE_TYPE_JUICK;
 //#                  m.id=null;
 //#                  
 //#                  if(juickNs!=null){

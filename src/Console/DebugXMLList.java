@@ -3,7 +3,7 @@
  */
 //#ifdef CONSOLE
 //# package Console;
-//# 
+//# import Client.Constants;
 //# import Client.Config;
 //# import Client.Msg;
 //# import Client.StaticData;
@@ -98,7 +98,7 @@
 //#     }
 //#     
 //#     protected Msg getMessage(int index) {
-//#         Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT, "local", null, null);
+//#         Msg msg=new Msg(Constants.MESSAGE_TYPE_OUT, "local", null, null);
 //#         try {
 //#             msg=midlet.BombusQD.debug.msg(index);
 //#         } catch (Exception e) {}

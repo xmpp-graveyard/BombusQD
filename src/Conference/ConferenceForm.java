@@ -223,7 +223,7 @@ public final class ConferenceForm
                 //cf.saveToStorage();//?
                 gchat.append('/').append(nick);
                 join(name, gchat.toString(),pass, msgLimit);
-                display.setCurrent(midlet.BombusQD.sd.roster);
+                midlet.BombusQD.sd.roster.showRoster();
             } catch (Exception e) { }
         }
         gchat=null;

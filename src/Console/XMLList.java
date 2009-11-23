@@ -27,7 +27,7 @@
  */
 //#ifdef CONSOLE
 //# package Console;
-//# 
+//# import Client.Constants;
 //# import Client.Config;
 //# import Client.Msg;
 //# import Client.StaticData;
@@ -137,7 +137,7 @@
 //#         try {
 //#            return stanzas.msg(index);
 //#         } catch (Exception e) { }
-//# 	return new Msg(Msg.MESSAGE_TYPE_OUT, "local", null, null);
+//# 	return new Msg(Constants.MESSAGE_TYPE_OUT, "local", null, null);
 //#     }
 //# 
 //#     public void keyGreen(){

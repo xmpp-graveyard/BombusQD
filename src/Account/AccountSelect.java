@@ -288,7 +288,7 @@ public class AccountSelect
     }
 
     public void destroyView(){
-       display.setCurrent(midlet.BombusQD.sd.roster);
+       midlet.BombusQD.sd.roster.showRoster();
     }
 
     private void delAccount(){

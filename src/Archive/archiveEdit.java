@@ -30,6 +30,7 @@ package Archive;
 import Client.Msg;
 import javax.microedition.lcdui.*;
 import locale.SR;
+import Client.Constants;
 //import ui.controls.ExTextBox;
 
 /**
@@ -96,7 +97,7 @@ public class archiveEdit
         body=t.getString();
         if (body.length()==0) body=null;
         if (c==cmdOk) {
-            int type=Msg.MESSAGE_TYPE_OUT;
+            byte type=Constants.MESSAGE_TYPE_OUT;
             String from="";
             String subj="";
             if (pos>-1) {

@@ -25,7 +25,6 @@
  */
 
 package Client;
-import Client.*; 
 import javax.microedition.lcdui.*;
 import locale.SR;
 import com.alsutton.jabber.datablocks.*;
@@ -245,7 +244,7 @@ public final class CommandForm extends DefForm
             case STATS_ITEM:
             {
                   try {
-                      midlet.BombusQD.clipboard.add(new Msg(Msg.MESSAGE_TYPE_EVIL,"bechmark",null,(String)obj));
+                      midlet.BombusQD.clipboard.add(new Msg(Constants.MESSAGE_TYPE_EVIL,"bechmark",null,(String)obj));
                   } catch (Exception e) {/*no messages*/}
                   destroyView();
                   break;

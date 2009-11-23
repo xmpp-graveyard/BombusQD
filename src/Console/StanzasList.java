@@ -64,7 +64,7 @@
 //#       if (enabled) {
 //# 	  try {
 //#             if(msg.length()>0) {
-//#               Msg stanza=new Msg(type, "local", null, msg.toString());
+//#               Msg stanza=new Msg((byte)type, "local", null, msg.toString());
 //#               stanza.itemCollapsed=true;
 //#               stanzas.addElement(stanza);
 //#               stanza=null;

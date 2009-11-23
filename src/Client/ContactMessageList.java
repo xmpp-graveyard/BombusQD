@@ -122,6 +122,13 @@ public final class ContactMessageList extends MessageList implements MenuListene
       } 
     }
     
+    private MainBar mainbar = null;
+    public void updateMainBar(Contact contact){
+        mainbar = new MainBar(contact);
+        setMainBarItem(mainbar);
+        mainbar = null;
+    }
+    
     /** Creates a new instance of MessageList */
     public ContactMessageList(Contact contact) {
         this.contact=contact;
@@ -129,8 +136,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
         
         //MainBar mainbar=new MainBar(contact);
         msgs = contact.getChatInfo().getMsgs();
-        
-        setMainBarItem(new MainBar(contact));
+        updateMainBar(contact);
 
         cursor=0;
         contact.setIncoming(0);
@@ -160,7 +166,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
         if (midlet.BombusQD.commands.cmdSubscribe==null) return;
         try {
             Msg msg=getMessageAt(cursor);
-            if (msg.messageType==Msg.MESSAGE_TYPE_AUTH) {
+            if (msg.messageType==Constants.MESSAGE_TYPE_AUTH) {
                 addCommand(midlet.BombusQD.commands.cmdSubscribe); 
                 addCommand(midlet.BombusQD.commands.cmdUnsubscribed); 
             }
@@ -430,12 +436,12 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#if BREDOGENERATOR                 
 //#         if (c==midlet.BombusQD.commands.cmdAutoGenON) {
 //#            midlet.BombusQD.cf.bredoGen=true;
-//#            display.setCurrent(midlet.BombusQD.sd.roster);
+//#            midlet.BombusQD.sd.roster.showRoster();
 //#            VirtualList.setWobble(3, null, SR.MS_BREDO_ON);
 //#         }
 //#         if (c==midlet.BombusQD.commands.cmdAutoGenOff) {
 //#            midlet.BombusQD.cf.bredoGen=false;
-//#            display.setCurrent(midlet.BombusQD.sd.roster);
+//#            midlet.BombusQD.sd.roster.showRoster();
 //#            VirtualList.setWobble(3, null, SR.MS_BREDO_OFF);
 //#         }  
 //#endif         
@@ -462,7 +468,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#             String body=midlet.BombusQD.clipboard.getClipBoard();
 //# 
 //#             String id=String.valueOf((int) System.currentTimeMillis());
-//#             Msg msg=new Msg(Msg.MESSAGE_TYPE_OUT,from,null,body);
+//#             Msg msg=new Msg(Constants.MESSAGE_TYPE_OUT,from,null,body);
 //#             msg.id=id;
 //#             msg.itemCollapsed=true;
 //#             
@@ -472,7 +478,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#                     if (contact.origin<Constants.ORIGIN_GROUPCHAT) contact.addMessage(msg);
 //#                 }
 //#             } catch (Exception e) {
-//#                 contact.addMessage(new Msg(Msg.MESSAGE_TYPE_OUT,from,null,SR.MS_CLIPBOARD_SENDERROR));
+//#                 contact.addMessage(new Msg(Constants.MESSAGE_TYPE_OUT,from,null,SR.MS_CLIPBOARD_SENDERROR));
 //#             }
 //#             redraw();
 //#             return;
@@ -610,14 +616,14 @@ public final class ContactMessageList extends MessageList implements MenuListene
             Msg msg = getMessage(cursor);
             if(msg != null) msg=replaceNickTags(msg);
             if (msg==null ||
-                msg.messageType == Msg.MESSAGE_TYPE_OUT ||
-                msg.messageType == Msg.MESSAGE_TYPE_SUBJ)
+                msg.messageType == Constants.MESSAGE_TYPE_OUT ||
+                msg.messageType == Constants.MESSAGE_TYPE_SUBJ)
                 keyGreen();
             else{
 //#ifdef RUNNING_MESSAGE
 //#                String messg = msg.from+": "; 
 //#ifdef JUICK.COM                
-//#                if(msg.messageType==Msg.MESSAGE_TYPE_JUICK){
+//#                if(msg.messageType==Constants.MESSAGE_TYPE_JUICK){
 //#                     messg=util.StringUtils.replaceNickTags(msg.id);
 //#                }
 //#endif          
@@ -775,7 +781,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#     public void touchRightPressed(){ 
 //#         if (midlet.BombusQD.cf.oldSE) showGraphicsMenu(); else destroyView();
 //#     }    
-//#     public void touchLeftPressed(){ if (midlet.BombusQD.cf.oldSE) keyGreen(); else showGraphicsMenu(); }
+//#     public void touchLeftPressed(){ if (midlet.BombusQD.cf.oldSE) destroyView(); else showGraphicsMenu(); }
 //#else
     public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }    
     public void touchLeftPressed(){ if (cf.oldSE) keyGreen(); else showMenu(); }
@@ -805,14 +811,17 @@ public final class ContactMessageList extends MessageList implements MenuListene
     public void resetMessages() {
         //System.out.println("resetMessages");
         messages.removeAllElements();
+        Msg msg;
+        MessageItem mi;
         for (int i = messages.size(); i < msgs.size(); ++i) {
-            Msg msg = (Msg)msgs.elementAt(i);
-            MessageItem mi = new MessageItem(msg, this, smiles);
+            msg = (Msg)msgs.elementAt(i);
+            mi = new MessageItem(msg, this, smiles);
             mi.setEven((messages.size() & 1) == 0);
             mi.parse(this);
             //mi.getColor();
             messages.addElement(mi);
         }
+        mi = null;
     }
     
     public void addMessage(Msg msg) {
@@ -820,8 +829,8 @@ public final class ContactMessageList extends MessageList implements MenuListene
         MessageItem mi = new MessageItem(msg, this, smiles);
         mi.setEven((messages.size() & 1) == 0);
         mi.parse(this);
-        //mi.getColor();
         messages.addElement(mi);
+        mi = null;
         forceScrolling();
         redraw();
     }
@@ -868,7 +877,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#            midlet.BombusQD.sd.roster.activeContact=null;
 //#            midlet.BombusQD.sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
 //#            //if (midlet.BombusQD.getInstance().display!=null)
-//#            midlet.BombusQD.getInstance().display.setCurrent(midlet.BombusQD.sd.roster);
+//#            midlet.BombusQD.sd.roster.showRoster();
 //#else
         sd.roster.activeContact=null;
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster

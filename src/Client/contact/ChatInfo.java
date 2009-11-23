@@ -41,7 +41,7 @@ public final class ChatInfo {
     
     private int newMsgCnt=0;
     private int newHighLitedMsgCnt=0;
-    public int unreadType;
+    public byte unreadType;
     public int lastUnread;
     public boolean opened = false;
 
@@ -50,17 +50,16 @@ public final class ChatInfo {
         newMsgCnt = 0;
         newHighLitedMsgCnt = 0;
     }
-    private int calcUnreadType() {
+    private byte calcUnreadType() {
         int size = msgs.size();
         for (int i=0; i<size; ++i){
             Msg m = (Msg)msgs.elementAt(i);
             if (m.unread) {
-                if (m.messageType==Msg.MESSAGE_TYPE_AUTH) {
-                    return m.messageType;
-                }
+                //MESSAGE_TYPE_AUTH=14;
+                if (m.messageType==14) return m.messageType;
             }
         }
-        return Msg.MESSAGE_TYPE_IN;
+        return 10;//MESSAGE_TYPE_IN=10;
     }
     public int getNewMessageCount() {
         return newMsgCnt;
@@ -98,13 +97,18 @@ public final class ChatInfo {
             }
         }
     }
-    public int getUnreadMessageType() {
+    public byte getUnreadMessageType() {
         return unreadType;
     }
     public boolean isActiveChat() {
         return (0 < getMessageCount()) && !isOnlyStatusMessage();
         
     }
+    
+    public boolean isFirstMessage() {
+        return (0 == getMessageCount());
+    }
+    
     public boolean isOnlyStatusMessage() {
         return (1 == getMessageCount()) && ((Msg)msgs.firstElement()).isPresence();
     }
@@ -153,7 +157,8 @@ public final class ChatInfo {
         //if (msg.unread) { //непрочитанное
            reEnumChat();
            msg.unread = false;
-           if ((Msg.MESSAGE_TYPE_AUTH == unreadType) && (Msg.MESSAGE_TYPE_AUTH == msg.messageType)) unreadType = calcUnreadType();
+           //MESSAGE_TYPE_AUTH=14;
+           if ((14 == unreadType) && (14 == msg.messageType)) unreadType = calcUnreadType();
         //}
     }
     public void resetLastUnreadMessage() {

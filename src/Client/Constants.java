@@ -33,6 +33,24 @@ package Client;
  */
 public final class Constants {
 
+    // without signaling
+    public final static byte MESSAGE_TYPE_OUT=1;
+    public final static byte MESSAGE_TYPE_PRESENCE=2;
+    public final static byte MESSAGE_TYPE_HISTORY=3;
+    // with signaling
+    public final static byte MESSAGE_TYPE_IN=10;
+    public final static byte MESSAGE_TYPE_HEADLINE=11;
+    public final static byte MESSAGE_TYPE_ERROR=12;
+    public final static byte MESSAGE_TYPE_SUBJ=13;
+    public final static byte MESSAGE_TYPE_AUTH=14;
+    public final static byte MESSAGE_TYPE_SYSTEM=15;
+    public final static byte MESSAGE_TYPE_EVIL=16;
+    //public final static byte MESSAGE_TYPE_GAME=17;
+//#ifdef JUICK.COM    
+//#     public final static byte MESSAGE_TYPE_JUICK=18;   
+//#endif    
+    
+
     public final static byte ORIGIN_ROSTER=0;
     public final static byte ORIGIN_ROSTERRES=1;
     public final static byte ORIGIN_CLONE=2;

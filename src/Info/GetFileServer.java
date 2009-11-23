@@ -29,6 +29,7 @@
 package Info;
 
 import Client.Msg;
+import Client.Constants;
 //import Messages.MessageList;
 import images.RosterIcons;
 import java.io.InputStream;
@@ -148,7 +149,7 @@ public class GetFileServer
             if(is!= null) is.close();is=null;
             if(c != null) c.close();c=null;
         } catch (Exception e) {
-            news.addElement(new Msg(Msg.MESSAGE_TYPE_IN, null, null, SR.MS_ERROR));
+            news.addElement(new Msg(Constants.MESSAGE_TYPE_IN, null, null, SR.MS_ERROR));
         } 
         wait=false;
         rePaint();

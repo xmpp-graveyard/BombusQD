@@ -25,6 +25,7 @@
  */
 
 package History;
+import Client.Constants;
 import Client.Contact;
 import Client.Msg;
 import Client.CommandForm;
@@ -109,22 +110,22 @@ public final class HistoryStorage {
     
     private static String createBody(Msg m) {
         //String fromName=midlet.BombusQD.sd.account.getUserName();
-        //if (m.messageType!=Msg.MESSAGE_TYPE_OUT) fromName=m.from;
+        //if (m.messageType!=Constants.MESSAGE_TYPE_OUT) fromName=m.from;
 
         buf.setLength(0);
         switch(m.messageType){
-             case Msg.MESSAGE_TYPE_IN:
+             case Constants.MESSAGE_TYPE_IN:
                     buf.append('<')
                           .append('-');
                     break;
-             case Msg.MESSAGE_TYPE_OUT:
+             case Constants.MESSAGE_TYPE_OUT:
                     buf.append('-')
                           .append('>');
                     break;
-             case Msg.MESSAGE_TYPE_ERROR:
+             case Constants.MESSAGE_TYPE_ERROR:
                     buf.append('!');
                     break;
-             case Msg.MESSAGE_TYPE_SUBJ:
+             case Constants.MESSAGE_TYPE_SUBJ:
                     if (m.subject!=null) {
                        buf.append('*')
                              .append(m.subject)

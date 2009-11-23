@@ -26,7 +26,7 @@
  */
  
 package IE;
-
+import Client.Constants;
 import Client.Config;
 import Client.Msg;
 import Archive.MessageArchive;
@@ -117,7 +117,7 @@ public class ArchiveTemplates {
                         subj=findBlock(tempstr, start_subj, end_subj);
                         body=findBlock(tempstr, start_body, end_body);
                         //System.out.println("["+date+"]"+from+": "+subj+" "+body+"\r\n");
-                        Msg msg = new Msg(Msg.MESSAGE_TYPE_IN,from,subj,body);
+                        Msg msg = new Msg(Constants.MESSAGE_TYPE_IN,from,subj,body);
                         msg.setDayTime(date);
                         vector.insertElementAt(msg, 0);
                     } else

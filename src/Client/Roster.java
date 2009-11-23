@@ -310,6 +310,10 @@ public class Roster
         if(userActions == null) userActions = new RosterItemActions(display, this);
     }
     
+    public void showRoster(){
+        display.setCurrent(this);
+    }
+    
     public void setLight(boolean state) {
         if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2) {
             try {
@@ -759,7 +763,7 @@ public class Roster
     
     public void errorLog(String s){
         if (s==null) return;
-        Msg m=new Msg(Msg.MESSAGE_TYPE_OUT, "local", "Info", s);
+        Msg m=new Msg(Constants.MESSAGE_TYPE_OUT, "local", "Info", s);
         messageStore(selfContact(), m);
         selfContact().chatInfo.reEnumCounts();
 //#ifdef CONSOLE 
@@ -789,11 +793,12 @@ public class Roster
     private final static Integer icon_msg = new Integer(RosterIcons.ICON_MESSAGE_INDEX);
     private final static Integer icon_progress = new Integer(RosterIcons.ICON_PROGRESS_INDEX);
     private Integer myStatusIcon = new Integer(myStatus);
+    private static int myLatestStatus = 0;
     
     private void updateMainBar(){
         int profile=midlet.BombusQD.cf.profile;
         
-        if(myStatus != lastOnlineStatus) myStatusIcon = new Integer(myStatus);
+        if(myStatus != myLatestStatus) myStatusIcon = new Integer(myStatus);
         
         Object en = (profile>0) ? new Integer(profile + RosterIcons.ICON_PROFILE_INDEX + 1):null;
 
@@ -807,6 +812,7 @@ public class Roster
         mainbar.setElementAt(querysign ? icon_progress : myStatusIcon, 2);
         mainbar.setElementAt(en, 5);
         
+        myLatestStatus = myStatus;
         if (null != en) en = null;
         if (phoneManufacturer==Config.WINDOWS) {
             if (messageCount==0) setTitle("BombusQD");
@@ -1541,17 +1547,17 @@ public class Roster
                if(midlet.BombusQD.cf.useClassicChat){   
                  if(!groupchat) {
                  //forfix
-                 Msg mmm = new Msg(Msg.MESSAGE_TYPE_OUT,"Me",null,"Me: " + body);
+                 Msg mmm = new Msg(Constants.MESSAGE_TYPE_OUT,"Me",null,"Me: " + body);
                  to.addMessage(mmm);
                  StringUtils.addClassicChatMsg("Me: "+body,midlet.BombusQD.cf.width_classic,to.scroller);
                  }else
                  {
                    Msg mmm;
                    if(body.startsWith("/me")){
-                     mmm = new Msg(Msg.MESSAGE_TYPE_OUT,"Me",null,"***Me " + body.substring(3,body.length()));  
+                     mmm = new Msg(Constants.MESSAGE_TYPE_OUT,"Me",null,"***Me " + body.substring(3,body.length()));  
                      StringUtils.addClassicChatMsg("***Me " + body.substring(3,body.length()),midlet.BombusQD.cf.width_classic,to.scroller);                 
                    }else {
-                     mmm = new Msg(Msg.MESSAGE_TYPE_OUT,"Me",null,"Me: " + body); 
+                     mmm = new Msg(Constants.MESSAGE_TYPE_OUT,"Me",null,"Me: " + body); 
                      StringUtils.addClassicChatMsg("Me: " + body,midlet.BombusQD.cf.width_classic,to.scroller);                 
                     }
                     mmm=null;
@@ -1863,7 +1869,7 @@ public class Roster
 //#ifdef JUICK.COM
 //#                 if(from!=null){
 //#                   if(from.indexOf("juick@juick.com")>-1) {
-//#                     Msg m=new Msg(Msg.MESSAGE_TYPE_JUICK, "juick@juick.com/Juick", null, null);
+//#                     Msg m=new Msg(Constants.MESSAGE_TYPE_JUICK, "juick@juick.com/Juick", null, null);
 //#                     m = juick.jm().getMsg(m,data);
 //#                   }
 //#                 }
@@ -2163,7 +2169,7 @@ public class Roster
 
                 long tStamp=message.getMessageTime();
 	
-		int mType=Msg.MESSAGE_TYPE_IN;
+		byte mType=Constants.MESSAGE_TYPE_IN;
 //#ifdef PEP    
 //#               /*
 //#                  if(1==0) {//temp closed,mood in msg stanza
@@ -2191,7 +2197,7 @@ public class Roster
 //#                           }
 //#                         }
 //#                       
-//#                     Msg m=new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, SR.MS_USERMOOD, result.toString());
+//#                     Msg m=new Msg(Constants.MESSAGE_TYPE_PRESENCE, from, SR.MS_USERMOOD, result.toString());
 //#                     result=null;
 //#                     Contact c_mood=getContact(data.getAttribute("from"), true);
 //#                          c_mood.pepMood=moodIndex;
@@ -2209,7 +2215,7 @@ public class Roster
                      evil=message.findNamespace("evil", "http://jabber.org/protocol/evil");
                      if(evil!=null){
                        body = "(!)" + body.trim() + "..";
-                       mType = Msg.MESSAGE_TYPE_EVIL;
+                       mType = Constants.MESSAGE_TYPE_EVIL;
                     }
                   } catch (Exception e) { }  
 
@@ -2230,13 +2236,13 @@ public class Roster
                         }
                         subj=null;
                         start_me=-1;
-                        mType=Msg.MESSAGE_TYPE_SUBJ;
+                        mType=Constants.MESSAGE_TYPE_SUBJ;
                     }
                 } else if (type!=null){
                     if (type.equals("error")) {
                         body=SR.MS_ERROR_ + XmppError.findInStanza(message).toString();
                     } else if (type.equals("headline")) {
-                        mType=Msg.MESSAGE_TYPE_HEADLINE;
+                        mType=Constants.MESSAGE_TYPE_HEADLINE;
                     }
                 } else {
                     type="chat";
@@ -2380,7 +2386,7 @@ public class Roster
                 if (groupchat && !midlet.BombusQD.cf.dont_loadMC) {
                     ConferenceGroup mucGrp=(ConferenceGroup)c.group;
                     if (mucGrp.selfContact.getJid().equals(message.getFrom())) {
-                        m.messageType=Msg.MESSAGE_TYPE_OUT;
+                        m.messageType=Constants.MESSAGE_TYPE_OUT;
                         m.unread=false;
                         m.highlite=midlet.BombusQD.cf.selectOutMessages;
                     } else {
@@ -2388,7 +2394,7 @@ public class Roster
 //#                         CustomLight.message();
 //#endif                        
                         if (m.dateGmt<= ((ConferenceGroup)c.group).conferenceJoinTime)
-                            m.messageType=Msg.MESSAGE_TYPE_HISTORY;
+                            m.messageType=Constants.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
 	                String myNick=mucGrp.selfContact.getName();
                         String myNick_=myNick+" ";
@@ -2548,9 +2554,9 @@ public class Roster
                         Msg conferenceMessage;
                         if(chatPres.indexOf(SR.MS_WAS_BANNED)>-1 || chatPres.indexOf(SR.MS_WAS_KICKED)>-1
                                 || chatPres.indexOf(SR.MS_NEW_ROOM_CREATED)>-1 ) {
-                                conferenceMessage = new Msg(Msg.MESSAGE_TYPE_ERROR, name, null, chatPres );
+                                conferenceMessage = new Msg(Constants.MESSAGE_TYPE_ERROR, name, null, chatPres );
                                 addPresenceMsg = true;
-                         } else conferenceMessage = new Msg(Msg.MESSAGE_TYPE_PRESENCE, name, null, chatPres );   
+                         } else conferenceMessage = new Msg(Constants.MESSAGE_TYPE_PRESENCE, name, null, chatPres );   
                         
                         if(addPresenceMsg) {
                             conferenceMessage.color=c.getMainColor();
@@ -2560,7 +2566,7 @@ public class Roster
                         
                         chatPres=null;
                         conferenceMessage = new Msg( (ti==Presence.PRESENCE_AUTH ||
-                              ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, Prtext );   
+                              ti==Presence.PRESENCE_AUTH_ASK)?Constants.MESSAGE_TYPE_AUTH : Constants.MESSAGE_TYPE_PRESENCE, from, null, Prtext );   
                         
                         if (ti==Presence.PRESENCE_ERROR) {
                            StringBuffer sb = new StringBuffer(0);
@@ -2568,7 +2574,7 @@ public class Roster
                                .append('-')
                                .append('>')
                                .append(XmppError.findInStanza(pr).toString());
-                             conferenceMessage = new Msg(Msg.MESSAGE_TYPE_ERROR, name, null, sb.toString());
+                             conferenceMessage = new Msg(Constants.MESSAGE_TYPE_ERROR, name, null, sb.toString());
                              messageStore(room, conferenceMessage);
                            sb.setLength(0);
                            sb=null;
@@ -2601,7 +2607,7 @@ public class Roster
                     Contact c=null;
                     //System.out.println("FROM:"+from);
                     Msg m=new Msg( (ti==Presence.PRESENCE_AUTH ||
-                         ti==Presence.PRESENCE_AUTH_ASK)?Msg.MESSAGE_TYPE_AUTH : Msg.MESSAGE_TYPE_PRESENCE, from, null, Prtext );                    
+                         ti==Presence.PRESENCE_AUTH_ASK)?Constants.MESSAGE_TYPE_AUTH : Constants.MESSAGE_TYPE_PRESENCE, from, null, Prtext );                    
                      if (ti==Presence.PRESENCE_AUTH_ASK) {
                         //processing subscriptions
                         if (midlet.BombusQD.cf.autoSubscribe==Config.SUBSCR_DROP)
@@ -2624,7 +2630,7 @@ public class Roster
                         m=null;
                         if (midlet.BombusQD.cf.autoSubscribe==Config.SUBSCR_AUTO) {
                              doSubscribe(c);
-                             messageStore(c, new Msg(Msg.MESSAGE_TYPE_AUTH, from, null, SR.MS_AUTH_AUTO));
+                             messageStore(c, new Msg(Constants.MESSAGE_TYPE_AUTH, from, null, SR.MS_AUTH_AUTO));
                          }
                     } else {
                         // processing presences
@@ -2751,25 +2757,15 @@ public class Roster
         Contact c=null;
         if(c==null) c=getContact(from, true);
         c.fileQuery=true;
-        messageStore(c, new Msg(Msg.MESSAGE_TYPE_SYSTEM, from, " "+SR.MS_FILE, message));
+        messageStore(c, new Msg(Constants.MESSAGE_TYPE_SYSTEM, from, " "+SR.MS_FILE, message));
     }
 //#endif
-    
-
-    /*FIX: after kick/ban
-       java.lang.NullPointerException
-        at Client.Contact.addMessage(+286)
-        at Conference.MucContact.addMessage(+5)
-        at Client.Roster.messageStore(+91)
-        at Client.Roster.blockArrived(+4077)
-        at com.alsutton.jabber.JabberDataBlockDispatcher.run(+167)
-     */
     
     public void messageStore(Contact c, Msg message) {
         if (c==null) return;
        
         boolean active=true;
-        if(message.messageType==message.MESSAGE_TYPE_PRESENCE){
+        if(message.messageType==Constants.MESSAGE_TYPE_PRESENCE){
            //reEnumRoster();//<<<
            Vector hContacts = contactList.contacts;
            int size = hContacts.size();
@@ -2787,7 +2783,7 @@ public class Roster
         
         boolean autorespond = false;
 //#ifdef RUNNING_MESSAGE
-//#         if (message.messageType==Msg.MESSAGE_TYPE_IN) 
+//#         if (message.messageType==Constants.MESSAGE_TYPE_IN) 
 //#             setTicker(c, message.toString(), message.getTime());
 //#endif
 //#ifndef WSYSTEMGC
@@ -2805,7 +2801,7 @@ public class Roster
         
 //#ifdef POPUPS
         if (midlet.BombusQD.cf.popUps)
-            if (message.messageType==Msg.MESSAGE_TYPE_AUTH && showWobbler(c))
+            if (message.messageType==Constants.MESSAGE_TYPE_AUTH && showWobbler(c))
                 setWobbler(2, c, message.from+"\n"+message.body,null);
 //#endif
 
@@ -2824,7 +2820,7 @@ public class Roster
             autorespond = true;
             
         }else {
-            boolean incomingMsg = (message.messageType==Msg.MESSAGE_TYPE_IN || message.messageType==Msg.MESSAGE_TYPE_JUICK);
+            boolean incomingMsg = (message.messageType==Constants.MESSAGE_TYPE_IN || message.messageType==Constants.MESSAGE_TYPE_JUICK);
             boolean groupchat = (c.origin==Constants.ORIGIN_GROUPCHAT);
             if(!incomingMsg) return;
             
@@ -2857,7 +2853,7 @@ public class Roster
                 || c.getGroupType()==Groups.TYPE_SELF) 
             autorespond=false;
         
-        if (message.messageType!=Msg.MESSAGE_TYPE_IN)
+        if (message.messageType!=Constants.MESSAGE_TYPE_IN)
             autorespond=false;
         
         if (!c.autoresponded && autorespond) {
@@ -2878,7 +2874,7 @@ public class Roster
                 es=null;
                 c.autoresponded=true;
 
-          c.addMessage(new Msg(Msg.MESSAGE_TYPE_SYSTEM, "local", SR.MS_AUTORESPOND, ""));
+          c.addMessage(new Msg(Constants.MESSAGE_TYPE_SYSTEM, "local", SR.MS_AUTORESPOND, ""));
           
                 
             }

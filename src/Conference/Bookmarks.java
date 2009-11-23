@@ -172,7 +172,7 @@ public final class Bookmarks
               ConferenceForm.join(join.desc, join.getJidNick(), join.password, midlet.BombusQD.cf.confMessageCount); 
           }
        } catch (Exception e) { }
-       midlet.BombusQD.getInstance().display.setCurrent(midlet.BombusQD.sd.roster);//N78 hardfix
+       midlet.BombusQD.sd.roster.showRoster(); //N78 hardfix
     }
     
     public void commandAction(Command c, Displayable d){
@@ -236,7 +236,7 @@ public final class Bookmarks
     }
 
     private void exitBookmarks(){
-        display.setCurrent(midlet.BombusQD.sd.roster);
+        midlet.BombusQD.sd.roster.showRoster();
     }
     
     public void move(int offset){

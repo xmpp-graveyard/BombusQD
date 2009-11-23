@@ -245,7 +245,7 @@
 //#                         c.pepTuneText=tune_.toString();
 //#                         msg = tune_.toString();
 //#                     }
-//#                     c.addMessage(new Msg(Msg.MESSAGE_TYPE_PRESENCE, from, type, msg));
+//#                     c.addMessage(new Msg(Constants.MESSAGE_TYPE_PRESENCE, from, type, msg));
 //#                 }
 //#             }
 //#         //}

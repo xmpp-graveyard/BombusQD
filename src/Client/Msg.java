@@ -37,27 +37,11 @@ import ui.Time;
  * @author Eugene Stahov 
  */
 public class Msg {
-    // without signaling
-    public final static int MESSAGE_TYPE_OUT=1;
-    public final static int MESSAGE_TYPE_PRESENCE=2;
-    public final static int MESSAGE_TYPE_HISTORY=3;
-    // with signaling
-    public final static int MESSAGE_TYPE_IN=10;
-    public final static int MESSAGE_TYPE_HEADLINE=11;
-    public final static int MESSAGE_TYPE_ERROR=12;
-    public final static int MESSAGE_TYPE_SUBJ=13;
-    public final static int MESSAGE_TYPE_AUTH=14;
-    public final static int MESSAGE_TYPE_SYSTEM=15;
-    public final static int MESSAGE_TYPE_EVIL=16;
-    //public final static int MESSAGE_TYPE_GAME=17;
-//#ifdef JUICK.COM    
-//#     public final static int MESSAGE_TYPE_JUICK=18;   
-//#endif                                   
-    
+
     public boolean highlite;
     public boolean history;
     
-    public int messageType;
+    public byte messageType;
     
     public boolean MucChat;
     
@@ -91,16 +75,16 @@ public class Msg {
     }
     
     /** Creates a new instance of msg */
-    public Msg(int messageType, String from, String subj, String body) {
+    public Msg(byte messageType, String from, String subj, String body) {
         this.messageType=messageType;
         this.from=from;
         this.body=body;
         this.subject=subj;
         this.dateGmt=Time.utcTimeMillis();
-        if (messageType>=MESSAGE_TYPE_IN) unread=true;
-        if (messageType==MESSAGE_TYPE_PRESENCE) itemCollapsed = midlet.BombusQD.cf.showCollapsedPresences;
-        else if (messageType==MESSAGE_TYPE_HEADLINE) itemCollapsed=true;
-        else if (body!=null && messageType!=MESSAGE_TYPE_SUBJ)
+        if (messageType>=Constants.MESSAGE_TYPE_IN) unread=true;
+        if (messageType==Constants.MESSAGE_TYPE_PRESENCE) itemCollapsed = midlet.BombusQD.cf.showCollapsedPresences;
+        else if (messageType==Constants.MESSAGE_TYPE_HEADLINE) itemCollapsed=true;
+        else if (body!=null && messageType!=Constants.MESSAGE_TYPE_SUBJ)
             if (body.length()>midlet.BombusQD.cf.messageLimit) itemCollapsed=true;
     }
     
@@ -122,16 +106,16 @@ public class Msg {
         if (color>-1) return color; 
 
         switch (messageType) {
-            case MESSAGE_TYPE_IN: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
-            case MESSAGE_TYPE_PRESENCE: return ColorTheme.getColor(ColorTheme.MESSAGE_PRESENCE);
-            case MESSAGE_TYPE_OUT: return ColorTheme.getColor(ColorTheme.MESSAGE_OUT);
-            case MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.MSG_SUBJ);
-            case MESSAGE_TYPE_HEADLINE: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
-            case MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
-            case MESSAGE_TYPE_EVIL: return 0xFF0000;
-            case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
+            case Constants.MESSAGE_TYPE_IN: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+            case Constants.MESSAGE_TYPE_PRESENCE: return ColorTheme.getColor(ColorTheme.MESSAGE_PRESENCE);
+            case Constants.MESSAGE_TYPE_OUT: return ColorTheme.getColor(ColorTheme.MESSAGE_OUT);
+            case Constants.MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.MSG_SUBJ);
+            case Constants.MESSAGE_TYPE_HEADLINE: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+            case Constants.MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
+            case Constants.MESSAGE_TYPE_EVIL: return 0xFF0000;
+            case Constants.MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
 //#ifdef JUICK.COM    
-//#             case MESSAGE_TYPE_JUICK: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+//#             case Constants.MESSAGE_TYPE_JUICK: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
 //#endif
         }
         return ColorTheme.getColor(ColorTheme.LIST_INK);
@@ -139,7 +123,7 @@ public class Msg {
     
     private static StringBuffer time = new StringBuffer(0);
     public String toString() {
-       if (messageType==MESSAGE_TYPE_PRESENCE && midlet.BombusQD.cf.timePresence) {
+       if (messageType==Constants.MESSAGE_TYPE_PRESENCE && midlet.BombusQD.cf.timePresence) {
          time.setLength(0);
          time.append(getTime());
          time.append(' ');
@@ -150,7 +134,7 @@ public class Msg {
        }
     }
 
-    public boolean isPresence() { return messageType==MESSAGE_TYPE_PRESENCE; }
+    public boolean isPresence() { return messageType==Constants.MESSAGE_TYPE_PRESENCE; }
     
     public void serialize(DataOutputStream os) throws IOException {
 	os.writeUTF(from);
@@ -163,7 +147,7 @@ public class Msg {
 	from=is.readUTF();
 	body=is.readUTF();
 	dateGmt=is.readLong();
-        messageType=MESSAGE_TYPE_IN;
+        messageType=Constants.MESSAGE_TYPE_IN;
 	try { subject=is.readUTF(); } catch (Exception e) { subject=null; }
     }
 

@@ -151,6 +151,7 @@ public class Contact extends IconTextElement{
                 getML().moveCursorEnd();
         }
         chatInfo.opened = true;//chat open flag
+        getML().updateMainBar(this);
         return getML();
     }
     
@@ -313,14 +314,14 @@ public class Contact extends IconTextElement{
     private static StringBuffer temp = new StringBuffer(0);
     public void addMessage(Msg m) {
         boolean first_replace=false;
-        if (origin!=Constants.ORIGIN_GROUPCHAT){
-            if (m.isPresence()) {
-                //presence=m.body;//wtf?
-                first_replace = chatInfo.isOnlyStatusMessage();
-            } else {
+        boolean first_msgreplace=false;
+        if (origin!=Constants.ORIGIN_GROUPCHAT) {
+            if (m.isPresence()) first_replace = chatInfo.isOnlyStatusMessage();
+            else {
+                first_msgreplace = chatInfo.isFirstMessage();
                 if (midlet.BombusQD.cf.showNickNames) {
                     temp.setLength(0);
-                    temp.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
+                    temp.append((m.messageType==Constants.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
                         temp.append(" (");
                         temp.append(m.getTime());
                         temp.append(')');
@@ -333,7 +334,7 @@ public class Contact extends IconTextElement{
 //#if NICK_COLORS
                     temp.append("<nick>");
 //#endif
-                    temp.append((m.messageType==Msg.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
+                    temp.append((m.messageType==Constants.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
 //#if NICK_COLORS
                     temp.append("</nick>");
 //#endif
@@ -367,8 +368,14 @@ public class Contact extends IconTextElement{
           if(allowLog) getML().storeMessage(m);
         }
         
-        if(chatInfo.opened || m.messageType == Msg.MESSAGE_TYPE_OUT) chatInfo.reEnumCounts();
-
+        if(chatInfo.opened || m.messageType == Constants.MESSAGE_TYPE_OUT) chatInfo.reEnumCounts();
+        if (first_msgreplace){
+            chatInfo.setFirstMessage(m);
+            if (null != messageList) {
+                getML().resetMessages();
+                getML().redraw();
+            } return;
+        }
         if (null != messageList) {
             getML().addMessage(m);
         } else if (!chatInfo.isOnlyStatusMessage()) {
@@ -521,7 +528,7 @@ public class Contact extends IconTextElement{
 
     public final int getSecImageIndex() {
         if (hasNewMsgs()) {
-            return (Msg.MESSAGE_TYPE_AUTH == chatInfo.getUnreadMessageType())
+            return (Constants.MESSAGE_TYPE_AUTH == chatInfo.getUnreadMessageType())
                     ? RosterIcons.ICON_AUTHRQ_INDEX
                     : RosterIcons.ICON_MESSAGE_INDEX;
         }

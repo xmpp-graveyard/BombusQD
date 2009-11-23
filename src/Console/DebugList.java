@@ -35,7 +35,7 @@
 //#     public void add(String msg, int type) {
 //#       if (midlet.BombusQD.cf.debug) {
 //# 	  try {
-//#             Msg stanza=new Msg(type, "debug", null, msg.toString());
+//#             Msg stanza=new Msg((byte)type, "debug", null, msg.toString());
 //#             stanza.itemCollapsed=false;
 //#             stanzas.addElement(stanza);
 //#             stanza=null;
