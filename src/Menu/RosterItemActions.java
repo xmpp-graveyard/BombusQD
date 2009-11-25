@@ -191,7 +191,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 //#                     addItem(SR.MS_COPY_JID,892, menuIcons.ICON_COPY_JID);
 //#             }
 //#endif
-            addItem(SR.MS_SEND_COLOR_SCHEME, 912, menuIcons.ICON_SEND_COLORS);
+            if(!originGroupchat) addItem(SR.MS_SEND_COLOR_SCHEME, 912, menuIcons.ICON_SEND_COLORS);
             if (contact.status<Presence.PRESENCE_OFFLINE && !originGroupchat) {
                 addItem(SR.MS_TIME,891, menuIcons.ICON_TIME);
                 addItem(SR.MS_IDLE,889, menuIcons.ICON_IDLE);

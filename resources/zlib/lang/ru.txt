@@ -714,3 +714,4 @@ vCard: delete current	Визитка: удалить текущую
 vCard: delete ALL	Визитка: удалить ВСЕ
 User Avatar: delete current	Аватар: удалить текущий
 User Avatar: delete from ALL vcards	Аватар: удалить ВСЕ
+Success	Успешно

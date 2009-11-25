@@ -43,7 +43,7 @@ hungry	хочу есть
 hurt	уязвленное
 impressed	под впечатлением
 in_awe	подчиненное
-in_love	влюбленное
+in_love	любовь
 indignant	возмущенное
 interested	заинтересованное
 intoxicated	опьяненное

@@ -23,7 +23,7 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- */
+ 
 
 //#ifdef PEP
 //# package Mood; 
@@ -42,7 +42,7 @@
 //#     private Display display;
 //#     private String id;
 //#     
-//#     /** Creates a new instance of MoodPublishResult */
+//#     /** Creates a new instance of MoodPublishResult
 //#     public UserTuneResult(Display display, String id) {
 //#         this.display=display;
 //#         this.id=id;
@@ -67,3 +67,4 @@
 //#     
 //# }
 //#endif
+ */

@@ -40,15 +40,15 @@
 //# import ui.VirtualList;
 //# import ui.controls.form.SimpleString;
 //# 
-//# class ActivityText extends DefForm {
+//# public class ActivityText extends DefForm {
 //#     private Display display;
 //#     private TextInput text;
 //#     private String cat="";
 //#     private String descr="";
-//#     EventPublish ap = new EventPublish();    
+//#     private boolean showRoster = false;
 //#     
-//#     public ActivityText(Display display, Displayable pView,String category,String descr) {
-//#         super(display, pView,"Text:");
+//#     public ActivityText(Display display, Displayable pView,String category,String descr, String title) {
+//#         super(display, pView, title);
 //#         
 //#         this.display=display;
 //#         
@@ -57,19 +57,19 @@
 //#         
 //#         if(cat==null && descr==null){
 //#           itemsList.addElement(new SimpleString(locale.Activity.no_activity + "?", true)); 
-//#           Config.getInstance().actCat=null;
-//#           Config.getInstance().actText=null;
-//#           Config.getInstance().actDescr=null;
+//#           midlet.BombusQD.cf.actCat=null;
+//#           midlet.BombusQD.cf.actText=null;
+//#           midlet.BombusQD.cf.actDescr=null;
 //#         }
 //#         
 //#         if(cat!=null && descr!=null){
-//#           text=new TextInput(display,"Text", "", "text", TextField.ANY);
+//#           text=new TextInput(display, locale.SR.MS_MESSAGE, "", "text", TextField.ANY);
 //#           itemsList.addElement(text);            
 //#         }
 //#         
 //#         if(cat!=null && descr==null){
 //#            itemsList.addElement(new SimpleString(locale.SR.MS_PUBLISH+"?", true)); 
-//#            Config.getInstance().actDescr=null;
+//#            midlet.BombusQD.cf.actDescr=null;
 //#         }
 //#                 
 //#         
@@ -88,6 +88,7 @@
 //#         }else{
 //#            msgtext = null; 
 //#         }
+//#         this.showRoster = true;
 //#         publishActivity(cat,descr,msgtext);
 //#         destroyView();
 //#     }
@@ -112,37 +113,38 @@
 //# </iq>
 //#  */             
 //#         String sid="publish-action";
-//#         JabberDataBlock setMood=new Iq(null, Iq.TYPE_SET, sid);
-//#         JabberDataBlock action=setMood.addChildNs("pubsub", "http://jabber.org/protocol/pubsub").addChild("publish", null);
+//#         JabberDataBlock setActivity=new Iq(null, Iq.TYPE_SET, sid);
+//#         JabberDataBlock action=setActivity.addChildNs("pubsub", "http://jabber.org/protocol/pubsub").addChild("publish", null);
 //#         action.setAttribute("node", "http://jabber.org/protocol/activity");
 //#         JabberDataBlock item=action.addChild("item", null);
 //# 
 //#             JabberDataBlock act=item.addChildNs("activity", "http://jabber.org/protocol/activity");
 //#          if(cat!=null){
-//#             Config.getInstance().actCat=category;    
+//#             midlet.BombusQD.cf.actCat=category;    
 //#             JabberDataBlock one = act.addChild(category, null);//relaxing
 //#             
 //#             if(descr!=null){
-//#                 Config.getInstance().actDescr=descr;
+//#                 midlet.BombusQD.cf.actDescr=descr;
 //#                 one.addChild(descr,null);
 //#             } //partying
 //#             if(text!=null){
-//#                 Config.getInstance().actText=text;
+//#                 midlet.BombusQD.cf.actText=text;
 //#                 act.addChild("text",text);
 //#             }
 //#          }
 //#          try {
-//#             StaticData.getInstance().roster.theStream.addBlockListener(new UserActivityResult(display, sid));             
-//#             StaticData.getInstance().roster.theStream.send(setMood);
-//#             Config.getInstance().saveToStorage();
-//#             setMood=null;
+//#             midlet.BombusQD.sd.roster.theStream.addBlockListener(new UserActivityResult(display, sid));             
+//#             midlet.BombusQD.sd.roster.theStream.send(setActivity);
+//#             midlet.BombusQD.cf.saveToStorage();
+//#             setActivity=null;
 //#             action=null;
 //#          } catch (Exception e) {e.printStackTrace(); }   
 //# 
 //#    }     
 //#     
-//#     public void destroyView()	{
-//# 	if (display!=null) display.setCurrent(parentView);
+//#     public void destroyView() {
+//#         if(showRoster) midlet.BombusQD.sd.roster.showRoster();
+//#         else if (display!=null) display.setCurrent(parentView);
 //#     }
 //# }
 //#endif

@@ -43,29 +43,29 @@ final class InfCodes{
     0x00007fff, 0x0000ffff
   };
 
-  static final private int Z_OK=0;
-  static final private int Z_STREAM_END=1;
-  static final private int Z_NEED_DICT=2;
-  static final private int Z_ERRNO=-1;
-  static final private int Z_STREAM_ERROR=-2;
-  static final private int Z_DATA_ERROR=-3;
-  static final private int Z_MEM_ERROR=-4;
-  static final private int Z_BUF_ERROR=-5;
-  static final private int Z_VERSION_ERROR=-6;
+  static final private byte Z_OK=0;
+  static final private byte Z_STREAM_END=1;
+  static final private byte Z_NEED_DICT=2;
+  static final private byte Z_ERRNO=-1;
+  static final private byte Z_STREAM_ERROR=-2;
+  static final private byte Z_DATA_ERROR=-3;
+  static final private byte Z_MEM_ERROR=-4;
+  static final private byte Z_BUF_ERROR=-5;
+  static final private byte Z_VERSION_ERROR=-6;
 
   // waiting for "i:"=input,
   //             "o:"=output,
   //             "x:"=nothing
-  static final private int START=0;  // x: set up for LEN
-  static final private int LEN=1;    // i: get length/literal/eob next
-  static final private int LENEXT=2; // i: getting length extra (have base)
-  static final private int DIST=3;   // i: get distance next
-  static final private int DISTEXT=4;// i: getting distance extra
-  static final private int COPY=5;   // o: copying bytes in window, waiting for space
-  static final private int LIT=6;    // o: got literal, waiting for output space
-  static final private int WASH=7;   // o: got eob, possibly still output waiting
-  static final private int END=8;    // x: got eob and all data flushed
-  static final private int BADCODE=9;// x: got error
+  static final private byte START=0;  // x: set up for LEN
+  static final private byte LEN=1;    // i: get length/literal/eob next
+  static final private byte LENEXT=2; // i: getting length extra (have base)
+  static final private byte DIST=3;   // i: get distance next
+  static final private byte DISTEXT=4;// i: getting distance extra
+  static final private byte COPY=5;   // o: copying bytes in window, waiting for space
+  static final private byte LIT=6;    // o: got literal, waiting for output space
+  static final private byte WASH=7;   // o: got eob, possibly still output waiting
+  static final private byte END=8;    // x: got eob and all data flushed
+  static final private byte BADCODE=9;// x: got error
 
   int mode;      // current inflate_codes mode
 

@@ -224,7 +224,7 @@ public final class Bookmarks
         if (del.isUrl) 
             return;
 
-        midlet.BombusQD.sd.roster.bookmarks.removeElement(del);
+        midlet.BombusQD.sd.roster.bookmarks.removeElementAt(cursor);
         if (getItemCount()<=cursor) 
             moveCursorEnd();
         saveBookmarks();

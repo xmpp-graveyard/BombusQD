@@ -31,7 +31,7 @@
 //# import java.util.Hashtable;
 //# import util.StringLoader;
 //# 
-//# public class Activity {
+//# public final class Activity {
 //# 
 //#     public   static String CATEGORY_drinking = loadString( "drinking" );
 //#     public   static String ACTIVITY_having_a_beer = loadString( "having_a_beer" );

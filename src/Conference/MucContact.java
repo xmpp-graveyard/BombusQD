@@ -183,7 +183,7 @@ public class MucContact extends Contact {
                     }
 //#endif
                     if (!reason.equals(""))
-                        b.append("(").append(reason).append(")");
+                        b.append('(').append(reason).append(')');
 
                     testMeOffline(true);
                     break;
@@ -194,12 +194,12 @@ public class MucContact extends Contact {
                     break;
                 default:
                     if (tempRealJid!=null)
-                        b.append(" (").append(tempRealJid).append(")");
+                        b.append(" (").append(tempRealJid).append(')');
 
                     b.append(SR.MS_HAS_LEFT_CHANNEL);
                     
                     if (statusText.length()>0)
-                        b.append(" (").append(statusText).append(")");
+                        b.append(" (").append(statusText).append(')');
 
                     testMeOffline(false);
             } 
@@ -220,7 +220,7 @@ public class MucContact extends Contact {
                     b.append(getAffiliationLocale(affiliationCode));
                 }
                 
-                if (statusText.length()>0) b.append(" (").append(statusText).append(")");
+                if (statusText.length()>0) b.append(" (").append(statusText).append(')');
             } else {
                 b.append(SR.MS_IS_NOW);
                 
@@ -228,7 +228,7 @@ public class MucContact extends Contact {
                 
                 if(role.equals("visitor")) {
                       if(item.getChildBlockText("reason")!=null){
-                      b.append("("+item.getChildBlockText("reason")+")");
+                      b.append('('+item.getChildBlockText("reason")+')');
                       }
                  }
                 

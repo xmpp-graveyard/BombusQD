@@ -731,7 +731,7 @@ public class SR {
     
     
     
-    
+    public static String MS_SUCCESS = loadString("Success");
     public static String MS_SAVING_CURSORE = loadString("Saving cursor");
     public static String MS_DESTROY_ROOM = loadString("Destroy room");
     public static String MS_VCARD_SUCCESS_PUBLISH = loadString("Vcard succesfull published");

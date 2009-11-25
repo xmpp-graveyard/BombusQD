@@ -81,17 +81,17 @@
 //#         
 //#         item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(st.getCurrentTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#         
-//#         if (StaticData.getInstance().roster.isLoggedIn()) {
-//#             item=new MultiLine(SR.MS_COMPRESSION, StaticData.getInstance().roster.theStream.getStreamStats(), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#         if (midlet.BombusQD.sd.roster.isLoggedIn()) {
+//#             item=new MultiLine(SR.MS_COMPRESSION, midlet.BombusQD.sd.roster.theStream.getStreamStats(), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#         }
 //# 
-//#         if (StaticData.getInstance().roster.isLoggedIn()) {
-//#             item=new MultiLine(SR.MS_CONNECTED, StaticData.getInstance().roster.theStream.getConnectionData(), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#         if (midlet.BombusQD.sd.roster.isLoggedIn()) {
+//#             item=new MultiLine(SR.MS_CONNECTED, midlet.BombusQD.sd.roster.theStream.getConnectionData(), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#         }
 //#         
 //#         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#                 
-//#         item=new MultiLine(SR.MS_STARTED, StaticData.getInstance().roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#         item=new MultiLine(SR.MS_STARTED, midlet.BombusQD.sd.roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#  
 //#         commandState();
 //# 

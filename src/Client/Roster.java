@@ -108,8 +108,6 @@ import Conference.QueryConfigForm;
 //# import images.ActivityIcons;
 //# import xmpp.extensions.PepListener;
 //# import Mood.EventPublish;
-//# import Mood.MoodList;
-//# import Menu.ActivityMenu;
 //#endif
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Alert;
@@ -232,6 +230,7 @@ public class Roster
     private static MessageEdit altmessageEdit;
     private static ActiveContacts activeContacts = null;
     private static RosterItemActions userActions = null;
+    public static SelectPEP selectPEP = null;
     
     public void showUserActions(Displayable pView, Object obj, int index){
         userActions.showActions(pView,obj, index);
@@ -308,6 +307,7 @@ public class Roster
         Messages.MessageParser.restart();
         if(activeContacts == null) activeContacts = new ActiveContacts(display, this); 
         if(userActions == null) userActions = new RosterItemActions(display, this);
+        if(selectPEP == null) selectPEP = new SelectPEP(display); 
     }
     
     public void showRoster(){
@@ -575,8 +575,8 @@ public class Roster
 //#            else if(c==cmdTransfers){ new io.file.transfer.TransferManager(display);  }
 //#endif
 //#ifdef PEP                
-//#            else if(c==cmdMood){ new MoodList(display);  }
-//#            else if(c==cmdActivity){ new ActivityMenu(display, this); }
+//#            else if(c==cmdMood){  selectPEP.show(this, true);  }
+//#            else if(c==cmdActivity){ selectPEP.show(this, false); }
 //#endif           
 //# 
 //#ifdef STATS        
@@ -2562,9 +2562,7 @@ public class Roster
                             conferenceMessage.color=c.getMainColor();
                             messageStore(room, conferenceMessage);
                         }
-                            
-                        
-                        chatPres=null;
+
                         conferenceMessage = new Msg( (ti==Presence.PRESENCE_AUTH ||
                               ti==Presence.PRESENCE_AUTH_ASK)?Constants.MESSAGE_TYPE_AUTH : Constants.MESSAGE_TYPE_PRESENCE, from, null, Prtext );   
                         
@@ -2575,7 +2573,7 @@ public class Roster
                                .append('>')
                                .append(XmppError.findInStanza(pr).toString());
                              conferenceMessage = new Msg(Constants.MESSAGE_TYPE_ERROR, name, null, sb.toString());
-                             messageStore(room, conferenceMessage);
+                             if(!chatPres.startsWith("remote-server-not-found")) messageStore(room, conferenceMessage);
                            sb.setLength(0);
                            sb=null;
                         } else {                        
@@ -2588,6 +2586,7 @@ public class Roster
                         sortRoster(c);
                         conferenceMessage=null;
                         c=null;
+                        chatPres=null;
                     }
                     catch(OutOfMemoryError eom){ errorLog("error Roster::3"); } catch (Exception e) { 
                         if(null != c) {
@@ -2695,12 +2694,12 @@ public class Roster
                         c.setIncoming(Constants.INC_NONE);
                         c.showComposing=false;
 //#ifdef PEP                        
-//#                         c.pepTune=false;
-//#                         c.pepMood=-1;
-//#                         c.pepTuneText="-";
-//#                         c.pepMoodName="-";
-//#                         c.pepMoodText="-";
-//#                         c.activity="";
+//#                         //c.pepTune=false;
+//#                         //c.pepMood=-1;
+//#                         //c.pepTuneText="-";
+//#                         //c.pepMoodName="-";
+//#                         //c.pepMoodText="-";
+//#                         //c.activity="";
 //#endif                
                         c.client=-1;
                         c.clientName="-";                        

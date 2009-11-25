@@ -56,10 +56,7 @@ public final class ContactList {
     public void cleanupSearch() {
         for (int index = contacts.size() - 1; 0 <= index; --index) {
             Contact c = (Contact) contacts.elementAt(index);
-            if (c.getGroupType() == Groups.TYPE_SEARCH_RESULT ) {
-                c.destroy();
-                contacts.removeElementAt(index);
-            }
+            if (c.getGroupType() == Groups.TYPE_SEARCH_RESULT ) removeContact(c);
         }
     }
     public void cleanAllMessages() {

@@ -36,43 +36,43 @@ package com.jcraft.jzlib;
 
 final class Inflate{
   
-  static final public int MAX_WBITS=15; // 32K LZ77 window
+  static final public byte MAX_WBITS=15; // 32K LZ77 window
 
   // preset dictionary flag in zlib header
-  static final private int PRESET_DICT=0x20;
+  static final private byte PRESET_DICT=0x20;
 
-  static final int Z_NO_FLUSH=0;
-  static final int Z_PARTIAL_FLUSH=1;
-  static final int Z_SYNC_FLUSH=2;
-  static final int Z_FULL_FLUSH=3;
-  static final int Z_FINISH=4;
+  static final byte Z_NO_FLUSH=0;
+  static final byte Z_PARTIAL_FLUSH=1;
+  static final byte Z_SYNC_FLUSH=2;
+  static final byte Z_FULL_FLUSH=3;
+  static final byte Z_FINISH=4;
 
-  static final private int Z_DEFLATED=8;
+  static final private byte Z_DEFLATED=8;
 
-  static final private int Z_OK=0;
-  static final private int Z_STREAM_END=1;
-  static final private int Z_NEED_DICT=2;
-  static final private int Z_ERRNO=-1;
-  static final private int Z_STREAM_ERROR=-2;
-  static final private int Z_DATA_ERROR=-3;
-  static final private int Z_MEM_ERROR=-4;
-  static final private int Z_BUF_ERROR=-5;
-  static final private int Z_VERSION_ERROR=-6;
+  static final private byte Z_OK=0;
+  static final private byte Z_STREAM_END=1;
+  static final private byte Z_NEED_DICT=2;
+  static final private byte Z_ERRNO=-1;
+  static final private byte Z_STREAM_ERROR=-2;
+  static final private byte Z_DATA_ERROR=-3;
+  static final private byte Z_MEM_ERROR=-4;
+  static final private byte Z_BUF_ERROR=-5;
+  static final private byte Z_VERSION_ERROR=-6;
 
-  static final private int METHOD=0;   // waiting for method byte
-  static final private int FLAG=1;     // waiting for flag byte
-  static final private int DICT4=2;    // four dictionary check bytes to go
-  static final private int DICT3=3;    // three dictionary check bytes to go
-  static final private int DICT2=4;    // two dictionary check bytes to go
-  static final private int DICT1=5;    // one dictionary check byte to go
-  static final private int DICT0=6;    // waiting for inflateSetDictionary
-  static final private int BLOCKS=7;   // decompressing blocks
-  static final private int CHECK4=8;   // four check bytes to go
-  static final private int CHECK3=9;   // three check bytes to go
-  static final private int CHECK2=10;  // two check bytes to go
-  static final private int CHECK1=11;  // one check byte to go
-  static final private int DONE=12;    // finished check, done
-  static final private int BAD=13;     // got an error--stay here
+  static final private byte METHOD=0;   // waiting for method byte
+  static final private byte FLAG=1;     // waiting for flag byte
+  static final private byte DICT4=2;    // four dictionary check bytes to go
+  static final private byte DICT3=3;    // three dictionary check bytes to go
+  static final private byte DICT2=4;    // two dictionary check bytes to go
+  static final private byte DICT1=5;    // one dictionary check byte to go
+  static final private byte DICT0=6;    // waiting for inflateSetDictionary
+  static final private byte BLOCKS=7;   // decompressing blocks
+  static final private byte CHECK4=8;   // four check bytes to go
+  static final private byte CHECK3=9;   // three check bytes to go
+  static final private byte CHECK2=10;  // two check bytes to go
+  static final private byte CHECK1=11;  // one check byte to go
+  static final private byte DONE=12;    // finished check, done
+  static final private byte BAD=13;     // got an error--stay here
 
   int mode;                            // current inflate mode
 

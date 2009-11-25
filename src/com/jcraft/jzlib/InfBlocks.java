@@ -46,30 +46,30 @@ final class InfBlocks{
   };
 
   // Table for deflate from PKZIP's appnote.txt.
-  static final int[] border = { // Order of the bit length code lengths
+  static final byte[] border = { // Order of the bit length code lengths
     16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
   };
 
-  static final private int Z_OK=0;
-  static final private int Z_STREAM_END=1;
-  static final private int Z_NEED_DICT=2;
-  static final private int Z_ERRNO=-1;
-  static final private int Z_STREAM_ERROR=-2;
-  static final private int Z_DATA_ERROR=-3;
-  static final private int Z_MEM_ERROR=-4;
-  static final private int Z_BUF_ERROR=-5;
-  static final private int Z_VERSION_ERROR=-6;
+  static final private byte Z_OK=0;
+  static final private byte Z_STREAM_END=1;
+  static final private byte Z_NEED_DICT=2;
+  static final private byte Z_ERRNO=-1;
+  static final private byte Z_STREAM_ERROR=-2;
+  static final private byte Z_DATA_ERROR=-3;
+  static final private byte Z_MEM_ERROR=-4;
+  static final private byte Z_BUF_ERROR=-5;
+  static final private byte Z_VERSION_ERROR=-6;
 
-  static final private int TYPE=0;  // get type bits (3, including end bit)
-  static final private int LENS=1;  // get lengths for stored
-  static final private int STORED=2;// processing stored block
-  static final private int TABLE=3; // get table lengths
-  static final private int BTREE=4; // get bit lengths tree for a dynamic block
-  static final private int DTREE=5; // get length, distance trees for a dynamic block
-  static final private int CODES=6; // processing fixed or dynamic block
-  static final private int DRY=7;   // output remaining window bytes
-  static final private int DONE=8;  // finished last block, done
-  static final private int BAD=9;   // ot a data error--stuck here
+  static final private byte TYPE=0;  // get type bits (3, including end bit)
+  static final private byte LENS=1;  // get lengths for stored
+  static final private byte STORED=2;// processing stored block
+  static final private byte TABLE=3; // get table lengths
+  static final private byte BTREE=4; // get bit lengths tree for a dynamic block
+  static final private byte DTREE=5; // get length, distance trees for a dynamic block
+  static final private byte CODES=6; // processing fixed or dynamic block
+  static final private byte DRY=7;   // output remaining window bytes
+  static final private byte DONE=8;  // finished last block, done
+  static final private byte BAD=9;   // ot a data error--stuck here
 
   int mode;            // current inflate_block mode 
 

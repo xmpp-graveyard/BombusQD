@@ -37,41 +37,41 @@ package com.jcraft.jzlib;
 import util.ArrayLoader;
 
 final class Tree{
-  static final private int MAX_BITS=15;
-  static final private int BL_CODES=19;
-  static final private int D_CODES=30;
+  static final private byte MAX_BITS=15;
+  static final private byte BL_CODES=19;
+  static final private byte D_CODES=30;
   static final private int LITERALS=256;
-  static final private int LENGTH_CODES=29;
+  static final private byte LENGTH_CODES=29;
   static final private int L_CODES=(LITERALS+1+LENGTH_CODES);
   static final private int HEAP_SIZE=(2*L_CODES+1);
 
   // Bit length codes must not exceed MAX_BL_BITS bits
-  static final int MAX_BL_BITS=7; 
+  static final byte MAX_BL_BITS=7; 
 
   // end of block literal code
   static final int END_BLOCK=256; 
 
   // repeat previous bit length 3-6 times (2 bits of repeat count)
-  static final int REP_3_6=16; 
+  static final byte REP_3_6=16; 
 
   // repeat a zero length 3-10 times  (3 bits of repeat count)
-  static final int REPZ_3_10=17; 
+  static final byte REPZ_3_10=17; 
 
   // repeat a zero length 11-138 times  (7 bits of repeat count)
-  static final int REPZ_11_138=18; 
+  static final byte REPZ_11_138=18; 
 
   // extra bits for each length code
-  static final int[] extra_lbits={
+  static final byte[] extra_lbits={
     0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0
   };
 
   // extra bits for each distance code
-  static final int[] extra_dbits={
+  static final byte[] extra_dbits={
     0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13
   };
 
   // extra bits for each bit length code
-  static final int[] extra_blbits={
+  static final byte[] extra_blbits={
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,7
   };
 
@@ -170,7 +170,7 @@ final class Tree{
   void gen_bitlen(Deflate s){
     short[] tree = dyn_tree;
     short[] stree = stat_desc.static_tree;
-    int[] extra = stat_desc.extra_bits;
+    byte[] extra = stat_desc.extra_bits;
     int base = stat_desc.extra_base;
     int max_length = stat_desc.max_length;
     int h;              // heap index
@@ -218,7 +218,7 @@ final class Tree{
     }
     while (overflow > 0);
 
-    for (bits = max_length; bits != 0; bits--) {
+    for (bits = max_length; bits != 0; --bits) {
       n = s.bl_count[bits];
       while (n != 0) {
 	m = s.heap[--h];
@@ -252,7 +252,7 @@ final class Tree{
     s.heap_len = 0;
     s.heap_max = HEAP_SIZE;
 
-    for(n=0; n<elems; n++) {
+    for(n=0; n<elems; ++n) {
       if(tree[n*2] != 0) {
 	s.heap[++s.heap_len] = max_code = n;
 	s.depth[n] = 0;

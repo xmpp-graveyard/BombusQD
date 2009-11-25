@@ -162,10 +162,11 @@ public class Contact extends IconTextElement{
     public void destroy() {
         if(!midlet.BombusQD.sd.roster.isLoggedIn()) return;
         chatInfo.destroy();
-        if (null != messageList) messageList.destroy();
+        if (null != messageList) {
+            messageList.destroy();
+            messageList = null;
+        }
         if(temp.length()>0) temp.setLength(0);
-        messageList = null;
-
         if(null != msgSuspended) msgSuspended = null;
         if(null != vcard) clearVCard();
         if(null != clientName) clientName = null;

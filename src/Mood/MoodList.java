@@ -25,6 +25,7 @@
  *
  */
 
+/*
 //#ifdef PEP
 //# package Mood;
 //# 
@@ -53,10 +54,12 @@
 //# import ui.GMenu;
 //# import ui.GMenuConfig;
 //#endif
+//# import ui.IconTextElement;
+//# 
 //# /**
 //#  *
 //#  * @author evgs,aqent
-//#  */
+//#  
 //# public class MoodList extends VirtualList 
 //#         
 //#         implements 
@@ -70,12 +73,12 @@
 //#     public static String plugin = new String("PLUGIN_PEP");
 //#endif
 //#     
-//#     /** Creates a new instance of MoodList */
+//#     /** Creates a new instance of MoodList 
 //#     Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
 //#     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
 //#     EventPublish ap = new EventPublish();
 //#     
-//#     Vector moods;
+//#     Vector moods = new Vector(0);
 //#     public MoodList(Display display) {
 //#         super(display);
 //#         setMainBarItem(new MainBar(SR.MS_USERMOOD));
@@ -83,15 +86,20 @@
 //#         addCommand(cmdOk);
 //#         setCommandListener(this);
 //#         
-//#         moods=new Vector(0);
+//#         moods.setSize(0);
 //#         int count=Moods.getInstance().moodValue.size();
-//#         
-//#         for (int i=0; i<count; i++) {
-//#             moods.addElement(new MoodItem(i));
+//#         IconTextElement mood;
+//#         for (int i=0; i<count; ++i) {
+//#             mood = new MoodItem(i);
+//#             moods.addElement(mood);
 //#         }
+//#         mood = null;
+//# 
 //#         commandState();
 //#         sort(moods);
-//#         moveCursorTo(Config.getInstance().cursorPos[3]);                
+//#         moveCursorTo(Config.getInstance().cursorPos[3]);   
+//#         
+//#         System.gc();
 //#         attachDisplay(display);
 //#     }
 //# 
@@ -191,3 +199,4 @@
 //#    }    
 //# }
 //#endif
+ */

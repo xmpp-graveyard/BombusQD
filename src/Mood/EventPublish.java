@@ -33,7 +33,6 @@
 //# import com.alsutton.jabber.datablocks.Iq;
 //# import Mood.UserActivityResult;
 //# import Client.StaticData;
-//# //import Client.Config;
 //# import ui.VirtualList;
 //# 
 //# public class EventPublish {
@@ -45,6 +44,7 @@
 //#      */
 //#     public EventPublish() {
 //#     }
+//#  /*   
 //#     
 //#     public void publishActivity(final String category, final String descr,String text) {
 //#         String sid="publish-action";
@@ -123,7 +123,7 @@
 //#     </publish>
 //#   </pubsub>
 //# </iq>
-//#      */
+//#      
 //#         String sid="publish-tune";
 //#         JabberDataBlock setMood=new Iq(null, Iq.TYPE_SET, sid);
 //#         JabberDataBlock action=setMood.addChildNs("pubsub", "http://jabber.org/protocol/pubsub").addChild("publish", null);
@@ -158,7 +158,7 @@
 //#     </publish>
 //#   </pubsub>
 //# </iq>
-//#      */
+//#      
 //#         String sid="stop-tune";
 //#         JabberDataBlock setMood=new Iq(null, Iq.TYPE_SET, sid);
 //#         JabberDataBlock action=setMood.addChildNs("pubsub", "http://jabber.org/protocol/pubsub").addChild("publish", null);
@@ -177,7 +177,8 @@
 //#             item=null;
 //#          } catch (Exception e) {e.printStackTrace(); }   
 //#          //Config.getInstance().saveToStorage();         
-//#    }         
+//#    }     
+//#   */    
 //#     
 //#     
 //# }

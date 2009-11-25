@@ -89,20 +89,27 @@ public class SearchResult
         
         sd.roster.cleanupSearch();
         
-        for (Enumeration e=query.getChildBlocks().elements(); e.hasMoreElements(); ){
-            JabberDataBlock child=(JabberDataBlock) e.nextElement();
+        StringBuffer vcard=new StringBuffer(0);
+        Contact serv;
+        Msg m;
+        Vector queryElements = query.getChildBlocks();
+        Vector childBlocks = new Vector(0);
+        
+        int size = queryElements.size();
+        for(int i = 0; i<size; ++i){
+            JabberDataBlock child = (JabberDataBlock) queryElements.elementAt(i);
 	    
             if (child.getTagName().equals("item")) {
-                StringBuffer vcard=new StringBuffer();
+                vcard.setLength(0);
                 String jid="";
 		
-	        int status=Presence.PRESENCE_OFFLINE;
-
-                // Form vcard=new Form(null);
+	        byte status=Presence.PRESENCE_OFFLINE;
                 if (!xData) { jid=child.getAttribute("jid"); }
-                // пїЅпїЅпїЅпїЅ item
-                for (Enumeration f=child.getChildBlocks().elements(); f.hasMoreElements(); ){
-                    JabberDataBlock field=(JabberDataBlock) f.nextElement();
+
+                childBlocks = child.getChildBlocks();
+                int chSize = childBlocks.size();
+                for(int k = 0; k<chSize; ++k){
+                    JabberDataBlock field=(JabberDataBlock) childBlocks.elementAt(k);
                     String name;
                     String value;
                     if (xData) {
@@ -124,17 +131,22 @@ public class SearchResult
 		    // status returned by jit
 		    if (name.equals("status")) if (!value.equals("offline")) status=Presence.PRESENCE_ONLINE;
                 }
-                Contact serv=new Contact(null, jid, status,"search");
+                serv = new Contact(null, jid, status,"search");
                 serv.setGroup(sd.roster.contactList.groups.getGroup(Groups.TYPE_SEARCH_RESULT));
-                Msg m=new Msg(Constants.MESSAGE_TYPE_IN, jid, "Short info", vcard.toString());
+                m=new Msg(Constants.MESSAGE_TYPE_PRESENCE, jid, "Short info", vcard.toString());
                 m.unread=false;
+                m.itemCollapsed = false;
                 serv.addMessage(m);
                 
                 items.addElement(serv);
                 sd.roster.addContact(serv);
-                vcard=null;
             }
         }
+        vcard.setLength(0);
+        vcard = null;
+        
+        queryElements.setSize(0);
+        childBlocks.setSize(0);
         sd.roster.reEnumRoster();
         commandState();
         attachDisplay(display);

@@ -255,7 +255,7 @@ public class Config {
     public int classic_chat_height=140;
     public int line_count=300;    
     public boolean use_phone_theme=false;
-    public boolean gradient_cursor=true;
+    public boolean gradient_cursor=false;
 
     public boolean bredoGen=false;
     

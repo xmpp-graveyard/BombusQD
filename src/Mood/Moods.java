@@ -40,6 +40,7 @@
 //#     /** Creates a new instance of Moods */
 //#     private Moods() {
 //#         String moodFile="/lang/"+Client.Config.getInstance().lang+".moods.txt";
+//#         System.out.println(moodFile);
 //#         Vector vMood[]=new StringLoader().stringLoader(moodFile, 2);
 //#         Vector en_vMood[]=new StringLoader().stringLoader("/lang/en.moods.txt", 2);
 //#         
@@ -58,8 +59,8 @@
 //#         en_moodValue.trimToSize();
 //#     }
 //#     
-//#     Vector moodKey;
-//#     Vector moodValue;
+//#     public Vector moodKey;
+//#     public Vector moodValue;
 //#     Vector en_moodValue;
 //#     
 //#     public String myMoodName="";
@@ -91,7 +92,7 @@
 //#         return (String)en_moodValue.elementAt(index); 
 //#     }    
 //# 
-//#     String getMoodName(int index) {
+//#     public String getMoodName(int index) {
 //#         return (String)moodKey.elementAt(index);
 //#     }
 //# }

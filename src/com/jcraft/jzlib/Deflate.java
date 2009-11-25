@@ -105,63 +105,63 @@ public final class Deflate{
   static final private int FinishDone=3;
 
   // preset dictionary flag in zlib header
-  static final private int PRESET_DICT=0x20;
+  static final private byte PRESET_DICT=0x20;
 
-  static final private int Z_FILTERED=1;
-  static final private int Z_HUFFMAN_ONLY=2;
-  static final private int Z_DEFAULT_STRATEGY=0;
+  static final private byte Z_FILTERED=1;
+  static final private byte Z_HUFFMAN_ONLY=2;
+  static final private byte Z_DEFAULT_STRATEGY=0;
 
-  static final private int Z_NO_FLUSH=0;
-  static final private int Z_PARTIAL_FLUSH=1;
-  static final private int Z_SYNC_FLUSH=2;
-  static final private int Z_FULL_FLUSH=3;
-  static final private int Z_FINISH=4;
+  static final private byte Z_NO_FLUSH=0;
+  static final private byte Z_PARTIAL_FLUSH=1;
+  static final private byte Z_SYNC_FLUSH=2;
+  static final private byte Z_FULL_FLUSH=3;
+  static final private byte Z_FINISH=4;
 
-  static final private int Z_OK=0;
-  static final private int Z_STREAM_END=1;
-  static final private int Z_NEED_DICT=2;
-  static final private int Z_ERRNO=-1;
-  static final private int Z_STREAM_ERROR=-2;
-  static final private int Z_DATA_ERROR=-3;
-  static final private int Z_MEM_ERROR=-4;
-  static final private int Z_BUF_ERROR=-5;
-  static final private int Z_VERSION_ERROR=-6;
+  static final private byte Z_OK=0;
+  static final private byte Z_STREAM_END=1;
+  static final private byte Z_NEED_DICT=2;
+  static final private byte Z_ERRNO=-1;
+  static final private byte Z_STREAM_ERROR=-2;
+  static final private byte Z_DATA_ERROR=-3;
+  static final private byte Z_MEM_ERROR=-4;
+  static final private byte Z_BUF_ERROR=-5;
+  static final private byte Z_VERSION_ERROR=-6;
 
-  static final private int INIT_STATE=42;
-  static final private int BUSY_STATE=113;
+  static final private byte INIT_STATE=42;
+  static final private byte BUSY_STATE=113;
   static final private int FINISH_STATE=666;
 
   // The deflate compression method
-  static final private int Z_DEFLATED=8;
+  static final private byte Z_DEFLATED=8;
 
-  static final private int STORED_BLOCK=0;
-  static final private int STATIC_TREES=1;
-  static final private int DYN_TREES=2;
+  static final private byte STORED_BLOCK=0;
+  static final private byte STATIC_TREES=1;
+  static final private byte DYN_TREES=2;
 
   // The three kinds of block type
-  static final private int Z_BINARY=0;
-  static final private int Z_ASCII=1;
-  static final private int Z_UNKNOWN=2;
+  static final private byte Z_BINARY=0;
+  static final private byte Z_ASCII=1;
+  static final private byte Z_UNKNOWN=2;
 
-  static final private int Buf_size=8*2;
+  static final private byte Buf_size=8*2;
 
   // repeat previous bit length 3-6 times (2 bits of repeat count)
-  static final private int REP_3_6=16; 
+  static final private byte REP_3_6=16; 
 
   // repeat a zero length 3-10 times  (3 bits of repeat count)
-  static final private int REPZ_3_10=17; 
+  static final private byte REPZ_3_10=17; 
 
   // repeat a zero length 11-138 times  (7 bits of repeat count)
-  static final private int REPZ_11_138=18; 
+  static final private byte REPZ_11_138=18; 
 
-  static final private int MIN_MATCH=3;
+  static final private byte MIN_MATCH=3;
   static final private int MAX_MATCH=258;
   static final private int MIN_LOOKAHEAD=(MAX_MATCH+MIN_MATCH+1);
 
-  static final private int MAX_BITS=15;
-  static final private int D_CODES=30;
-  static final private int BL_CODES=19;
-  static final private int LENGTH_CODES=29;
+  static final private byte MAX_BITS=15;
+  static final private byte D_CODES=30;
+  static final private byte BL_CODES=19;
+  static final private byte LENGTH_CODES=29;
   static final private int LITERALS=256;
   static final private int L_CODES=(LITERALS+1+LENGTH_CODES);
   static final private int HEAP_SIZE=(2*L_CODES+1);

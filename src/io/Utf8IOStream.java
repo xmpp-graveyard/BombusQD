@@ -153,7 +153,7 @@ public class Utf8IOStream {
         return Long.toString(countPocketsSend);
     }    
   
-    public String getStreamStatsBar() {
+    public String getStreamStatsBar() { //for info panel
         stats.setLength(0);
         try {
             long sent=bytesSent;
@@ -164,10 +164,18 @@ public class Utf8IOStream {
                 ZOutputStream zo = (ZOutputStream) outStream;
                 sent+=zo.getTotalOut()-zo.getTotalIn();
                 String ratio=Long.toString((10*z.getTotalOut())/z.getTotalIn());
-                int dotpos=ratio.length()-1;                
-                stats.append("(");
-                stats.append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x');
-                stats.append(")");
+                int dotpos=ratio.length()-1;  
+                
+                stats.append(' ')
+                     .append('(');
+                if(0 == dotpos)
+                    stats.append('0'); 
+                else 
+                    stats.append(ratio.substring(0, dotpos));
+                stats.append('.')
+                 .append(ratio.substring(dotpos))
+                 .append('x')
+                 .append(')');
                 ratio=null;
             }else{
                return "";
@@ -179,7 +187,7 @@ public class Utf8IOStream {
         return stats.toString();       
     }
 
-    public String getStreamStats() {
+    public String getStreamStats() { //for stats window
         stats.setLength(0);
         try {
             long sent=bytesSent;
@@ -204,10 +212,19 @@ public class Utf8IOStream {
     }
     
     private void appendZlibStats(StringBuffer s, long packed, long unpacked, boolean read){
-        s.append(packed).append(read?"->":"<-").append(unpacked);
-        String ratio=Long.toString((10*unpacked)/packed);
+        s.append(packed).append(read?'>':'<').append(unpacked);
+        String ratio = Long.toString((10*unpacked)/packed);
         int dotpos=ratio.length()-1;
-        s.append(" (").append( (dotpos==0)? "0":ratio.substring(0, dotpos)).append('.').append(ratio.substring(dotpos)).append('x').append(")");
+        s.append(' ')
+         .append('(');
+        if(0 == dotpos) 
+            s.append('0'); 
+        else
+            s.append(ratio.substring(0, dotpos));
+        s.append('.')
+         .append(ratio.substring(dotpos))
+         .append('x')
+         .append(')');
     }
         
     

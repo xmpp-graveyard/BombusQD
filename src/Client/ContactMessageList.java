@@ -669,7 +669,10 @@ public final class ContactMessageList extends MessageList implements MenuListene
     
     public void eventOk(){
           if(midlet.BombusQD.cf.createMessageByFive) answer();
-          else ((MessageItem)getFocusedObject()).onSelect();
+          else {
+              ((MessageItem)getFocusedObject()).onSelect();
+              moveCursorTo(cursor);
+          }
     }
 
     

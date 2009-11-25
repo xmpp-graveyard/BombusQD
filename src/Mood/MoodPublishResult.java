@@ -52,7 +52,14 @@
 //#         if (!data.getAttribute("id").equals(id)) return BLOCK_REJECTED;
 //#         
 //#         String type=data.getTypeAttribute();
-//#         if (type.equals("result")) return NO_MORE_BLOCKS;
+//#         if (type.equals("result")){
+//#             new AlertBox(SR.MS_USERMOOD, SR.MS_SUCCESS  + '!', display, null) {
+//#                public void yes() { }
+//#                public void no() { }
+//#             };
+//#             midlet.BombusQD.sd.roster.theStream.cancelBlockListener(this);
+//#             return NO_MORE_BLOCKS;
+//#         }
 //#         
 //#         XmppError e=XmppError.findInStanza(data);
 //#         

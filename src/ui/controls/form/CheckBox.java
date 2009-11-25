@@ -49,7 +49,7 @@ public class CheckBox
     private boolean otherWindow=false;    
     private int colorItem;
     private int width = 0;
-    private boolean isHistory = false;
+    private boolean scroll = false;
     
     Vector checkBox = new Vector(0);
     GMenuConfig gm = GMenuConfig.getInstance();
@@ -60,7 +60,7 @@ public class CheckBox
        //System.out.println("    -->"+text+"/"+text_undo+"/"+checkBox);
     }
     
-    public CheckBox(String text, boolean state,boolean otherWindow,boolean isHistory) {
+    public CheckBox(String text, boolean state,boolean otherWindow,boolean scroll) {
         super(RosterIcons.getInstance());
         int index = text.indexOf("%");
         if(index>-1){
@@ -69,7 +69,7 @@ public class CheckBox
         }else{
           this.text=text;
         }
-        this.isHistory=isHistory;
+        this.scroll=scroll;
         this.state=state;
         this.otherWindow=otherWindow;
         colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
@@ -101,7 +101,7 @@ public class CheckBox
     
 
     public int getVWidth(){
-        return isHistory?-1:width;
+        return scroll?-1:width;
     }
     
     public void drawItem(Graphics g, int ofs, boolean sel){
@@ -124,20 +124,22 @@ public class CheckBox
         int y = 0;
          if(state){
               int helpHeight=0;
-              if(toString().indexOf("%")>-1){
+              int index = toString().indexOf("%");
+              if(index>-1){
                     helpHeight += fontHeight*(size-1);
+                    width = f.stringWidth( text_undo );
                     int posIndex = offset-ofs;
                     g.drawString(text_undo, posIndex, y, Graphics.TOP|Graphics.LEFT);                    
                     g.setColor(0xffffff);
-                    g.fillRoundRect(posIndex,fontHeight+2,gm.phoneWidth - 30 - scrollW, helpHeight,9,9);
+                    g.fillRoundRect(offset,fontHeight+2,gm.phoneWidth - 30 - scrollW, helpHeight,9,9);
                     g.setColor(0x000000);
-                    g.drawRoundRect(posIndex,fontHeight+2,gm.phoneWidth - 30 - scrollW, helpHeight,9,9);  
+                    g.drawRoundRect(offset,fontHeight+2,gm.phoneWidth - 30 - scrollW, helpHeight,9,9);  
                     g.setColor(0x000000);
                  for(int i=0;i<size;i++){ 
                    if(i==0){
                       g.drawString((String)lines.elementAt(i),3, y, Graphics.TOP|Graphics.LEFT);
                    }else{
-                      g.drawString((String)lines.elementAt(i),posIndex + 3 , y + 2, Graphics.TOP|Graphics.LEFT);   
+                      g.drawString((String)lines.elementAt(i),offset + 3 , y + 2, Graphics.TOP|Graphics.LEFT);   
                    }
                    y += fontHeight;
                  }
