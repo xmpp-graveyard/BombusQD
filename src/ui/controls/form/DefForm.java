@@ -114,8 +114,16 @@ public class DefForm
     }
 
     public void destroyView()	{
-	if (display!=null)
-            display.setCurrent(parentView);
+        //System.out.println("DefForm destroyView->" + itemsList.toString());
+        int size = itemsList.size();
+        Object obj;
+        for(int i = 0; i < size; ++i){
+            obj = (Object)itemsList.elementAt(i);
+            if(obj instanceof DropChoiceBox) ((DropChoiceBox)obj).destroy();
+            if(obj instanceof NumberInput) ((NumberInput)obj).destroy();
+        }
+        itemsList.removeAllElements();
+	if (display!=null) display.setCurrent(parentView);
     }
 
     public void cmdCancel() {

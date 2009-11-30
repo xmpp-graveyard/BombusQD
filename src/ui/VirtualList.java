@@ -204,11 +204,7 @@ public abstract class VirtualList
     
     private int itemLayoutY[]=new int[1];
     private int listHeight;
-    
-//#ifdef BACK_IMAGE
-//#     public Image img;
-//#     public Image bgnd;
-//#endif
+
     
 //#ifdef MENU_LISTENER
     CommandsPointer ar=new CommandsPointer();
@@ -1522,6 +1518,10 @@ public abstract class VirtualList
 //#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
 //#                    }else{
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
+//#                        if(c.chatInfo.getMessageCount()==0){
+//#                           midlet.BombusQD.sd.roster.createMessageEdit(c, c.msgSuspended, this, true);
+//#                           return;
+//#                        }
 //#                        display.setCurrent(c.getMessageList());
 //#                    }                
 //#                 popup.next();

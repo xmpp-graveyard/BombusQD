@@ -139,15 +139,15 @@ public class TransferManager
                         i++;
                 }
             }
-            if (getItemCount()<1)
-                StaticData.getInstance().roster.setEventIcon(null);
+            //if (getItemCount()<1)
+            midlet.BombusQD.sd.roster.setEventIcon(null);
             redraw();
         }
         if (c==cmdDel) {
             keyClear();
-            if (getItemCount()<=1){
-                StaticData.getInstance().roster.setEventIcon(null);   
-            }
+            //if (getItemCount()<=1){
+            midlet.BombusQD.sd.roster.setEventIcon(null);   
+            //}
         }
         if (c==cmdBack) cmdBack();
         if (c==cmdInfo) cmdInfo();

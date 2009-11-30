@@ -132,7 +132,7 @@ public class AccountSelect
         if (!accountList.isEmpty()) {
             moveCursorTo(activeAccount);
         }else{
-            ColorTheme.loadSkin("/themes/default.txt", 1);
+            ColorTheme.loadSkin("/themes/default.txt", 1, true);
         }
         commandState();
         setCommandListener(this);

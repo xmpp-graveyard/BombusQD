@@ -48,7 +48,8 @@ import ui.controls.Progress;
  *
  * @author Eugene Stahov
  */
-public class SplashScreen extends Canvas implements Runnable, CommandListener {
+public class SplashScreen extends Canvas implements //Runnable,
+        CommandListener {
     
     private Display display;
     private Displayable parentView;
@@ -77,13 +78,13 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
     private Progress pb;
     
     public static SplashScreen getInstance(Display display){
-        if (instance==null) 
-            instance=new SplashScreen(display);
+        if (instance==null) instance=new SplashScreen(display);
         return instance;
     }
     
     /** Creates a new instance of SplashScreen */
     public SplashScreen(Display display) {
+        this.display = display;
         setFullScreenMode(midlet.BombusQD.cf.fullscreen);
         try {
             if (img==null) {
@@ -109,7 +110,8 @@ public class SplashScreen extends Canvas implements Runnable, CommandListener {
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         repaint();
         //serviceRepaints();
-        new Thread(this).start();
+        //new Thread(this).start();
+        run();
         
         tc=new TimerTaskClock();
         setFullScreenMode(midlet.BombusQD.cf.fullscreen);

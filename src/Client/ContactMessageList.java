@@ -324,7 +324,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
         if (c==midlet.BombusQD.commands.cmdxmlSkin) {
            try {
                if (((MessageItem)getFocusedObject()).msg.body.indexOf("xmlSkin")>-1) {
-                    ColorTheme.loadSkin(((MessageItem)getFocusedObject()).msg.body,2);
+                    ColorTheme.loadSkin(((MessageItem)getFocusedObject()).msg.body,2,true);
                }
             } catch (Exception e){}
         }
@@ -372,7 +372,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
             }   
             return;
         }
-        
+        /*
         if(c==midlet.BombusQD.commands.cmdTranslate){
             String body = replaceNickTags(getMessage(cursor)).body.toString();
             if(body.indexOf(">")>-1){
@@ -388,7 +388,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
             contact.setCursor(cursor);
             return;
         }
-
+         */
         if (c==midlet.BombusQD.commands.cmdPurge) {
             if (messages.isEmpty()) return;
             
@@ -606,7 +606,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     }
 
     private void showMsgEdit(String msgText){
-      midlet.BombusQD.sd.roster.createMessageEdit(contact, msgText , this);  
+      midlet.BombusQD.sd.roster.createMessageEdit(contact, msgText , this, false);  
     }
     
     private void Reply(boolean check) {

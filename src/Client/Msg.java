@@ -69,9 +69,6 @@ public class Msg {
        if(null != subject) subject = null;
        if(null != body) body = null;
        if(null != id) id = null;
-       if(time.length()>0){
-           time.setLength(0);
-       }
     }
     
     /** Creates a new instance of msg */
@@ -121,17 +118,15 @@ public class Msg {
         return ColorTheme.getColor(ColorTheme.LIST_INK);
     }
     
-    private static StringBuffer time = new StringBuffer(0);
     public String toString() {
        if (messageType==Constants.MESSAGE_TYPE_PRESENCE && midlet.BombusQD.cf.timePresence) {
+         StringBuffer time = new StringBuffer(0);
          time.setLength(0);
          time.append(getTime());
          time.append(' ');
          time.append(body);
          return time.toString(); 
-       }else{
-         return body;
-       }
+       } else return body;
     }
 
     public boolean isPresence() { return messageType==Constants.MESSAGE_TYPE_PRESENCE; }

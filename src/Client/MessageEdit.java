@@ -59,6 +59,7 @@ public final class MessageEdit
     private String body;
     private String subj;
     public Contact to;
+    private boolean emptyChat;
     private boolean multiMessage=false;
     private boolean composing=true;
     private Vector active_contacts;
@@ -105,7 +106,7 @@ public final class MessageEdit
             case 0: t.setString(bodyNew); break;
             case 1: textField.setString(bodyNew); break;
          }
-         setText(bodyNew,to,pView);
+         setText(bodyNew,to,pView, false);
     }
     
     public void setText(Displayable pView, Vector contacts, boolean multiMessage){
@@ -115,13 +116,14 @@ public final class MessageEdit
        active_contacts = new Vector(0);
        
        this.active_contacts = contacts;
-       setText("", null, pView );
+       setText("", null, pView, false );
     }
     
-    public void setText(String body, Contact to, Displayable pView){
+    public void setText(String body, Contact to, Displayable pView, boolean emptyChat){
        this.body = body; 
        this.parentView=pView;
        this.to = to;
+       this.emptyChat = emptyChat;
        switch(midlet.BombusQD.cf.msgEditType){
             case 0: 
                 t.setTitle( null == to ? "Multi-Message" : to.toString());
@@ -365,14 +367,16 @@ public final class MessageEdit
             body=null;
             if(multiMessage) multiMessage = false;
             if(null != to && to.msgSuspended!=null) to.msgSuspended=null;
-            display.setCurrent( parentView );
+            destroyView();
+            return;
         }
         if (c==cmdSuspend) {
                 composing=false; 
                 if(multiMessage) multiMessage = false;
                 if(null != to) to.msgSuspended=body; 
                 body=null;
-                display.setCurrent(parentView);
+                destroyView(); 
+                return;
         }
         if(c==cmdTranslate){
           new TranslateSelect(display,parentView,to,body,"none",false,-1);
@@ -427,9 +431,25 @@ public final class MessageEdit
 //#endif
     }
 
+    private void destroyView() {
+       if(emptyChat) {
+           if(null != to) {
+              if(to.chatInfo.getMessageCount()==0) {
+                 midlet.BombusQD.sd.roster.showRoster();
+              } else display.setCurrent(parentView);
+           }
+       } else display.setCurrent(parentView);
+    }
+    
     private void send(){
        send(body,subj);
-       display.setCurrent(parentView);
+       if(emptyChat) {
+           if(null != to) {
+               display.setCurrent(to.getMessageList());
+               return;
+           }
+       }
+       destroyView();
     }
     
     private void send(String body,String subj) {

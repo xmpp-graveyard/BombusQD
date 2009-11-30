@@ -125,9 +125,9 @@
 //#                 activityText=activity.getChildBlockText("text");
 //#                 if (activityText!=null){
 //#                     if (activityText.length()>0) {
-//#                         activity_.append("(")
+//#                         activity_.append('(')
 //#                                 .append(activityText)
-//#                                 .append(")");
+//#                                 .append(')');
 //#                     }
 //#                 }
 //#                 hasActivity=true;
@@ -201,9 +201,9 @@
 //#                 moodText=mood.getChildBlockText("text");
 //#                 if (moodText!=null){
 //#                     if (moodText.length()>0) {
-//#                         mood_.append("(")
+//#                         mood_.append('(')
 //#                                 .append(moodText)
-//#                                 .append(")");
+//#                                 .append(')');
 //#                     }
 //#                 }
 //#                 hasMood = true;
@@ -245,7 +245,7 @@
 //#                         c.pepTuneText=tune_.toString();
 //#                         msg = tune_.toString();
 //#                     }
-//#                     c.addMessage(new Msg(Constants.MESSAGE_TYPE_PRESENCE, from, type, msg));
+//#                     if(c.chatInfo.getMessageCount()>0) c.addMessage(new Msg(Constants.MESSAGE_TYPE_PRESENCE, from, type, msg));
 //#                 }
 //#             }
 //#         //}

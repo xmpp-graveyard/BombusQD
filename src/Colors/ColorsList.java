@@ -87,15 +87,20 @@ public class ColorsList
         itemsList=new Vector(0);
         int cnt=0;
         int size = ColorTheme.colorsContainer.size();
-        for (int i=0;i<=size;i++) {
+        ColorVisualItem item;
+        int[] colors = ColorTheme.getColors();
+        for (int i=0;i<=size;++i) {
             ColorItem c=(ColorItem)ColorTheme.colorsContainer.elementAt(i);
 //#ifdef COLOR_TUNE
-//#             itemsList.addElement(new ColorVisualItem(c.name, NAMES[cnt], c.color));
+//#             item = new ColorVisualItem(c.name, NAMES[cnt], colors[i]);
+//#             itemsList.addElement(item);
 //#endif
-            cnt++;
+            ++cnt;
         }
+        item = null;
         commandState();
         attachDisplay(display);
+        repaint();
     }
 
     protected int getItemCount() { return itemsList.size(); }

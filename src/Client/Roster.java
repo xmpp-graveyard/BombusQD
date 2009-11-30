@@ -222,7 +222,7 @@ public class Roster
     
     SplashScreen splash;
 //#ifdef PEP    
-//#     EventPublish publishEvent = new EventPublish();
+//#     //EventPublish publishEvent = new EventPublish();
 //#endif    
     static String hashcheck = StringUtils.calcHash();
 
@@ -3101,6 +3101,11 @@ public class Roster
     private Displayable createMsgList(){
         Object e=getFocusedObject();
         if (e instanceof Contact) {
+           Contact c = (Contact)e;
+           if(c.chatInfo.getMessageCount()==0){
+               createMessageEdit(c, c.msgSuspended, this, true);
+               return null;
+           }
            return ((Contact)e).getMessageList();
         }
         return null;
@@ -3124,15 +3129,15 @@ public class Roster
          }
     }
     
-    public void createMessageEdit(Contact c, String body, Displayable pview){
+    public void createMessageEdit(Contact c, String body, Displayable pview, boolean emptyChat){
          switch(midlet.BombusQD.cf.msgEditType){
             case 0:
                 if(messageEdit.ticker!=null) messageEdit.ticker.setString("BombusQD");
-                messageEdit.setText(body, c, pview);
+                messageEdit.setText(body, c, pview, emptyChat);
                 break;
             case 1: 
                 if(altmessageEdit.ticker!=null) altmessageEdit.ticker.setString("BombusQD");
-                altmessageEdit.setText(body, c, pview);
+                altmessageEdit.setText(body, c, pview, emptyChat);
                 break;
          }
     }
@@ -3142,7 +3147,9 @@ public class Roster
         Displayable pview=createMsgList();
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
-               if(!midlet.BombusQD.cf.useClassicChat) createMessageEdit(c, c.msgSuspended, pview);
+               if(!midlet.BombusQD.cf.useClassicChat){
+                  createMessageEdit(c, c.msgSuspended, pview, (c.chatInfo.getMessageCount()==0) );
+               }
                else new SimpleItemChat(display,this,c);
             c.msgSuspended=null;
         }
@@ -3194,7 +3201,12 @@ public class Roster
         if (e instanceof Contact) {
             Contact c = (Contact)e;
 //#if METACONTACTS
-//#endif            
+//#endif         
+            if(c.chatInfo.getMessageCount()==0){
+                createMessageEdit(c, c.msgSuspended, this, true);
+                return;
+            }
+            
               if(midlet.BombusQD.cf.useClassicChat){
                 new SimpleItemChat(display,this,c);
               } else{

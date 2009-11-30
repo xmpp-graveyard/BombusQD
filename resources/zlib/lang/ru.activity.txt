@@ -18,7 +18,7 @@ having_breakfast	Завтракаю
 having_dinner	Обедаю
 having_lunch	Ланч
 exercising	Упражнения
-cycling	На велосипеде
+cycling	Упражнения на велосипеде
 dancing	Танцы
 hiking	В походе
 jogging	Пробежка

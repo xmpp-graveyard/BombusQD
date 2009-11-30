@@ -544,9 +544,9 @@ public class Contact extends IconTextElement{
 //#              mood=new StringBuffer(pepMoodName);
 //#              if (pepMoodText!=null) {
 //#                 if (pepMoodText.length()>0) {
-//#                      mood.append("(")
+//#                      mood.append('(')
 //#                          .append(pepMoodText)
-//#                          .append(")");
+//#                          .append(')');
 //#                 }
 //#              }
 //#         }
@@ -555,8 +555,9 @@ public class Contact extends IconTextElement{
 //#endif
     
     
-    public int getVHeight(){ 
-        fontHeight=getFont().getHeight();
+    public int getVHeight(){
+        fontHeight = getFont().getHeight();
+        if(midlet.BombusQD.cf.simpleContacts) return fontHeight;
         int itemVHeight=0;
         if (getSecondString()!=null)
         {
@@ -578,34 +579,38 @@ public class Contact extends IconTextElement{
     }    
     
     
-    
     public Image img_vcard=null;
     public boolean hasPhoto=false;
     
     public int avatar_width=0;
     public int avatar_height=0;    
 
-   
-    
-//#if METACONTACTS
-//# 
-//#endif
-    
+
     public final void drawItem(Graphics g, int ofs, boolean sel) {
+        int imageIndex = getImageIndex();
         int w=g.getClipWidth();
+        if(midlet.BombusQD.cf.simpleContacts) {
+            itemHeight = getFont().getHeight();
+            if (hasNewMsgs()) {
+               w -= il.getWidth();
+               il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w, 0);
+            }
+            super.drawItem(g, ofs, sel);
+            return;
+        }
+        
+        int offset=4;
         int h=getVHeight();
         int xo=g.getClipX();
         int yo=g.getClipY();
         
         int pos = 10;
-        int imageIndex = getImageIndex();
 //#if METACONTACTS
 //#  
 //#endif
         g.translate(pos,0);
         w -= pos;
         
-        int offset=4;
         int imgH=(h-ilHeight)/2;
         
         if(midlet.BombusQD.cf.drawCPhoto==false){

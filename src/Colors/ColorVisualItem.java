@@ -4,6 +4,7 @@
  * Created on 23.08.2008, 22:49
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2009, Alexej Kotov (aqent), http://bombusmod-qd.wen.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,11 +29,12 @@
 package Colors;
 
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Font;
 import ui.IconTextElement;
 
 /**
  *
- * @author ad
+ * @author ad,aqent
  */
 public class ColorVisualItem 
         extends IconTextElement {
@@ -52,26 +54,29 @@ public class ColorVisualItem
     }
 
     public void setColor(int color) { this.color=color; }
-    
     public String toString() { return (locale==null)?name:locale; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
-        int width=g.getClipWidth();
-        int height=super.getVHeight();
-
-        int oldColor=g.getColor();
-
-        g.setColor(color);
-        g.fillRect(1, 1, height-2, height-2);
-
-        g.setColor(oldColor);
-
-        g.translate(height,0);
-        super.drawItem(g, ofs, sel);
-        g.translate(-height,0);
-        
+       g.setFont(getFont());
+       int width = g.getClipWidth();
+       int fh = getFont().getHeight();
+       itemHeight = fh*2;
+       g.clipRect(4, 0, g.getClipWidth(), itemHeight);
+       if (null != toString()) {
+           int yPos = (itemHeight-fh)/2;
+           g.drawString(toString(), 4 - ofs, yPos, Graphics.TOP|Graphics.LEFT);
+       }
+       g.setColor(color);
+       g.fillRect(width - itemHeight - 3, 3 , itemHeight - 3, itemHeight - 6 );
     }
     
+    public int getVHeight() {
+       return getFont().getHeight()*2;
+    }
+    
+    public int getVWidth(){ 
+        return getFont().stringWidth(toString()) + 4 + itemHeight;
+    }
     
     public void onSelect(){
         //state=!state;

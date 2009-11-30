@@ -95,10 +95,10 @@ public class TrackItem
     
     private void loadSkin(){
         if(items!=null){
-          try {
-             ColorTheme.loadSkin("/themes/"+(String)items.elementAt(value)+".txt", 1);
-             Config.getInstance().path_skin="/themes/"+(String)items.elementAt(value)+".txt";
-          } catch (Exception ex) {}            
+          //try {
+             ColorTheme.loadSkin("/themes/"+(String)items.elementAt(value)+".txt", 1, false);
+             midlet.BombusQD.cf.path_skin="/themes/"+(String)items.elementAt(value)+".txt";
+          //} catch (Exception ex) {}            
         }        
     }
     

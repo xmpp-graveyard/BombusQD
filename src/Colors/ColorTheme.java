@@ -60,216 +60,167 @@ public class ColorTheme {
 	}
 	return instance;
     }
-    public static Vector colorsContainer;
     
-    public static void init() {
-        colorsContainer=null;
-        colorsContainer=new Vector(0);
-        
-        colorsContainer.addElement(new ColorItem("BALLOON_INK", 0x000000));
-        colorsContainer.addElement(new ColorItem("BALLOON_BGND", 0xfcaaaa));
+    public final static Vector colorsContainer = new Vector(0);
     
-        colorsContainer.addElement(new ColorItem("LIST_BGND", 0xfdfcfc));
-        colorsContainer.addElement(new ColorItem("LIST_BGND_EVEN", 0xf7e1e1));
-        colorsContainer.addElement(new ColorItem("LIST_INK", 0x000000));
+    private static int[] colorsArray = new int[0];
     
-        colorsContainer.addElement(new ColorItem("MSG_SUBJ", 0x470c49));
-        colorsContainer.addElement(new ColorItem("MSG_HIGHLIGHT", 0x000000));
-    
-        colorsContainer.addElement(new ColorItem("DISCO_CMD", 0x000080));
-    
-        colorsContainer.addElement(new ColorItem("BAR_BGND", 0xff0000));
-        colorsContainer.addElement(new ColorItem("BAR_BGND_BOTTOM", 0x900000));
-        colorsContainer.addElement(new ColorItem("BAR_INK", 0xffffff));
-    
-        colorsContainer.addElement(new ColorItem("CONTACT_DEFAULT", 0x000000));
-        colorsContainer.addElement(new ColorItem("CONTACT_CHAT", 0x000000));
-        colorsContainer.addElement(new ColorItem("CONTACT_AWAY", 0x000000));
-        colorsContainer.addElement(new ColorItem("CONTACT_XA", 0x000000));
-        colorsContainer.addElement(new ColorItem("CONTACT_DND", 0x000000));
-        colorsContainer.addElement(new ColorItem("CONTACT_J2J", 0x000042));
-
-        colorsContainer.addElement(new ColorItem("GROUP_INK", 0x000000));
-    
-        colorsContainer.addElement(new ColorItem("BLK_INK", 0xffffff));
-        colorsContainer.addElement(new ColorItem("BLK_BGND", 0x861010));
-    
-        colorsContainer.addElement(new ColorItem("MESSAGE_IN", 0x000000));
-        colorsContainer.addElement(new ColorItem("MESSAGE_OUT", 0xbd0d0d));
-        colorsContainer.addElement(new ColorItem("MESSAGE_PRESENCE", 0x98999f));
-        colorsContainer.addElement(new ColorItem("MESSAGE_AUTH", 0x98999f));
-        colorsContainer.addElement(new ColorItem("MESSAGE_HISTORY", 0x000000));
-
-        colorsContainer.addElement(new ColorItem("MESSAGE_IN_S", 0x048586));
-        colorsContainer.addElement(new ColorItem("MESSAGE_OUT_S", 0x067a81));
-        colorsContainer.addElement(new ColorItem("MESSAGE_PRESENCE_S", 0x008387));
-    
-        colorsContainer.addElement(new ColorItem("PGS_REMAINED", 0xffffff));
-        colorsContainer.addElement(new ColorItem("PGS_COMPLETE_TOP", 0xececec));
-        colorsContainer.addElement(new ColorItem("PGS_COMPLETE_BOTTOM", 0xd4d4d4));
-        colorsContainer.addElement(new ColorItem("PGS_INK", 0x000000));
-    
-        colorsContainer.addElement(new ColorItem("HEAP_TOTAL", 0xffffff));
-        colorsContainer.addElement(new ColorItem("HEAP_FREE", 0x6e25c8));
-    
-        colorsContainer.addElement(new ColorItem("CURSOR_BGND", 0xe9736d));
-        colorsContainer.addElement(new ColorItem("CURSOR_OUTLINE", 0x000000));
-    
-        colorsContainer.addElement(new ColorItem("SCROLL_BRD", 0x790e0e));
-        colorsContainer.addElement(new ColorItem("SCROLL_BAR", 0xc41616));
-        colorsContainer.addElement(new ColorItem("SCROLL_BGND", 0x7f7575));
-    
-        colorsContainer.addElement(new ColorItem("POPUP_MESSAGE_INK",  0xffffff));
-        colorsContainer.addElement(new ColorItem("POPUP_MESSAGE_BGND",  0x000000));
-        colorsContainer.addElement(new ColorItem("POPUP_SYSTEM_INK",  0xffffff));
-        colorsContainer.addElement(new ColorItem("POPUP_SYSTEM_BGND",  0x000000));
-    
-        colorsContainer.addElement(new ColorItem("SECOND_LINE", 0x000000));
-
-        colorsContainer.addElement(new ColorItem("CONTROL_ITEM", 0x1ea5c5));
-        
-        colorsContainer.addElement(new ColorItem("GRADIENT_BGND_LEFT", 0xffffff));
-        colorsContainer.addElement(new ColorItem("GRADIENT_BGND_RIGHT", 0xc9ddff)); 
-        
-        colorsContainer.addElement(new ColorItem("GRADIENT_CURSOR_1", 0xffc2a5));
-        colorsContainer.addElement(new ColorItem("GRADIENT_CURSOR_2", 0xeba6b3)); 
-        
-        colorsContainer.addElement(new ColorItem("TRANSPARENCY_ARGB", 0x000000));
-        colorsContainer.addElement(new ColorItem("GRAPHICS_MENU_BGNG_ARGB", 0xf4f5c5));  
-        colorsContainer.addElement(new ColorItem("GRAPHICS_MENU_FONT", 0x000000));          
-
+    public static int[] getColors(){
+        return colorsArray;
     }
     
-    public static void setColor(int id, int color) {
-	((ColorItem)colorsContainer.elementAt(id)).color=color;
+    private final static String[] items = {
+        "BALLOON_INK", "BALLOON_BGND", 
+        "LIST_BGND", "LIST_BGND_EVEN", "LIST_INK",
+        "MSG_SUBJ", "MSG_HIGHLIGHT",
+        "DISCO_CMD",
+        "BAR_BGND", "BAR_BGND_BOTTOM", "BAR_INK",
+        "CONTACT_DEFAULT", "CONTACT_CHAT", "CONTACT_AWAY", "CONTACT_XA", "CONTACT_DND", "CONTACT_J2J", 
+        "GROUP_INK",
+        "BLK_INK", "BLK_BGND",
+        "MESSAGE_IN", "MESSAGE_OUT", "MESSAGE_PRESENCE", "MESSAGE_AUTH", "MESSAGE_HISTORY",
+        "MESSAGE_IN_S", "MESSAGE_OUT_S", "MESSAGE_PRESENCE_S",
+        "PGS_REMAINED", "PGS_COMPLETE_TOP", "PGS_COMPLETE_BOTTOM", "PGS_INK", 
+        "HEAP_TOTAL", "HEAP_FREE",
+        "CURSOR_BGND", "CURSOR_OUTLINE",
+        "SCROLL_BRD", "SCROLL_BAR","SCROLL_BGND",
+        "POPUP_MESSAGE_INK","POPUP_MESSAGE_BGND","POPUP_SYSTEM_INK","POPUP_SYSTEM_BGND",
+        "SECOND_LINE",
+        "CONTROL_ITEM",
+        "GRADIENT_BGND_LEFT","GRADIENT_BGND_RIGHT",
+        "GRADIENT_CURSOR_1", "GRADIENT_CURSOR_2",
+        "TRANSPARENCY_ARGB","GRAPHICS_MENU_BGNG_ARGB","GRAPHICS_MENU_FONT"
+    };
+    
+    private final static int[] defColors = {
+      0x000000, 0xfcaaaa,
+      0xfdfcfc,0xf7e1e1,0x000000,
+      0x470c49,0x000000,
+      0x000080,
+      0xff0000,0x900000,0xffffff,
+      0x000000,0x000000,0x000000,0x000000,0x000000,0x000042,
+      0x000000,
+      0xffffff,0x861010,
+      0x000000,0xbd0d0d,0x98999f,0x98999f,0x000000,
+      0x048586,0x067a81,0x008387,
+      0xffffff,0xececec,0xd4d4d4,0x000000,
+      0xffffff,0x6e25c8,
+      0xe9736d,0x000000,
+      0x790e0e,0xc41616,0x7f7575,
+      0xffffff,0x000000,0xffffff,0x000000,
+      0x000000,
+      0x1ea5c5,
+      0xffffff,0xc9ddff,
+      0xffc2a5,0xeba6b3,
+      0x000000,0xf4f5c5,0x000000
+    };
+    
+    private static void init() {
+        colorsContainer.setSize(0);
+        int size = defColors.length;
+        ColorItem add;
+          for(int i = 0; i<size; ++i) {
+            add = new ColorItem(items[i], defColors[i]);
+            colorsContainer.addElement( add );
+          }     
+        add = null;
+        colorsArray = null;
+        colorsArray = new int[colorsContainer.size()];
     }
     
-    public static String getName(int id) {
-	return ((ColorItem)colorsContainer.elementAt(id)).name;
-    }
-    
-    public static int getColor(int id) {
-	return ((ColorItem)colorsContainer.elementAt(id)).color;
-    }
-    
-    public int getColorByName(String name) {
-         int size=colorsContainer.size();        
-            for(int i=0;i<size;i++){    
-	      ColorItem c=(ColorItem)colorsContainer.elementAt(i);
-	      if (c.name.equals(name)) return c.color;             
-            }        
-        return 0;
-    }
+    public static void setColor(int id, int color) { colorsArray[id] = color; }
+    public final static int getColor(int id) { return colorsArray[id]; }
     
     public static void invertSkin(){
-         int size=colorsContainer.size();        
-            for(int i=0;i<size;i++){ 
+         int size=colorsArray.length;    
+            for(int i=0; i<size; ++i){ 
               ColorItem c=(ColorItem)colorsContainer.elementAt(i);
-              if (c.color!=0x010101)
-                c.color=0xFFFFFF-c.color;             
+              c.color = colorsArray[i];
+              if (c.color!=0x010101) colorsArray[i] = 0xFFFFFF - c.color;
             }        
         saveToStorage();
     }
-    
 //#if NICK_COLORS
     public static int strong(int color) {
-        if (color==getColor(MESSAGE_IN)) {
-            return getColor(MESSAGE_IN_S);
-        } else if (color==getColor(MESSAGE_OUT)) {
-            return getColor(MESSAGE_OUT_S);
-        } else if (color==getColor(MESSAGE_PRESENCE)) {
-            return getColor(MESSAGE_PRESENCE_S);
-        }
+        if (color==colorsArray[MESSAGE_IN]) return colorsArray[MESSAGE_IN_S];
+        else if (color==colorsArray[MESSAGE_OUT]) return colorsArray[MESSAGE_OUT_S];
+        else if (color==colorsArray[MESSAGE_PRESENCE]) return colorsArray[MESSAGE_PRESENCE_S];
         return color;
     }
 //#endif
-/*
-    static class ColorItem {
-        private String name;
-        private int color;
-        
-        public ColorItem(String name, int color){
-            this.name=name;
-            this.color=color;
-        }
-        
-        public String getName() { return name; }
-        public int getColor() { return color; }
-        public void setColor(int color) { this.color=color; }
-    }
-*/
-    public final static int BALLOON_INK             =0;
-    public final static int BALLOON_BGND            =1;
 
-    public final static int LIST_BGND               =2;
-    public final static int LIST_BGND_EVEN          =3;
-    public final static int LIST_INK                =4;
+    public final static byte BALLOON_INK=0;
+    public final static byte BALLOON_BGND=1;
 
-    public final static int MSG_SUBJ                =5;
-    public final static int MSG_HIGHLIGHT           =6;
+    public final static byte LIST_BGND=2;
+    public final static byte LIST_BGND_EVEN=3;
+    public final static byte LIST_INK =4;
 
-    public final static int DISCO_CMD               =7;
+    public final static byte MSG_SUBJ=5;
+    public final static byte MSG_HIGHLIGHT=6;
 
-    public final static int BAR_BGND                =8;
-    public final static int BAR_BGND_BOTTOM         =9;
-    public final static int BAR_INK                 =10;
+    public final static byte DISCO_CMD=7;
 
-    public final static int CONTACT_DEFAULT         =11;
-    public final static int CONTACT_CHAT            =12;
-    public final static int CONTACT_AWAY            =13;
-    public final static int CONTACT_XA              =14;
-    public final static int CONTACT_DND             =15;
-    public final static int CONTACT_J2J             =16;
-    public final static int GROUP_INK               =17;
+    public final static byte BAR_BGND=8;
+    public final static byte BAR_BGND_BOTTOM=9;
+    public final static byte BAR_INK=10;
 
-    public final static int BLK_INK                 =18;
-    public final static int BLK_BGND                =19;
+    public final static byte CONTACT_DEFAULT=11;
+    public final static byte CONTACT_CHAT=12;
+    public final static byte CONTACT_AWAY=13;
+    public final static byte CONTACT_XA=14;
+    public final static byte CONTACT_DND=15;
+    public final static byte CONTACT_J2J=16;
+    public final static byte GROUP_INK=17;
 
-    public final static int MESSAGE_IN              =20;
-    public final static int MESSAGE_OUT             =21;
-    public final static int MESSAGE_PRESENCE        =22;
-    public final static int MESSAGE_AUTH            =23;
-    public final static int MESSAGE_HISTORY         =24;
+    public final static byte BLK_INK=18;
+    public final static byte BLK_BGND=19;
 
-    public final static int MESSAGE_IN_S            =25;
-    public final static int MESSAGE_OUT_S           =26;
-    public final static int MESSAGE_PRESENCE_S      =27;
+    public final static byte MESSAGE_IN=20;
+    public final static byte MESSAGE_OUT=21;
+    public final static byte MESSAGE_PRESENCE=22;
+    public final static byte MESSAGE_AUTH=23;
+    public final static byte MESSAGE_HISTORY=24;
 
-    public final static int PGS_REMAINED            =28;
-    public final static int PGS_COMPLETE_TOP        =29;
-    public final static int PGS_COMPLETE_BOTTOM     =30;
-    public final static int PGS_INK                 =31;
+    public final static byte MESSAGE_IN_S=25;
+    public final static byte MESSAGE_OUT_S=26;
+    public final static byte MESSAGE_PRESENCE_S=27;
 
-    public final static int HEAP_TOTAL              =32;
-    public final static int HEAP_FREE               =33;
+    public final static byte PGS_REMAINED=28;
+    public final static byte PGS_COMPLETE_TOP=29;
+    public final static byte PGS_COMPLETE_BOTTOM=30;
+    public final static byte PGS_INK=31;
 
-    public final static int CURSOR_BGND             =34;//cursor_bgnd
-    public final static int CURSOR_OUTLINE          =35;
+    public final static byte HEAP_TOTAL=32;
+    public final static byte HEAP_FREE=33;
 
-    public final static int SCROLL_BRD              =36;
-    public final static int SCROLL_BAR              =37;
-    public final static int SCROLL_BGND             =38;
+    public final static byte CURSOR_BGND=34;//cursor_bgnd
+    public final static byte CURSOR_OUTLINE=35;
 
-    public final static int POPUP_MESSAGE_INK       =39;
-    public final static int POPUP_MESSAGE_BGND      =40;
+    public final static byte SCROLL_BRD =36;
+    public final static byte SCROLL_BAR =37;
+    public final static byte SCROLL_BGND=38;
+
+    public final static byte POPUP_MESSAGE_INK=39;
+    public final static byte POPUP_MESSAGE_BGND=40;
     
-    public final static int POPUP_SYSTEM_INK        =41;
-    public final static int POPUP_SYSTEM_BGND       =42;
+    public final static byte POPUP_SYSTEM_INK=41;
+    public final static byte POPUP_SYSTEM_BGND=42;
 
-    public final static int SECOND_LINE             =43;
+    public final static byte SECOND_LINE=43;
     
-    public final static int CONTROL_ITEM           =44;
+    public final static byte CONTROL_ITEM=44;
 
     
-    public final static int GRADIENT_BGND_LEFT           =45;
-    public final static int GRADIENT_BGND_RIGHT          =46;
+    public final static byte GRADIENT_BGND_LEFT=45;
+    public final static byte GRADIENT_BGND_RIGHT=46;
   
-    public final static int GRADIENT_CURSOR_1           =47;
-    public final static int GRADIENT_CURSOR_2           =48; 
+    public final static byte GRADIENT_CURSOR_1=47;
+    public final static byte GRADIENT_CURSOR_2=48; 
     
-    public final static int TRANSPARENCY_ARGB           =49; 
-    public final static int GRAPHICS_MENU_BGNG_ARGB           =50;  
-    public final static int GRAPHICS_MENU_FONT           =51;      
+    public final static byte TRANSPARENCY_ARGB=49; 
+    public final static byte GRAPHICS_MENU_BGNG_ARGB=50;  
+    public final static byte GRAPHICS_MENU_FONT=51;      
     
     
     
@@ -282,10 +233,11 @@ public class ColorTheme {
     public static void loadFromStorage(){
 	try {
 	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);
-           int size=colorsContainer.size();        
-            for(int i=0;i<size;i++){ 
-                ColorItem c=(ColorItem)colorsContainer.elementAt(i);
-                c.color=inputStream.readInt();             
+            int size = colorsContainer.size(); 
+            ColorItem c;
+            for(int i=0;i<size;++i){ 
+                c = (ColorItem)colorsContainer.elementAt(i);
+                colorsArray[i] = inputStream.readInt();
             }             
 	    inputStream.close();
             inputStream=null;
@@ -295,42 +247,38 @@ public class ColorTheme {
     public static void saveToStorage(){
 	DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
 	try {
-            int size=colorsContainer.size();        
-            for(int i=0;i<size;i++){ 
-                ColorItem c=(ColorItem)colorsContainer.elementAt(i);
-                outputStream.writeInt(c.color);             
-            } 
+            int size = colorsArray.length;        
+            for(int i=0; i<size; ++i) outputStream.writeInt(colorsArray[i]);
         } catch (IOException e) { }
 	NvStorage.writeFileRecord(outputStream, "ColorDB", 0, true);
     }
     
-    public static String getSkin(){
-       StringBuffer body=new StringBuffer();
+    public static String getSkin(){ //to send current theme
+       StringBuffer body=new StringBuffer(0);
        body.append("xmlSkin\t");
 //#ifdef DETRANSLIT
-//#        body.append(DeTranslit.getInstance().translit(StaticData.getInstance().account.getNickName()));
+//#        body.append(DeTranslit.getInstance().translit(midlet.BombusQD.sd.account.getNickName()));
 //#else
        body.append(StaticData.getInstance().account.getNickName());
 //#endif
         body.append("\r\n");
           int size=colorsContainer.size();        
-            for(int i=0;i<size;i++){ 
-               ColorItem c=(ColorItem)colorsContainer.elementAt(i);
-               body.append(c.name+"\t"+getColorString(c.color)+"\r\n");             
-            } 
+          for(int i=0;i<size;i++) body.append(items[i]+"\t"+getColorString(colorsArray[i])+"\r\n");             
         return body.toString();
     }
     
-    public static void loadSkin(String skinF, int resourceT){
+    public static void loadSkin(String skinF, int resourceT, boolean save){
         skinFile=skinF;
         resourceType=resourceT;
         try {
-            int size=colorsContainer.size();        
-            for(int i=0;i<size;i++){ 
-                ColorItem c=(ColorItem)colorsContainer.elementAt(i);
-                c.color=loadInt(c.name, c.color);
+            int size = colorsContainer.size();        
+            colorsArray = null;
+            colorsArray = new int[size];
+            for(int i=0; i<size; ++i){ 
+                int color = colorsArray[i];
+                colorsArray[i] = loadInt(items[i], color);
             } 
-            saveToStorage();
+            if(save) saveToStorage();
         } catch (Exception e) { }
         skin=null;
         skinFile=null;
@@ -346,8 +294,10 @@ public class ColorTheme {
                     if (b!=null) {
                         String str=new String(b, 0, b.length).toString().trim();
                         skin=new StringLoader().hashtableLoaderFromString(str);
+                        str = null;
                     } else
                         return defaultColor;
+                    b = null;
                     break;
 //#endif
                 case 1: // from jar
@@ -357,23 +307,17 @@ public class ColorTheme {
                     skin=new StringLoader().hashtableLoaderFromString(skinFile);
             }
         }
-        try {
             String value=(String)skin.get(key);
+              if(null == value) return defaultColor;
             return getColorInt(value);
-        } catch (Exception e) {
-            return defaultColor;
-        }
     }
     
     public static int getColorInt(int color, int pos) {
         String ncolor = getColorString(color);
         switch (pos) {
-            case 0:
-                return Integer.parseInt(ncolor.substring(2,4),16);
-            case 1:
-                return Integer.parseInt(ncolor.substring(4,6),16);
-            case 2:
-                return Integer.parseInt(ncolor.substring(6,8),16);
+            case 0: return Integer.parseInt(ncolor.substring(2,4),16);
+            case 1: return Integer.parseInt(ncolor.substring(4,6),16);
+            case 2: return Integer.parseInt(ncolor.substring(6,8),16);
         }
         return -1;
     }
@@ -383,11 +327,10 @@ public class ColorTheme {
     }
     
     public static String getColorString(int color) {
-        StringBuffer ncolor=new StringBuffer();
-        ncolor.append("0x");
-        String col=Integer.toHexString(color);
-        for (int i=0; i<6-col.length(); i++)
-            ncolor.append("0");
+        StringBuffer ncolor = new StringBuffer("0x");
+        String col = Integer.toHexString(color);
+          int size = 6 - col.length();
+          for (int i=0; i<size; i++) ncolor.append('0');
         ncolor.append(col);
         return ncolor.toString();
     }
@@ -404,27 +347,22 @@ public class ColorTheme {
     
 
     public static int getARGB(boolean isBgnd) {//255
-      StringBuffer color=new StringBuffer(10);
-      int ccolor = isBgnd?
-          ColorTheme.getColor(ColorTheme.GRAPHICS_MENU_BGNG_ARGB):ColorTheme.getColor(ColorTheme.TRANSPARENCY_ARGB);
+      int ccolor = getColor( isBgnd? ColorTheme.GRAPHICS_MENU_BGNG_ARGB : ColorTheme.TRANSPARENCY_ARGB);
       int red, green, blue,alpha;
-      alpha = isBgnd?Config.getInstance().gmenu_bgnd:Config.getInstance().argb_bgnd;
-      if(alpha==0){
-         return -1;
-      }
+      alpha = isBgnd ? midlet.BombusQD.cf.gmenu_bgnd : midlet.BombusQD.cf.argb_bgnd;
+      if(alpha==0) return -1;
+      
       long tmp;             
       red = getRed(ccolor);
       green = getGreen(ccolor);
       blue = getBlue(ccolor);
       tmp = (alpha << 24) | (red << 16) | (green << 8) | blue;
-      color=null;
       return (int)tmp;
     }    
     
     public static String ColorToString(int cAlpha,int cRed, int cGreen, int cBlue) {
-        StringBuffer color=new StringBuffer(10);
-        color.append("0x")
-             .append(expandHex(cAlpha))
+        StringBuffer color=new StringBuffer("0x");
+        color.append(expandHex(cAlpha))
              .append(expandHex(cRed))
              .append(expandHex(cGreen))
              .append(expandHex(cBlue));
@@ -432,13 +370,10 @@ public class ColorTheme {
     }    
 
     public static String ColorToString(int cRed, int cGreen, int cBlue) {
-        StringBuffer color=new StringBuffer(8);
-        
-        color.append("0x")
-             .append(expandHex(cRed))
+        StringBuffer color=new StringBuffer("0x");
+        color.append(expandHex(cRed))
              .append(expandHex(cGreen))
              .append(expandHex(cBlue));
-        
         return color.toString();
     }
     

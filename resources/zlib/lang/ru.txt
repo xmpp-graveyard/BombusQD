@@ -715,3 +715,4 @@ vCard: delete ALL	Визитка: удалить ВСЕ
 User Avatar: delete current	Аватар: удалить текущий
 User Avatar: delete from ALL vcards	Аватар: удалить ВСЕ
 Success	Успешно
+Simple Contacts	Простые контакты%Включает отображение контактов только в виде иконки статуса и имени

@@ -80,7 +80,6 @@ public class ColorConfigForm
     private TrackItem popup_bgnd;
     private TrackItem cursor_bgnd;
 
-    Config cf = Config.getInstance();
     private LinkString reset;
 
     /** Creates a new instance of ColorConfigForm */
@@ -105,22 +104,24 @@ public class ColorConfigForm
             if (files[0].size()>0) {
                 Vector skins=new Vector(0);
                 int ind=0;
-                for (int i=0; i<files[0].size(); i++) {
+                int size = files[0].size();
+                SimpleString str;
+                for (int i=0; i<size; i++) {
                     skins.addElement((String)files[1].elementAt(i));
-                    itemsList.addElement(new SimpleString(Integer.toString(i).concat("-").concat((String)files[1].elementAt(i)), true));
-                    if(Config.getInstance().path_skin.indexOf((String)files[1].elementAt(i))>-1){
-                        ind = i;
-                    }
+                    str = new SimpleString(Integer.toString(i).concat("-").concat((String)files[1].elementAt(i)), true);
+                    
+                    itemsList.addElement(str);
+                    if(midlet.BombusQD.cf.path_skin.indexOf((String)files[1].elementAt(i))>-1) ind = i;
                 }
                 skinFiles = new TrackItem(ind, skins.size() - 1,skins);
                 itemsList.addElement(skinFiles);
             }
         } catch (Exception e) {}
         
-       argb_bgnd = new TrackItem(cf.argb_bgnd/10, 25, null);
-       gmenu_bgnd = new TrackItem(cf.gmenu_bgnd/10, 25, null);
-       popup_bgnd = new TrackItem(cf.popup_bgnd/10, 25, null);
-       cursor_bgnd = new TrackItem(cf.cursor_bgnd/10, 25, null);
+       argb_bgnd = new TrackItem(midlet.BombusQD.cf.argb_bgnd/10, 25, null);
+       gmenu_bgnd = new TrackItem(midlet.BombusQD.cf.gmenu_bgnd/10, 25, null);
+       popup_bgnd = new TrackItem(midlet.BombusQD.cf.popup_bgnd/10, 25, null);
+       cursor_bgnd = new TrackItem(midlet.BombusQD.cf.cursor_bgnd/10, 25, null);
         itemsList.addElement(new SimpleString(SR.MS_TRANSPARENT, true));
         itemsList.addElement(new SpacerItem(2));
         itemsList.addElement(new SimpleString(SR.MS_BGND_MIDLET, true));
@@ -139,7 +140,13 @@ public class ColorConfigForm
 
 //#endif
         
-        reset=new LinkString(SR.MS_CLEAR) { public void doAction() { ColorTheme.init(); ColorTheme.saveToStorage(); } };
+        reset=new LinkString(SR.MS_CLEAR) { 
+          public void doAction() {
+            ColorTheme.loadSkin("/themes/default.txt", 1, true);
+            //ColorTheme.init(); 
+            //ColorTheme.saveToStorage(); 
+          } 
+        };
         
             itemsList.addElement(invertColors);
             itemsList.addElement(loadFromFile);            
@@ -154,12 +161,19 @@ public class ColorConfigForm
     }
     
     public void cmdOk() {
-       cf.argb_bgnd = argb_bgnd.getValue()*10;
-       cf.gmenu_bgnd = gmenu_bgnd.getValue()*10;
-       cf.popup_bgnd = popup_bgnd.getValue()*10;
-       cf.cursor_bgnd = cursor_bgnd.getValue()*10;
+       midlet.BombusQD.cf.argb_bgnd = argb_bgnd.getValue()*10;
+       midlet.BombusQD.cf.gmenu_bgnd = gmenu_bgnd.getValue()*10;
+       midlet.BombusQD.cf.popup_bgnd = popup_bgnd.getValue()*10;
+       midlet.BombusQD.cf.cursor_bgnd = cursor_bgnd.getValue()*10;
        //cf.saveToStorage();
        destroyView();
+    }
+    
+    public void destroyView() {
+        ColorTheme.saveToStorage();
+        if(null != files)
+            files = null;
+	display.setCurrent(parentView);
     }
 
 //#if FILE_IO
@@ -179,7 +193,7 @@ public class ColorConfigForm
             FileIO file=FileIO.createConnection(pathSelected+"skin.txt");
             file.fileWrite(ColorTheme.getSkin().getBytes());
         } else {
-            ColorTheme.loadSkin(pathSelected, 0);
+            ColorTheme.loadSkin(pathSelected, 0, true);
         }
     }
 //#endif

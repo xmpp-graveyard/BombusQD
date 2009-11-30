@@ -93,7 +93,7 @@ public class BombusQD extends MIDlet implements Runnable
     public int height = 0;
     public int count = 0;    
     
-    ColorTheme ct=ColorTheme.getInstance();
+    ColorTheme ct;
     
     public SplashScreen s;
     private static BombusQD instance;
@@ -104,6 +104,7 @@ public class BombusQD extends MIDlet implements Runnable
 
     public BombusQD() {
 	instance=this; 
+        ct=ColorTheme.getInstance();
         s=SplashScreen.getInstance(display);
         s.setProgress("Loading", 3);
     }
@@ -133,12 +134,17 @@ public class BombusQD extends MIDlet implements Runnable
 
     
     public void run(){ 
-        long s1 = System.currentTimeMillis();
+        //long s1 = System.currentTimeMillis();
         AccountSelect acc = new AccountSelect(display, null , true,-1);
 
-        s.setProgress(18);
+        //s.setProgress(18);
+        
+        s.getKeys();
+        width=s.width;
+        height=s.height;
+        
         boolean selAccount=((cf.accountIndex<0) /*|| s.keypressed!=0*/ );
-          if (!selAccount && cf.autoLogin){
+          if (!selAccount && cf.autoLogin) {
             sd.roster=new Roster(display);
             Account.loadAccount(cf.autoLogin, cf.accountIndex,-1);
             display.setCurrent(sd.roster);
@@ -147,18 +153,15 @@ public class BombusQD extends MIDlet implements Runnable
             display.setCurrent(acc);
         }
         
-        long s2 = System.currentTimeMillis();
+        //long s2 = System.currentTimeMillis();
 //#ifdef CONSOLE        
 //#         if(cf.debug){      
-//#             debug.add("::start "+(s2-s1)+" msec",10);
+//#             //debug.add("::start "+(s2-s1)+" msec",10);
 //#             debug.add("::startmem free/total "+ 
 //#                     Long.toString(Runtime.getRuntime().freeMemory()>>10) + "/" + 
 //#                     Long.toString(Runtime.getRuntime().totalMemory()>>10), 10) ;
 //#         }
 //#endif        
-        s.getKeys();
-        width=s.width;
-        height=s.height;
         
         try {
            imageArr = new Image[2];

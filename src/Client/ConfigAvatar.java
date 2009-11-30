@@ -90,7 +90,7 @@ public class ConfigAvatar
     public ConfigAvatar(Display display, Displayable pView) {
         super(display, pView, SR.MS_AVATARS);
 
-        cf=Config.getInstance();
+        cf=midlet.BombusQD.cf;
         
         drawCPhoto = new CheckBox(SR.MS_DRAW_CONTACT_VCARD, cf.drawCPhoto);
           itemsList.addElement(drawCPhoto);  

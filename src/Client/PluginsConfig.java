@@ -103,7 +103,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
           animatedSmiles = new CheckBox(SR.MS_ANI_SMILES, cf.animatedSmiles); 
           eventDelivery = new CheckBox(SR.MS_DELIVERY, cf.eventDelivery); 
           networkAnnotation = new CheckBox(SR.MS_CONTACT_ANNOTATIONS, cf.networkAnnotation);
-          metaContacts = new CheckBox(SR.MS_METACONTACTS +"[FROZEN]", cf.metaContacts);
+          //metaContacts = new CheckBox(SR.MS_METACONTACTS +"[FROZEN]", cf.metaContacts);
           executeByNum = new CheckBox(SR.MS_EXECUTE_MENU_BY_NUMKEY, cf.executeByNum); 
           //sendMoodInMsg = new CheckBox(SR.MS_MOOD_IN_MSG, cf.sendMoodInMsg);
           savePos = new CheckBox(SR.MS_SAVE_CURSOR, cf.savePos);
@@ -139,6 +139,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
           oldSE = new CheckBox(SR.MS_KEYS_FOR_OLD_SE, cf.oldSE);
           useClassicChat = new CheckBox(SR.MS_CLCHAT_ON, cf.useClassicChat);
           use_phone_theme = new CheckBox(SR.MS_CLCHAT_BGNG_PHONE, cf.use_phone_theme);
+          simpleContacts = new CheckBox(SR.MS_SIMPLE_CONTACTS_DRAW, cf.simpleContacts);
           
           
           gradientBarLight1=new TrackItem(cf.gradientBarLight1/10, 20, null);
@@ -345,7 +346,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
     private static CheckBox animatedSmiles;
     private static CheckBox eventDelivery;
     private static CheckBox networkAnnotation;
-    private static CheckBox metaContacts;
+    //private static CheckBox metaContacts;
     private static CheckBox executeByNum;
     private static CheckBox sendMoodInMsg;
     private static CheckBox savePos;
@@ -386,6 +387,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
     private static CheckBox oldSE;
     private static CheckBox useClassicChat; 
     private static CheckBox use_phone_theme;
+    private static CheckBox simpleContacts;
     
 
     private static TrackItem gradientBarLight1; 
@@ -457,7 +459,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
         super(display, pView, type);
         this.display=display;
         this.type=type;
-         if(type==SR.MS_contactStr){//
+         if(type==SR.MS_contactStr) {//
           subscr=new DropChoiceBox(display, SR.MS_AUTH_NEW);
           subscr.append(SR.MS_SUBSCR_AUTO);
           subscr.append(SR.MS_SUBSCR_ASK);
@@ -475,6 +477,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
           itemsList.addElement(nil);
           itemsList.addElement(new SpacerItem(2));
           
+             itemsList.addElement(simpleContacts);
              itemsList.addElement(showOfflineContacts);
              itemsList.addElement(selfContact);
              itemsList.addElement(showTransports);
@@ -537,7 +540,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
                    itemsList.addElement(eventComposing);
                    itemsList.addElement(eventDelivery);
                    itemsList.addElement(networkAnnotation);
-                   itemsList.addElement(metaContacts);
+                   //itemsList.addElement(metaContacts);
                    //itemsList.addElement(sendMoodInMsg);
                           
                    itemsList.addElement(new SpacerItem(10));
@@ -705,6 +708,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
     
     public void cmdOk() {
          if(type==SR.MS_contactStr){
+            cf.simpleContacts=simpleContacts.getValue();
             cf.showOfflineContacts=showOfflineContacts.getValue();
             cf.selfContact=selfContact.getValue();
             cf.showTransports=showTransports.getValue();
@@ -767,7 +771,7 @@ public final class PluginsConfig extends DefForm implements MenuListener
             cf.eventComposing=eventComposing.getValue();
             cf.eventDelivery=eventDelivery.getValue();
             cf.networkAnnotation=networkAnnotation.getValue();
-            cf.metaContacts=metaContacts.getValue();
+            //cf.metaContacts=metaContacts.getValue();
             //cf.sendMoodInMsg=sendMoodInMsg.getValue();
             
             cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());

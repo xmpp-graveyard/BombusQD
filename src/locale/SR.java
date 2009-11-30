@@ -259,6 +259,8 @@ public class SR {
     public   static String MS_HISTORY_FS = loadString( "History in FS" );
     public   static String MS_HISTORY_SERVER = loadString( "History on server" ); 
     
+    public   static String MS_SIMPLE_CONTACTS_DRAW = loadString( "Simple Contacts" );     
+    
     //public static String MS_NEW_MENU=loadString("show new menu");
     public static String MS_SOUND_VOLUME=loadString("Sound volume");
     public static String MS_LANGUAGE=loadString("Language");

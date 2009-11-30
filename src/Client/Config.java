@@ -296,14 +296,16 @@ public class Config {
     public boolean showCollapsedPresences=true;
     public boolean networkAnnotation=true;
     public boolean metaContacts=true;
-    public boolean graphicsMenu=true;
+    public boolean graphicsMenu=false;
     public int graphicsMenuPosition=1;
     
     public boolean createMessageByFive = false;
-    public boolean gradientBarLigth = true;
-    public int gradientBarLight1=20;
+    public boolean gradientBarLigth = false;
+    public int gradientBarLight1=65;
     public int gradientBarLight2=50;
     public boolean autoLoadTransports = true;
+    
+    public boolean simpleContacts = false;//fast contact draw
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -510,6 +512,7 @@ public class Config {
             createMessageByFive=inputStream.readBoolean();
             gradientBarLigth=inputStream.readBoolean();
             autoLoadTransports=inputStream.readBoolean();
+            simpleContacts=inputStream.readBoolean();
             
 	    inputStream.close();
             inputStream=null;
@@ -751,6 +754,7 @@ public class Config {
             outputStream.writeBoolean(createMessageByFive);
             outputStream.writeBoolean(gradientBarLigth);
             outputStream.writeBoolean(autoLoadTransports);
+            outputStream.writeBoolean(simpleContacts);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean", 0, true);      

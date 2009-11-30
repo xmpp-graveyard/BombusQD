@@ -130,10 +130,12 @@ public class AutoTaskForm
 //#         }
 //#     }
 //#     
+//#     /*
 //#     public void destroyView(){
 //#         if (display!=null)  
 //#             display.setCurrent(parentView);
 //#     }
+//#      */
 //# 
 //#     public void update(){
 //#         itemsList.removeElement(autoTaskTimeDesc);
