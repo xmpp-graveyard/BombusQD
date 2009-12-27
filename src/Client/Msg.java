@@ -94,7 +94,7 @@ public class Msg {
         return Time.dayLocalString(dateGmt)+Time.timeLocalString(dateGmt); 
     }
 
-    public void setDayTime(String date){
+    public void setDayTime(String date){ //ArchiveTemplates
         this.dateGmt=Time.dateStringToLong(date);
     }
     
@@ -118,6 +118,8 @@ public class Msg {
         return ColorTheme.getColor(ColorTheme.LIST_INK);
     }
     
+
+    //memory leak
     public String toString() {
        if (messageType==Constants.MESSAGE_TYPE_PRESENCE && midlet.BombusQD.cf.timePresence) {
          StringBuffer time = new StringBuffer(0);
@@ -128,6 +130,7 @@ public class Msg {
          return time.toString(); 
        } else return body;
     }
+    
 
     public boolean isPresence() { return messageType==Constants.MESSAGE_TYPE_PRESENCE; }
     

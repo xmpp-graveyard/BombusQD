@@ -71,8 +71,8 @@ public class AppendNick
     Vector nicknames;
     int caretPos; 
     
-    Command cmdOk=new Command(SR.MS_APPEND, Command.OK, 1);
-    Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
+    Command cmdOk;
+    Command cmdCancel;
 
     private TextField tf;
     private TextBox tb;
@@ -81,6 +81,10 @@ public class AppendNick
     public AppendNick(Display display, Displayable pView, Contact to, int caretPos, TextField tf,TextBox tb,boolean classic_chat)
     {
         super(display);
+        
+        cmdOk=new Command(SR.get(SR.MS_APPEND), Command.OK, 1);
+        cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK, 99);
+        
         this.caretPos=caretPos;
         if(midlet.BombusQD.cf.msgEditType>0){
            this.tf=tf;
@@ -88,7 +92,7 @@ public class AppendNick
            this.tb=tb;
         };
         this.classic_chat=classic_chat;
-        setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
+        setMainBarItem(new MainBar(SR.get(SR.MS_SELECT_NICKNAME)));
         nicknames=null;
         nicknames=new Vector(0);
         int size=StaticData.getInstance().roster.getHContacts().size();        
@@ -111,7 +115,7 @@ public class AppendNick
            this.tb=tb;
         };
         
-        setMainBarItem(new MainBar(SR.MS_SELECT_NICKNAME));
+        setMainBarItem(new MainBar(SR.get(SR.MS_SELECT_NICKNAME)));
         
         nicknames=null;
         nicknames=new Vector(0);
@@ -184,7 +188,7 @@ public class AppendNick
 //#endif       
    
      
-    public String touchLeftCommand(){ return SR.MS_SELECT; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_SELECT); }
+    public String touchRightCommand(){ return SR.get(SR.MS_BACK); }
 //#endif
 }

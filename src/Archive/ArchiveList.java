@@ -57,13 +57,14 @@ public class ArchiveList
 //#     public static String plugin = new String("PLUGIN_ARCHIVE");
 //#endif
     
-    Command cmdPaste=new Command(SR.MS_PASTE_BODY, Command.SCREEN, 1);
-    Command cmdJid=new Command(SR.MS_PASTE_JID /*"Paste Jid"*/, Command.SCREEN, 2);
-    Command cmdSubj=new Command(SR.MS_PASTE_SUBJECT, Command.SCREEN, 3);
-    Command cmdEdit=new Command(SR.MS_EDIT, Command.SCREEN, 4);
-    Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
-    Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 9);
-    Command cmdDeleteAll=new Command(SR.MS_DELETE_ALL, Command.SCREEN, 10);
+    Command cmdPaste;
+    Command cmdJid;
+    Command cmdSubj;
+    Command cmdEdit;
+    Command cmdNew;
+    Command cmdDelete;
+    Command cmdDeleteAll;
+    Command cmdExport;
 
     MessageArchive archive;
     
@@ -92,16 +93,28 @@ public class ArchiveList
            this.tb=tb;
         };
         this.cc=cc;
+        
+       cmdPaste = new Command(SR.get(SR.MS_PASTE_BODY), Command.SCREEN, 1);
+       cmdJid = new Command(SR.get(SR.MS_PASTE_JID) /*"Paste Jid"*/, Command.SCREEN, 2);
+       cmdSubj = new Command(SR.get(SR.MS_PASTE_SUBJECT), Command.SCREEN, 3);
+       cmdEdit = new Command(SR.get(SR.MS_EDIT), Command.SCREEN, 4);
+       cmdNew = new Command(SR.get(SR.MS_NEW), Command.SCREEN, 5);
+       cmdDelete = new Command(SR.get(SR.MS_DELETE), Command.SCREEN, 9);
+       cmdDeleteAll = new Command(SR.get(SR.MS_DELETE_ALL), Command.SCREEN, 10);
+       //if(midlet.BombusQD.cf.module_ie){
+          cmdExport = new Command(SR.get(SR.MS_ieStr), Command.SCREEN, 11);           
+       //}
+        
         archive=new MessageArchive(where);
 	MainBar mainbar=new MainBar(
                 (where==1)?
-                SR.MS_ARCHIVE
-                :SR.MS_TEMPLATE
+                SR.get(SR.MS_ARCHIVE)
+                :SR.get(SR.MS_TEMPLATE)
                 );
 	mainbar.addElement(null);
 	mainbar.addRAlign();
 	mainbar.addElement(null);
-	mainbar.addElement(SR.MS_FREE /*"free "*/);
+	mainbar.addElement(SR.get(SR.MS_FREE) /*"free "*/);
         setMainBarItem(mainbar);
         
         commandState();
@@ -116,16 +129,17 @@ public class ArchiveList
         menuCommands.removeAllElements();
 //#endif
 
+        addCommand(cmdExport); cmdExport.setImg(0x60);
         if (getItemCount()>0) {
             if(midlet.BombusQD.cf.msgEditType>0){
              if (tf!=null) {
-                addCommand(cmdPaste); cmdPaste.setImg(0x13);
+                addCommand(cmdPaste); cmdPaste.setImg(0x60);
                 addCommand(cmdJid); cmdJid.setImg(0x60);
                 addCommand(cmdSubj); cmdSubj.setImg(0x81);
               }
             }else{
               if (tb!=null) {
-                addCommand(cmdPaste); cmdPaste.setImg(0x13);
+                addCommand(cmdPaste); cmdPaste.setImg(0x60);
                 addCommand(cmdJid); cmdJid.setImg(0x60);
                 addCommand(cmdSubj); cmdSubj.setImg(0x81);
               }
@@ -172,6 +186,9 @@ public class ArchiveList
         
 	Msg m=getMessage(cursor);
      
+        if(c==cmdExport) {
+            display.setCurrent(new IE.IEMenu(display, this));
+        }
         if (c==cmdNew) { new archiveEdit(display, this, -1, where, this); }
 	if (m==null) return;
         
@@ -198,7 +215,7 @@ public class ArchiveList
     }
     
     private void deleteAllMessages() {
-        new AlertBox(SR.MS_ACTION, SR.MS_DELETE_ALL+"?", display, this) {
+        new AlertBox(SR.get(SR.MS_ACTION), SR.get(SR.MS_DELETE_ALL)+"?", display, this) {
             public void yes() {
                 archive.deleteAll();
                 messages.removeAllElements();
@@ -238,7 +255,7 @@ public class ArchiveList
     
     public void keyClear() { 
         if (getItemCount()>0) {
-            new AlertBox(SR.MS_DELETE, SR.MS_SURE_DELETE, display, this) {
+            new AlertBox(SR.get(SR.MS_DELETE), SR.get(SR.MS_SURE_DELETE), display, this) {
                 public void yes() {
                     deleteMessage();
                 }

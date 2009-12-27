@@ -71,15 +71,19 @@ public class ColorsList
 
     static Vector itemsList;
 
-    public Command cmdOk = new Command(SR.MS_EDIT, Command.OK, 1);
-    Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
+    public Command cmdOk;
+    Command cmdBack;
     
     /**
      * Creates a new instance of ColorsList
      */
     public ColorsList(Display display) {
         super(display);
-        setMainBarItem(new MainBar(SR.MS_COLOR_TUNE));
+        
+        cmdOk = new Command(SR.get(SR.MS_EDIT), Command.OK, 1);
+        cmdBack=new Command(SR.get(SR.MS_BACK),Command.BACK,99);        
+        
+        setMainBarItem(new MainBar(SR.get(SR.MS_COLOR_TUNE)));
         addCommand(cmdBack);
         addCommand(cmdOk);
         setCommandListener(this);
@@ -92,7 +96,7 @@ public class ColorsList
         for (int i=0;i<=size;++i) {
             ColorItem c=(ColorItem)ColorTheme.colorsContainer.elementAt(i);
 //#ifdef COLOR_TUNE
-//#             item = new ColorVisualItem(c.name, NAMES[cnt], colors[i]);
+//#             item = new ColorVisualItem(c.name, ColorTheme.NAMES[cnt], colors[i]);
 //#             itemsList.addElement(item);
 //#endif
             ++cnt;
@@ -116,7 +120,7 @@ public class ColorsList
     }
     
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_SELECT; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_SELECT); }
     
 //#ifdef GRAPHICS_MENU        
 //#     public int showGraphicsMenu() {
@@ -129,7 +133,7 @@ public class ColorsList
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_DISCO), null, menuCommands);
     } 
 //#endif
 
@@ -146,78 +150,4 @@ public class ColorsList
 //#          new ColorSelector(display, cursor);
 //#endif
     }
-
-//#ifdef COLOR_TUNE
-//#     public static final String[] NAMES = {
-//#             SR.MS_BALLOON_INK,
-//#             SR.MS_BALLOON_BGND,
-//#             SR.MS_LIST_BGND,
-//#             SR.MS_LIST_BGND_EVEN,
-//#             SR.MS_LIST_INK,
-//# 
-//#             SR.MS_MSG_SUBJ,
-//#             SR.MS_MSG_HIGHLIGHT,
-//# 
-//#             SR.MS_DISCO_CMD,
-//# 
-//#             SR.MS_BAR_BGND,
-//#             SR.MS_BAR_BGND+" 2",
-//#             SR.MS_BAR_INK,
-//# 
-//#             SR.MS_CONTACT_DEFAULT,
-//#             SR.MS_CONTACT_CHAT,
-//#             SR.MS_CONTACT_AWAY,
-//#             SR.MS_CONTACT_XA,
-//#             SR.MS_CONTACT_DND,
-//#             SR.MS_CONTACT+" J2J",
-//# 
-//#             SR.MS_GROUP_INK,
-//# 
-//#             SR.MS_BLK_INK,
-//#             SR.MS_BLK_BGND,
-//# 
-//#             SR.MS_MESSAGE_IN,
-//#             SR.MS_MESSAGE_OUT,
-//#             SR.MS_MESSAGE_PRESENCE,
-//#             SR.MS_MESSAGE_AUTH,
-//#             SR.MS_MESSAGE_HISTORY,
-//# 
-//#             SR.MS_MESSAGE_IN_S,
-//#             SR.MS_MESSAGE_OUT_S,
-//#             SR.MS_MESSAGE_PRESENCE_S,
-//# 
-//#             SR.MS_PGS_REMAINED,
-//#             SR.MS_PGS_COMPLETE,
-//#             SR.MS_PGS_COMPLETE+" 2",
-//#             SR.MS_PGS_INK,
-//# 
-//#             SR.MS_HEAP_TOTAL,
-//#             SR.MS_HEAP_FREE,
-//# 
-//#             SR.MS_CURSOR_BGND,
-//#             SR.MS_CURSOR_OUTLINE,
-//# 
-//#             SR.MS_SCROLL_BRD,
-//#             SR.MS_SCROLL_BAR,
-//#             SR.MS_SCROLL_BGND,
-//# 
-//#             SR.MS_POPUP_MESSAGE,
-//#             SR.MS_POPUP_MESSAGE_BGND,
-//#             SR.MS_POPUP_SYSTEM,
-//#             SR.MS_POPUP_SYSTEM_BGND,
-//# 
-//#             SR.MS_CONTACT_STATUS,
-//# 
-//#             SR.MS_CONTROL_ITEM,
-//#             
-//#             SR.MS_GRADIENT_BGND_LEFT,
-//#             SR.MS_GRADIENT_BGND_RIGHT,
-//#             
-//#             SR.MS_GRADIENT_CURSOR_1,
-//#             SR.MS_GRADIENT_CURSOR_2,
-//#             SR.MS_TRANSPARENCY_ARGB,
-//#             SR.MS_GRAPHICS_MENU_BGNG_ARGB,
-//#             SR.MS_GRAPHICS_MENU_FONT
-//#         };
-//#endif
 }

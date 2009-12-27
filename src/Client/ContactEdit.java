@@ -107,17 +107,17 @@ public final class ContactEdit
     }    
     
     public ContactEdit(Display display, Displayable pView, Contact c) {
-        super(display, pView, SR.MS_ADD_CONTACT);
+        super(display, pView, SR.get(SR.MS_ADD_CONTACT));
         this.display=display;
         cf=Config.getInstance();
         
-        tJid=new TextInput(display, SR.MS_USER_JID, cf.add_contact_name, null, TextField.ANY);
+        tJid=new TextInput(display, SR.get(SR.MS_USER_JID), cf.add_contact_name, null, TextField.ANY);
         
-        tNick=new TextInput(display, SR.MS_NAME, null, null, TextField.ANY);
+        tNick=new TextInput(display, SR.get(SR.MS_NAME), null, null, TextField.ANY);
         
-        tGroup=new TextInput(display, SR.MS_NEWGROUP, (c==null)?"":c.group.name, null, TextField.ANY);
+        tGroup=new TextInput(display, SR.get(SR.MS_NEWGROUP), (c==null)?"":c.group.name, null, TextField.ANY);
 
-        tTranspList=new DropChoiceBox(display, SR.MS_TRANSPORT);
+        tTranspList=new DropChoiceBox(display, SR.get(SR.MS_TRANSPORT));
         // Transport droplist
         tTranspList.append(sd.account.getServer());
         for (Enumeration e=sd.roster.getHContacts().elements(); e.hasMoreElements(); ){
@@ -126,10 +126,10 @@ public final class ContactEdit
             if (transpJid.isTransport()) 
                 tTranspList.append(transpJid.getBareJid());
         }
-        tTranspList.append(SR.MS_OTHER);
+        tTranspList.append(SR.get(SR.MS_OTHER));
         tTranspList.setSelectedIndex(tTranspList.size()-1);
         
-        tAskSubscrCheckBox=new CheckBox(SR.MS_ASK_SUBSCRIPTION, false);
+        tAskSubscrCheckBox=new CheckBox(SR.get(SR.MS_ASK_SUBSCRIPTION), false);
 
         try {
             String jid;
@@ -167,7 +167,7 @@ public final class ContactEdit
         
         Vector groups=sd.roster.contactList.groups.getRosterGroupNames();
         if (groups!=null) {
-            tGrpList=new DropChoiceBox(display, SR.MS_GROUP);
+            tGrpList=new DropChoiceBox(display, SR.get(SR.MS_GROUP));
             ngroups=groups.size();
             for (int i=0;i<ngroups; i++) {
                 String gn=(String)groups.elementAt(i);
@@ -185,7 +185,7 @@ public final class ContactEdit
         }
         itemsList.addElement(tNick);
 
-        tGrpList.append(SR.MS_NEWGROUP);
+        tGrpList.append(SR.get(SR.MS_NEWGROUP));
         tGrpList.setSelectedIndex(sel);
         itemsList.addElement(tGrpList);
         
@@ -193,10 +193,10 @@ public final class ContactEdit
 
 
         if (newContact) {
-            itemsList.addElement(new SimpleString(SR.MS_SUBSCRIPTION, true));
+            itemsList.addElement(new SimpleString(SR.get(SR.MS_SUBSCRIPTION), true));
             itemsList.addElement(tAskSubscrCheckBox);
             
-            vCardReq=new LinkString(SR.MS_VCARD){ public void doAction() { requestVCard(); }};
+            vCardReq=new LinkString(SR.get(SR.MS_VCARD)){ public void doAction() { requestVCard(); }};
             itemsList.addElement(vCardReq);
         }
         
@@ -224,7 +224,7 @@ public final class ContactEdit
 
             boolean ask=tAskSubscrCheckBox.getValue();
             
-            if (group.equals(SR.MS_GENERAL)) group=null;
+            if (group.equals(SR.get(SR.MS_GENERAL))) group=null;
 
             int at=jid.indexOf('@');
             if (at<0 && tTranspList.getSelectedIndex()!=tTranspList.size()-1) {
@@ -243,7 +243,7 @@ public final class ContactEdit
     
     protected void beginPaint(){
         if (tGrpList!=null) {
-            if (tGrpList.toString()==SR.MS_NEWGROUP) {
+            if (tGrpList.toString()==SR.get(SR.MS_NEWGROUP)) {
                 if (!newGroup) {
                     itemsList.insertElementAt(tGroup, newGroupPos);
                     newGroup=true;
@@ -258,7 +258,7 @@ public final class ContactEdit
     }
     
     private String group(int index) {
-        if (index==0) return SR.MS_GENERAL;
+        if (index==0) return SR.get(SR.MS_GENERAL);
         if (index==tGrpList.size()-1) return "";
         return (String) tGrpList.items.elementAt(index);
     }

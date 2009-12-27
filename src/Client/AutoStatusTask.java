@@ -30,9 +30,17 @@
 //#     private boolean stop;
 //#     private long timeAwayEvent=0;
 //#     private long timeXaEvent=0;
+//#     private Thread thread;
 //#     
-//#     public AutoStatusTask() {
-//#         new Thread(this).start();
+//#     public AutoStatusTask(boolean restart) {
+//#         if(restart){
+//#            destroyTask(); 
+//#            if(thread != null) 
+//#                thread = null;
+//#         }
+//#         thread = new Thread(this);
+//#         thread.setPriority(thread.MIN_PRIORITY);
+//#         thread.start();
 //#     }
 //#     
 //#     public void setTimeEvent(long delay){
@@ -55,6 +63,7 @@
 //# 
 //#     public void run() {
 //#         while (!stop) {
+//#             //System.out.println("wait");
 //#             try {
 //#                 Thread.sleep(5000);
 //#             } catch (InterruptedException ex) { stop=true; }
@@ -66,12 +75,14 @@
 //# 
 //#             if (timeAwayRemained>0 && timeAwayEvent!=0) {
 //#                 timeAwayEvent=0;
-//#                 StaticData.getInstance().roster.setAutoAway();
+//#                 //System.out.println("  ..setAutoAway");
+//#                 midlet.BombusQD.sd.roster.setAutoAway();
 //#             }
 //# 
 //#             if (timeXaRemained>0 && timeAwayEvent==0) {
 //#                 timeXaEvent=0;
-//#                 StaticData.getInstance().roster.setAutoXa();
+//#                 //System.out.println("  ..setAutoXa");
+//#                 midlet.BombusQD.sd.roster.setAutoXa();
 //#             }
 //#         }
 //#     }

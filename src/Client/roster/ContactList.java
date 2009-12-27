@@ -92,9 +92,9 @@ public final class ContactList {
         Contact selfContact = findContact(contacts, selfJid, false);
         if (null == selfContact) {
             selfContact = new Contact(midlet.BombusQD.sd.account.getNick(), selfJid.getBareJid(), Presence.PRESENCE_OFFLINE, null);
-            Group group = getGroup(SR.MS_SELF_CONTACT);
+            Group group = getGroup(SR.get(SR.MS_SELF_CONTACT));
             if (null == group) {
-                group = new Group(SR.MS_SELF_CONTACT, Groups.TYPE_COMMON);
+                group = new Group(SR.get(SR.MS_SELF_CONTACT), Groups.TYPE_COMMON);
                 addGroup(group);
             }
             addContact(selfContact);

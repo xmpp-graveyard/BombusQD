@@ -50,14 +50,18 @@ public class YesNoAlert implements CommandListener{
     private YesNoListener listener;
 
     Form f;
-    Command cmdYes=new Command(SR.MS_YES, Command.OK, 1);
-    Command cmdNo=new Command(SR.MS_NO, Command.BACK, 99);
+    Command cmdYes;
+    Command cmdNo;
     
     /**
      * Creates a new instance of YesNoAlert
      */
     public YesNoAlert(Display display, String title, String alertText, YesNoListener listener) {
         f=new Form(title);
+        
+        cmdYes=new Command(SR.get(SR.MS_YES), Command.OK, 1);
+        cmdNo=new Command(SR.get(SR.MS_NO), Command.BACK, 99);
+    
         f.addCommand(cmdYes);
         f.addCommand(cmdNo);
         f.setCommandListener(this);

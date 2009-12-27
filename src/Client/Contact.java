@@ -613,7 +613,7 @@ public class Contact extends IconTextElement{
         
         int imgH=(h-ilHeight)/2;
         
-        if(midlet.BombusQD.cf.drawCPhoto==false){
+        if(midlet.BombusQD.cf.module_avatars==false){
           img_vcard=null;  
         }
         if (imageIndex>-1) {

@@ -56,16 +56,16 @@ public class AffiliationModify
     
     /** Creates a new instance of AffiliationModify */
     public AffiliationModify(Display display, Displayable pView, String room, String jid, String affiliation, String reason) {
-        super(display, pView, SR.MS_AFFILIATION);
+        super(display, pView, SR.get(SR.MS_AFFILIATION));
         
         this.display=display;
 
         this.room=room;
 
-        jidItem=new TextInput(display, SR.MS_JID, jid, null, TextField.ANY);
+        jidItem=new TextInput(display, SR.get(SR.MS_JID), jid, null, TextField.ANY);
         itemsList.addElement(jidItem);
 
-        affiliationItem=new DropChoiceBox(display, SR.MS_SET_AFFILIATION);
+        affiliationItem=new DropChoiceBox(display, SR.get(SR.MS_SET_AFFILIATION));
         for (short index=0; index<=AffiliationItem.AFFILIATION_OUTCAST; index++) {
             String name=AffiliationItem.getAffiliationName(index);
             affiliationItem.append(name);
@@ -74,7 +74,7 @@ public class AffiliationModify
         affiliationItem.setSelectedIndex(recentAffiliation);
         itemsList.addElement(affiliationItem);
 
-	reasonItem=new TextInput(display, SR.MS_REASON, reason, "reason", TextField.ANY);
+	reasonItem=new TextInput(display, SR.get(SR.MS_REASON), reason, "reason", TextField.ANY);
 	itemsList.addElement(reasonItem);
 
         attachDisplay(display);
@@ -109,12 +109,12 @@ public class AffiliationModify
     public void cmdOk() {
         if (jidItem.getValue().equals("")) return;
         if (recentAffiliation==AffiliationItem.AFFILIATION_OWNER) {
-            StringBuffer warn=new StringBuffer(SR.MS_ARE_YOU_SURE_WANT_TO_DISCARD /*"Are You sure want to discard "*/)
+            StringBuffer warn=new StringBuffer(SR.get(SR.MS_ARE_YOU_SURE_WANT_TO_DISCARD) /*"Are You sure want to discard "*/)
             .append(jidItem.getValue())
-            .append(SR.MS_FROM_OWNER_TO/*" from OWNER to "*/)
+            .append(SR.get(SR.MS_FROM_OWNER_TO)/*" from OWNER to "*/)
             .append(AffiliationItem.getAffiliationName((short)affiliationItem.getSelectedIndex()));
             
-            new AlertBox(SR.MS_MODIFY_AFFILIATION, warn.toString(), display, null) {
+            new AlertBox(SR.get(SR.MS_MODIFY_AFFILIATION), warn.toString(), display, null) {
                     public void yes() {
                         modify();
                         destroyView();

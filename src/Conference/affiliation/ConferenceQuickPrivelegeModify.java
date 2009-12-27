@@ -67,9 +67,8 @@ public class ConferenceQuickPrivelegeModify
     private TextInput reason;
     private MucContact victim;
     
-//#ifndef MENU
-    private Command cmdNoReason=new Command(SR.MS_NO_REASON, Command.SCREEN, 2);
-//#endif
+    private Command cmdNoReason;
+
     private int action;
 
     private String myNick;
@@ -80,26 +79,28 @@ public class ConferenceQuickPrivelegeModify
     public ConferenceQuickPrivelegeModify(Display display, Displayable pView, MucContact victim, int action, String myNick) {
         super(display, pView, null);
         
+        cmdNoReason=new Command(SR.get(SR.MS_NO_REASON), Command.SCREEN, 2);
+        
         this.display=display;
         
         this.victim=victim;
         this.action=action;
         this.myNick=myNick;
         
-	String okName = SR.MS_OK;
+	String okName = SR.get(SR.MS_OK);
         
         switch (action) {
             case KICK: 
-		okName=SR.MS_KICK;
+		okName=SR.get(SR.MS_KICK);
                 break;
             case OUTCAST:
-		okName=SR.MS_BAN;
+		okName=SR.get(SR.MS_BAN);
                 break;
             case VISITOR:
-		okName=SR.MS_OK;
+		okName=SR.get(SR.MS_OK);
                 break;
             case PARTICIPANT:
-		okName=SR.MS_OK;
+		okName=SR.get(SR.MS_OK);
                 break;                
             default:
                 setMucMod();
@@ -114,10 +115,10 @@ public class ConferenceQuickPrivelegeModify
             .append(victim.realJid)
             .append(")");
         }
-        itemsList.addElement(new MultiLine(SR.MS_USER, user.toString(), super.superWidth));
+        itemsList.addElement(new MultiLine(SR.get(SR.MS_USER), user.toString(), super.superWidth));
 
         
-        reason=new TextInput(display, SR.MS_REASON, "", "reason", TextField.ANY);
+        reason=new TextInput(display, SR.get(SR.MS_REASON), "", "reason", TextField.ANY);
         itemsList.addElement(reason);
         
 //#ifndef MENU
@@ -146,8 +147,8 @@ public class ConferenceQuickPrivelegeModify
         super.commandAction(c, d);
     }
 //#else
-//#     public String getLeftCommand() { return SR.MS_OK; }
-//#     public String getCenterCommand() { return SR.MS_NO_REASON; }
+//#     public String getLeftCommand() { return SR.get(SR.MS_OK); }
+//#     public String getCenterCommand() { return SR.get(SR.MS_NO_REASON); }
 //#     public void centerCommand() { reason.setValue(""); cmdOk(); }
 //#endif
     private void setMucMod(){

@@ -71,16 +71,20 @@ public class AlertProfile extends VirtualList implements
     
     /** Creates a new instance of Profile */
     
-    private Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
-    private Command cmdDef=new Command(SR.MS_SETDEFAULT,Command.OK,2);
-    private Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
+    private Command cmdOk;
+    private Command cmdDef;
+    private Command cmdCancel;
     /** Creates a new instance of SelectStatus */
     public AlertProfile(Display d, Displayable pView) {
         super();
         
-        cf=Config.getInstance();
+        cf=midlet.BombusQD.cf;
         
-        setMainBarItem(new MainBar(SR.MS_ALERT_PROFILE));
+        cmdOk=new Command(SR.get(SR.MS_SELECT),Command.OK,1);
+        cmdDef=new Command(SR.get(SR.MS_SETDEFAULT),Command.OK,2);
+        cmdCancel=new Command(SR.get(SR.MS_BACK),Command.BACK,99);
+        
+        setMainBarItem(new MainBar(SR.get(SR.MS_ALERT_PROFILE)));
         
         commandState();
 
@@ -116,7 +120,7 @@ public class AlertProfile extends VirtualList implements
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_STATUS), null, menuCommands);
    }   
 //#endif       
 //#endif
@@ -137,12 +141,12 @@ public class AlertProfile extends VirtualList implements
         public String toString(){ 
             StringBuffer s=new StringBuffer();
             switch (index) {
-                case ALL: s.append(SR.MS_ALERT_PROFILE_ALLSIGNALS); break;
-                case VIBRA: s.append(SR.MS_ALERT_PROFILE_VIBRA); break;
-                case SOUND: s.append(SR.MS_SOUND); break;
-                case NONE: s.append(SR.MS_ALERT_PROFILE_NOSIGNALS); break;
+                case ALL: s.append(SR.get(SR.MS_ALERT_PROFILE_ALLSIGNALS)); break;
+                case VIBRA: s.append(SR.get(SR.MS_ALERT_PROFILE_VIBRA)); break;
+                case SOUND: s.append(SR.get(SR.MS_SOUND)); break;
+                case NONE: s.append(SR.get(SR.MS_ALERT_PROFILE_NOSIGNALS)); break;
             }
-            if (index==defp) s.append(SR.MS_IS_DEFAULT);
+            if (index==defp) s.append(SR.get(SR.MS_IS_DEFAULT));
             return s.toString();
         }
     }

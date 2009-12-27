@@ -63,15 +63,15 @@ public class ConfigAvatar
         extends DefForm
         implements BrowserListener {
 
-    Command cmdOk=new Command(SR.MS_OK, Command.SCREEN, 2);
-    Command cmdPath=new Command(SR.AVATAR_FOLDER, Command.SCREEN, 1);
-    Command cmdOkey=new Command(SR.MS_OK, Command.SCREEN, 3);
+    Command cmdOk;
+    Command cmdPath;
+    Command cmdOkey;
     
     private TextInput avatarFolder;
     
     private NumberInput maxAvatarHeight;  
     private NumberInput maxAvatarWidth;
-    private CheckBox drawCPhoto;    
+    //private CheckBox drawCPhoto;    
     private CheckBox auto_queryPhoto;
     private CheckBox autoload_FSPhoto;
     private CheckBox autoSaveVcard;
@@ -88,40 +88,44 @@ public class ConfigAvatar
 
     /** Creates a new instance of ConfigAvatar */
     public ConfigAvatar(Display display, Displayable pView) {
-        super(display, pView, SR.MS_AVATARS);
+        super(display, pView, SR.get(SR.MS_AVATARS));
 
+        cmdOk=new Command(SR.get(SR.MS_OK), Command.SCREEN, 2);
+        cmdPath=new Command(SR.get(SR.AVATAR_FOLDER), Command.SCREEN, 1);
+        cmdOkey=new Command(SR.get(SR.MS_OK), Command.SCREEN, 3);
+        
         cf=midlet.BombusQD.cf;
         
-        drawCPhoto = new CheckBox(SR.MS_DRAW_CONTACT_VCARD, cf.drawCPhoto);
-          itemsList.addElement(drawCPhoto);  
+        //drawCPhoto = new CheckBox(SR.get(SR.MS_DRAW_CONTACT_VCARD), cf.drawCPhoto);
+        //itemsList.addElement(drawCPhoto);  
         
-        auto_queryPhoto = new CheckBox(SR.MS_AUTOLOAD_VCARD, cf.auto_queryPhoto);
-        autoload_FSPhoto = new CheckBox(SR.MS_AUTOLOAD_VCARD_FROMFS, cf.autoload_FSPhoto);          
+        auto_queryPhoto = new CheckBox(SR.get(SR.MS_AUTOLOAD_VCARD), cf.auto_queryPhoto);
+        autoload_FSPhoto = new CheckBox(SR.get(SR.MS_AUTOLOAD_VCARD_FROMFS), cf.autoload_FSPhoto);          
         //if(cf.difficulty_level>=1){
           itemsList.addElement(auto_queryPhoto);
           itemsList.addElement(autoload_FSPhoto);
         //}
-        showAvatarRect = new CheckBox(SR.AVATAR_DRAW_RECT, cf.showAvatarRect);
+        showAvatarRect = new CheckBox(SR.get(SR.AVATAR_DRAW_RECT), cf.showAvatarRect);
         itemsList.addElement(showAvatarRect);
 
         itemsList.addElement(new SpacerItem(5));
-        maxAvatarHeight=new NumberInput(display, SR.MS_MAX_AVATAR_HEIGHT, Integer.toString(cf.maxAvatarHeight), 25, 100);
+        maxAvatarHeight=new NumberInput(display, SR.get(SR.MS_MAX_AVATAR_HEIGHT), Integer.toString(cf.maxAvatarHeight), 25, 100);
         itemsList.addElement(maxAvatarHeight); 
         
         itemsList.addElement(new SpacerItem(5));
-        maxAvatarWidth=new NumberInput(display, SR.MS_MAX_AVATAR_WIDTH, Integer.toString(cf.maxAvatarWidth), 25, 100);
+        maxAvatarWidth=new NumberInput(display, SR.get(SR.MS_MAX_AVATAR_WIDTH), Integer.toString(cf.maxAvatarWidth), 25, 100);
         itemsList.addElement(maxAvatarWidth);    
         
      //  if(cf.difficulty_level>=1){
         itemsList.addElement(new SpacerItem(10));        
-        autoSaveVcard = new CheckBox(SR.AVATAR_AUTOSAVE_FS, cf.autoSaveVcard);
+        autoSaveVcard = new CheckBox(SR.get(SR.AVATAR_AUTOSAVE_FS), cf.autoSaveVcard);
         itemsList.addElement(autoSaveVcard);
-        avatarFolder = new TextInput(display, SR.AVATAR_FOLDER, cf.msgAvatarPath, null, TextField.ANY); 
+        avatarFolder = new TextInput(display, SR.get(SR.AVATAR_FOLDER), cf.msgAvatarPath, null, TextField.ANY); 
         itemsList.addElement(avatarFolder);
         
 
         itemsList.addElement(new SpacerItem(10));
-        applyFromFS=new LinkString(SR.AVATAR_ROSTER_LOADFS) { public void doAction() { 
+        applyFromFS=new LinkString(SR.get(SR.AVATAR_ROSTER_LOADFS)) { public void doAction() { 
                     long s1=System.currentTimeMillis();
                     long m1=Runtime.getRuntime().freeMemory()>>10;
                     int loadingAvatars = applyAvatars(true);
@@ -138,7 +142,7 @@ public class ConfigAvatar
         }};
         itemsList.addElement(new SpacerItem(5));
         
-        applyMucFromFS=new LinkString(SR.AVATAR_MUC_LOADFS) { public void doAction() { 
+        applyMucFromFS=new LinkString(SR.get(SR.AVATAR_MUC_LOADFS)) { public void doAction() { 
                     long s1=System.currentTimeMillis();
                     long m1=Runtime.getRuntime().freeMemory()>>10;
                     int loadingAvatars = applyAvatars(false);
@@ -205,7 +209,7 @@ public class ConfigAvatar
     }
 
     public void cmdOk() {
-        cf.drawCPhoto=drawCPhoto.getValue();
+        //cf.drawCPhoto=drawCPhoto.getValue();
         //if(cf.difficulty_level>=1){
             cf.auto_queryPhoto=auto_queryPhoto.getValue();
             cf.autoload_FSPhoto=autoload_FSPhoto.getValue();
@@ -362,7 +366,7 @@ public class ConfigAvatar
         
     
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_MENU); }
     
 //#ifdef GRAPHICS_MENU  
 //#     public void touchLeftPressed(){
@@ -383,7 +387,7 @@ public class ConfigAvatar
     
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_HISTORY_OPTIONS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_HISTORY_OPTIONS), null, menuCommands);
    }  
 //#endif      
     

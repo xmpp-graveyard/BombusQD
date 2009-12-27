@@ -78,12 +78,11 @@ public class DiscoSearchForm
         , MIDPTextBox.TextBoxNotify
     { 
     
-    private Command cmdSearch = new Command(SR.MS_SEARCH, Command.OK, 1);
-    private Command cmdOk = new Command(SR.MS_OK, Command.OK, 2);
-    
-    private Command cmdAddServer = new Command(SR.MS_ADD, Command.SCREEN, 2);
-    private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 3);
-    private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
+    private Command cmdSearch;
+    private Command cmdOk;
+    private Command cmdAddServer;
+    private Command cmdDel;
+    private Command cmdCancel;
     
     Vector servers = new Vector(0);
     Vector list = new Vector(0);
@@ -98,6 +97,13 @@ public class DiscoSearchForm
         this.display=display;
         this.list=list;
         this.type=type;
+        
+        cmdSearch = new Command(SR.get(SR.MS_SEARCH), Command.OK, 1);
+        cmdOk = new Command(SR.get(SR.MS_OK), Command.OK, 2);
+        cmdAddServer = new Command(SR.get(SR.MS_ADD), Command.SCREEN, 2);
+        cmdDel=new Command (SR.get(SR.MS_DELETE), Command.SCREEN, 3);
+        cmdCancel=new Command (SR.get(SR.MS_CANCEL), Command.BACK, 99);
+    
         if(list==null){
           loadRecentList();
           if (getItemCount()<1) loadDefaults();
@@ -133,11 +139,11 @@ public class DiscoSearchForm
     private void updateMainBar() {
         String str="";
           switch(type){
-              case 0: str = SR.MS_TRANSPORTS.concat(" ICQ"); break;
-              case 1: str = SR.MS_TRANSPORTS.concat(" Mrim"); break;
-              case 2: str = SR.MS_TRANSPORTS.concat(" Irc"); break;
+              case 0: str = SR.get(SR.MS_TRANSPORTS).concat(" ICQ"); break;
+              case 1: str = SR.get(SR.MS_TRANSPORTS).concat(" Mrim"); break;
+              case 2: str = SR.get(SR.MS_TRANSPORTS).concat(" Irc"); break;
           }
-        setMainBarItem(new MainBar(2, null, ((list!=null)?str:SR.MS_USERS_SEARCH)
+        setMainBarItem(new MainBar(2, null, ((list!=null)?str:SR.get(SR.MS_USERS_SEARCH))
                 +" ("+getItemCount()+") ", false));
     }
     
@@ -161,7 +167,7 @@ public class DiscoSearchForm
 
 
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_MENU); }
     
 //#ifdef GRAPHICS_MENU        
 //#    public void cmdOk(){ showGraphicsMenu(); }
@@ -176,7 +182,7 @@ public class DiscoSearchForm
         if (c==cmdCancel) {
             exitSearchForm();
         } else if (c==cmdAddServer) {
-            new MIDPTextBox(display, SR.MS_SERVER, null, this, TextField.ANY,50);
+            new MIDPTextBox(display, SR.get(SR.MS_SERVER), null, this, TextField.ANY,50);
 	} else if (c==cmdDel) {
             delServer();
         }
@@ -254,7 +260,7 @@ public class DiscoSearchForm
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_BOOKMARKS, null, menuCommands);
     }   
 //#endif      
 

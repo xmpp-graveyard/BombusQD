@@ -78,10 +78,10 @@ public class MucContact extends Contact {
     
     public static String getAffiliationLocale(int aff) {
         switch (aff) {
-            case Constants.AFFILIATION_NONE: return SR.MS_AFFILIATION_NONE;
-            case Constants.AFFILIATION_MEMBER: return SR.MS_AFFILIATION_MEMBER;
-            case Constants.AFFILIATION_ADMIN: return SR.MS_AFFILIATION_ADMIN;
-            case Constants.AFFILIATION_OWNER: return SR.MS_AFFILIATION_OWNER;
+            case Constants.AFFILIATION_NONE: return SR.get(SR.MS_AFFILIATION_NONE);
+            case Constants.AFFILIATION_MEMBER: return SR.get(SR.MS_AFFILIATION_MEMBER);
+            case Constants.AFFILIATION_ADMIN: return SR.get(SR.MS_AFFILIATION_ADMIN);
+            case Constants.AFFILIATION_OWNER: return SR.get(SR.MS_AFFILIATION_OWNER);
         }
         return null;
     }
@@ -158,13 +158,13 @@ public class MucContact extends Contact {
         if (statusCode==201) {
             //todo: fix this nasty hack, it will not work if multiple status codes are nested in presence)
             b.setLength(0);
-            b.append(SR.MS_NEW_ROOM_CREATED);
+            b.append(SR.get(SR.MS_NEW_ROOM_CREATED));
         } else if (presenceType==Presence.PRESENCE_OFFLINE) {
             key0=3;
             String reason=item.getChildBlockText("reason");
             switch (statusCode) {
                 case 303:
-                    b.append(SR.MS_IS_NOW_KNOWN_AS);
+                    b.append(SR.get(SR.MS_IS_NOW_KNOWN_AS));
                     String chNick=item.getAttribute("nick");
                     b.append(chNick.trim());
                     String newJid=from.substring(0, from.indexOf('/')+1)+chNick;
@@ -176,10 +176,10 @@ public class MucContact extends Contact {
                 case 301: //ban
                     presenceType=Presence.PRESENCE_ERROR;
                 case 307: //kick
-                    b.append((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED );
+                    b.append((statusCode==301)? SR.get(SR.MS_WAS_BANNED) : SR.get(SR.MS_WAS_KICKED) );
 //#ifdef POPUPS
                     if (((ConferenceGroup)group).selfContact == this ) {
-                        midlet.BombusQD.sd.roster.setWobble(3, null, ((statusCode==301)? SR.MS_WAS_BANNED : SR.MS_WAS_KICKED)+((!reason.equals(""))?"\n"+reason:""));
+                        midlet.BombusQD.sd.roster.setWobble(3, null, ((statusCode==301)? SR.get(SR.MS_WAS_BANNED) : SR.get(SR.MS_WAS_KICKED))+((!reason.equals(""))?"\n"+reason:""));
                     }
 //#endif
                     if (!reason.equals(""))
@@ -189,14 +189,14 @@ public class MucContact extends Contact {
                     break;
                 case 321:
                 case 322:
-                    b.append((statusCode==321)?SR.MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM:SR.MS_HAS_BEEN_KICKED_BECAUSE_ROOM_BECAME_MEMBERS_ONLY);
+                    b.append((statusCode==321)?SR.get(SR.MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM):SR.get(SR.MS_HAS_BEEN_KICKED_BECAUSE_ROOM_BECAME_MEMBERS_ONLY));
                     testMeOffline(true);
                     break;
                 default:
                     if (tempRealJid!=null)
                         b.append(" (").append(tempRealJid).append(')');
 
-                    b.append(SR.MS_HAS_LEFT_CHANNEL);
+                    b.append(SR.get(SR.MS_HAS_LEFT_CHANNEL));
                     
                     if (statusText.length()>0)
                         b.append(" (").append(statusText).append(')');
@@ -210,19 +210,19 @@ public class MucContact extends Contact {
                     b.append(" (").append(tempRealJid).append(')');
                 }
                 
-                b.append(SR.MS_HAS_JOINED_THE_CHANNEL_AS);
+                b.append(SR.get(SR.MS_HAS_JOINED_THE_CHANNEL_AS));
 
                 if (affiliationCode!=Constants.AFFILIATION_MEMBER) b.append(getRoleLocale(roleCode));
 
                  if (!affiliation.equals("none")) {
-                    if (roleCode!=Constants.ROLE_PARTICIPANT) b.append(SR.MS_AND);
+                    if (roleCode!=Constants.ROLE_PARTICIPANT) b.append(SR.get(SR.MS_AND));
   
                     b.append(getAffiliationLocale(affiliationCode));
                 }
                 
                 if (statusText.length()>0) b.append(" (").append(statusText).append(')');
             } else {
-                b.append(SR.MS_IS_NOW);
+                b.append(SR.get(SR.MS_IS_NOW));
                 
                 if (roleChanged) b.append(getRoleLocale(roleCode));
                 
@@ -233,7 +233,7 @@ public class MucContact extends Contact {
                  }
                 
                  if (affiliationChanged) {
-                    if (roleChanged) b.append(SR.MS_AND);
+                    if (roleChanged) b.append(SR.get(SR.MS_AND));
                     b.append(getAffiliationLocale(affiliationCode));
                 }
                 if (!roleChanged && !affiliationChanged) b.append(presence.getText());
@@ -253,9 +253,9 @@ public class MucContact extends Contact {
 
     public static String getRoleLocale(int rol) {
         switch (rol) {
-            case Constants.ROLE_VISITOR: return SR.MS_ROLE_VISITOR;
-            case Constants.ROLE_PARTICIPANT: return SR.MS_ROLE_PARTICIPANT;
-            case Constants.ROLE_MODERATOR: return SR.MS_ROLE_MODERATOR;
+            case Constants.ROLE_VISITOR: return SR.get(SR.MS_ROLE_VISITOR);
+            case Constants.ROLE_PARTICIPANT: return SR.get(SR.MS_ROLE_PARTICIPANT);
+            case Constants.ROLE_MODERATOR: return SR.get(SR.MS_ROLE_MODERATOR);
         }
         return null;
     }

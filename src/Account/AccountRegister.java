@@ -51,16 +51,20 @@ public class AccountRegister
     private Account raccount;
     private JabberStream theStream ;
     private SplashScreen splash;
-    private Command cmdOK=new Command(SR.MS_OK,Command.OK, 1);
-    private Command cmdCancel=new Command(SR.MS_BACK,Command.BACK, 2);
+    private Command cmdOK;
+    private Command cmdCancel;
     
     /** Creates a new instance of AccountRegister */
     public AccountRegister(Account account, Display display, Displayable pView) {
         this.display=display;
         this.parentView=pView;
         raccount=account;
-        splash=SplashScreen.getInstance(display);
-        splash.setProgress(SR.MS_STARTUP,5);
+        
+        cmdOK=new Command(SR.get(SR.MS_OK),Command.OK, 1);
+        cmdCancel=new Command(SR.get(SR.MS_BACK),Command.BACK, 2);
+        
+        splash=midlet.BombusQD.getInstance().s;
+        splash.setProgress(SR.get(SR.MS_STARTUP),5);
         display.setCurrent(splash);
         splash.addCommand(cmdCancel);
         splash.setCommandListener(this);
@@ -68,7 +72,7 @@ public class AccountRegister
     }
     public void run() {
         try {
-            splash.setProgress(SR.MS_CONNECT_TO_+raccount.getServer(),30);
+            splash.setProgress(SR.get(SR.MS_CONNECT_TO_)+raccount.getServer(),30);
             Thread.sleep(500);
             theStream= raccount.openJabberStream();
             theStream.setJabberListener( this );
@@ -89,7 +93,7 @@ public class AccountRegister
     }
 
     public void beginConversation() {
-        splash.setProgress(SR.MS_REGISTERING,60);
+        splash.setProgress(SR.get(SR.MS_REGISTERING),60);
         Iq iqreg=new Iq(null, Iq.TYPE_SET, "regac" );
         JabberDataBlock qB = iqreg.addChildNs("query", "jabber:iq:register" );
         qB.addChild("username", raccount.getUserName());
@@ -104,12 +108,12 @@ public class AccountRegister
         if (data instanceof Iq) {
             int pgs=100;
             String type=data.getTypeAttribute();
-            String mainbar=SR.MS_DONE; 
+            String mainbar=SR.get(SR.MS_DONE); 
             if (type.equals("result")) {
                 splash.removeCommand(cmdCancel);
             } else {
                 splash.removeCommand(cmdCancel);
-                mainbar=SR.MS_ERROR_ + XmppError.findInStanza(data).toString();
+                mainbar=SR.get(SR.MS_ERROR_) + XmppError.findInStanza(data).toString();
             }
             splash.setProgress(mainbar,pgs);
             splash.setExit(display, parentView);

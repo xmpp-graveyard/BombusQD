@@ -33,7 +33,6 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
-import ui.SplashScreen;
 import ui.VirtualList;
 import ui.controls.AlertBox;
 import ui.controls.form.CheckBox;
@@ -119,21 +118,23 @@ public class AccountForm
 	if (newaccount) account=new Account();
 	this.account=account;
 	
-	String mainbar = (newaccount)?SR.MS_NEW_ACCOUNT:(account.toString());
+	String mainbar = (newaccount)?SR.get(SR.MS_NEW_ACCOUNT):(account.toString());
         if(register){
-          getMainBarItem().setElementAt(SR.MS_REGISTER, 0);
+          getMainBarItem().setElementAt(SR.get(SR.MS_REGISTER), 0);
         }else{
           getMainBarItem().setElementAt(mainbar, 0);
         }
 
-        userbox = new TextInput(display, SR.MS_USERNAME, account.getUserName(), null, TextField.ANY);
+        userbox = new TextInput(display, SR.get(SR.MS_USERNAME), account.getUserName(), null, TextField.ANY);
         itemsList.addElement(userbox);//1
         String server=register?serverReg:"";
         String password=account.getPassword();
+        int port_box=5222;
         if(!register){
           switch(type_profile){
             case -1:   
                 server=account.getServer();
+                port_box = account.getPort();
                 break;            
             case JABBER_PROFILE:  
                 server=generate(0);
@@ -144,6 +145,7 @@ public class AccountForm
             case GTALK_HTTPS_PROFILE:
             case GTALK_SSL_PROFILE:   
                 server="gmail.com";
+                port_box = 5223;
                 break;
             case LJ_PROFILE:     
                 server="livejournal.com";
@@ -155,29 +157,41 @@ public class AccountForm
         }else{
            password=generate(1);
         }
-        servbox = new TextInput(display, SR.MS_SERVER, server, null, TextField.ANY);
+        servbox = new TextInput(display, SR.get(SR.MS_SERVER), server, null, TextField.ANY);
         itemsList.addElement(servbox);   
         server=null;
         
         if(!register){
-          link_genServer = new LinkString(SR.MS_GENERATE+" "+SR.MS_SERVER) { public void doAction() { 
+          link_genServer = new LinkString(SR.get(SR.MS_GENERATE)+" "+SR.get(SR.MS_SERVER)) { public void doAction() { 
            servbox.setValue(generate(0));
           } };
           itemsList.addElement(link_genServer);
           itemsList.addElement(new SpacerItem(5));
         }
         
-    	emailbox = new TextInput(display,"E-mail:",account.getEmail(),null, TextField.EMAILADDR);
-        //if(Config.getInstance().difficulty_level>=1){
-          itemsList.addElement(emailbox);
-        //}
-
-        passbox = new TextInput(display, SR.MS_PASSWORD, password,null,TextField.ANY);     
+        passbox = new TextInput(display, SR.get(SR.MS_PASSWORD), password,null,TextField.ANY);     
         itemsList.addElement(passbox);
         
+        link_genPass = new LinkString(SR.get(SR.MS_GENERATE)+" "+SR.get(SR.MS_PASSWORD)) { public void doAction() { 
+         passbox.setValue(generate(1));
+        } };
+        itemsList.addElement(link_genPass); 
+        itemsList.addElement(new SpacerItem(5));
+        
+        resourcebox = new TextInput(display, SR.get(SR.MS_RESOURCE), account.getResource(), null, TextField.ANY);
+        itemsList.addElement(resourcebox);
+        
+        portbox = new NumberInput(display, SR.get(SR.MS_PORT), Integer.toString(port_box), 0, 65535);
+        itemsList.addElement(portbox);
+        
+    	emailbox = new TextInput(display,"E-mail:",account.getEmail(),null, TextField.EMAILADDR);
+        if(midlet.BombusQD.cf.userAppLevel>=1) {
+          itemsList.addElement(emailbox);
+        }
+
         if(midlet.BombusQD.clipboard.getClipBoard()!=null){
             if(midlet.BombusQD.clipboard.getClipBoard().startsWith("!")){
-              insertpass = new LinkString(SR.MS_INSERT_NEW_PASSWORD) { public void doAction() { 
+              insertpass = new LinkString(SR.get(SR.MS_INSERT_NEW_PASSWORD)) { public void doAction() { 
                 passbox.setValue(midlet.BombusQD.clipboard.getClipBoard().substring(1));
                 itemsList.removeElement(insertpass);
                 midlet.BombusQD.clipboard.setClipBoard("");
@@ -187,16 +201,10 @@ public class AccountForm
             }
         }
 
-        link_genPass = new LinkString(SR.MS_GENERATE+" "+SR.MS_PASSWORD) { public void doAction() { 
-         passbox.setValue(generate(1));
-        } };
-        itemsList.addElement(link_genPass); 
-        itemsList.addElement(new SpacerItem(5));
-        
-        nickbox = new TextInput(display, SR.MS_NICKNAME, account.getNick(), null, TextField.ANY);
+        nickbox = new TextInput(display, SR.get(SR.MS_NICKNAME), account.getNick(), null, TextField.ANY);
         itemsList.addElement(nickbox);
         
-        registerbox = new CheckBox(SR.MS_REGISTER_ACCOUNT, register); 
+        registerbox = new CheckBox(SR.get(SR.MS_REGISTER_ACCOUNT), register); 
         
         if (newaccount){
             itemsList.addElement(registerbox);            
@@ -212,14 +220,14 @@ public class AccountForm
     
 
    public String generate(int type) {
-    StringBuffer sb = new StringBuffer();       
+    StringBuffer sb = new StringBuffer(0);      
     if(type==0){   
       Random rand = new Random();
       int i=0;
       String[] servers = {
-          "jabber.ru","jabbus.org","xmpp.ru","jtalk.ru",
+          "jabber.ru","jabbim.com","jabbus.org","xmpp.ru","jtalk.ru",
           "mytlt.ru","gajim.org","jabber.org.by"};
-      i = Math.abs(rand.nextInt()) % 7;
+      i = Math.abs(rand.nextInt()) % 8;
       sb.append(servers[i]);
     }
     else if(type==1){
@@ -240,7 +248,7 @@ public class AccountForm
       }
       sb.append(pass);        
     }
-   return sb.toString();
+    return sb.toString();
   }     
     
 
@@ -253,11 +261,9 @@ public class AccountForm
         boolean sslbox_=false;
         boolean plainPwdbox_=false;
         boolean compressionBox_=false;  
-        int port_box=5222;
         String ip_box="";
         switch(type_profile){
             case -1:  
-                port_box = account.getPort();
                 ip_box = account.getHostAddr();
                 sslbox_ = account.getUseSSL();
                 plainPwdbox_ = account.getPlainAuth();
@@ -282,7 +288,6 @@ public class AccountForm
                 compressionBox_ = false;
                 break;
             case GTALK_SSL_PROFILE:  
-                port_box = 5223;
                 ip_box = "talk.google.com";
                 sslbox_ = true;
                 plainPwdbox_ = true;
@@ -301,14 +306,13 @@ public class AccountForm
                 compressionBox_ = true;                
                 break;
         }
-        portbox = new NumberInput(display, SR.MS_PORT, Integer.toString(port_box), 0, 65535);
-        ipbox = new TextInput(display, SR.MS_HOST_IP, ip_box, null, TextField.ANY);
-        sslbox = new CheckBox(SR.MS_SSL, sslbox_);
-        plainPwdbox = new CheckBox(SR.MS_PLAIN_PWD, plainPwdbox_);
-        compressionBox = new CheckBox(SR.MS_COMPRESSION, compressionBox_);
-        confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, account.isMucOnly());
+        ipbox = new TextInput(display, SR.get(SR.MS_HOST_IP), ip_box, null, TextField.ANY);
+        sslbox = new CheckBox(SR.get(SR.MS_SSL), sslbox_);
+        plainPwdbox = new CheckBox(SR.get(SR.MS_PLAIN_PWD), plainPwdbox_);
+        compressionBox = new CheckBox(SR.get(SR.MS_COMPRESSION), compressionBox_);
+        confOnlybox = new CheckBox(SR.get(SR.MS_CONFERENCES_ONLY), account.isMucOnly());
 //#if HTTPCONNECT
-//#        proxybox = new CheckBox("proxybox", SR.MS_PROXY_ENABLE, account.isEnableProxy());
+//#        proxybox = new CheckBox("proxybox", SR.get(SR.MS_PROXY_ENABLE), account.isEnableProxy());
 //#elif HTTPPOLL        
 //#        pollingbox = new CheckBox("pollingbox", "HTTP Polling", false);
 //#endif
@@ -323,34 +327,30 @@ public class AccountForm
 //#        itemsList.addElement(pollingbox);
 //#endif
 
-        keepAliveType=new DropChoiceBox(display, SR.MS_KEEPALIVE);
+        keepAliveType=new DropChoiceBox(display, SR.get(SR.MS_KEEPALIVE));
         keepAliveType.append("by socket");
         keepAliveType.append("1 byte");
         keepAliveType.append("<iq/>");
         keepAliveType.append("ping");
         keepAliveType.setSelectedIndex(account.getKeepAliveType());
-        keepAlive = new NumberInput(display, SR.MS_KEEPALIVE_PERIOD, Integer.toString(account.getKeepAlivePeriod()), 10, 2048);
+        keepAlive = new NumberInput(display, SR.get(SR.MS_KEEPALIVE_PERIOD), Integer.toString(account.getKeepAlivePeriod()), 10, 2048);
         //if(Config.getInstance().difficulty_level>=1){
              itemsList.addElement(keepAliveType);
+             itemsList.addElement(keepAlive);
         //} 
-        
-        resourcebox = new TextInput(display, SR.MS_RESOURCE, account.getResource(), null, TextField.ANY);
-
+             
 //#if HTTPCONNECT
-//# 	proxyHost = new TextInput(display, SR.MS_PROXY_HOST, account.getProxyHostAddr(), null, TextField.URL);
+//# 	proxyHost = new TextInput(display, SR.get(SR.MS_PROXY_HOST), account.getProxyHostAddr(), null, TextField.URL);
 //# 
-//# 	proxyPort = new TextInput(display, SR.MS_PROXY_PORT, Integer.toString(account.getProxyPort()));
+//# 	proxyPort = new TextInput(display, SR.get(SR.MS_PROXY_PORT), Integer.toString(account.getProxyPort()));
 //#elif HTTPPOLL        
-//# 	proxyHost = new TextInput(display, SR.MS_PROXY_HOST, account.getProxyHostAddr(), null, TextField.URL);
+//# 	proxyHost = new TextInput(display, SR.get(SR.MS_PROXY_HOST), account.getProxyHostAddr(), null, TextField.URL);
 //#endif
         //if(Config.getInstance().difficulty_level>=1){
           itemsList.addElement(ipbox);
         //}
-          itemsList.addElement(portbox);
 
         //if(Config.getInstance().difficulty_level>=1){
-            itemsList.addElement(keepAlive);
-            itemsList.addElement(resourcebox);
         //}
 
 //#if HTTPCONNECT
@@ -376,9 +376,11 @@ public class AccountForm
         
         account.setUserName(user);
         account.setServer(server);
+        account.setPort(Integer.parseInt(portbox.getValue()));
         account.setEmail(emailbox.getValue().trim());        
         account.setPassword(pass);
         account.setNick(nickbox.getValue());
+        account.setResource(resourcebox.getValue());
        
         
         boolean registerNew = false;
@@ -389,9 +391,7 @@ public class AccountForm
 
         if (showExtended) {
             registerNew=registerbox.getValue();
-            account.setPort(Integer.parseInt(portbox.getValue()));
             account.setHostAddr(ipbox.getValue());
-            account.setResource(resourcebox.getValue());
             account.setUseSSL(sslbox.getValue());
             account.setPlainAuth(plainPwdbox.getValue());
             account.setUseCompression(compressionBox.getValue());
@@ -427,7 +427,7 @@ public class AccountForm
     private void startLogin(boolean login){
         Config.getInstance().accountIndex=accountSelect.accountList.size()-1;
         Account.loadAccount(login, Config.getInstance().accountIndex,-1);
-        SplashScreen.getInstance(display).close();
+        midlet.BombusQD.getInstance().s.close();
     }
     
     

@@ -99,8 +99,8 @@ public class JabberStream extends XmppParser implements Runnable {
     public void initiateStream() throws IOException {
         StringBuffer header=new StringBuffer("<stream:stream to='" ).append( server ).append( "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'" );
         header.append(" version='1.0'");
-        if (SR.MS_XMLLANG!=null) {
-            header.append(" xml:lang='").append(SR.MS_XMLLANG).append("'");
+        if (SR.get(SR.MS_XMLLANG)!=null) {
+            header.append(" xml:lang='").append(SR.get(SR.MS_XMLLANG)).append("'");
         }
         header.append( '>' );
         send(header.toString());
@@ -280,28 +280,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#         addLog(data.toString(), 1);
 //#endif
     }
-    
-    /*
-    public void send( String data ) throws IOException {
-	iostream.send(new StringBuffer(data));
-        sendBuf(new StringBuffer(data));
-//#ifdef CONSOLE
-//#         if (data.equals("</iq") || data.equals(" "))
-//#             addLog("Ping myself", 1);
-//#         else
-//#             addLog(data, 1);
-//#endif
-    }
-    
-    public void sendBuf( StringBuffer data ) throws IOException {
-	//iostream.send(data);
-        if (null != outPackets) outPackets.addElement(data);
-//	if (null != iostream) iostream.send(data);
-//#ifdef CONSOLE
-//#         addLog(data.toString(), 1);
-//#endif
-    }
-     */
+
     
     /**
      * Method of sending a Jabber datablock to the server.

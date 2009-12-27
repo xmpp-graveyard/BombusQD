@@ -96,14 +96,18 @@ public class AlertCustomizeForm
     Vector fileNames;
     boolean isVibroProfile = false;
 
-    Command cmdSave=new Command(SR.MS_SAVE, Command.OK, 1);
-    Command cmdTest=new Command(SR.MS_TEST_SOUND, Command.SCREEN, 2);
-    Command cmdTestVibro=new Command(SR.MS_TEST_VIBRATION, Command.SCREEN, 3);
+    Command cmdSave;
+    Command cmdTest;
+    Command cmdTestVibro;
 
     /** Creates a new instance of ConfigForm */
     public AlertCustomizeForm(Display display, Displayable pView) {
-        super(display, pView, SR.MS_NOTICES_OPTIONS);
+        super(display, pView, SR.get(SR.MS_NOTICES_OPTIONS));
         this.display=display;
+        
+        cmdSave=new Command(SR.get(SR.MS_SAVE), Command.OK, 1);
+        cmdTest=new Command(SR.get(SR.MS_TEST_SOUND), Command.SCREEN, 2);
+        cmdTestVibro=new Command(SR.get(SR.MS_TEST_VIBRATION), Command.SCREEN, 3);
         
         isVibroProfile = (midlet.BombusQD.cf.profile==AlertProfile.ALL || midlet.BombusQD.cf.profile==AlertProfile.VIBRA);
         
@@ -116,63 +120,63 @@ public class AlertCustomizeForm
             fileNames.addElement((String)file.nextElement());
 	}
 
-        MessageFile=new DropChoiceBox(display, SR.MS_MESSAGE_SOUND); MessageFile.items=fileNames; 
+        MessageFile=new DropChoiceBox(display, SR.get(SR.MS_MESSAGE_SOUND)); MessageFile.items=fileNames; 
         MessageFile.setSelectedIndex(ac.soundsMsgIndex); itemsList.addElement(MessageFile);
 
-        OnlineFile=new DropChoiceBox(display, SR.MS_ONLINE_SOUND); OnlineFile.items=fileNames; 
+        OnlineFile=new DropChoiceBox(display, SR.get(SR.MS_ONLINE_SOUND)); OnlineFile.items=fileNames; 
         OnlineFile.setSelectedIndex(ac.soundOnlineIndex); itemsList.addElement(OnlineFile);
 
-        OfflineFile=new DropChoiceBox(display, SR.MS_OFFLINE_SOUND); OfflineFile.items=fileNames; 
+        OfflineFile=new DropChoiceBox(display, SR.get(SR.MS_OFFLINE_SOUND)); OfflineFile.items=fileNames; 
         OfflineFile.setSelectedIndex(ac.soundOfflineIndex); itemsList.addElement(OfflineFile);
 
-        ForYouFile=new DropChoiceBox(display, SR.MS_MESSAGE_FOR_ME_SOUND); ForYouFile.items=fileNames; 
+        ForYouFile=new DropChoiceBox(display, SR.get(SR.MS_MESSAGE_FOR_ME_SOUND)); ForYouFile.items=fileNames; 
         ForYouFile.setSelectedIndex(ac.soundForYouIndex); itemsList.addElement(ForYouFile);
 
-        ComposingFile=new DropChoiceBox(display, SR.MS_COMPOSING_SOUND); ComposingFile.items=fileNames; 
+        ComposingFile=new DropChoiceBox(display, SR.get(SR.MS_COMPOSING_SOUND)); ComposingFile.items=fileNames; 
         ComposingFile.setSelectedIndex(ac.soundComposingIndex); itemsList.addElement(ComposingFile);
 
-        ConferenceFile=new DropChoiceBox(display, SR.MS_CONFERENCE_SOUND); ConferenceFile.items=fileNames; 
+        ConferenceFile=new DropChoiceBox(display, SR.get(SR.MS_CONFERENCE_SOUND)); ConferenceFile.items=fileNames; 
         ConferenceFile.setSelectedIndex(ac.soundConferenceIndex); itemsList.addElement(ConferenceFile);
 
-        StartUpFile=new DropChoiceBox(display, SR.MS_STARTUP_SOUND); StartUpFile.items=fileNames; 
+        StartUpFile=new DropChoiceBox(display, SR.get(SR.MS_STARTUP_SOUND)); StartUpFile.items=fileNames; 
         StartUpFile.setSelectedIndex(ac.soundStartUpIndex); itemsList.addElement(StartUpFile);
 
-        OutgoingFile=new DropChoiceBox(display, SR.MS_OUTGOING_SOUND); OutgoingFile.items=fileNames; 
+        OutgoingFile=new DropChoiceBox(display, SR.get(SR.MS_OUTGOING_SOUND)); OutgoingFile.items=fileNames; 
         OutgoingFile.setSelectedIndex(ac.soundOutgoingIndex); itemsList.addElement(OutgoingFile);
 
-        VIPFile=new DropChoiceBox(display, SR.MS_VIP_SOUND); VIPFile.items=fileNames; 
+        VIPFile=new DropChoiceBox(display, SR.get(SR.MS_VIP_SOUND)); VIPFile.items=fileNames; 
         VIPFile.setSelectedIndex(ac.soundVIPIndex); itemsList.addElement(VIPFile);
 
-        itemsList.addElement(new SimpleString(SR.MS_SHOW_LAST_APPEARED_CONTACTS, true)); 
-        statusBox=new CheckBox(SR.MS_STATUS, midlet.BombusQD.cf.notifyPicture); itemsList.addElement(statusBox);
-        blinkBox=new CheckBox(SR.MS_BLINKING, midlet.BombusQD.cf.notifyBlink); itemsList.addElement(blinkBox);
-        //soundBox=new CheckBox(SR.MS_SOUND, cf.notifySound); itemsList.addElement(soundBox);
+        itemsList.addElement(new SimpleString(SR.get(SR.MS_SHOW_LAST_APPEARED_CONTACTS), true)); 
+        statusBox=new CheckBox(SR.get(SR.MS_STATUS), midlet.BombusQD.cf.notifyPicture); itemsList.addElement(statusBox);
+        blinkBox=new CheckBox(SR.get(SR.MS_BLINKING), midlet.BombusQD.cf.notifyBlink); itemsList.addElement(blinkBox);
+        //soundBox=new CheckBox(SR.get(SR.MS_SOUND, cf.notifySound); itemsList.addElement(soundBox);
         
         if(isVibroProfile){
           itemsList.addElement(new SpacerItem(10));
-          vibrateOnlyHighlited=new CheckBox(SR.MS_VIBRATE_ONLY_HIGHLITED, ac.vibrateOnlyHighlited); itemsList.addElement(vibrateOnlyHighlited);
+          vibrateOnlyHighlited=new CheckBox(SR.get(SR.MS_VIBRATE_ONLY_HIGHLITED), ac.vibrateOnlyHighlited); itemsList.addElement(vibrateOnlyHighlited);
         }
 
-        itemsList.addElement(new SimpleString(SR.MS_SOUND_VOLUME, true));
+        itemsList.addElement(new SimpleString(SR.get(SR.MS_SOUND_VOLUME), true));
         sndVol=new TrackItem(ac.soundVol/10, 10);
         itemsList.addElement(sndVol);
         
         if(isVibroProfile){
-          vibraLen=new NumberInput(display, SR.MS_VIBRATION_LEN + "(1-5000)", Integer.toString(ac.vibraLen), 1, 5000);
+          vibraLen=new NumberInput(display, SR.get(SR.MS_VIBRATION_LEN) + "(1-5000)", Integer.toString(ac.vibraLen), 1, 5000);
           itemsList.addElement(vibraLen);
           
-          vibraRepeatCount=new NumberInput(display, SR.MS_VIBRATION_REPEAT, Integer.toString(ac.vibraRepeatCount), 1, 5);
+          vibraRepeatCount=new NumberInput(display, SR.get(SR.MS_VIBRATION_REPEAT), Integer.toString(ac.vibraRepeatCount), 1, 8);
           itemsList.addElement(vibraRepeatCount);
           
-          vibraRepeatPause=new NumberInput(display, SR.MS_VIBRATION_INTERVAL, Integer.toString(ac.vibraRepeatPause), 1, 300);
+          vibraRepeatPause=new NumberInput(display, SR.get(SR.MS_VIBRATION_INTERVAL), Integer.toString(ac.vibraRepeatPause), 1, 400);
           itemsList.addElement(vibraRepeatPause);
         }
         
         itemsList.addElement(new SpacerItem(10));
-        IQNotify=new CheckBox(SR.MS_SHOW_IQ_REQUESTS, midlet.BombusQD.cf.IQNotify); itemsList.addElement(IQNotify);
+        IQNotify=new CheckBox(SR.get(SR.MS_SHOW_IQ_REQUESTS), midlet.BombusQD.cf.IQNotify); itemsList.addElement(IQNotify);
 
         itemsList.addElement(new SpacerItem(5));
-        linkLight = new LinkString(SR.L_CONFIG) { public void doAction() { 
+        linkLight = new LinkString(SR.get(SR.L_CONFIG)) { public void doAction() { 
             new LightConfigForm(midlet.BombusQD.getInstance().display, midlet.BombusQD.getInstance().display.getCurrent());
         } };
         itemsList.addElement(linkLight);  
@@ -300,7 +304,7 @@ public class AlertCustomizeForm
     
     
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_MENU); }
     
 
 //#ifdef GRAPHICS_MENU   
@@ -321,7 +325,7 @@ public class AlertCustomizeForm
     }    
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_NOTICES_OPTIONS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_NOTICES_OPTIONS), null, menuCommands);
    }  
 //#endif          
     

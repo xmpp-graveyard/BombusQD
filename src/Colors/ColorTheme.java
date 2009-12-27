@@ -44,6 +44,7 @@ import util.StringLoader;
 //#ifdef DETRANSLIT
 //# import util.DeTranslit;
 //#endif
+import locale.SR;
 /**
  *
  * @author ad,aqent
@@ -56,7 +57,7 @@ public class ColorTheme {
 	if (instance==null) {
 	    instance=new ColorTheme();
             init();
-	    loadFromStorage();
+            reInitNames();
 	}
 	return instance;
     }
@@ -100,7 +101,7 @@ public class ColorTheme {
       0xff0000,0x900000,0xffffff,
       0x000000,0x000000,0x000000,0x000000,0x000000,0x000042,
       0x000000,
-      0xffffff,0x861010,
+      0xffffff,0x11b3a9,
       0x000000,0xbd0d0d,0x98999f,0x98999f,0x000000,
       0x048586,0x067a81,0x008387,
       0xffffff,0xececec,0xd4d4d4,0x000000,
@@ -115,17 +116,101 @@ public class ColorTheme {
       0x000000,0xf4f5c5,0x000000
     };
     
+
+//#ifdef COLOR_TUNE
+//#     public static String[] NAMES;
+//#     
+//#     public static void reInitNames(){
+//#         NAMES = new String[51];
+//#         String[] locale = {
+//#             SR.get(SR.MS_BALLOON_INK),
+//#             SR.get(SR.MS_BALLOON_BGND),
+//#             SR.get(SR.MS_LIST_BGND),
+//#             SR.get(SR.MS_LIST_BGND_EVEN),
+//#             SR.get(SR.MS_LIST_INK),
+//# 
+//#             SR.get(SR.MS_MSG_SUBJ),
+//#             SR.get(SR.MS_MSG_HIGHLIGHT),
+//# 
+//#             SR.get(SR.MS_DISCO_CMD),
+//# 
+//#             SR.get(SR.MS_BAR_BGND),
+//#             SR.get(SR.MS_BAR_BGND)+" 2",
+//#             SR.get(SR.MS_BAR_INK),
+//# 
+//#             SR.get(SR.MS_CONTACT_DEFAULT),
+//#             SR.get(SR.MS_CONTACT_CHAT),
+//#             SR.get(SR.MS_CONTACT_AWAY),
+//#             SR.get(SR.MS_CONTACT_XA),
+//#             SR.get(SR.MS_CONTACT_DND),
+//#             SR.get(SR.MS_CONTACT)+" J2J",
+//# 
+//#             SR.get(SR.MS_GROUP_INK),
+//# 
+//#             SR.get(SR.MS_BLK_INK),
+//#             SR.get(SR.MS_BLK_BGND),
+//# 
+//#             SR.get(SR.MS_MESSAGE_IN),
+//#             SR.get(SR.MS_MESSAGE_OUT),
+//#             SR.get(SR.MS_MESSAGE_PRESENCE),
+//#             SR.get(SR.MS_MESSAGE_AUTH),
+//#             SR.get(SR.MS_MESSAGE_HISTORY),
+//# 
+//#             SR.get(SR.MS_MESSAGE_IN_S),
+//#             SR.get(SR.MS_MESSAGE_OUT_S),
+//#             SR.get(SR.MS_MESSAGE_PRESENCE_S),
+//# 
+//#             SR.get(SR.MS_PGS_REMAINED),
+//#             SR.get(SR.MS_PGS_COMPLETE),
+//#             SR.get(SR.MS_PGS_COMPLETE)+" 2",
+//#             SR.get(SR.MS_PGS_INK),
+//# 
+//#             SR.get(SR.MS_HEAP_TOTAL),
+//#             SR.get(SR.MS_HEAP_FREE),
+//# 
+//#             SR.get(SR.MS_CURSOR_BGND),
+//#             SR.get(SR.MS_CURSOR_OUTLINE),
+//# 
+//#             SR.get(SR.MS_SCROLL_BRD),
+//#             SR.get(SR.MS_SCROLL_BAR),
+//#             SR.get(SR.MS_SCROLL_BGND),
+//# 
+//#             SR.get(SR.MS_POPUP_MESSAGE),
+//#             SR.get(SR.MS_POPUP_MESSAGE_BGND),
+//#             SR.get(SR.MS_POPUP_SYSTEM),
+//#             SR.get(SR.MS_POPUP_SYSTEM_BGND),
+//# 
+//#             SR.get(SR.MS_CONTACT_STATUS),
+//# 
+//#             SR.get(SR.MS_CONTROL_ITEM),
+//#             
+//#             SR.get(SR.MS_GRADIENT_BGND_LEFT),
+//#             SR.get(SR.MS_GRADIENT_BGND_RIGHT),
+//#             
+//#             SR.get(SR.MS_GRADIENT_CURSOR_1),
+//#             SR.get(SR.MS_GRADIENT_CURSOR_2),
+//#             SR.get(SR.MS_TRANSPARENCY_ARGB),
+//#             SR.get(SR.MS_GRAPHICS_MENU_BGNG_ARGB),
+//#             SR.get(SR.MS_GRAPHICS_MENU_FONT)
+//#         };
+//#         for(byte i = 0; i < 51; ++i) NAMES[i] = locale[i];
+//#endif
+    }
+    
+    
     private static void init() {
         colorsContainer.setSize(0);
         int size = defColors.length;
+        colorsArray = null;
+        colorsArray = new int[size];
         ColorItem add;
           for(int i = 0; i<size; ++i) {
             add = new ColorItem(items[i], defColors[i]);
+            colorsArray[i] = defColors[i];
             colorsContainer.addElement( add );
           }     
         add = null;
-        colorsArray = null;
-        colorsArray = new int[colorsContainer.size()];
+        loadFromStorage();
     }
     
     public static void setColor(int id, int color) { colorsArray[id] = color; }
@@ -234,11 +319,7 @@ public class ColorTheme {
 	try {
 	    DataInputStream inputStream=NvStorage.ReadFileRecord("ColorDB", 0);
             int size = colorsContainer.size(); 
-            ColorItem c;
-            for(int i=0;i<size;++i){ 
-                c = (ColorItem)colorsContainer.elementAt(i);
-                colorsArray[i] = inputStream.readInt();
-            }             
+            for(int i=0;i<size;++i) colorsArray[i] = inputStream.readInt();
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) { }

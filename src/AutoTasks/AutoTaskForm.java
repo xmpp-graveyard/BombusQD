@@ -62,7 +62,7 @@ public class AutoTaskForm
 //#     private NumberInput autoTaskMin;
 //#     private NumberInput autoTaskHour;
 //#     
-//#     private AutoTask at=StaticData.getInstance().autoTask;
+//#     private AutoTask at=midlet.BombusQD.sd.autoTask;
 //# 
 //#     private int actionIndex;
 //#     private int typeIndex;
@@ -70,7 +70,7 @@ public class AutoTaskForm
     
     /** Creates a new instance of AutoTaskForm */
     public AutoTaskForm(Display display, Displayable pView) {
-        super(display, pView, SR.MS_AUTOTASKS);
+        super(display, pView, SR.get(SR.MS_AUTOTASKS));
         this.display=display;
         
 //#ifdef AUTOTASK
@@ -81,24 +81,24 @@ public class AutoTaskForm
 //#         min = at.startMin;
 //#         wait = at.waitTime/60000;
 //#         
-//#         taskType=new DropChoiceBox(display, SR.MS_AUTOTASK_TYPE);
-//#         taskType.append(SR.MS_DISABLED);
-//#         taskType.append(SR.MS_BY_TIME_);
-//#         taskType.append(SR.MS_BY_TIMER_);
+//#         taskType=new DropChoiceBox(display, SR.get(SR.MS_AUTOTASK_TYPE));
+//#         taskType.append(SR.get(SR.MS_DISABLED));
+//#         taskType.append(SR.get(SR.MS_BY_TIME_));
+//#         taskType.append(SR.get(SR.MS_BY_TIMER_));
 //#         taskType.setSelectedIndex(typeIndex);
 //# 
-//#         actionType=new DropChoiceBox(display, SR.MS_AUTOTASK_ACTION_TYPE);
-//#         actionType.append(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
-//#         actionType.append(SR.MS_AUTOTASK_QUIT_CONFERENCES);
-//#         actionType.append(SR.MS_AUTOTASK_LOGOFF);
-//#         actionType.append(SR.MS_BREAK_CONECTION);
+//#         actionType=new DropChoiceBox(display, SR.get(SR.MS_AUTOTASK_ACTION_TYPE));
+//#         actionType.append(SR.get(SR.MS_AUTOTASK_QUIT_BOMBUSMOD));
+//#         actionType.append(SR.get(SR.MS_AUTOTASK_QUIT_CONFERENCES));
+//#         actionType.append(SR.get(SR.MS_AUTOTASK_LOGOFF));
+//#         actionType.append(SR.get(SR.MS_BREAK_CONECTION));
 //#         actionType.setSelectedIndex(actionIndex);
 //#         
-//#         autoTaskTimeDesc=new SimpleString(SR.MS_AUTOTASK_TIME, true);
+//#         autoTaskTimeDesc=new SimpleString(SR.get(SR.MS_AUTOTASK_TIME), true);
 //# 
-//#         autoTaskHour=new NumberInput(display, SR.MS_AUTOTASK_HOUR, Integer.toString(hour), 0, 23);
-//#         autoTaskMin=new NumberInput(display, SR.MS_AUTOTASK_MIN, Integer.toString(min), 0, 59);
-//#         autoTaskDelay=new NumberInput(display, SR.MS_AUTOTASK_DELAY, Integer.toString(wait), 1, 600);
+//#         autoTaskHour=new NumberInput(display, SR.get(SR.MS_AUTOTASK_HOUR), Integer.toString(hour), 0, 23);
+//#         autoTaskMin=new NumberInput(display, SR.get(SR.MS_AUTOTASK_MIN), Integer.toString(min), 0, 59);
+//#         autoTaskDelay=new NumberInput(display, SR.get(SR.MS_AUTOTASK_DELAY), Integer.toString(wait), 1, 600);
 //#         
 //#         itemsList.addElement(taskType);
 //#         itemsList.addElement(actionType);

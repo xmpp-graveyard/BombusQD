@@ -46,9 +46,12 @@ public class Reconnect extends AlertBox implements Runnable{
     boolean isRunning;
     private final static int WAITTIME=5;
     /** Creates a new instance of Reconnect */
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
+    private Command cmdCancel;
+    
     public Reconnect(String title, String body, Display display) {
         super(title, body, null, display, null /*current*/);
+        
+        cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK, 2);
         alert.setTimeout(Alert.FOREVER);
         
         timer=new Gauge(null, false, WAITTIME, 1);

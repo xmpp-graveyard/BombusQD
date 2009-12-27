@@ -128,31 +128,31 @@ public final class CommandForm extends DefForm
         String field_text="";
         switch(type){
             case DESTROY_ROOM:{
-                itemsList.addElement(new SimpleString(SR.MS_DESTROY_ROOM+"?", true));                
-                field_text = SR.MS_REASON;
+                itemsList.addElement(new SimpleString(SR.get(SR.MS_DESTROY_ROOM)+"?", true));                
+                field_text = SR.get(SR.MS_REASON);
                 break;
             }
             case DELETE_ACCOUNT:{
-                itemsList.addElement(new SimpleString(SR.MS_REMOVE_ACCOUNT+"?", true));
+                itemsList.addElement(new SimpleString(SR.get(SR.MS_REMOVE_ACCOUNT)+"?", true));
                 break;
             } 
             case CHANGE_PASS_ACC:{
-                field_text = SR.MS_PASSWORD;
-                itemsList.addElement(new SimpleString(SR.MS_CHANGE_PASSWORD+"?", true));                
+                field_text = SR.get(SR.MS_PASSWORD);
+                itemsList.addElement(new SimpleString(SR.get(SR.MS_CHANGE_PASSWORD)+"?", true));                
                 break;
             }    
             case _CHANGE_PASS_RMS:{
                 StringBuffer info = new StringBuffer();
                 info.append((String)obj);
-                info.append(SR.MS_NEW_PASSWORD+":%"+(String)res);
+                info.append(SR.get(SR.MS_NEW_PASSWORD)+":%"+(String)res);
                 itemsList.addElement(new CheckBox(info.toString(), true, true, false));
-                itemsList.addElement(new SimpleString(SR.MS_COPY+"?", true));
-                itemsList.addElement(new SimpleString(SR.MS_EDIT_ACCOUNT_MSG, true));                
+                itemsList.addElement(new SimpleString(SR.get(SR.MS_COPY)+"?", true));
+                itemsList.addElement(new SimpleString(SR.get(SR.MS_EDIT_ACCOUNT_MSG), true));                
                 break;
             }
             case _DEL_ACCOUNT_FROM_RMS:{
                 itemsList.addElement(new SimpleString((String)obj, true));
-                itemsList.addElement(new SimpleString(SR.MS_DELETE+"?", true));                
+                itemsList.addElement(new SimpleString(SR.get(SR.MS_DELETE)+"?", true));                
                 break;
             } 
             case HISTORY_ITEM:

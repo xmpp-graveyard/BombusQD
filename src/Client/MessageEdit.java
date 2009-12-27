@@ -69,36 +69,66 @@ public final class MessageEdit
 //#     private boolean sendInDeTranslit=false;
 //#     DeTranslit dt;
 //#endif
+    
 
-    private Command cmdSend=new Command(SR.MS_SEND, Command.OK, 1);
+    
+    Command cmdSend;
 //#ifdef SMILES
-    private Command cmdSmile=new Command(SR.MS_ADD_SMILE, Command.SCREEN,2);
+    Command cmdSmile;
 //#endif
-    private Command cmdInsNick=new Command(SR.MS_NICKNAMES,Command.SCREEN,3);
-    private Command cmdInsMe=new Command(SR.MS_SLASHME, Command.SCREEN, 4); ; // /me
+    Command cmdInsNick;
+    Command cmdInsMe;
 //#ifdef DETRANSLIT
-//#     private Command cmdSendInTranslit=new Command(SR.MS_TRANSLIT, Command.SCREEN, 5);
-//#     private Command cmdSendInDeTranslit=new Command(SR.MS_DETRANSLIT, Command.SCREEN, 5);
+//#     Command cmdSendInTranslit;
+//#     Command cmdSendInDeTranslit;
 //#endif
-    private Command cmdLastMessage=new Command(SR.MS_PREVIOUS, Command.SCREEN, 9);
-    private Command cmdSubj=new Command(SR.MS_SET_SUBJECT, Command.SCREEN, 10);
-    private Command cmdSuspend=new Command(SR.MS_SUSPEND, Command.BACK,90);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.SCREEN,99);
-    private Command cmdSendEvil=new Command(SR.MS_SEND_EVIL_MSG, Command.SCREEN /*Command.SCREEN*/,229);    
-    private Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN /*Command.SCREEN*/,337);
-
+    Command cmdLastMessage;
+    Command cmdSubj;
+    Command cmdSuspend;
+    Command cmdCancel;
+    Command cmdSendEvil;
+    Command cmdTranslate;
 //#ifdef ARCHIVE
-    protected static Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
+    Command cmdPaste;
 //#endif    
 //#ifdef CLIPBOARD
-//#     protected static Command cmdPasteText=new Command(SR.MS_PASTE, Command.SCREEN, 8);  
+//#     Command cmdPasteText;
 //#endif  
-        
-    
 //#if TEMPLATES
-//#     protected Command cmdTemplate=new Command(SR.MS_TEMPLATE, Command.SCREEN, 7); 
+//# Command cmdTemplate;
+//#endif   
+    
+    
+    public void initCommands(){
+          cmdSend=new Command(SR.get(SR.MS_SEND), Command.OK, 1);
+//#ifdef SMILES
+          cmdSmile=new Command(SR.get(SR.MS_ADD_SMILE), Command.SCREEN,2);
+//#endif
+          cmdInsNick=new Command(SR.get(SR.MS_NICKNAMES),Command.SCREEN,3);
+          cmdInsMe=new Command(SR.get(SR.MS_SLASHME), Command.SCREEN, 4); ; // /me
+//#ifdef DETRANSLIT
+//#           cmdSendInTranslit=new Command(SR.get(SR.MS_TRANSLIT), Command.SCREEN, 5);
+//#           cmdSendInDeTranslit=new Command(SR.get(SR.MS_DETRANSLIT), Command.SCREEN, 5);
+//#endif
+          cmdLastMessage=new Command(SR.get(SR.MS_PREVIOUS), Command.SCREEN, 9);
+          cmdSubj=new Command(SR.get(SR.MS_SET_SUBJECT), Command.SCREEN, 10);
+          cmdSuspend=new Command(SR.get(SR.MS_SUSPEND), Command.BACK,90);
+          cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.SCREEN,99);
+          cmdSendEvil=new Command(SR.get(SR.MS_SEND_EVIL_MSG), Command.SCREEN,229);    
+          cmdTranslate=new Command(SR.get(SR.MS_TRANSLATE), Command.SCREEN ,337);
+//#ifdef ARCHIVE
+          cmdPaste=new Command(SR.get(SR.MS_ARCHIVE), Command.SCREEN, 6);    
+//#endif    
+//#ifdef CLIPBOARD
+//#           cmdPasteText=new Command(SR.get(SR.MS_PASTE), Command.SCREEN, 8);  
 //#endif  
+//#if TEMPLATES
+//#       cmdTemplate=new Command(SR.get(SR.MS_TEMPLATE), Command.SCREEN, 7); 
+//#endif 
+          //System.out.println("initCommands");
+    }
 
+    
     public void replaceText(Contact to, String bodyNew, Displayable pView){
         this.parentView=pView;
         this.to = to;
@@ -120,6 +150,8 @@ public final class MessageEdit
     }
     
     public void setText(String body, Contact to, Displayable pView, boolean emptyChat){
+        
+       if(display == null) this.display = midlet.BombusQD.getInstance().display;
        this.body = body; 
        this.parentView=pView;
        this.to = to;
@@ -189,6 +221,8 @@ public final class MessageEdit
 //#         dt=DeTranslit.getInstance();
 //#endif
         this.t=t;
+        
+        if(cmdSend == null) initCommands();
         
         t.addCommand(cmdSend);
         t.addCommand(cmdInsMe);
@@ -263,8 +297,10 @@ public final class MessageEdit
         
        this.textField = textField;  
        
-       if (Config.getInstance().capsState)
+       if (midlet.BombusQD.cf.capsState)
            textField.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
+       
+       if(cmdSend == null) initCommands();
        
        form.addCommand(cmdSend);
        form.addCommand(cmdInsMe);
@@ -296,7 +332,7 @@ public final class MessageEdit
         }else{
           body=t.getString();
         }
-        
+        //System.out.println("commandAction.");
         if (body.length()==0) body=null;
         
         int caretPos=midlet.BombusQD.cf.msgEditType>0?textField.getCaretPosition():t.getCaretPosition();
@@ -304,6 +340,7 @@ public final class MessageEdit
 
 //#ifdef ARCHIVE
 	if (c==cmdPaste) { 
+            //System.out.println(to);
                 composing=false; 
                 if(null != to) to.msgSuspended=body; 
                 if(midlet.BombusQD.cf.msgEditType>0){
@@ -402,7 +439,7 @@ public final class MessageEdit
         if (c==cmdSubj) {
             if (body==null) return;
             subj=body;
-            body=null; //"/me "+SR.MS_HAS_SET_TOPIC_TO+": "+subj;
+            body=null; //"/me "+SR.get(SR.MS_HAS_SET_TOPIC_TO+": "+subj;
         }
         
         if(c==cmdSendEvil){

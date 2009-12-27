@@ -159,7 +159,6 @@ public final class ContactMessageList extends MessageList implements MenuListene
         cmdsecondList.removeAllElements();
         cmdThirdList.removeAllElements();
 //#endif
-      
         if (startSelection) addCommand(midlet.BombusQD.commands.cmdSelect); 
         if (contact.msgSuspended!=null) addCommand(midlet.BombusQD.commands.cmdResume); 
         
@@ -203,7 +202,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
             addCommand(midlet.BombusQD.commands.cmdMyService); 
             addInCommand(3,midlet.BombusQD.commands.cmdPurge); 
             addInCommand(3,midlet.BombusQD.commands.cmdAddSearchQuery); 
-            addInCommand(3,midlet.BombusQD.commands.cmdTranslate); 
+            //addInCommand(3,midlet.BombusQD.commands.cmdTranslate); 
             addInCommand(3,midlet.BombusQD.commands.cmdClrPresences); 
             
             if (!startSelection) addInCommand(3,midlet.BombusQD.commands.cmdSelect); 
@@ -364,12 +363,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#endif
         
         if(c==midlet.BombusQD.commands.cmdClrPresences){
-            for (Enumeration select=msgs.elements(); select.hasMoreElements();) {
-                    Msg msg=(Msg) select.nextElement();
-                    if (msg.isPresence()) {
-                        removeMessage(msgs.indexOf(msg));
-                    }
-            }   
+            smartPurge(true);
             return;
         }
         /*
@@ -409,6 +403,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
             startSelection=true;
             Msg mess=getMessage(cursor);
             mess.selected = !mess.selected;
+            mess.search_word=!mess.search_word;; //image
             mess.oldHighlite = mess.highlite;
             mess.highlite = mess.selected;
             return;
@@ -430,19 +425,19 @@ public final class ContactMessageList extends MessageList implements MenuListene
             } else checkOffline();
         }
         if(c==midlet.BombusQD.commands.cmdAddSearchQuery) {
-             new MIDPTextBox(midlet.BombusQD.getInstance().display, SR.MS_SEARCH, null, this, TextField.ANY, 30);
+             new MIDPTextBox(midlet.BombusQD.getInstance().display, SR.get(SR.MS_SEARCH), null, this, TextField.ANY, 30);
              return;
         } 
 //#if BREDOGENERATOR                 
 //#         if (c==midlet.BombusQD.commands.cmdAutoGenON) {
 //#            midlet.BombusQD.cf.bredoGen=true;
 //#            midlet.BombusQD.sd.roster.showRoster();
-//#            VirtualList.setWobble(3, null, SR.MS_BREDO_ON);
+//#            VirtualList.setWobble(3, null, SR.get(SR.MS_BREDO_ON));
 //#         }
 //#         if (c==midlet.BombusQD.commands.cmdAutoGenOff) {
 //#            midlet.BombusQD.cf.bredoGen=false;
 //#            midlet.BombusQD.sd.roster.showRoster();
-//#            VirtualList.setWobble(3, null, SR.MS_BREDO_OFF);
+//#            VirtualList.setWobble(3, null, SR.get(SR.MS_BREDO_OFF));
 //#         }  
 //#endif         
         if (c==midlet.BombusQD.commands.cmdActions) {
@@ -478,7 +473,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#                     if (contact.origin<Constants.ORIGIN_GROUPCHAT) contact.addMessage(msg);
 //#                 }
 //#             } catch (Exception e) {
-//#                 contact.addMessage(new Msg(Constants.MESSAGE_TYPE_OUT,from,null,SR.MS_CLIPBOARD_SENDERROR));
+//#                 contact.addMessage(new Msg(Constants.MESSAGE_TYPE_OUT,from,null,SR.get(SR.MS_CLIPBOARD_SENDERROR)));
 //#             }
 //#             redraw();
 //#             return;
@@ -493,7 +488,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     }
     
     public void clearReadedMessageList() {
-        smartPurge();
+        smartPurge(false);
         cursor=0;
         moveCursorHome();
         redraw();
@@ -544,7 +539,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     
     public void find_str(String query){
                 moveCursorEnd();
-                VirtualList.setWobble(1, null, "       Wait!");
+                //VirtualList.setWobble(1, null, "       Wait!");
                 for (int i=0; i<(cursor+1); i++)
                 {
                   if((getMessage(i).toString().indexOf(query)>-1))
@@ -559,11 +554,11 @@ public final class ContactMessageList extends MessageList implements MenuListene
                     int cursor_index = Integer.parseInt(vectorfound.elementAt(found_count).toString());
                     moveCursorTo(cursor_index, true);
                     midlet.BombusQD.cf.find_text=true;
-                    VirtualList.setWobble(1, null, "Results of Search:\nword: "+query+"\ncounts: "+vectorfound.size());
+                    //VirtualList.setWobble(1, null, "Results of Search:\nword: "+query+"\ncounts: "+vectorfound.size());
                     //setMainBarItem(new MainBar("    Search: "+Integer.toString(1)+"/"+Integer.toString(vectorfound.size()) + " ..6>"));  
                 }else{
                     midlet.BombusQD.cf.find_text=false;
-                    VirtualList.setWobble(3, null, SR.MS_NOT_FOUND);
+                    //VirtualList.setWobble(3, null, SR.get(SR.MS_NOT_FOUND));
                     moveCursorHome();
                 }
     }
@@ -587,7 +582,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
        } catch (Exception e) { msg = null; }
        
        if(!found&&msg!=null) { new ui.controls.AlertBox(msg.from,
-           SR.MS_ALERT_CONTACT_OFFLINE, midlet.BombusQD.getInstance().display, this) {
+           SR.get(SR.MS_ALERT_CONTACT_OFFLINE), midlet.BombusQD.getInstance().display, this) {
            public void yes() { Reply(true); }
            public void no() { }
          };
@@ -631,7 +626,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#                
 //#              if(contact.msgSuspended != null && check) {
 //#                final String msgText = messg;
-//#                ui.controls.AlertBox obj =  new ui.controls.AlertBox(msg.from, SR.MS_MSGBUFFER_NOT_EMPTY,
+//#                ui.controls.AlertBox obj =  new ui.controls.AlertBox(msg.from, SR.get(SR.MS_MSGBUFFER_NOT_EMPTY),
 //#                        midlet.BombusQD.getInstance().display, this) {
 //#                    public void yes() { showMsgEdit(msgText); }
 //#                    public void no()  { keyGreen(); }
@@ -704,14 +699,14 @@ public final class ContactMessageList extends MessageList implements MenuListene
               case KEY_NUM4: {
                      if(found_count>0) found_count--;
                       else { 
-                          VirtualList.setWobble(1, null, SR.MS_END_SEARCH);  
+                          VirtualList.setWobble(1, null, SR.get(SR.MS_END_SEARCH));  
                           clear_results();               
                       }
                       if(found_count==0)
                           whatPress = "..[6]>";
                       int cursor_index = Integer.parseInt(vectorfound.elementAt(found_count).toString());  
                       moveCursorTo(cursor_index, true);
-                      //setMainBarItem(new MainBar("    "+SR.MS_SEARCH+": "+
+                      //setMainBarItem(new MainBar("    "+SR.get(SR.MS_SEARCH+": "+
                       //        Integer.toString(found_count+1)+"/"+Integer.toString(vectorfound.size()) + "   " + whatPress));
                       redraw();      
                break;       
@@ -719,13 +714,13 @@ public final class ContactMessageList extends MessageList implements MenuListene
               case KEY_NUM6: {
                       if(found_count<vectorfound.size()-1) found_count++;
                       else { 
-                          VirtualList.setWobble(1, null, SR.MS_END_SEARCH);   
+                          VirtualList.setWobble(1, null, SR.get(SR.MS_END_SEARCH));   
                           clear_results();
                       }
                       int cursor_index = Integer.parseInt(vectorfound.elementAt(found_count).toString());   
                       moveCursorTo(cursor_index, true); 
                       if(found_count==vectorfound.size()-1) { whatPress = "<[4].."; }
-                      //setMainBarItem(new MainBar("    "+SR.MS_SEARCH+": "+
+                      //setMainBarItem(new MainBar("    "+SR.get(SR.MS_SEARCH+": "+
                       //        Integer.toString(found_count+1)+"/"+Integer.toString(vectorfound.size())+ "   " + whatPress));
                       redraw();        
               break;         
@@ -839,7 +834,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     }
     
     
-    private final void smartPurge() {
+    private final void smartPurge(boolean presence) {
         int cur=cursor+1;
         try {
             if (msgs.size()>0){
@@ -849,9 +844,15 @@ public final class ContactMessageList extends MessageList implements MenuListene
                 while (true) {
                     if (i<0) break;
                     if (i<cur) {
-                        if (!delete) {
+                        if (delete == false) {
                             //System.out.println("not found else");
-                            if (getMessage(virtCursor).dateGmt+1000<System.currentTimeMillis()) {
+                            if(presence){
+                                if(getMessage(virtCursor).isPresence()){
+                                    removeMessage(virtCursor);
+                                    delete=true;    
+                                }
+                            }
+                            else if (getMessage(virtCursor).dateGmt+1000<System.currentTimeMillis()) {
                                 //System.out.println("can delete: "+ delPos);
                                 removeMessage(virtCursor);
                                 //delPos--;
@@ -859,7 +860,10 @@ public final class ContactMessageList extends MessageList implements MenuListene
                             }
                         } else {
                             //System.out.println("delete: "+ delPos);
-                            removeMessage(virtCursor);
+                            if(presence) {
+                                if(getMessage(virtCursor).isPresence()) removeMessage(virtCursor);
+                            }
+                            else removeMessage(virtCursor);
                             //delPos--;
                         }
                     }
@@ -869,8 +873,9 @@ public final class ContactMessageList extends MessageList implements MenuListene
             }
         } catch (Exception e) { }
         
-        contact.clearVCard();
-        
+        if(msgs.size() == 0) {
+          contact.clearVCard();
+        }
         contact.getChatInfo().resetLastUnreadMessage();
     }
     

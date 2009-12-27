@@ -93,14 +93,14 @@ public class Presence extends JabberDataBlock {
         if (type!=null) {
           if (type.equals(PRS_OFFLINE)) { 
               presenceCode=PRESENCE_OFFLINE;
-              presenseText.append(SR.MS_OFFLINE);
+              presenseText.append(SR.get(SR.MS_OFFLINE));
           }
           if (type.equals("subscribe")) {
               presenceCode=PRESENCE_AUTH_ASK;
-              presenseText.append(SR.MS_SUBSCRIPTION_REQUEST_FROM_USER);
+              presenseText.append(SR.get(SR.MS_SUBSCRIPTION_REQUEST_FROM_USER));
           } 
-          if (type.equals("subscribed")) presenseText.append(SR.MS_SUBSCRIPTION_RECEIVED);
-          if (type.equals("unsubscribed")) presenseText.append(SR.MS_SUBSCRIPTION_DELETED);
+          if (type.equals("subscribed")) presenseText.append(SR.get(SR.MS_SUBSCRIPTION_RECEIVED));
+          if (type.equals("unsubscribed")) presenseText.append(SR.get(SR.MS_SUBSCRIPTION_DELETED));
 
 
           if (type.equals(PRS_ERROR)) {

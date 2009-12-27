@@ -46,10 +46,10 @@ public class archiveEdit
     
     private Display display;
 
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
-    private Command cmdOk=new Command(SR.MS_OK, Command.OK /*Command.SCREEN*/, 1);
+    private Command cmdCancel;
+    private Command cmdOk;
 //#ifdef ARCHIVE
-    protected Command cmdPaste=new Command(SR.MS_ARCHIVE, Command.SCREEN, 6);    
+    protected Command cmdPaste;    
 //#endif
     private Msg msg;
     
@@ -66,8 +66,15 @@ public class archiveEdit
     public TextBox t;      
     
     public archiveEdit(Display display, Displayable pView, int pos, int where, ArchiveList al) {
-        t=new TextBox((pos>-1)?SR.MS_EDIT:SR.MS_NEW ,null, 500, TextField.ANY);
+        t=new TextBox((pos>-1)?SR.get(SR.MS_EDIT):SR.get(SR.MS_NEW) ,null, 4096, TextField.ANY);
         this.display=display;
+        
+        cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK, 99);
+        cmdOk=new Command(SR.get(SR.MS_OK), Command.OK /*Command.SCREEN*/, 1);
+//#ifdef ARCHIVE
+        cmdPaste=new Command(SR.get(SR.MS_ARCHIVE), Command.SCREEN, 6);    
+//#endif
+        
         archive=new MessageArchive(where);
         this.where=where;
         this.pos=pos;

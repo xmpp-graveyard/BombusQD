@@ -32,13 +32,18 @@
 //# 
 //#     private StaticData sd=StaticData.getInstance();
 //#     
-//#     private Command cmdEnableDisable=new Command(SR.MS_ENABLE_DISABLE, Command.SCREEN, 1);
-//#     private Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 3);    
-//#     private Command copyReport=new Command("Bugreport to clipboard", Command.SCREEN, 2);
+//#     private Command cmdEnableDisable;
+//#     private Command cmdPurge;    
+//#     private Command copyReport;
 //# 
 //#     /** Creates a new instance of XMLList */
 //#     public DebugXMLList(Display display, Displayable pView) {
 //#         super ();
+//#         
+//#         cmdEnableDisable=new Command(SR.get(SR.MS_ENABLE_DISABLE), Command.SCREEN, 1);
+//#         cmdPurge=new Command(SR.get(SR.MS_CLEAR_LIST), Command.SCREEN, 3);    
+//#         copyReport=new Command("Bugreport to clipboard", Command.SCREEN, 2);
+//#         
 //#         super.smiles=false;
 //# 
 //#         commandState();

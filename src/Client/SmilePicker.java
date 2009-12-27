@@ -82,8 +82,8 @@ public class SmilePicker
     private int realWidth=0;
     private int xBorder = 0;
     
-    Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
-    Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
+    Command cmdCancel;
+    Command cmdOk;
      
     private Vector smileTable;
 
@@ -95,6 +95,9 @@ public class SmilePicker
     public SmilePicker(Display display, Displayable pView, int caretPos, TextField tf, TextBox tb) {
          super(display);
          this.caretPos=caretPos;
+
+         cmdCancel=new Command(SR.get(SR.MS_CANCEL),Command.BACK,99);
+         cmdOk=new Command(SR.get(SR.MS_SELECT),Command.OK,1);
          
          if(midlet.BombusQD.cf.msgEditType>0){
            this.tf=tf;
@@ -102,7 +105,7 @@ public class SmilePicker
            this.tb=tb;
          };
          
-         setMainBarItem(new MainBar(locale.SR.MS_SELECT));
+         setMainBarItem(new MainBar(locale.SR.get(locale.SR.MS_SELECT)));
          aniSmiles = midlet.BombusQD.cf.animatedSmiles;
          
          il = aniSmiles?SmilesIcons.getInstance():SmilesIcons.getStaticInstance();
@@ -289,7 +292,7 @@ public class SmilePicker
 //#endif     
 
      
-    public String touchLeftCommand(){ return SR.MS_SELECT; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_SELECT); }
+    public String touchRightCommand(){ return SR.get(SR.MS_BACK); }
 //#endif
 }

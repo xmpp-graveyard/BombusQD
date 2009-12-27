@@ -67,10 +67,10 @@ public class StatusSelect
         //Runnable
 {
     
-    private Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
-    private Command cmdEdit=new Command(SR.MS_EDIT,Command.SCREEN,2);
-    private Command cmdDef=new Command(SR.MS_SETDEFAULT,Command.OK,3);
-    private Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
+    private Command cmdOk;
+    private Command cmdEdit;
+    private Command cmdDef;
+    private Command cmdCancel;
 
     private Vector statusList;
     private int defp;
@@ -79,10 +79,15 @@ public class StatusSelect
     public StatusSelect(Display d, Displayable pView, Contact to) {
         super();
         
+       cmdOk=new Command(SR.get(SR.MS_SELECT),Command.OK,1);
+       cmdEdit=new Command(SR.get(SR.MS_EDIT),Command.SCREEN,2);
+       cmdDef=new Command(SR.get(SR.MS_SETDEFAULT),Command.OK,3);
+       cmdCancel=new Command(SR.get(SR.MS_CANCEL),Command.BACK,99);
+       
         statusList=StatusList.getInstance().statusList;
         this.to=to;
         if (to==null) { 
-            setMainBarItem(new MainBar(SR.MS_STATUS));
+            setMainBarItem(new MainBar(SR.get(SR.MS_STATUS)));
         } else {
             setMainBarItem(new MainBar(to));
         }
@@ -147,12 +152,13 @@ public class StatusSelect
         try {
             if (midlet.BombusQD.sd.roster.isLoggedIn()) {
                 midlet.BombusQD.sd.roster.sendDirectPresence(status, to, null);
+                midlet.BombusQD.sd.roster.setOfflineTransport();
             } else {
                 //sd.roster.sendPresence(status, null);
                 new AccountSelect(display, this, false,status);
                 midlet.BombusQD.cf.isStatusFirst=true;
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {}
     }
     
     public int getItemCount(){   return statusList.size(); }
@@ -173,7 +179,7 @@ public class StatusSelect
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_STATUS), null, menuCommands);
     }  
 //#endif      
     
@@ -194,23 +200,23 @@ public class StatusSelect
         private CheckBox autoRespond;
         
         public StatusForm(Display display, Displayable pView, ExtendedStatus status){
-            super(display, pView, SR.MS_STATUS+": "+status.getScreenName());
+            super(display, pView, SR.get(SR.MS_STATUS)+": "+status.getScreenName());
             this.display=display;
             this.status=status;
             
-            tfMessage = new TextInput(display, SR.MS_MESSAGE, status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
+            tfMessage = new TextInput(display, SR.get(SR.MS_MESSAGE), status.getMessage(), "ex_status_list", TextField.ANY); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfMessage);
 
-            tfPriority = new NumberInput(display, SR.MS_PRIORITY, Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
+            tfPriority = new NumberInput(display, SR.get(SR.MS_PRIORITY), Integer.toString(status.getPriority()), -128, 128); //, 100, TextField.ANY "ex_status_list"
             itemsList.addElement(tfPriority);
 
             if (status.getImageIndex()<5) {
                 itemsList.addElement(new SpacerItem(10));
                
-                tfAutoRespondMessage=new TextInput(display, SR.MS_AUTORESPOND, status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
+                tfAutoRespondMessage=new TextInput(display, SR.get(SR.MS_AUTORESPOND), status.getAutoRespondMessage(), "autorespond", TextField.ANY);//, 100, 0
                 itemsList.addElement(tfAutoRespondMessage);
                 
-                autoRespond = new CheckBox(SR.MS_ENABLE_AUTORESPOND, status.getAutoRespond()); itemsList.addElement(autoRespond);
+                autoRespond = new CheckBox(SR.get(SR.MS_ENABLE_AUTORESPOND), status.getAutoRespond()); itemsList.addElement(autoRespond);
             }
             
             itemsList.addElement(new SpacerItem(10));

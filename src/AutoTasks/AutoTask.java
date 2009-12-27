@@ -82,8 +82,8 @@
 //# 
 //#     private boolean isShowing;
 //#     
-//#     protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
-//#     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
+//#     protected Command cmdOk;
+//#     private Command cmdCancel;
 //# 
 //#     private int value;
 //#     
@@ -97,6 +97,9 @@
 //#     }
 //# 
 //#     public void startTask() {
+//#         cmdOk=new Command(SR.get(SR.MS_OK), Command.OK, 1);
+//#         cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK, 2);
+//#         
 //#         isRunning=true;
 //#         if (parentView==null)
 //#             parentView=sd.roster;
@@ -151,24 +154,24 @@
 //#     }
 //#     
 //#     public void doAction() {
-//#         String caption=SR.MS_AUTOTASKS+": ";
+//#         String caption=SR.get(SR.MS_AUTOTASKS)+": ";
 //#         switch (taskAction) {
 //#             case TASK_ACTION_QUIT:
 //#                 BombusQD.getInstance().notifyDestroyed();
 //#                 break;
 //#ifndef WMUC
 //#             case TASK_ACTION_CONFERENCE_QUIT:
-//#                 caption+=SR.MS_AUTOTASK_QUIT_CONFERENCES;
+//#                 caption+=SR.get(SR.MS_AUTOTASK_QUIT_CONFERENCES);
 //#                 //sd.roster.multicastConferencePresence(Presence.PRESENCE_OFFLINE, caption, 0);
 //#                 sd.roster.leaveAllMUCs();//Tishka17
 //#                 break;
 //#endif
 //#             case TASK_ACTION_LOGOFF:
-//#                 caption+=SR.MS_AUTOTASK_LOGOFF;
+//#                 caption+=SR.get(SR.MS_AUTOTASK_LOGOFF);
 //#                 sd.roster.logoff(caption);
 //#                 break;
 //#            case TASK_ACTION_RECONNECT:
-//#                 caption+=SR.MS_RECONNECT;
+//#                 caption+=SR.get(SR.MS_RECONNECT);
 //#                 taskType=TASK_TYPE_TIMER;
 //#                 initTime=System.currentTimeMillis();
 //#                 startTask();
@@ -203,20 +206,20 @@
 //# 
 //#     protected void paint(Graphics g) {
 //#         if (isShowing) {
-//#             String caption=SR.MS_AUTOTASKS+": ";
+//#             String caption=SR.get(SR.MS_AUTOTASKS)+": ";
 //#             
 //#             switch (taskAction) {
 //#                 case TASK_ACTION_QUIT:
-//#                     caption=SR.MS_AUTOTASK_QUIT_BOMBUSMOD;
+//#                     caption=SR.get(SR.MS_AUTOTASK_QUIT_BOMBUSMOD);
 //#                     break;
 //#                 case TASK_ACTION_CONFERENCE_QUIT:
-//#                     caption=SR.MS_AUTOTASK_QUIT_CONFERENCES;
+//#                     caption=SR.get(SR.MS_AUTOTASK_QUIT_CONFERENCES);
 //#                     break;
 //#                 case TASK_ACTION_LOGOFF:
-//#                     caption=SR.MS_AUTOTASK_LOGOFF;
+//#                     caption=SR.get(SR.MS_AUTOTASK_LOGOFF);
 //#                     break;
 //#                 case TASK_ACTION_RECONNECT:
-//#                     caption=SR.MS_RECONNECT;
+//#                     caption=SR.get(SR.MS_RECONNECT);
 //#                     break;
 //#             }
 //#             caption+=" - "+(WAITTIME-value);

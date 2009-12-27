@@ -63,7 +63,7 @@ public final class ActiveContacts
 //#endif
 {
     
-    Vector activeContacts;
+    Vector activeContacts = new Vector(0);
     private Display display;
     private MainBar mainbar;
     private Displayable parentView;
@@ -71,13 +71,23 @@ public final class ActiveContacts
     private int sortType = -1;
     public static boolean isActive = false;
     
-    private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
-    private Command cmdOk=new Command(SR.MS_SELECT, Command.SCREEN, 1);
-    private Command cmdCreateMultiMessage=new Command(SR.MS_MULTI_MESSAGE, Command.SCREEN, 3);
-    private Command cmdSortType=new Command(SR.MS_SORT_TYPE, Command.SCREEN, 4);
-    private Command cmdSortDefault=new Command(SR.MS_SORT_TYPE_DEF, Command.SCREEN, 5);
-    private Command cmdSortByStatus=new Command(SR.MS_SORT_TYPE_STATUS, Command.SCREEN, 6);
-    private Command cmdSortByMsgsCount=new Command(SR.MS_SORT_TYPE_MSGS, Command.SCREEN, 7);
+    public void initCommands(){
+        cmdCancel=new Command(SR.get(SR.MS_BACK), Command.BACK, 99);
+        cmdOk=new Command(SR.get(SR.MS_SELECT), Command.SCREEN, 1);
+        cmdCreateMultiMessage=new Command(SR.get(SR.MS_MULTI_MESSAGE), Command.SCREEN, 3);
+        cmdSortType=new Command(SR.get(SR.MS_SORT_TYPE), Command.SCREEN, 4);
+        cmdSortDefault=new Command(SR.get(SR.MS_SORT_TYPE_DEF), Command.SCREEN, 5);
+        cmdSortByStatus=new Command(SR.get(SR.MS_SORT_TYPE_STATUS), Command.SCREEN, 6);
+        cmdSortByMsgsCount=new Command(SR.get(SR.MS_SORT_TYPE_MSGS), Command.SCREEN, 7);
+    }
+
+    private Command cmdCancel;
+    private Command cmdOk;
+    private Command cmdCreateMultiMessage;
+    private Command cmdSortType;
+    private Command cmdSortDefault;
+    private Command cmdSortByStatus;
+    private Command cmdSortByMsgsCount;
 
     
     private long lasttime = 0;
@@ -102,8 +112,7 @@ public final class ActiveContacts
     public void setActiveContacts(Displayable pView, Contact current){
         this.parentView=pView;
         
-        activeContacts = null;
-	activeContacts = new Vector(0);
+        activeContacts.setSize(0);
         Contact c = null;
         
         Vector hContacts = midlet.BombusQD.sd.roster.getHContacts();
@@ -131,7 +140,7 @@ public final class ActiveContacts
         this.display = display;
 
         mainbar=new MainBar(2, String.valueOf(getItemCount()), " ", false);
-        mainbar.addElement(SR.MS_ACTIVE_CONTACTS);
+        mainbar.addElement(SR.get(SR.MS_ACTIVE_CONTACTS));
         setMainBarItem(mainbar);
 
 	commandState();
@@ -141,6 +150,7 @@ public final class ActiveContacts
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
+        if(cmdOk == null) initCommands();
         addCommand(cmdOk); cmdOk.setImg(0x43);
         addCommand(cmdCreateMultiMessage); cmdCreateMultiMessage.setImg(0x81);
         addCommand(cmdSortType); cmdSortType.setImg(0x64);
@@ -174,7 +184,7 @@ public final class ActiveContacts
     public void eventOk() {
 	Contact c=(Contact)getFocusedObject();
         isActive = false;
-         if(Config.getInstance().useClassicChat) 
+         if(Config.getInstance().module_classicchat) 
              new SimpleItemChat(display,midlet.BombusQD.sd.roster,(Contact)c);            
          else
              display.setCurrent(c.getMessageList());
@@ -264,7 +274,7 @@ public final class ActiveContacts
         display.setCurrent(parentView);
     }
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_SELECT; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_SELECT); }
+    public String touchRightCommand(){ return SR.get(SR.MS_BACK); }
 //#endif
 }

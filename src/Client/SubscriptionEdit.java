@@ -47,7 +47,7 @@ public class SubscriptionEdit
     String to;
     /** Creates a new instance of YesNoAlert */
     public SubscriptionEdit(Display display, Displayable pView, Contact c) {
-        super(display, pView, SR.MS_SUBSCRIPTION);
+        super(display, pView, SR.get(SR.MS_SUBSCRIPTION));
         
         this.display=display;
         
@@ -58,11 +58,11 @@ public class SubscriptionEdit
 
         itemsList.addElement(new SpacerItem(10));
 
-        action=new DropChoiceBox(display, SR.MS_ACTION);
-        action.append(SR.MS_NO);
-        action.append(SR.MS_ASK_SUBSCRIPTION);
-        action.append(SR.MS_GRANT_SUBSCRIPTION);
-        action.append(SR.MS_SUBSCR_REMOVE);
+        action=new DropChoiceBox(display, SR.get(SR.MS_ACTION));
+        action.append(SR.get(SR.MS_NO));
+        action.append(SR.get(SR.MS_ASK_SUBSCRIPTION));
+        action.append(SR.get(SR.MS_GRANT_SUBSCRIPTION));
+        action.append(SR.get(SR.MS_SUBSCR_REMOVE));
         action.setSelectedIndex(0);
         itemsList.addElement(action);
 

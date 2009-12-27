@@ -84,15 +84,15 @@ public class ColorConfigForm
 
     /** Creates a new instance of ColorConfigForm */
     public ColorConfigForm(final Display display, Displayable pView) {
-        super(display, pView, SR.MS_COLOR_TUNE);
+        super(display, pView, SR.get(SR.MS_COLOR_TUNE));
         this.display=display;
 
 //#ifdef COLOR_TUNE
 //#ifdef PLUGINS
 //#             if (StaticData.getInstance().Colors) {
 //#endif
-//#         invertColors=new LinkString(SR.MS_INVERT) { public void doAction() { ColorTheme.invertSkin(); } };
-//#         configureColors=new LinkString(SR.MS_EDIT_COLORS) { public void doAction() { new ColorsList(display);  } };   
+//#         invertColors=new LinkString(SR.get(SR.MS_INVERT)) { public void doAction() { ColorTheme.invertSkin(); } };
+//#         configureColors=new LinkString(SR.get(SR.MS_EDIT_COLORS)) { public void doAction() { new ColorsList(display);  } };   
 //#         itemsList.addElement(configureColors);
 //#ifdef PLUGINS
 //#             }
@@ -113,34 +113,34 @@ public class ColorConfigForm
                     itemsList.addElement(str);
                     if(midlet.BombusQD.cf.path_skin.indexOf((String)files[1].elementAt(i))>-1) ind = i;
                 }
-                skinFiles = new TrackItem(ind, skins.size() - 1,skins);
+                skinFiles = new TrackItem(ind, skins.size() - 1, skins, false);
                 itemsList.addElement(skinFiles);
             }
         } catch (Exception e) {}
         
-       argb_bgnd = new TrackItem(midlet.BombusQD.cf.argb_bgnd/10, 25, null);
-       gmenu_bgnd = new TrackItem(midlet.BombusQD.cf.gmenu_bgnd/10, 25, null);
-       popup_bgnd = new TrackItem(midlet.BombusQD.cf.popup_bgnd/10, 25, null);
-       cursor_bgnd = new TrackItem(midlet.BombusQD.cf.cursor_bgnd/10, 25, null);
-        itemsList.addElement(new SimpleString(SR.MS_TRANSPARENT, true));
+       argb_bgnd = new TrackItem(midlet.BombusQD.cf.argb_bgnd/10, 25, null, false);
+       gmenu_bgnd = new TrackItem(midlet.BombusQD.cf.gmenu_bgnd/10, 25, null, false);
+       popup_bgnd = new TrackItem(midlet.BombusQD.cf.popup_bgnd/10, 25, null, false);
+       cursor_bgnd = new TrackItem(midlet.BombusQD.cf.cursor_bgnd/10, 25, null, false);
+        itemsList.addElement(new SimpleString(SR.get(SR.MS_TRANSPARENT), true));
         itemsList.addElement(new SpacerItem(2));
-        itemsList.addElement(new SimpleString(SR.MS_BGND_MIDLET, true));
+        itemsList.addElement(new SimpleString(SR.get(SR.MS_BGND_MIDLET), true));
         itemsList.addElement(argb_bgnd);
-        itemsList.addElement(new SimpleString(SR.MS_GR_MENU, true));
+        itemsList.addElement(new SimpleString(SR.get(SR.MS_GR_MENU), true));
         itemsList.addElement(gmenu_bgnd);
-        itemsList.addElement(new SimpleString(SR.MS_POPUPS, true));
+        itemsList.addElement(new SimpleString(SR.get(SR.MS_POPUPS), true));
         itemsList.addElement(popup_bgnd);
-        itemsList.addElement(new SimpleString(SR.MS_CURSOR_TR, true));
+        itemsList.addElement(new SimpleString(SR.get(SR.MS_CURSOR_TR), true));
         itemsList.addElement(cursor_bgnd);        
         itemsList.addElement(new SpacerItem(5));
 //#if FILE_IO
-        loadFromFile=new LinkString(SR.MS_LOAD_FROM_FILE) { public void doAction() { initBrowser(1); } };
+        loadFromFile=new LinkString(SR.get(SR.MS_LOAD_FROM_FILE)) { public void doAction() { initBrowser(1); } };
 
-        saveToFile=new LinkString(SR.MS_SAVE_TO_FILE) { public void doAction() { initBrowser(0); } };
+        saveToFile=new LinkString(SR.get(SR.MS_SAVE_TO_FILE)) { public void doAction() { initBrowser(0); } };
 
 //#endif
         
-        reset=new LinkString(SR.MS_CLEAR) { 
+        reset=new LinkString(SR.get(SR.MS_CLEAR)) { 
           public void doAction() {
             ColorTheme.loadSkin("/themes/default.txt", 1, true);
             //ColorTheme.init(); 

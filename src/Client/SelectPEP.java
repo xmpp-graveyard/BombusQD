@@ -79,8 +79,8 @@ public final class SelectPEP extends VirtualList implements
     private int xBorder = 0;
     
     
-    Command cmdCancel=new Command(SR.MS_CANCEL,Command.BACK,99);
-    Command cmdOk=new Command(SR.MS_SELECT,Command.OK,1);
+    Command cmdCancel;
+    Command cmdOk;
      
     
     final static Activity ac = new Activity();
@@ -116,7 +116,7 @@ public final class SelectPEP extends VirtualList implements
        
        
        ac.CATEGORY_traveling,             ac.ACTIVITY_commuting,ac.ACTIVITY_cycling,ac.ACTIVITY_driving,ac.ACTIVITY_in_a_car,
-                                          ac.ACTIVITY_on_a_bus,ac.ACTIVITY_on_a_plane,ac.ACTIVITY_on_a_train,ac.ACTIVITY_on_a_trip,
+                                          ac.ACTIVITY_on_a_bus,ac.ACTIVITY_on_a_train,ac.ACTIVITY_on_a_plane,ac.ACTIVITY_on_a_trip,
                                           ac.ACTIVITY_walking,
        
        ac.CATEGORY_working,               ac.ACTIVITY_coding,ac.ACTIVITY_in_a_meeting,ac.ACTIVITY_studying,ac.ACTIVITY_writing
@@ -127,6 +127,13 @@ public final class SelectPEP extends VirtualList implements
     private boolean isMood;
     
     public void show(Displayable pView,boolean isMood) {
+        
+        mainbar = new MainBar(locale.SR.get(SR.MS_SELECT));
+        setMainBarItem(mainbar);
+        
+        cmdCancel=new Command(SR.get(SR.MS_CANCEL),Command.BACK,99);
+        cmdOk=new Command(SR.get(SR.MS_SELECT),Command.OK,1);
+        
         this.isMood = isMood;
         if(isMood) {
           il = MoodIcons.getInstance();
@@ -173,7 +180,7 @@ public final class SelectPEP extends VirtualList implements
     
     private MainBar mainbar;
     public SelectPEP(Display display) {
-         mainbar = new MainBar(locale.SR.MS_SELECT);
+         mainbar = new MainBar(locale.SR.get(SR.MS_SELECT));
          setMainBarItem(mainbar);
          this.display = display;
     }
@@ -203,7 +210,7 @@ public final class SelectPEP extends VirtualList implements
           if( ((String)Moods.getInstance().moodValue.lastElement()).equals(getTipString()) ) OkNotify(null); 
           else {
             midlet.BombusQD.cf.cursorPos[3]=cursor;            
-            new MIDPTextBox(display, SR.MS_USERMOOD, Moods.getInstance().myMoodText, this, TextField.ANY, 100);
+            new MIDPTextBox(display, SR.get(SR.MS_USERMOOD), Moods.getInstance().myMoodText, this, TextField.ANY, 100);
           }
       } else publishActivity();
     }
@@ -437,7 +444,7 @@ public final class SelectPEP extends VirtualList implements
 //#endif     
 
      
-    public String touchLeftCommand(){ return SR.MS_SELECT; }
-    public String touchRightCommand(){ return SR.MS_BACK; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_SELECT); }
+    public String touchRightCommand(){ return SR.get(SR.MS_BACK); }
 //#endif
 }

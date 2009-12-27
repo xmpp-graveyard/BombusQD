@@ -206,7 +206,7 @@ public class Config {
     public boolean useLowMemory_msgedit=true;
     public boolean useLowMemory_userotator=false;   
     public boolean useLowMemory_iconmsgcollapsed=false;    
-    public boolean drawCPhoto=true;
+    //public boolean drawCPhoto=true;
     public boolean auto_queryPhoto=false;
     
     public boolean sendMoodInMsg=false;
@@ -249,7 +249,7 @@ public class Config {
     public boolean iconsLeft = true;   
     public String path_skin = "";   
     public int width_classic=-1;
-    public boolean useClassicChat=false;
+    //public boolean useClassicChat=false;
 
     //classic chat
     public int classic_chat_height=140;
@@ -295,7 +295,7 @@ public class Config {
     public static boolean ANIsmilesDetect = true;
     public boolean showCollapsedPresences=true;
     public boolean networkAnnotation=true;
-    public boolean metaContacts=true;
+    public boolean metaContacts=false;
     public boolean graphicsMenu=false;
     public int graphicsMenuPosition=1;
     
@@ -306,6 +306,7 @@ public class Config {
     public boolean autoLoadTransports = true;
     
     public boolean simpleContacts = false;//fast contact draw
+    public int userAppLevel = 0;    
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -534,7 +535,7 @@ public class Config {
             useLowMemory_msgedit=inputStream.readBoolean();
             useLowMemory_userotator=inputStream.readBoolean();
             useLowMemory_iconmsgcollapsed=inputStream.readBoolean();
-            drawCPhoto=inputStream.readBoolean();
+            //drawCPhoto=inputStream.readBoolean();
             auto_queryPhoto=inputStream.readBoolean();
             sendMoodInMsg=inputStream.readBoolean();    
             
@@ -544,7 +545,7 @@ public class Config {
             drawScrollBgnd=inputStream.readBoolean();
             isLegal=inputStream.readBoolean();
             iconsLeft=inputStream.readBoolean();
-            useClassicChat=inputStream.readBoolean();
+            //useClassicChat=inputStream.readBoolean();
             use_phone_theme=inputStream.readBoolean();
             gradient_cursor=inputStream.readBoolean();
             autoSaveVcard=inputStream.readBoolean();
@@ -568,7 +569,6 @@ public class Config {
             module_autostatus=inputStream.readBoolean();
             module_classicchat=inputStream.readBoolean();
             module_theme=inputStream.readBoolean();
-            module_cashe=inputStream.readBoolean();
             module_history=inputStream.readBoolean();
             module_fonts=inputStream.readBoolean();
             module_ie=inputStream.readBoolean();
@@ -638,6 +638,7 @@ public class Config {
             graphicsMenuPosition=inputStream.readInt();
             gradientBarLight1=inputStream.readInt();
             gradientBarLight2=inputStream.readInt();
+            userAppLevel = inputStream.readInt();
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -688,7 +689,6 @@ public class Config {
     public boolean module_autostatus = false;
     public boolean module_classicchat = false;
     public boolean module_theme = true;
-    public boolean module_cashe = false;
     
     public boolean module_history= false;
     public boolean module_fonts= true;
@@ -769,7 +769,7 @@ public class Config {
             outputStream.writeBoolean(useLowMemory_msgedit);
             outputStream.writeBoolean(useLowMemory_userotator);
             outputStream.writeBoolean(useLowMemory_iconmsgcollapsed);
-            outputStream.writeBoolean(drawCPhoto);
+            //outputStream.writeBoolean(drawCPhoto);
             outputStream.writeBoolean(auto_queryPhoto);
             outputStream.writeBoolean(sendMoodInMsg);    
             
@@ -779,7 +779,7 @@ public class Config {
             outputStream.writeBoolean(drawScrollBgnd);
             outputStream.writeBoolean(isLegal);
             outputStream.writeBoolean(iconsLeft);
-            outputStream.writeBoolean(useClassicChat);
+            //outputStream.writeBoolean(useClassicChat);
             outputStream.writeBoolean(use_phone_theme);
             outputStream.writeBoolean(gradient_cursor);
             outputStream.writeBoolean(autoSaveVcard);
@@ -803,7 +803,6 @@ public class Config {
             outputStream.writeBoolean(module_autostatus);
             outputStream.writeBoolean(module_classicchat);
             outputStream.writeBoolean(module_theme);
-            outputStream.writeBoolean(module_cashe);
             outputStream.writeBoolean(module_history);
             outputStream.writeBoolean(module_fonts);
             outputStream.writeBoolean(module_ie);
@@ -866,6 +865,7 @@ public class Config {
             outputStream.writeInt(graphicsMenuPosition);
             outputStream.writeInt(gradientBarLight1);
             outputStream.writeInt(gradientBarLight2);
+            outputStream.writeInt(userAppLevel);
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confInt", 0, true);        
     }

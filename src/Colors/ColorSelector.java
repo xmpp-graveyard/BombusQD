@@ -28,7 +28,6 @@ package Colors;
 
 import javax.microedition.lcdui.*;
 import locale.SR;
-import Client.Config;
 
 public class ColorSelector extends Canvas implements Runnable, CommandListener {
 //#ifdef PLUGINS
@@ -56,18 +55,23 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     int paramName;
     int ncolor;
 
-    Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
-
+    Command cmdOk;
+    Command cmdCancel;
+    
     private int color;
 
     private int py;
     private int ph;
 
-    Command cmdCancel = new Command(SR.MS_CANCEL /*"Back"*/, Command.CANCEL, 99);
+
 
     public ColorSelector(Display display, int paramName) {
         super();
         this.display=display;
+        
+        cmdOk = new Command(SR.get(SR.MS_OK), Command.OK, 1);
+        cmdCancel = new Command(SR.get(SR.MS_CANCEL) /*"Back"*/, Command.CANCEL, 99);        
+        
         parentView=display.getCurrent();
         this.paramName=paramName;
 
@@ -78,20 +82,20 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 
         
         if(paramName==49){
-          alpha=Config.getInstance().argb_bgnd;
+          alpha=midlet.BombusQD.cf.argb_bgnd;
         }
         else 
         if(paramName==50){
-          alpha=Config.getInstance().gmenu_bgnd;
+          alpha=midlet.BombusQD.cf.gmenu_bgnd;
         }  
         else if(paramName==40){
-          alpha=Config.getInstance().popup_bgnd;
+          alpha=midlet.BombusQD.cf.popup_bgnd;
         } 
         else if(paramName==42){
-          alpha=Config.getInstance().popup_bgnd;
+          alpha=midlet.BombusQD.cf.popup_bgnd;
         }  
         else if(paramName==34){
-          alpha=Config.getInstance().cursor_bgnd;
+          alpha=midlet.BombusQD.cf.cursor_bgnd;
         }
         
         red=ColorTheme.getRed(color);
@@ -125,7 +129,7 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
            g.fillRect(5, h/2-40, w/2-20, 80);
            g.setColor(0x80000300);              
 //#ifdef COLOR_TUNE
-//#         g.drawString(s+" "+ColorsList.NAMES[paramName], 5, 5, Graphics.TOP|Graphics.LEFT);
+//#         g.drawString(s+" "+ColorTheme.NAMES[paramName], 5, 5, Graphics.TOP|Graphics.LEFT);
 //#endif
         
         //draw red
@@ -363,16 +367,16 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
 //#if COLOR_TUNE
 //#        
 //#       if(paramName==49){  
-//#          Config.getInstance().argb_bgnd=alpha;
+//#          midlet.BombusQD.cf.argb_bgnd=alpha;
 //#       }
 //#       else if(paramName==50){  
-//#          Config.getInstance().gmenu_bgnd=alpha;
+//#          midlet.BombusQD.cf.gmenu_bgnd=alpha;
 //#       } 
 //#       else if(paramName==40 || paramName==42){  
-//#          Config.getInstance().popup_bgnd=alpha;
+//#          midlet.BombusQD.cf.popup_bgnd=alpha;
 //#       }
 //#       else if(paramName==34){
-//#          Config.getInstance().cursor_bgnd=alpha;
+//#          midlet.BombusQD.cf.cursor_bgnd=alpha;
 //#       }
 //#       String val = ColorTheme.ColorToString(red, green, blue);
 //#       int finalColor=ColorTheme.getColorInt(val);

@@ -65,40 +65,47 @@ public class AccountSelect
 
     public Vector accountList;
     int activeAccount;
-    
-    Command cmdLogin=new Command(SR.MS_SELLOGIN, Command.OK,1);
 
-//#ifdef GRAPHICS_MENU   
-//#     Command cmdRegister=new Command(SR.MS_REGISTERING,Command.ITEM,11);   
-//#         Command cmdServ1_reg=new Command("Jabber.ru", Command.SCREEN,18); 
-//#         Command cmdServ2_reg=new Command("Silper.cz", Command.SCREEN,19);
-//#         Command cmdServ3_reg=new Command("Jabbus.org", Command.SCREEN,20); 
-//#         Command cmdServ4_reg=new Command("Mytlt.ru", Command.SCREEN,21); 
-//#         Command cmdServ5_reg=new Command("Jabbim.com", Command.SCREEN,22);  
-//#         Command cmdServ6_reg=new Command("Gajim.org", Command.SCREEN,23);
-//# 
-//#     Command cmdAdd=new Command(SR.MS_NEW_ACCOUNT, Command.SCREEN,12);    
-//#         Command cmdJabber=new Command("Jabber", Command.SCREEN,13);    
-//#         Command cmdYaru=new Command("Yandex.ru", Command.SCREEN,14);    
-//#         Command cmdGTalk_SSL=new Command("Gtalk SSL", Command.SCREEN,15);    
-//#         Command cmdGTalk_HTTPS=new Command("Gtalk HTTPS", Command.SCREEN,16);            
-//#         Command cmdLj=new Command("LiveJournal", Command.SCREEN,17);   
-//#         Command cmdQip=new Command("QIP", Command.SCREEN,18);
-//#endif    
-   
-    Command cmdEdit=new Command(SR.MS_EDIT,Command.ITEM,3);
-    Command cmdDel=new Command(SR.MS_DELETE,Command.ITEM,4);
-    //Command cmdConfig=new Command(SR.MS_OPTIONS,Command.ITEM,5);
-    Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
-    Command cmdQuit=new Command(SR.MS_APP_QUIT,Command.SCREEN,10);
+    Command cmdLogin;
+
+    Command cmdRegister;
+        Command cmdServ1_reg=new Command("Jabber.ru", Command.SCREEN,18); 
+        Command cmdServ2_reg=new Command("Silper.cz", Command.SCREEN,19);
+        Command cmdServ3_reg=new Command("Jabbus.org", Command.SCREEN,20); 
+        Command cmdServ4_reg=new Command("Mytlt.ru", Command.SCREEN,21); 
+        Command cmdServ5_reg=new Command("Jabbim.com", Command.SCREEN,22);  
+        Command cmdServ6_reg=new Command("Gajim.org", Command.SCREEN,23);
+    Command cmdAdd;
+        Command cmdJabber=new Command("Jabber", Command.SCREEN,13);    
+        Command cmdYaru=new Command("Yandex.ru", Command.SCREEN,14);    
+        Command cmdGTalk_SSL=new Command("Gtalk SSL", Command.SCREEN,15);    
+        Command cmdGTalk_HTTPS=new Command("Gtalk HTTPS", Command.SCREEN,16);            
+        Command cmdLj=new Command("LiveJournal", Command.SCREEN,17);   
+        Command cmdQip=new Command("QIP", Command.SCREEN,18);
+        
     
-    Command cmdRemoveAcc=new Command(SR.MS_REMOVE_ACCOUNT,Command.ITEM,90);
-    Command cmdChangePass=new Command(SR.MS_CHANGE_PASSWORD,Command.ITEM,91);    
+    Command cmdEdit;
+    Command cmdDel;
+    Command cmdCancel;
+    Command cmdQuit;
+    Command cmdRemoveAcc;
+    Command cmdChangePass;    
     
     int status;
     /** Creates a new instance of AccountPicker */
     public AccountSelect(Display display, Displayable pView, boolean enableQuit,int status) {
         super();
+        
+        cmdLogin=new Command(SR.get(SR.MS_SELLOGIN), Command.OK,1);
+        cmdRegister=new Command(SR.get(SR.MS_REGISTERING),Command.ITEM,11);   
+        cmdAdd=new Command(SR.get(SR.MS_NEW_ACCOUNT), Command.SCREEN,12);    
+        cmdEdit=new Command(SR.get(SR.MS_EDIT),Command.ITEM,3);
+        cmdDel=new Command(SR.get(SR.MS_DELETE),Command.ITEM,4);
+        cmdCancel=new Command(SR.get(SR.MS_BACK),Command.BACK,99);
+        cmdQuit=new Command(SR.get(SR.MS_APP_QUIT),Command.SCREEN,10);
+        cmdRemoveAcc=new Command(SR.get(SR.MS_REMOVE_ACCOUNT),Command.ITEM,90);
+        cmdChangePass=new Command(SR.get(SR.MS_CHANGE_PASSWORD),Command.ITEM,91);  
+        
         this.display=display;
         this.status=status;
         String str = "";
@@ -111,7 +118,7 @@ public class AccountSelect
             case 5: str = "(offline)"; break;
             case 6: str = ""; break;
         }
-        setMainBarItem(new MainBar(status==-1?SR.MS_ACCOUNTS:SR.MS_CONNECT_TO + str));
+        setMainBarItem(new MainBar(status==-1?SR.get(SR.MS_ACCOUNTS):SR.get(SR.MS_CONNECT_TO) + str));
 
         accountList=null;
         accountList=new Vector(0);
@@ -272,7 +279,7 @@ public class AccountSelect
         if (c==cmdDel) {
           if(midlet.BombusQD.sd.roster!=null){ 
             if (cursor==midlet.BombusQD.cf.accountIndex && midlet.BombusQD.sd.roster.isLoggedIn()) return;
-            new AlertBox(SR.MS_DELETE, getFocusedObject().toString(), display, this) {
+            new AlertBox(SR.get(SR.MS_DELETE), getFocusedObject().toString(), display, this) {
                 public void yes() {
                     delAccount();
                 }
@@ -339,7 +346,7 @@ public class AccountSelect
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_DISCO, null, menuCommands);
    }   
 //#endif
 

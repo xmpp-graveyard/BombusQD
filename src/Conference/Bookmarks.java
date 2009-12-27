@@ -65,31 +65,54 @@ public final class Bookmarks
 //#endif
     {   
     
+
+    public void initCommands() {
+          cmdCancel=new Command (SR.get(SR.MS_CANCEL), Command.BACK, 99);
+          cmdJoin=new Command (SR.get(SR.MS_SELECT), Command.OK, 1);
+          cmdAdvJoin=new Command (SR.get(SR.MS_EDIT_JOIN), Command.SCREEN, 2);
+          cmdDoAutoJoin=new Command(SR.get(SR.MS_DO_AUTOJOIN), Command.SCREEN, 3);
+          cmdNew=new Command (SR.get(SR.MS_NEW_BOOKMARK), Command.SCREEN, 4);
+          cmdConfigure=new Command (SR.get(SR.MS_CONFIG_ROOM), Command.SCREEN, 5);
+//#ifdef SERVICE_DISCOVERY
+          cmdDisco=new Command (SR.get(SR.MS_DISCO_ROOM), Command.SCREEN, 6);
+//#endif
+          cmdUp=new Command (SR.get(SR.MS_MOVE_UP), Command.SCREEN, 7);
+          cmdDwn=new Command (SR.get(SR.MS_MOVE_DOWN), Command.SCREEN, 8);
+          cmdSort=new Command (SR.get(SR.MS_SORT), Command.SCREEN, 9);
+          cmdSave=new Command (SR.get(SR.MS_SAVE_LIST), Command.SCREEN, 10);
+          cmdRoomOwners=new Command (SR.get(SR.MS_OWNERS), Command.SCREEN, 11);
+          cmdRoomAdmins=new Command (SR.get(SR.MS_ADMINS), Command.SCREEN, 12);
+          cmdRoomMembers=new Command (SR.get(SR.MS_MEMBERS), Command.SCREEN, 13);
+          cmdRoomBanned=new Command (SR.get(SR.MS_BANNED), Command.SCREEN, 14);
+          cmdDel=new Command (SR.get(SR.MS_DELETE), Command.SCREEN, 15);
+          cmdMyService=new Command(SR.get(SR.MS_SERVICE), Command.SCREEN, 31);
+          commandState();
+    }
+    
+    
+    private Command cmdCancel;
+    private Command cmdJoin;
+    private Command cmdAdvJoin;
+    private Command cmdDoAutoJoin;
+    private Command cmdNew;
+    private Command cmdConfigure;
+//#ifdef SERVICE_DISCOVERY
+    private Command cmdDisco;
+//#endif
+    private Command cmdUp;
+    private Command cmdDwn;
+    private Command cmdSort;
+    private Command cmdSave;
+    private Command cmdRoomOwners;
+    private Command cmdRoomAdmins;
+    private Command cmdRoomMembers;
+    private Command cmdRoomBanned;
+    private Command cmdDel;
+    private Command cmdMyService;
+     
+    
     private BookmarkItem toAdd;
 
-    private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
-    private Command cmdJoin=new Command (SR.MS_SELECT, Command.OK, 1);
-    private Command cmdAdvJoin=new Command (SR.MS_EDIT_JOIN, Command.SCREEN, 2);
-    //private Command cmdDoAutoJoin=new Command(SR.MS_DO_AUTOJOIN, Command.SCREEN, 3);
-    private Command cmdNew=new Command (SR.MS_NEW_BOOKMARK, Command.SCREEN, 4);
-    private Command cmdConfigure=new Command (SR.MS_CONFIG_ROOM, Command.SCREEN, 5);
-//#ifdef SERVICE_DISCOVERY
-    private Command cmdDisco=new Command (SR.MS_DISCO_ROOM, Command.SCREEN, 6);
-//#endif
-    private Command cmdUp=new Command (SR.MS_MOVE_UP, Command.SCREEN, 7);
-    private Command cmdDwn=new Command (SR.MS_MOVE_DOWN, Command.SCREEN, 8);
-    private Command cmdSort=new Command (SR.MS_SORT, Command.SCREEN, 9);
-    private Command cmdSave=new Command (SR.MS_SAVE_LIST, Command.SCREEN, 10);
-
-    private Command cmdRoomOwners=new Command (SR.MS_OWNERS, Command.SCREEN, 11);
-    private Command cmdRoomAdmins=new Command (SR.MS_ADMINS, Command.SCREEN, 12);
-    private Command cmdRoomMembers=new Command (SR.MS_MEMBERS, Command.SCREEN, 13);
-    private Command cmdRoomBanned=new Command (SR.MS_BANNED, Command.SCREEN, 14);
-    
-    private Command cmdDel=new Command (SR.MS_DELETE, Command.SCREEN, 15);
-
-    private Command cmdMyService=new Command(SR.MS_SERVICE, Command.SCREEN, 31);
-    
     //JabberStream stream=sd.roster.theStream;
     /** Creates a new instance of Bookmarks */
     public Bookmarks(Display display, Displayable pView, BookmarkItem toAdd) {
@@ -104,9 +127,9 @@ public final class Bookmarks
         if (toAdd!=null) 
             addBookmark();
         
-        setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));//for title updating after "add bookmark"
+        setMainBarItem(new MainBar(2, null, SR.get(SR.MS_BOOKMARKS)+" ("+getItemCount()+") ", false));//for title updating after "add bookmark"
         
-        commandState();
+        initCommands();//fix
 
         setCommandListener(this);
 	attachDisplay(display);
@@ -121,6 +144,7 @@ public final class Bookmarks
         cmdThirdList.removeAllElements();
 //#endif
         addCommand(cmdJoin); cmdJoin.setImg(0x60);
+        addCommand(cmdDoAutoJoin); cmdDoAutoJoin.setImg(0x60);
         addCommand(cmdAdvJoin); cmdAdvJoin.setImg(0x61);
 	addCommand(cmdNew); cmdNew.setImg(0x62);
         addCommand(cmdUp); cmdUp.setImg(0x45);
@@ -191,7 +215,7 @@ public final class Bookmarks
             new ConferenceForm(display, this, join, cursor);
         } else if (c==cmdDel) {
             deleteBookmark();
-            setMainBarItem(new MainBar(2, null, SR.MS_BOOKMARKS+" ("+getItemCount()+") ", false));
+            setMainBarItem(new MainBar(2, null, SR.get(SR.MS_BOOKMARKS)+" ("+getItemCount()+") ", false));
             return;
         }
 //#ifdef SERVICE_DISCOVERY
@@ -203,13 +227,13 @@ public final class Bookmarks
         else if (c==cmdRoomMembers) new Affiliations(display, this, roomJid, (short)3);  
         else if (c==cmdRoomBanned) new Affiliations(display, this, roomJid, (short)4);  
         else if (c==cmdSort) sort(midlet.BombusQD.sd.roster.bookmarks);
-        /*else if (c==cmdDoAutoJoin) {
-            for (Enumeration e=sd.roster.bookmarks.elements(); e.hasMoreElements();) {
+        else if (c==cmdDoAutoJoin) {
+            for (Enumeration e=midlet.BombusQD.sd.roster.bookmarks.elements(); e.hasMoreElements();) {
                 BookmarkItem bm=(BookmarkItem) e.nextElement();
-                if (bm.autojoin) 
-                    ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, cf.confMessageCount);
+                if (bm.autojoin) ConferenceForm.join(bm.desc, bm.jid+'/'+bm.nick, bm.password, midlet.BombusQD.cf.confMessageCount);
             }
-        }*/
+            midlet.BombusQD.sd.roster.showRoster();
+        }
         
         else if (c==cmdSave) saveBookmarks();
         else if (c==cmdUp) { move(-1); keyUp(); }
@@ -265,7 +289,7 @@ public final class Bookmarks
     }
     
     protected void keyClear(){
-        new AlertBox(SR.MS_DELETE_ASK, ((BookmarkItem)getFocusedObject()).getJid(), display, this) {
+        new AlertBox(SR.get(SR.MS_DELETE_ASK), ((BookmarkItem)getFocusedObject()).getJid(), display, this) {
             public void yes() {
                 deleteBookmark();
             }
@@ -285,7 +309,7 @@ public final class Bookmarks
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_BOOKMARKS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_BOOKMARKS), null, menuCommands);
     }  
 //#endif      
 

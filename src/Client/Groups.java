@@ -56,20 +56,20 @@ public class Groups implements JabberBlockListener{
     public final static byte TYPE_NOT_IN_LIST=8;
     public final static byte TYPE_TRANSP=9;
 
-    public final static String COMMON_GROUP=SR.MS_GENERAL;
+    public final static String COMMON_GROUP=SR.get(SR.MS_GENERAL);
     
     private final static String GROUPSTATE_NS="http://bombusmod-qd.wen.ru/groups";
     
     private Group[] spetialGroup = new Group[10];
     public Groups(){
         groups=new Vector(0);
-        addGroup(SR.MS_TRANSPORTS, TYPE_TRANSP);
-        addGroup(SR.MS_SELF_CONTACT, TYPE_SELF);
-        addGroup(SR.MS_SEARCH_RESULTS, TYPE_SEARCH_RESULT);
-        addGroup(SR.MS_NOT_IN_LIST, TYPE_NOT_IN_LIST);
-        addGroup(SR.MS_IGNORE_LIST, TYPE_IGNORE);
-        addGroup(SR.MS_VISIBLE_GROUP, TYPE_VISIBLE);
-        addGroup(SR.MS_VIP_GROUP, TYPE_VIP);
+        addGroup(SR.get(SR.MS_TRANSPORTS), TYPE_TRANSP);
+        addGroup(SR.get(SR.MS_SELF_CONTACT), TYPE_SELF);
+        addGroup(SR.get(SR.MS_SEARCH_RESULTS), TYPE_SEARCH_RESULT);
+        addGroup(SR.get(SR.MS_NOT_IN_LIST), TYPE_NOT_IN_LIST);
+        addGroup(SR.get(SR.MS_IGNORE_LIST), TYPE_IGNORE);
+        addGroup(SR.get(SR.MS_VISIBLE_GROUP), TYPE_VISIBLE);
+        addGroup(SR.get(SR.MS_VIP_GROUP), TYPE_VIP);
         addGroup(Groups.COMMON_GROUP, TYPE_NO_GROUP);
     }
     public void destroy() {

@@ -61,11 +61,11 @@ public class Affiliations
 
     private JabberStream stream=StaticData.getInstance().roster.theStream;
     
-    private Command cmdCancel = new Command (SR.MS_BACK, Command.BACK, 99);
-    private Command cmdModify = new Command (SR.MS_MODIFY, Command.SCREEN, 1);
-    private Command cmdNew    = new Command (SR.MS_NEW_JID, Command.SCREEN, 2);
+    private Command cmdCancel;
+    private Command cmdModify;
+    private Command cmdNew;
 //#ifdef CLIPBOARD
-//#     private Command cmdCopy   = new Command(SR.MS_COPY, Command.SCREEN, 3);
+//#     private Command cmdCopy;
 //#     private ClipBoard clipboard; 
 //#endif
     
@@ -77,6 +77,13 @@ public class Affiliations
     public Affiliations(Display display, Displayable pView, String room, short affiliationIndex) {
         super ();
         this.room=room;
+        
+        cmdCancel = new Command (SR.get(SR.MS_BACK), Command.BACK, 99);
+        cmdModify = new Command (SR.get(SR.MS_MODIFY), Command.SCREEN, 1);
+        cmdNew    = new Command (SR.get(SR.MS_NEW_JID), Command.SCREEN, 2);
+//#ifdef CLIPBOARD
+//#         cmdCopy   = new Command(SR.get(SR.MS_COPY), Command.SCREEN, 3);
+//#endif
         
 	//fix for old muc
 	switch (affiliationIndex) {

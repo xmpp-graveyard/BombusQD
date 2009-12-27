@@ -49,13 +49,12 @@
 //# 
 //#     private String body;
 //# 
-//#     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
-//#     private Command cmdSend=new Command(SR.MS_SEND, Command.OK,1);
-//# 
-//#     private Command cmdPasteIQDisco=new Command("disco#info", Command.SCREEN,11);
-//#     private Command cmdPasteIQVersion=new Command("jabber:iq:version", Command.SCREEN,12);
-//#     private Command cmdPastePresence=new Command("presence", Command.SCREEN,13);
-//#     private Command cmdPasteMessage=new Command("message", Command.SCREEN,14);
+//#     private Command cmdCancel;
+//#     private Command cmdSend;
+//#     private Command cmdPasteIQDisco;
+//#     private Command cmdPasteIQVersion;
+//#     private Command cmdPastePresence;
+//#     private Command cmdPasteMessage;
 //#     
 //#     private static final String TEMPLATE_IQ_DISCO="<iq to='???' type='get'>\n<query xmlns='http://jabber.org/protocol/disco#info'/>\n</iq>";
 //#     private static final String TEMPLATE_IQ_VERSION="<iq to='???' type='get'>\n<query xmlns='jabber:iq:version'/>\n</iq>";
@@ -65,8 +64,16 @@
 //#     public TextBox t;      
 //#     
 //#     public StanzaEdit(Display display, Displayable pView, String body) {
-//#         //super(display, pView, body, SR.MS_XML_CONSOLE, TextField.ANY);
-//#         t=new TextBox(SR.MS_XML_CONSOLE,body, 4096, TextField.ANY);
+//#         //super(display, pView, body, SR.get(SR.MS_XML_CONSOLE), TextField.ANY);
+//#         
+//#         cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK,99);
+//#         cmdSend=new Command(SR.get(SR.MS_SEND), Command.OK,1);
+//#         cmdPasteIQDisco=new Command("disco#info", Command.SCREEN,11);
+//#         cmdPasteIQVersion=new Command("jabber:iq:version", Command.SCREEN,12);
+//#         cmdPastePresence=new Command("presence", Command.SCREEN,13);
+//#         cmdPasteMessage=new Command("message", Command.SCREEN,14);
+//#         
+//#         t=new TextBox(SR.get(SR.MS_XML_CONSOLE),body, 4096, TextField.ANY);
 //#         this.display=display;
 //#         
 //#         t.addCommand(cmdSend);

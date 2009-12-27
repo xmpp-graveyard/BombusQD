@@ -48,10 +48,10 @@ public class SimpleItemChat implements CommandListener {
   private Command exit;
   public TextField txtField; 
   
-  private Command cmdSend=new Command(locale.SR.MS_SEND, Command.SCREEN, 1);
-  private Command cmdInsNick=new Command(locale.SR.MS_NICKNAMES,Command.SCREEN,6);
-  private Command cmdInsMe=new Command(locale.SR.MS_SLASHME, Command.SCREEN, 5); ; // /me  
-  private Command cmdCancel=new Command(locale.SR.MS_BACK, Command.BACK, 2);
+  private Command cmdSend;
+  private Command cmdInsNick;
+  private Command cmdInsMe; // /me  
+  private Command cmdCancel;
   Contact contact;
   
   public TextField msgTF;
@@ -65,6 +65,11 @@ public class SimpleItemChat implements CommandListener {
     
     StaticData.getInstance().roster.activeContact=contact;
     contact.setIncoming(0);
+    
+    cmdSend=new Command(locale.SR.get(locale.SR.MS_SEND), Command.SCREEN, 1);
+    cmdInsNick=new Command(locale.SR.get(locale.SR.MS_NICKNAMES),Command.SCREEN,6);
+    cmdInsMe=new Command(locale.SR.get(locale.SR.MS_SLASHME), Command.SCREEN, 5); ; // /me  
+    cmdCancel=new Command(locale.SR.get(locale.SR.MS_BACK), Command.BACK, 2);
     
     form = new Form(contact.getJid());
     int width = form.getWidth();

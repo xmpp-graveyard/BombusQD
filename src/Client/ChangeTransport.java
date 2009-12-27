@@ -46,8 +46,8 @@
 //#     private ChoiceGroup tTranspList;
 //#     private String srcTransport;
 //#     
-//#     private Command cmdOk=new Command(SR.MS_OK, Command.SCREEN, 1);
-//#     private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
+//#     private Command cmdOk;
+//#     private Command cmdCancel;
 //#     
 //#     StaticData sd=StaticData.getInstance();
 //#     
@@ -55,11 +55,14 @@
 //#         this.srcTransport=srcTransport;
 //#         this.display=display;
 //#         
-//#         f=new Form(SR.MS_TRANSPORT);
+//#         cmdOk=new Command(SR.get(SR.MS_OK), Command.SCREEN, 1);
+//#         cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK, 99);
+//#         
+//#         f=new Form(SR.get(SR.MS_TRANSPORT));
 //#         
 //#         f.append("Warning!\nGateway "+srcTransport+" will be replaced by one from the list of online gateways for all JIDs in your roster (please logoff old gateway to avoid damaging contact list of your guest IM account)");
 //#         
-//#         tTranspList=new ChoiceGroup(SR.MS_TRANSPORT, ChoiceGroup.POPUP);
+//#         tTranspList=new ChoiceGroup(SR.get(SR.MS_TRANSPORT), ChoiceGroup.POPUP);
 //#         for (Enumeration e=sd.roster.getHContacts().elements(); e.hasMoreElements(); ){
 //#             Contact ct=(Contact)e.nextElement();
 //#             if (ct.jid.isTransport() && ct.status<Presence.PRESENCE_OFFLINE) //New transport must be online! If old transport is online and new transport is offline, contact list of guest IM account may be damaged
