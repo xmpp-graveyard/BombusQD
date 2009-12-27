@@ -64,7 +64,7 @@ public class SoftwareInfo implements JabberBlockListener {
                      }
                   }   
                 }
-                Msg m=new Msg(Constants.MESSAGE_TYPE_IN, "softinfo", locale.SR.MS_FEATURES, softinfo.toString());
+                Msg m=new Msg(Constants.MESSAGE_TYPE_IN, "softinfo", locale.SR.get(locale.SR.MS_FEATURES), softinfo.toString());
                 m.highlite=true;
                 m.itemCollapsed=true;
                 StaticData.getInstance().roster.setQuerySign(false);                

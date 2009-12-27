@@ -68,7 +68,7 @@ public abstract class VirtualList
     protected int getMainBarBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND);} 
     protected int getMainBarBGndBottom() { return ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);}
     
-    private StaticData sd=StaticData.getInstance();
+    private static StaticData sd=StaticData.getInstance();
     public GMenuConfig gm = GMenuConfig.getInstance();
 
     private int stringHeight;
@@ -627,12 +627,6 @@ public abstract class VirtualList
                 }
             }
             setAbsClip(g, width, height);
-
-            if(midlet.BombusQD.sd.roster!=null) {
-                    if (midlet.BombusQD.sd.roster.messageCount>0) drawEnvelop(g);
-            }
-            if (System.currentTimeMillis()-sd.getTrafficIn()<2000) drawTraffic(g, false);
-            if (System.currentTimeMillis()-sd.getTrafficOut()<2000) drawTraffic(g, true);
         }
   
         if(gm.itemGrMenu>0 && midlet.BombusQD.cf.graphicsMenu){
@@ -664,7 +658,7 @@ public abstract class VirtualList
         if (reconnectWindow.getInstance().isActive()) {
             if (reconnectTimeout>reconnectPos && reconnectPos!=0) {
    
-                int strWidth=g.getFont().stringWidth(SR.MS_RECONNECT);
+                int strWidth=g.getFont().stringWidth(SR.get(SR.MS_RECONNECT));
                 int progressWidth=(width/3)*2;
                 progressWidth=(strWidth>progressWidth)?strWidth:progressWidth;
                 int progressX=(width-progressWidth)/2;
@@ -674,7 +668,7 @@ public abstract class VirtualList
                 g.fillRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
                 g.setColor(ColorTheme.getColor(ColorTheme.POPUP_SYSTEM_INK));
                 g.drawRoundRect(progressX-2, (height/2)-(popHeight*2), progressWidth+4, (popHeight*2)+1, 6, 6);
-                g.drawString(SR.MS_RECONNECT, width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
+                g.drawString(SR.get(SR.MS_RECONNECT), width/2, (height/2)-(popHeight*2), Graphics.TOP | Graphics.HCENTER);
                 Progress.draw(g, reconnectPos*progressWidth/reconnectTimeout, reconnectString);
             }
         }
@@ -711,7 +705,6 @@ public abstract class VirtualList
 //#     public static GMenu GMenu;
 //#     
 //#     private void drawGraphicsMenu(final Graphics g) {
-//# 
 //#         GMenu.paintCustom(g,gm.itemGrMenu);
 //#     }
 //# 
@@ -946,29 +939,6 @@ public abstract class VirtualList
         reconnectString=reconnect;
     }
 
-    private void drawEnvelop(final Graphics g) {
-        g.setColor(getMainBarRGB());
-        int wpos= width/2;
-        int hpos= height-13;
-        
-        g.drawRect(wpos-4,	hpos, 	8, 	6);
-        g.drawLine(wpos-3,	hpos+1,	wpos,	hpos+4);
-        g.drawLine(wpos,	hpos+4,	wpos+3,	hpos+1);
-        g.drawLine(wpos-3,	hpos+5,	wpos-2,	hpos+4);
-        g.drawLine(wpos+2,	hpos+4,	wpos+3,	hpos+5);
-    }
-    
-    private void drawTraffic(final Graphics g, boolean up) {
-        int pos= up ? width/2+3 : width/2-3;
-        int pos2= up ? height-4 : height-2;
-        
-        //g.setColor((up)?0xff0000:0x00ff00);
-        g.setColor(getMainBarRGB());
-        g.drawLine(pos, height-5, pos, height-1);
-        g.drawLine(pos-1, pos2, pos+1, pos2);       
-        g.fillRect(pos-2, height-3, 1, 1);
-        g.fillRect(pos+2, height-3, 1, 1);
-    }
     
     private void setAbsClip(final Graphics g, int w, int h) {
         setAbsOrg(g, 0, 0);
@@ -1017,6 +987,44 @@ public abstract class VirtualList
         mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
     }
 
+    
+    private static int envObj[] = new int[0];
+    private final static int[] envelopMap = { //12x9
+              1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+              1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+              1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1,
+              1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1,
+              1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1,
+              1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1,
+              1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1,
+              1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+              1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    };
+    
+    private void drawEnvelop(final Graphics g, int x, int y) {
+        if(envObj.length == 0){
+           int inputSize = 12 * 9;
+           envObj = new int[inputSize];
+             for(int index = 0; index < inputSize; ++index) {
+               if(envelopMap[index] == 1) 
+                     envObj[index] = 0x000000 ; 
+               else envObj[index] = 0xffffff ;
+             }
+        }
+        g.drawRGB(envObj, 0, 12, x, y , 12, 9, false);
+    }
+
+    private void drawTraffic(final Graphics g, boolean up, int y) {
+        int pos= up ? width/2+4 : width/2-3;
+        int pos2= up ? y-4 : y-2;
+        //g.setColor((up)?0xff0000:0x00ff00);
+        g.setColor(getMainBarRGB());
+        g.drawLine(pos, y-5, pos, y-1);
+        g.drawLine(pos-1, pos2, pos+1, pos2);       
+        g.fillRect(pos-2, y-3, 1, 1);
+        g.fillRect(pos+2, y-3, 1, 1);
+         
+    }
 //#ifndef MENU
     private void drawInfoPanel (final Graphics g, int y) {
         int h=infobar.getVHeight()+1;
@@ -1038,7 +1046,15 @@ public abstract class VirtualList
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
 //#endif
+        int hElements = 12 + 5;
+        int posY = (h - hElements)/2;
         setAbsOrg(g, 0, y);
+        if(midlet.BombusQD.sd.roster!=null) {
+            //midlet.BombusQD.sd.roster.messageCount = 1;
+            if (midlet.BombusQD.sd.roster.messageCount>0) drawEnvelop(g , width/2 - 5, posY);
+            if (System.currentTimeMillis()-sd.getTrafficIn()<2000) drawTraffic(g, false, posY + 12 + 3);
+            if (System.currentTimeMillis()-sd.getTrafficOut()<2000) drawTraffic(g, true, posY + 12 + 3);
+        }
         g.setColor(getMainBarRGB());
         infobar.drawItem(g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
     }
@@ -1513,10 +1529,11 @@ public abstract class VirtualList
 //#endif
 //#ifdef POPUPS
 //#         if (keyCode==greenKeyCode) {
+//#            System.out.println("popupGreen");
 //#             if (popup.getContact()!=null) {
-//#                    if(midlet.BombusQD.cf.useClassicChat){
+//#                    if(midlet.BombusQD.cf.module_classicchat){
 //#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
-//#                    }else{
+//#                    } else {
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
 //#                        if(c.chatInfo.getMessageCount()==0){
 //#                           midlet.BombusQD.sd.roster.createMessageEdit(c, c.msgSuspended, this, true);
@@ -1625,7 +1642,7 @@ public abstract class VirtualList
 //#                 .append(getTraffic())
 //#                 .append("\n");
 //#             
-//#             mem.append(SR.MS_MEMORY);
+//#             mem.append(SR.get(SR.MS_MEMORY));
 //#             mem.append("\n");
 //#                   long free = Runtime.getRuntime().freeMemory()>>10;
 //#                   long total = Runtime.getRuntime().totalMemory()>>10; 
@@ -2059,8 +2076,8 @@ public abstract class VirtualList
         return StringUtils.getSizeString((traffic>0)?traffic:0);
     }   
 
-    public String touchLeftCommand(){ return (midlet.BombusQD.cf.oldSE)?SR.MS_BACK:SR.MS_MENU; }
-    public String touchRightCommand(){ return (midlet.BombusQD.cf.oldSE)?SR.MS_MENU:SR.MS_BACK; }
+    public String touchLeftCommand(){ return (midlet.BombusQD.cf.oldSE)?SR.get(SR.MS_BACK):SR.get(SR.MS_MENU); }
+    public String touchRightCommand(){ return (midlet.BombusQD.cf.oldSE)?SR.get(SR.MS_MENU):SR.get(SR.MS_BACK); }
     public void cmdCancel() {  destroyView();  }
 }
 

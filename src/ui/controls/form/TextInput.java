@@ -47,9 +47,6 @@ public class TextInput
 
     private String text="";
     private String caption="";
-    
-    private boolean selectable=true;
-
     private Display display;
     
     public String id;
@@ -171,5 +168,5 @@ public class TextInput
         }
     }
 
-    public boolean isSelectable() { return selectable; }
+    public boolean isSelectable() { return true; }
 }

@@ -35,6 +35,8 @@ public class StringLoader {
     
     int afterEol;
     
+    public StringLoader() { }
+    
     public Vector[] stringLoader(String resource, int columns) {
 	//StringBuffer buf = new StringBuffer();
         buf.setLength(0);
@@ -119,6 +121,52 @@ public class StringLoader {
         return table;
     }
 
+    
+   public String[] arrayLoader(String resource, String[] arrayLocale) {
+	afterEol=0;
+	InputStream in = this.getClass().getResourceAsStream(resource);
+        if (in==null) return null;
+        
+        int itemIndex = 0;
+        int size = arrayLocale.length;
+        //StringBuffer buf = new StringBuffer(0);
+	try {
+	    while (true) {
+		String line=readLine(in);
+                String key, value;
+		if (line==null)  break;
+		
+		if (line.startsWith("//")) continue;
+
+                String cell=null;
+                try {
+                    int indexTab=line.indexOf(0x09);
+                    if (indexTab<=0) continue; // process next line
+                    
+                    key=line.substring(0, indexTab);
+                    value=line.substring(indexTab+1, line.length() );
+
+                    for(int i = 0; i < size; ++i) {
+                        if(key.equals(arrayLocale[i])) {
+                           //buf.append(arrayLocale[i]);
+                           //buf.append("->");
+                           arrayLocale[i] = value;
+                           //buf.append(arrayLocale[i]);
+                           //System.out.println("   *new: " + buf.toString());
+                           //buf.setLength(0);
+                          i = size;
+                        }
+                    }
+                } catch (Exception e) { /* e.printStackTrace(); */ }
+	    }
+	    in.close();
+            in=null;
+	} catch (Exception e)	{ /* Empty file or not found */}
+	return arrayLocale;
+    }
+    
+    
+    
     public Hashtable hashtableLoader(String resource) {
 	Hashtable hash = new Hashtable(0);
 	

@@ -56,7 +56,7 @@
 //# 
 //#     public userKeyEdit(Display display, Displayable pView, userKeysList keysList, userKey u) {
 //# 
-//#         super(display, pView, (u==null)?SR.MS_ADD_CUSTOM_KEY:(u.toString()));
+//#         super(display, pView, (u==null)?SR.get(SR.MS_ADD_CUSTOM_KEY):(u.toString()));
 //#         
 //#         this.display=display;
 //#         
@@ -66,17 +66,17 @@
 //# 	if (newKey) u=new userKey();
 //# 	this.u=u;
 //#      
-//#         active=new CheckBox(SR.MS_ENABLED, u.active);
+//#         active=new CheckBox(SR.get(SR.MS_ENABLED), u.active);
 //#         itemsList.addElement(active);
 //# 
-//#         keyDesc=new DropChoiceBox(display, SR.MS_KEYS_ACTION);
+//#         keyDesc=new DropChoiceBox(display, SR.get(SR.MS_KEYS_ACTION));
 //#         for (int i=0;i<u.COMMANDS_DESC.length;i++) {
 //#             keyDesc.append(u.COMMANDS_DESC[i]);
 //#         }
 //#         keyDesc.setSelectedIndex(u.commandId);
 //#         itemsList.addElement(keyDesc);
 //# 
-//#         keyCode=new DropChoiceBox(display, SR.MS_KEY);
+//#         keyCode=new DropChoiceBox(display, SR.get(SR.MS_KEY));
 //#         for (int i=0;i<u.KEYS_NAME.length;i++) {
 //#             keyCode.append(u.KEYS_NAME[i]);
 //#         }

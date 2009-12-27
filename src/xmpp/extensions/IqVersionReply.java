@@ -68,7 +68,7 @@ public class IqVersionReply implements JabberBlockListener {
         if (data.getAttribute("id").equals("getver")) {
             String body=null;
             if (type.equals("error")) {
-                body=locale.SR.MS_NO_VERSION_AVAILABLE;
+                body=locale.SR.get(locale.SR.MS_NO_VERSION_AVAILABLE);
             } else if (type.equals("result")) {
                 JabberDataBlock vc=data.getChildBlock("query");
                 if (vc!=null) {
@@ -80,7 +80,7 @@ public class IqVersionReply implements JabberBlockListener {
             
             if (body!=null) {
                 Roster roster=StaticData.getInstance().roster;
-                Msg m=new Msg(Constants.MESSAGE_TYPE_SYSTEM, "ver", " "+locale.SR.MS_CLIENT_INFO, body);
+                Msg m=new Msg(Constants.MESSAGE_TYPE_SYSTEM, "ver", " "+locale.SR.get(locale.SR.MS_CLIENT_INFO), body);
                 roster.messageStore(roster.getContact( data.getAttribute("from"), false), m);
                 roster.querysign=false;
                 Config.getInstance().flagQuerySign=false;

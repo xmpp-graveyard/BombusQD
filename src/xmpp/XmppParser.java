@@ -65,7 +65,7 @@ public abstract class XmppParser implements XMLEventListener {
      */
     
     public boolean tagStart(String name, Vector attributes) {
-        StaticData.getInstance().updateTrafficIn();//???
+        midlet.BombusQD.sd.updateTrafficIn();//???
         
         if (currentBlock != null){
             

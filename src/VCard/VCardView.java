@@ -86,11 +86,11 @@ public class VCardView
     private VCard vcard;
     private ImageItem photoItem;
     
-    private SimpleString endVCard=new SimpleString(SR.MS_END_OF_VCARD, false);
-    private SimpleString noVCard=new SimpleString(SR.MS_NO_VCARD, true);
-    private SimpleString noPhoto=new SimpleString(SR.MS_NO_PHOTO, false);
-    private SimpleString badFormat=new SimpleString(SR.MS_UNSUPPORTED_FORMAT, false);
-    private SimpleString photoTooLarge=new SimpleString(SR.MS_PHOTO_TOO_LARGE, false);
+    private SimpleString endVCard=new SimpleString(SR.get(SR.MS_END_OF_VCARD), false);
+    private SimpleString noVCard=new SimpleString(SR.get(SR.MS_NO_VCARD), true);
+    private SimpleString noPhoto=new SimpleString(SR.get(SR.MS_NO_PHOTO), false);
+    private SimpleString badFormat=new SimpleString(SR.get(SR.MS_UNSUPPORTED_FORMAT), false);
+    private SimpleString photoTooLarge=new SimpleString(SR.get(SR.MS_PHOTO_TOO_LARGE), false);
     
 
     private LinkString refresh;
@@ -99,15 +99,15 @@ public class VCardView
 
 //#ifdef CLIPBOARD
 //#     ClipBoard clipboard  = ClipBoard.getInstance(); 
-//#     Command cmdCopy      = new Command(SR.MS_COPY, Command.SCREEN, 1);
-//#     Command cmdCopyPlus  = new Command("+ "+SR.MS_COPY, Command.SCREEN, 2);
+//#     Command cmdCopy;
+//#     Command cmdCopyPlus;
 //#endif
-    Command cmdRefresh   = new Command(SR.MS_REFRESH, Command.SCREEN, 3);
+    Command cmdRefresh;
 //#if FILE_IO
-    Command cmdSavePhoto = new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
+    Command cmdSavePhoto;
 //#endif
-    Command cmdDelPhoto  = new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
-    Command cmdDelVcard  = new Command(SR.MS_DELETE_VCARD, Command.SCREEN,6);
+    Command cmdDelPhoto;
+    Command cmdDelVcard;
 
     /** Creates a new instance of VCardView */
     private Contact c;
@@ -116,10 +116,21 @@ public class VCardView
         super(display, pView, contact.getNickJid());
         this.display=display;
         
+//#ifdef CLIPBOARD
+//#         cmdCopy      = new Command(SR.get(SR.MS_COPY), Command.SCREEN, 1);
+//#         cmdCopyPlus  = new Command("+ "+SR.get(SR.MS_COPY), Command.SCREEN, 2);
+//#endif
+        cmdRefresh   = new Command(SR.get(SR.MS_REFRESH), Command.SCREEN, 3);
+//#if FILE_IO
+        cmdSavePhoto = new Command(SR.get(SR.MS_SAVE_PHOTO), Command.SCREEN,4);
+//#endif
+        cmdDelPhoto  = new Command(SR.get(SR.MS_CLEAR_PHOTO), Command.SCREEN,5);
+        cmdDelVcard  = new Command(SR.get(SR.MS_DELETE_VCARD), Command.SCREEN,6);
+        
         this.vcard=contact.vcard;
         this.c=contact;
         
-        refresh=new LinkString(SR.MS_REFRESH) { public void doAction() { VCard.request(vcard.getJid(), vcard.getId().substring(5)); destroyView(); } };
+        refresh=new LinkString(SR.get(SR.MS_REFRESH)) { public void doAction() { VCard.request(vcard.getJid(), vcard.getId().substring(5)); destroyView(); } };
 
         if (vcard.isEmpty()) {
             itemsList.addElement(noVCard);
@@ -160,6 +171,16 @@ public class VCardView
         this.parentView=pView;
     }
 
+    public void destroyView(){
+        endVCard = null;
+        noVCard = null;
+        noPhoto = null;
+        badFormat = null;
+        photoTooLarge = null;
+        photoItem = null;
+        super.destroyView();
+    }
+    
      private void setPhoto() {
         c.hasPhoto = vcard.hasPhoto;         
         try {
@@ -181,12 +202,13 @@ public class VCardView
                     if (length>10240)
                         photoItem.collapsed=true;
                     itemsList.insertElementAt(photoItem, 0);
-                    if(Config.getInstance().drawCPhoto) {
+                    if(Config.getInstance().module_avatars) {
                         ImageList il = new ImageList();
                         int width = photoImg.getWidth();
                         int height = photoImg.getHeight();
-                        StaticData.getInstance().roster.setImageAvatar(il,c,photoImg);
+                        midlet.BombusQD.sd.roster.setImageAvatar(il,c,photoImg);
                     }
+                    photoImg = null;
                 }
             } catch (Exception e) {
                 itemsList.addElement(badFormat);
@@ -307,7 +329,7 @@ public class VCardView
     
     
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_MENU); }
     
 //#ifdef GRAPHICS_MENU  
 //#     public void touchLeftPressed(){
@@ -327,7 +349,7 @@ public class VCardView
     
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_VCARD, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_VCARD), null, menuCommands);
    }  
 //#endif    
     

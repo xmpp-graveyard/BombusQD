@@ -40,8 +40,8 @@ public class MIDPTextBox implements CommandListener {
     private Display display;
     private Displayable parentView;
     
-    protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 99);
-    protected Command cmdOK=new Command(SR.MS_OK, Command.OK /*GCommand.SCREEN*/, 1);
+    protected Command cmdCancel;
+    protected Command cmdOK;
     
     private TextBox t;
     
@@ -55,6 +55,10 @@ public class MIDPTextBox implements CommandListener {
     }
    
     public MIDPTextBox(Display display, String mainbar, String text, TextBoxNotify tbn , int constraints,int maxLen) {
+        
+        cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK, 99);
+        cmdOK=new Command(SR.get(SR.MS_OK), Command.OK /*GCommand.SCREEN*/, 1);
+        
         t=new TextBox(mainbar, text, maxLen, constraints);
         
         this.display=display;

@@ -44,7 +44,8 @@ public class TrackItem
     int steps;
     Vector items = new Vector(0);
     int maxValue;
-    private boolean selectable=true;
+    private boolean isUserLevel;
+    
     public TrackItem(int value, int maxValue) {
         super(null);
         this.value=value;
@@ -53,9 +54,10 @@ public class TrackItem
         this.steps=maxValue+1;
     }    
     /** Creates a new instance of TrackItem */
-    public TrackItem(int value, int maxValue,Vector items) {
+    public TrackItem(int value, int maxValue, Vector items, boolean isUserLevel) {
         super(null);
         this.value=value;
+        this.isUserLevel=isUserLevel;
         this.items=items;
         this.maxValue=maxValue;
         this.steps=maxValue+1;
@@ -89,30 +91,48 @@ public class TrackItem
 
     }  
     
-    public int getVHeight(){ 
-        return maxValue==25?8:30;
+    public int getVHeight(){ //fix it
+        if(items != null) return 30;
+        else if(maxValue==2) return 18;
+       return maxValue==25?8:30;
     }    
     
     private void loadSkin(){
         if(items!=null){
-          //try {
              ColorTheme.loadSkin("/themes/"+(String)items.elementAt(value)+".txt", 1, false);
              midlet.BombusQD.cf.path_skin="/themes/"+(String)items.elementAt(value)+".txt";
-          //} catch (Exception ex) {}            
         }        
     }
     
-    public void onSelect(){ value=(value+1)%steps; }
+    private void changeLevelApp(int value){
+        midlet.BombusQD.cf.userAppLevel = value;
+        midlet.BombusQD.sd.roster.pluginsConfig.reloadItems();
+    }    
+    
+    
+    public void onSelect(){ 
+        value=(value+1)%steps;
+        if(items!=null && isUserLevel == false)
+            loadSkin();
+        else 
+            changeLevelApp(value);
+    }
   
     public boolean handleEvent(int keyCode) {
          switch (keyCode) {
             case 4:
                 value=(value>0)?value-1:steps-1;
-                loadSkin();
+                if(items!=null && isUserLevel == false)
+                    loadSkin();
+                else 
+                    changeLevelApp(value);
                 return true;
             case 6: 
                 value=(value+1)%steps;
-                loadSkin();
+                if(items!=null && isUserLevel == false)
+                    loadSkin();
+                else 
+                    changeLevelApp(value);
                 return true;
          }
         return false;

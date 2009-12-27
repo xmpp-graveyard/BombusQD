@@ -37,9 +37,6 @@ public class SpacerItem
         extends IconTextElement {
     
     private static int itemHeight=4;
-    
-    private boolean selectable=false;
-    
     public int getVWidth(){ 
         return -1;
     }      
@@ -55,5 +52,5 @@ public class SpacerItem
     public String toString() { return " "; }
     public int getVHeight(){ return itemHeight; }
 
-    public boolean isSelectable() { return selectable; }
+    public boolean isSelectable() { return false; }
 }

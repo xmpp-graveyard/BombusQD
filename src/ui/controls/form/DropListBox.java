@@ -38,8 +38,8 @@ public class DropListBox
 //#endif
     {
 //#ifndef MENU
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
-    private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
+    private Command cmdCancel;
+    private Command cmdOk;
 //#endif
     private Vector listItems;
 
@@ -47,10 +47,16 @@ public class DropListBox
 
     public DropListBox(Display display, Vector listItems, DropChoiceBox cb) {
         super(display);
+        
+//#ifndef MENU
+        cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK,99);
+        cmdOk=new Command(SR.get(SR.MS_OK), Command.OK,1);
+//#endif
+        
         this.listItems=listItems;
         this.cb=cb;
         
-        setMainBarItem(new MainBar(SR.MS_SELECT));
+        setMainBarItem(new MainBar(SR.get(SR.MS_SELECT)));
         
         commandState();
         setCommandListener(this);
@@ -73,10 +79,10 @@ public class DropListBox
     }
 
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand() { return SR.MS_OK; }
+    public String touchLeftCommand() { return SR.get(SR.MS_OK); }
     public void touchLeftPressed(){ eventOk(); }
 
-    public String touchRightCommand() { return SR.MS_CANCEL; }
+    public String touchRightCommand() { return SR.get(SR.MS_CANCEL); }
     public void touchRightPressed(){ destroyView(); }
 //#endif
     

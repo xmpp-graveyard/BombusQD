@@ -40,6 +40,7 @@ import images.RosterIcons;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.microedition.lcdui.*;
+import javax.microedition.lcdui.game.GameCanvas;
 import midlet.BombusQD;
 import Colors.ColorTheme;
 import ui.controls.Progress;
@@ -48,8 +49,7 @@ import ui.controls.Progress;
  *
  * @author Eugene Stahov
  */
-public class SplashScreen extends Canvas implements //Runnable,
-        CommandListener {
+public class SplashScreen extends GameCanvas implements CommandListener {
     
     private Display display;
     private Displayable parentView;
@@ -84,6 +84,7 @@ public class SplashScreen extends Canvas implements //Runnable,
     
     /** Creates a new instance of SplashScreen */
     public SplashScreen(Display display) {
+        super(false);//true - getKeyState,false - keyPressed
         this.display = display;
         setFullScreenMode(midlet.BombusQD.cf.fullscreen);
         try {
@@ -97,20 +98,17 @@ public class SplashScreen extends Canvas implements //Runnable,
         display.setCurrent(this);
     }
 
-  
    public SplashScreen(Display display, ComplexString status, char exitKey) {
+        super(false);
         this.status=status;
         this.display=display;
         this.exitKey=exitKey;
         kHold=exitKey;
         
         parentView=display.getCurrent();
-        
-        
+
         status.setElementAt(new Integer(RosterIcons.ICON_KEYBLOCK_INDEX),6);
         repaint();
-        //serviceRepaints();
-        //new Thread(this).start();
         run();
         
         tc=new TimerTaskClock();
@@ -120,34 +118,53 @@ public class SplashScreen extends Canvas implements //Runnable,
         try { Thread.sleep(50); } catch (InterruptedException ex) { }
     }
 
-    public void paint(Graphics g){
+   
+    private Snow snow;
+    private int speed = 3;
+    public void createSnow(){
+        if(snow==null) {
+            snow = new Snow(display);
+            snow.changeSnowProcess(speed);
+        }
+    }
+    
+    long s1;
+    long s2;
+
+    public void paint(Graphics g) {
         width=g.getClipWidth();
         height=g.getClipHeight();
-        
-        g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
-        g.fillRect(0,0, width, height);
-        
-        if(img!=null){
-           g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);  
+        if(snow != null) {
+            //s1 = System.currentTimeMillis();
+            snow.paint(g, width, height);
+        } else {
+           g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
+           g.fillRect(0,0, width, height);
         }
-
-        if (pos==-1) {
+        if(img!=null) g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);  
+        
+        //todo: fix memory leak in getTimeWeekDay
+        if (pos==-1) { 
             g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
-
             status.drawItem(g, 0, false);
 
             g.setFont(clockFont);
             int h=clockFont.getHeight()+1;
-            
-            String time=Time.localTime();
-            int tw=clockFont.stringWidth(time);
-
-            g.drawString(time, width/2, height, Graphics.BOTTOM | Graphics.HCENTER);
+             String time = "Happy new year!"; //Time.getTimeWeekDay();
+             int tw=clockFont.stringWidth(time);
+             g.drawString(time, width/2, height - 5, Graphics.BOTTOM | Graphics.HCENTER);
+             
         } else {
             int filled=pos*width/100;
             if (pb==null) pb=new Progress(0, height, width);
             pb.draw(g, filled, capt);
         }
+        /*
+        if(snow != null) {
+          s2 = System.currentTimeMillis();
+          g.drawString("FPS: " + Long.toString( 1000/(s2-s1) ) + " (" + speed + ")", width/2, height - 20, Graphics.BOTTOM | Graphics.HCENTER);
+        }
+        */
     }
     
     public void setProgress(int progress) {
@@ -161,9 +178,7 @@ public class SplashScreen extends Canvas implements //Runnable,
     
     public void setProgress(String caption, int progress){
         capt=caption;
-////#if DEBUG
         System.out.println(capt);
-////#endif
 	setProgress(progress);
     }
     
@@ -172,7 +187,7 @@ public class SplashScreen extends Canvas implements //Runnable,
     }
     
     // close splash
-    private Command cmdExit=new Command("Hide Splash", Command.BACK, 99);
+    private Command cmdExit=new Command("Hide", Command.BACK, 99);
     
     public void setExit(Display display, Displayable nextDisplayable){
         this.display=display;
@@ -187,7 +202,7 @@ public class SplashScreen extends Canvas implements //Runnable,
     }
     
     public void close(){
-        display.setCurrent(StaticData.getInstance().roster);
+        display.setCurrent(midlet.BombusQD.sd.roster);
         instance=null;
         System.gc();
     }
@@ -213,6 +228,24 @@ public class SplashScreen extends Canvas implements //Runnable,
     }
 
     public void keyPressed(int keyCode) {
+        boolean keyCheck = false;
+        switch (keyCode) {
+            case KEY_NUM0: keyCheck = true; speed = 0; break;
+            case KEY_NUM1: keyCheck = true; speed = 1; break;
+            case KEY_NUM2: keyCheck = true; speed = 2; break;
+            case KEY_NUM3: keyCheck = true; speed = 3; break;
+            case KEY_NUM4: keyCheck = true; speed = 4; break;
+            case KEY_NUM5: keyCheck = true; speed = 5; break;
+            case KEY_NUM6: keyCheck = true; speed = 6; break;
+            case KEY_NUM7: keyCheck = true; speed = 7; break;
+            case KEY_NUM8: keyCheck = true; speed = 8; break;
+            case KEY_NUM9: keyCheck = true; speed = 9; break;
+        }
+        
+        if(keyCheck){
+            snow.changeSnowProcess(speed);
+        }
+        
         keypressed=keyCode;
         if (pos>=20)
             close();
@@ -227,8 +260,11 @@ public class SplashScreen extends Canvas implements //Runnable,
 
     private void destroyView(){
         status.setElementAt(null,6);
-        if (display!=null) 
-            display.setCurrent(parentView);
+        if (display!=null) display.setCurrent(parentView);
+        if(snow != null){
+           snow.destroyView();
+           snow = null;
+        }
         tc.stop();
 //#ifdef AUTOSTATUS
 //#         if (midlet.BombusQD.sd.roster.autoAway && midlet.BombusQD.cf.autoAwayType==Config.AWAY_LOCK) {
@@ -300,3 +336,4 @@ public class SplashScreen extends Canvas implements //Runnable,
         }
     }
 }
+

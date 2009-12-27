@@ -75,13 +75,13 @@ public class Time {
         int weekDay=calDate(date).get(Calendar.DAY_OF_WEEK);
         String locWeekDay="";
         switch (weekDay) {
-            case 1: locWeekDay=SR.MS_SUN; break;
-            case 2: locWeekDay=SR.MS_MON; break;
-            case 3: locWeekDay=SR.MS_TUE; break;
-            case 4: locWeekDay=SR.MS_WED; break;
-            case 5: locWeekDay=SR.MS_THU; break;
-            case 6: locWeekDay=SR.MS_FRI; break;
-            case 7: locWeekDay=SR.MS_SAT; break;            
+            case 1: locWeekDay=SR.get(SR.MS_SUN); break;
+            case 2: locWeekDay=SR.get(SR.MS_MON); break;
+            case 3: locWeekDay=SR.get(SR.MS_TUE); break;
+            case 4: locWeekDay=SR.get(SR.MS_WED); break;
+            case 5: locWeekDay=SR.get(SR.MS_THU); break;
+            case 6: locWeekDay=SR.get(SR.MS_FRI); break;
+            case 7: locWeekDay=SR.get(SR.MS_SAT); break;            
         }
         return locWeekDay;
      }
@@ -231,10 +231,10 @@ public class Time {
     
     public static String goodWordForm (int d, int field) {
         String [][] suf =  {
-            {SR.MS_SEC1, SR.MS_SEC2, SR.MS_SEC3},
-            {SR.MS_MIN1, SR.MS_MIN2, SR.MS_MIN3},
-            {SR.MS_HOUR1, SR.MS_HOUR2, SR.MS_HOUR3},
-            {SR.MS_DAY1, SR.MS_DAY2, SR.MS_DAY3},
+            {SR.get(SR.MS_SEC1), SR.get(SR.MS_SEC2), SR.get(SR.MS_SEC3)},
+            {SR.get(SR.MS_MIN1), SR.get(SR.MS_MIN2), SR.get(SR.MS_MIN3)},
+            {SR.get(SR.MS_HOUR1), SR.get(SR.MS_HOUR2), SR.get(SR.MS_HOUR3)},
+            {SR.get(SR.MS_DAY1), SR.get(SR.MS_DAY2), SR.get(SR.MS_DAY3)},
         };
         int index;
         if ((d%100>10) && (d%100<20) || (d%10==0) || (d%10>4))

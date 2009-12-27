@@ -190,12 +190,12 @@ public class GMenu extends Canvas {
         Graphics graphics=(offscreen==null)? g: offscreen.getGraphics();    
 //long s1 = System.currentTimeMillis();
           if(eventMenu){
-           if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_NEW_ACCOUNT)>-1
-              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_REGISTERING)>-1
-              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_MY_JABBER)>-1
-              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SERVICE)>-1
-              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SORT_TYPE)>-1
-              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_HISTORY_OPTIONS)>-1
+           if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_NEW_ACCOUNT))>-1
+              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_REGISTERING))>-1
+              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_MY_JABBER))>-1
+              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SERVICE))>-1
+              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SORT_TYPE))>-1
+              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_HISTORY_OPTIONS))>-1
               ){
               drawAllItems(g,gm.menuCommandsIn,gm.commandslistIn,gm.itemCursorIndexIn);
            }
@@ -223,16 +223,16 @@ public class GMenu extends Canvas {
    
    private void eventOk(){
     cursorY=0;       
-     if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_NEW_ACCOUNT)>-1 ||
-        gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_MY_JABBER)>-1 ||
-        gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SORT_TYPE)>-1){
+     if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_NEW_ACCOUNT))>-1 ||
+        gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_MY_JABBER))>-1 ||
+        gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SORT_TYPE))>-1){
           GMenuIn(gm.cmdfirstList); eventMenu=true; return;
      } 
-     else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_REGISTERING)>-1
-          || gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_HISTORY_OPTIONS)>-1 ) {
+     else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_REGISTERING))>-1
+          || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_HISTORY_OPTIONS))>-1 ) {
           GMenuIn(gm.cmdsecondList); eventMenu=true; return;   
      } 
-     else if (gm.commandslist[gm.itemCursorIndex].indexOf(SR.MS_SERVICE)>-1){            
+     else if (gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SERVICE))>-1){            
           GMenuIn(gm.cmdThirdList); eventMenu=true; return;
      } else{
           gm.itemGrMenu=-1;
@@ -244,7 +244,7 @@ public class GMenu extends Canvas {
    void drawAllItems(Graphics g,Vector menuCommands,String[] commandslist,int itemCursorIndex){
 
         fh = bm.himg_menu>fh?bm.himg_menu:fh;
-
+        if(commandslist == null) return;
         size = commandslist.length-1;
         int hitem = 0;        
         int maxHeight=commandslist.length;
@@ -252,7 +252,7 @@ public class GMenu extends Canvas {
         int maxwidth=0;
         int len_str=0;
         for (int index=size; index>=0; index--) {
-             if(Config.getInstance().executeByNum){
+             if(midlet.BombusQD.cf.executeByNum){
                   len_str  = font.stringWidth(index+"-"+commandslist[index]);
              }else{
                   len_str  = font.stringWidth(commandslist[index]);
@@ -343,7 +343,7 @@ public class GMenu extends Canvas {
              }
              cmd=null;
            }            
-            if(Config.getInstance().executeByNum){
+            if(midlet.BombusQD.cf.executeByNum){
                 g.drawString(Integer.toString(index)+"-"+ commandslist[index], x_start,fh*index + 1, g.LEFT|g.TOP);
             }else{
                 g.drawString(commandslist[index], x_start, fh*index + 1, g.LEFT|g.TOP);                   
@@ -432,7 +432,7 @@ public class GMenu extends Canvas {
          }
          else 
          {
-            if(Config.getInstance().executeByNum){
+            if(midlet.BombusQD.cf.executeByNum){
               switch (keyCode) 
               {
                 case KEY_NUM0: gm.itemCursorIndex=0; eventOk(); break;                  
@@ -522,7 +522,7 @@ public class GMenu extends Canvas {
                     }
                   } catch (Exception e) {}
                 }
-            }//Config.getInstance().executeByNum end
+            }//midlet.BombusQD.cf.executeByNum end
          }
      }
     }   
@@ -546,7 +546,7 @@ public class GMenu extends Canvas {
          }
          else 
          {
-            if(Config.getInstance().executeByNum){
+            if(midlet.BombusQD.cf.executeByNum){
               switch (keyCode) 
               {
                 case KEY_NUM0: gm.itemCursorIndexIn=0; closeEvent(); return false;
@@ -637,7 +637,7 @@ public class GMenu extends Canvas {
                     }
                   } catch (Exception e) {}
               }
-            }//Config.getInstance().executeByNum
+            }//midlet.BombusQD.cf.executeByNum
          }
        return false;
     }      

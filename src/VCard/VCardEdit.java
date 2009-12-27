@@ -70,14 +70,14 @@ public class VCardEdit
     
     private Display display;
 
-    Command cmdPublish=new Command(SR.MS_PUBLISH, Command.OK, 1);
-    Command cmdRefresh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
+    Command cmdPublish;
+    Command cmdRefresh;
 //#if FILE_IO
-    Command cmdLoadPhoto=new Command(SR.MS_LOAD_PHOTO, Command.SCREEN,3);
-    Command cmdSavePhoto=new Command(SR.MS_SAVE_PHOTO, Command.SCREEN,4);
+    Command cmdLoadPhoto;
+    Command cmdSavePhoto;
 //#endif
-    Command cmdDelPhoto=new Command(SR.MS_CLEAR_PHOTO, Command.SCREEN,5);
-    Command cmdCamera=new Command(SR.MS_CAMERA, Command.SCREEN,6);
+    Command cmdDelPhoto;
+    Command cmdCamera;
 
     private Vector items=new Vector(0);
     private VCard vcard;
@@ -86,15 +86,25 @@ public class VCardEdit
 
     private int st=-1;
 
-    //private SimpleString endVCard=new SimpleString(SR.MS_END_OF_VCARD, false);
-    private SimpleString noPhoto=new SimpleString(SR.MS_NO_PHOTO, false);
-    private SimpleString badFormat=new SimpleString(SR.MS_UNSUPPORTED_FORMAT, false);
-    private SimpleString photoTooLarge=new SimpleString(SR.MS_PHOTO_TOO_LARGE, false);
+    //private SimpleString endVCard=new SimpleString(SR.get(SR.MS_END_OF_VCARD), false);
+    private SimpleString noPhoto=new SimpleString(SR.get(SR.MS_NO_PHOTO), false);
+    private SimpleString badFormat=new SimpleString(SR.get(SR.MS_UNSUPPORTED_FORMAT), false);
+    private SimpleString photoTooLarge=new SimpleString(SR.get(SR.MS_PHOTO_TOO_LARGE), false);
     
     private LinkString publish;
 
     public VCardEdit(Display display, Displayable pView, VCard vcard) {
-        super(display, pView, SR.MS_VCARD+" "+vcard.getNickName());
+        super(display, pView, SR.get(SR.MS_VCARD)+" "+vcard.getNickName());
+        
+        cmdPublish=new Command(SR.get(SR.MS_PUBLISH), Command.OK, 1);
+        cmdRefresh=new Command(SR.get(SR.MS_REFRESH), Command.SCREEN, 2);
+//#if FILE_IO
+        cmdLoadPhoto=new Command(SR.get(SR.MS_LOAD_PHOTO), Command.SCREEN,3);
+        cmdSavePhoto=new Command(SR.get(SR.MS_SAVE_PHOTO), Command.SCREEN,4);
+//#endif
+        cmdDelPhoto=new Command(SR.get(SR.MS_CLEAR_PHOTO), Command.SCREEN,5);
+        cmdCamera=new Command(SR.get(SR.MS_CAMERA), Command.SCREEN,6);
+        
         this.display=display;
         this.vcard=vcard;
 
@@ -110,7 +120,7 @@ public class VCardEdit
             itemsList.addElement(new TextInput(display, name, data, null, TextField.ANY));
         }
 
-        publish=new LinkString(SR.MS_PUBLISH) { public void doAction() { publish(); } };
+        publish=new LinkString(SR.get(SR.MS_PUBLISH)) { public void doAction() { publish(); } };
         
         setPhoto();
 
@@ -285,7 +295,7 @@ public class VCardEdit
     }
    
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_MENU); }
     
  //#ifdef GRAPHICS_MENU    
 //#     public void touchLeftPressed(){
@@ -304,7 +314,7 @@ public class VCardEdit
     }
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_PUBLISH, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_PUBLISH), null, menuCommands);
    }   
 //#endif   
     

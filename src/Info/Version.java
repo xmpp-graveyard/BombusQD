@@ -33,18 +33,7 @@ import locale.SR;
 
 public class Version { 
 
-//#ifdef GRAPHICS_MENU  
-   //#ifdef  SUPER_LIGHT
-//#            public final static String version="0.8.r52"
-//#                    + Config.getInstance().getStringProperty("build", "");  
-    //#else
-//#            public final static String version="0.8.r52"
-//#                    + Config.getInstance().getStringProperty("build", "") ;
-    //#endif
-//#else
-       public final static String version="0.8.r52";
-//#endif     
-
+    public static String version = "0.8.r55" + midlet.BombusQD.cf.getStringProperty("build", "") ;
     public final static String NAME="BombusQD";
     public final static String BOMBUS_SITE_URL="http://bombusmod-qd.wen.ru";
 
@@ -53,7 +42,15 @@ public class Version {
         return (build!="0" && build!=null)?" ["+build+"]":"";
     }
     
-    public static String getVersionLang() { return version+" ("+SR.MS_IFACELANG+")"+getBuildNum(); }
+    public static String getVersionLang() { 
+        switch(midlet.BombusQD.cf.userAppLevel){
+           case 0:  version = "0.8.r55s";  break;
+           case 1:  version = "0.8.r55a";  break;
+           case 2:  version = "0.8.r55p";  break;
+        }
+        version += midlet.BombusQD.cf.getStringProperty("build", "");
+        return version+" ("+SR.get(SR.MS_IFACELANG)+")"+getBuildNum();
+    }
     
     public static String getVersionNumber() { return version; }
     public static String getName() { return NAME; }

@@ -86,6 +86,11 @@ public class ArrayLoader {
             byte[] arrayByte=new byte[len];
 
             is.read(arrayByte, 0, len);
+            //System.out.println("readByteArray->" + arrayByte.length);
+            is.close();
+            in.close();
+            in = null;
+            is = null;
             return arrayByte;
         } catch (Exception ex) { ex.printStackTrace(); }
         

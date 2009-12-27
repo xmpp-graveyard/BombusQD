@@ -157,7 +157,6 @@ public class EntityCaps implements JabberBlockListener{
         features.addElement("urn:xmpp:ping");
         if (midlet.BombusQD.cf.eventDelivery) 
             features.addElement("urn:xmpp:receipts"); //xep-0184
-        features.addElement("urn:xmpp:time");
 
         //sort(features);
     }

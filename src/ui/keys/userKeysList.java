@@ -65,18 +65,23 @@
 //# 
 //#     Vector commandsList;
 //#     
-//#     Command cmdOK=new Command(SR.MS_OK, Command.OK,1);
-//#     Command cmdAdd=new Command(SR.MS_ADD_CUSTOM_KEY, Command.SCREEN,3);
-//#     Command cmdEdit=new Command(SR.MS_EDIT,Command.ITEM,3);
-//#     Command cmdDel=new Command(SR.MS_DELETE,Command.ITEM,4);
-//#     Command cmdCancel=new Command(SR.MS_BACK,Command.BACK,99);
-//#     
-//#     private Config cf=Config.getInstance();
-//#     
+//#     Command cmdOK;
+//#     Command cmdAdd;
+//#     Command cmdEdit;
+//#     Command cmdDel;
+//#     Command cmdCancel;
+//# 
 //#     /** Creates a new instance of AccountPicker */
 //#     public userKeysList(Display display) {
 //#         super();
-//#         setMainBarItem(new MainBar(SR.MS_CUSTOM_KEYS));
+//#         
+//#         cmdOK=new Command(SR.get(SR.MS_OK), Command.OK,1);
+//#         cmdAdd=new Command(SR.get(SR.MS_ADD_CUSTOM_KEY), Command.SCREEN,3);
+//#         cmdEdit=new Command(SR.get(SR.MS_EDIT),Command.ITEM,3);
+//#         cmdDel=new Command(SR.get(SR.MS_DELETE),Command.ITEM,4);
+//#         cmdCancel=new Command(SR.get(SR.MS_BACK),Command.BACK,99);
+//#     
+//#         setMainBarItem(new MainBar(SR.get(SR.MS_CUSTOM_KEYS)));
 //#         
 //#         commandsList=userKeyExec.getInstance().commandsList;
 //# 
@@ -160,7 +165,7 @@
 //#else
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_CUSTOM_KEYS, null, menuCommands);
+//#         new MyMenu(display, parentView, this, SR.get(SR.MS_CUSTOM_KEYS), null, menuCommands);
 //#     }   
 //#endif    
 //# 

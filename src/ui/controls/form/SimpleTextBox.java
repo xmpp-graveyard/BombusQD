@@ -45,7 +45,6 @@ public class SimpleTextBox
     private boolean state=false;
     private String text="";
     private String text_undo="";    
-    private boolean selectable=true;
     private boolean otherWindow=false;    
     private int colorItem;
     Vector checkBox = new Vector(0);
@@ -150,5 +149,5 @@ public class SimpleTextBox
         }
     }
     public boolean getValue() { return state; }
-    public boolean isSelectable() { return selectable; }
+    public boolean isSelectable() { return true; }
 }

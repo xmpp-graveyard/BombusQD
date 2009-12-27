@@ -100,24 +100,24 @@
 //#     public int getImageIndex() {return active?0:5;}
 //# 
 //#     public static final String[] COMMANDS_DESC = {
-//#             SR.MS_NO,
-//#             SR.MS_OPTIONS,
-//#             SR.MS_CLEAN_ALL_MESSAGES,
-//#             SR.MS_RECONNECT,
-//#             SR.MS_STATS,
-//#             SR.MS_STATUS_MENU,
-//#             SR.MS_FILE_TRANSFERS,
-//#             SR.MS_ARCHIVE,
-//#             SR.MS_DISCO,
-//#             SR.MS_PRIVACY_LISTS,
-//#             SR.MS_CUSTOM_KEYS,
-//#             SR.MS_CLEAR_POPUPS,
-//#             SR.MS_FLASHLIGHT,
-//#             SR.MS_ABOUT,
-//#             SR.MS_APP_MINIMIZE,
-//#             SR.MS_INVERT,
-//#             SR.MS_XML_CONSOLE, 
-//#             SR.MS_FULLSCREEN
+//#             SR.get(SR.MS_NO),
+//#             SR.get(SR.MS_OPTIONS),
+//#             SR.get(SR.MS_CLEAN_ALL_MESSAGES),
+//#             SR.get(SR.MS_RECONNECT),
+//#             SR.get(SR.MS_STATS),
+//#             SR.get(SR.MS_STATUS_MENU),
+//#             SR.get(SR.MS_FILE_TRANSFERS),
+//#             SR.get(SR.MS_ARCHIVE),
+//#             SR.get(SR.MS_DISCO),
+//#             SR.get(SR.MS_PRIVACY_LISTS),
+//#             SR.get(SR.MS_CUSTOM_KEYS),
+//#             SR.get(SR.MS_CLEAR_POPUPS),
+//#             SR.get(SR.MS_FLASHLIGHT),
+//#             SR.get(SR.MS_ABOUT),
+//#             SR.get(SR.MS_APP_MINIMIZE),
+//#             SR.get(SR.MS_INVERT),
+//#             SR.get(SR.MS_XML_CONSOLE), 
+//#             SR.get(SR.MS_FULLSCREEN)
 //#     };
 //#     
 //#     public static final String[] KEYS_NAME = {

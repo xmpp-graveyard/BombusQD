@@ -233,7 +233,7 @@ public class PopUp {
       int ccolor = getColorBgnd();
       int red, green, blue,alpha;
       long tmp; 
-      int alpha_ = Config.getInstance().popup_bgnd;
+      int alpha_ = midlet.BombusQD.cf.popup_bgnd;
       red = ColorTheme.getRed(ccolor);
       green = ColorTheme.getGreen(ccolor);
       blue = ColorTheme.getBlue(ccolor);
@@ -243,6 +243,7 @@ public class PopUp {
     
 //paint
     private static int[] alphaBuffer = null;
+
 
     public void paintCustom(Graphics graph) {
 	if(size()<1)
@@ -267,14 +268,14 @@ public class PopUp {
             heightBorder=(height-popUpHeight)/2;
         }
 
-         if(Config.getInstance().popup_bgnd!=0){
+         if(midlet.BombusQD.cf.popup_bgnd!=0){
           int alpha_=getARGB();
           int[] pixelArray = new int[width * height];  
           int lengntp = pixelArray.length;
           for(int i = 0; i < lengntp; i++){
              pixelArray[i] = alpha_;
           }
-           graph.drawRGB(pixelArray, 0, width, widthBorder,heightBorder, popUpWidth, popUpHeight, true);
+           graph.drawRGB(pixelArray, 0, width, widthBorder, heightBorder, popUpWidth, popUpHeight, true);
            pixelArray = null;
            pixelArray = new int[0];
            graph.drawRect(widthBorder,heightBorder,popUpWidth,popUpHeight);

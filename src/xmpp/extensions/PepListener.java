@@ -135,7 +135,7 @@
 //#ifdef DEBUG
 //#              System.out.println(from+": "+activity_.toString());
 //#endif
-//#                 type=SR.MS_USERACTIVITY;
+//#                 type=SR.get(SR.MS_USERACTIVITY);
 //#             }
 //#         }
 //#         
@@ -170,7 +170,7 @@
 //#ifdef DEBUG
 //#              System.out.println(from+": "+tune_.toString());
 //#endif
-//#                 type=SR.MS_USERTUNE;
+//#                 type=SR.get(SR.MS_USERTUNE);
 //#             }
 //#         }
 //#         moodIndex=-1;
@@ -210,7 +210,7 @@
 //#ifdef DEBUG
 //#             System.out.println(from+": "+mood_.toString());
 //#endif
-//#                 type=SR.MS_USERMOOD;
+//#                 type=SR.get(SR.MS_USERMOOD);
 //#             }
 //#         }
 //# 

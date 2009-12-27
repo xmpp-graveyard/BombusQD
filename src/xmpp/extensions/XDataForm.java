@@ -29,8 +29,8 @@ public class XDataForm implements CommandListener {
     private Displayable parentView;
     private NotifyListener notifyListener;
     
-    private Command cmdOk=new Command(SR.MS_SEND, Command.OK /*Command.SCREEN*/, 1);
-    private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
+    private Command cmdOk;
+    private Command cmdCancel;
     
     Vector items;
     
@@ -38,6 +38,10 @@ public class XDataForm implements CommandListener {
     /** Creates a new instance of XDataForm */
     public XDataForm(Display display, JabberDataBlock form, NotifyListener notifyListener) {
         this.display=display;
+        
+        cmdOk=new Command(SR.get(SR.MS_SEND), Command.OK /*Command.SCREEN*/, 1);
+        cmdCancel=new Command(SR.get(SR.MS_BACK), Command.BACK, 99);
+    
         this.parentView=display.getCurrent();
         this.notifyListener=notifyListener;
 

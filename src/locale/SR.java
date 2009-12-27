@@ -28,952 +28,1556 @@
 package locale; 
 
 import Client.Config;
+import java.util.Vector;
 import java.util.Hashtable;
 import util.StringLoader;
 
 public class SR {
 
-    private static Hashtable lang;
-    
-    public   static String MS_JID = loadString( "Jid" );
-    public   static String MS_PRIVACY_LISTS = loadString( "Privacy Lists" );
-    public   static String MS_MESSAGE_FONT = loadString( "Message font" );
-    public   static String MS_ROSTER_FONT = loadString( "Roster font" );
-    public   static String MS_PASTE_BODY = loadString( "Paste Body" );
-    public   static String MS_CONFIG_ROOM = loadString( "Configure Room" );
-    public   static String MS_PASTE_SUBJECT = loadString( "Paste Subject" );
-    public   static String MS_DISCO = loadString( "Service Discovery" );
-    public   static String MS_USER_JID = loadString( "User JID" );
-    public   static String MS_NEW_LIST = loadString( "New list" );
-    public   static String MS_NOLOGIN = loadString( "Select (no login)" );
-    public   static String MS_PRIVACY_RULE = loadString( "Privacy rule" );
-    public   static String MS_SSL = loadString( "use SSL" );
-    public   static String MS_MODIFY = loadString( "Modify" );
-    public   static String MS_UPDATE = loadString( "Update" );
-    public   static String MS_ACCOUNT_NAME = loadString( "Account name" );
-    public   static String MS_GMT_OFFSET = loadString( "GMT offset" );
-    public   static String MS_TIME_SETTINGS = loadString( "Time settings (hours)" );
-    public   static String MS_CONNECTED = loadString( "Connected" );
-    public   static String MS_CONNECT_TO_= loadString( "Connect to " );
-    public   static String MS_ALERT_PROFILE = loadString( "Alert Profile" );
-    public   static String MS_MOVE_UP = loadString( "Move Up" );
-    public   static String MS_OWNERS = loadString( "Owners" );
-    public   static String MS_OK = loadString( "Ok" );
-    public   static String MS_APP_MINIMIZE = loadString( "Minimize" );
-    public   static String MS_ROOM = loadString( "Room" );
-    public   static String MS_MESSAGES = loadString( "Messages" );
-    public   static String MS_REFRESH = loadString( "Refresh" );
-    public   static String MS_RESOLVE_NICKNAMES = loadString( "Resolve Nicknames" );
-    public   static String MS_PRIVACY_ACTION = loadString( "Action" );
-    public   static String MS_BAN = loadString( "Ban" );
-    public   static String MS_LEAVE_ROOM = loadString( "Leave Room" );
-    public   static String MS_PASSWORD = loadString( "Password" );
-    //public   static String MS_E_MAIL = loadString( "E-Mail(for password recovery)" );    
-    public   static String MS_ITEM_ACTIONS = loadString( "Actions" );
-    public   static String MS_ACTIVATE = loadString( "Activate" );
-    public   static String MS_AFFILIATION = loadString( "Affiliation" );
-    public   static String MS_ACCOUNTS = loadString( "Accounts" );
-    public   static String MS_DELETE_LIST = loadString( "Delete list" );
-    public   static String MS_ACCOUNT_= loadString( "Account >" );
-    public   static String MS_SELECT = loadString( "Select" );
-    public   static String MS_SUBJECT = loadString( "Subject" );
-    //public   static String MS_GROUP_MENU = loadString( "Group menu" );
-    public   static String MS_APP_QUIT = loadString( "Quit" );
-    public   static String MS_EDIT_LIST = loadString( "Edit list" );
-    public   static String MS_REGISTERING = loadString( "Registering" );
-    public   static String MS_DONE = loadString( "Done" );
-    public   static String MS_ERROR_ = loadString( "Error: " );
-    public   static String MS_BROWSE = loadString( "Browse" );
-    public   static String MS_SAVE_LIST = loadString( "Save list" );
-    public   static String MS_KEEPALIVE_PERIOD = loadString( "Keep-Alive period" );
-    public   static String MS_NEWGROUP = loadString( "<New Group>" );
-    public   static String MS_SEND = loadString( "Send" );
-    public   static String MS_PRIORITY = loadString( "Priority" );
-    public   static String MS_FAILED = loadString( "Failed" );
-    public   static String MS_SET_PRIORITY = loadString( "Set Priority" );
-    public   static String MS_DELETE_RULE = loadString( "Delete rule" );
-    public   static String MS_IGNORE_LIST = loadString( "Ignore-List" );
-    public   static String MS_ROSTER_REQUEST = loadString( "Roster request" );
-    public   static String MS_PRIVACY_TYPE = loadString( "Type" );
-    public   static String MS_NAME = loadString( "Name" );
-    public   static String MS_USERNAME = loadString( "Username" );
-    public   static String MS_FULLSCREEN = loadString( "fullscreen" );
-    public   static String MS_ADD_BOOKMARK = loadString( "Add bookmark" );
-    public   static String MS_CONFERENCES_ONLY = loadString( "conferences only" );
-    public   static String MS_CLIENT_INFO = loadString( "Client Version" );
-    public   static String MS_DISCARD = loadString( "Discard Search" );
-    public   static String MS_SEARCH_RESULTS = loadString( "Search Results" );
-    public   static String MS_GENERAL = loadString( "General Group" );
-    public   static String MS_MEMBERS = loadString( "Members" );
-    public   static String MS_ADD_CONTACT = loadString( "Add Contact" );
-    public   static String MS_SUBSCRIPTION = loadString( "Subscription" );
-    public   static String MS_STATUS_MENU = loadString( "Status" );
-    public   static String MS_JOIN = loadString( "Join" );
-    public   static String MS_STARTUP_ACTIONS = loadString( "Startup actions" );
-    public   static String MS_SERVER = loadString( "Server" );
-    public   static String MS_ADMINS = loadString( "Admins" );
-    public   static String MS_MK_ILIST = loadString( "Make Ignore-List" );
-    public   static String MS_OPTIONS = loadString( "Options" );
-    public   static String MS_DELETE = loadString( "Delete" );
-    public   static String MS_DELETE_ASK = loadString( "Delete contact?" );
-    public   static String MS_SUBSCRIBE = loadString( "Authorize" );
-    public   static String MS_NICKNAMES = loadString( "Nicknames" );
-    public   static String MS_ADD_ARCHIVE = loadString( "to Archive" );
-    public   static String MS_BACK = loadString( "Back" );
-    public   static String MS_HEAP_MONITOR = loadString( "heap monitor" );
-    public   static String MS_MESSAGE = loadString( "Message" );
-    public   static String MS_OTHER = loadString( "<Other>" );
-    public   static String MS_APPEND = loadString( "Append" );
-    public   static String MS_ACTIVE_CONTACTS = loadString( "Active Contacts" );
-    public   static String MS_SELECT_NICKNAME = loadString( "Select nickname" );
-    public   static String MS_GROUP = loadString( "Group" );
-    public   static String MS_JOIN_CONFERENCE = loadString( "Join conference" );
-    public   static String MS_NO = loadString( "No" );
-    public   static String MS_REENTER = loadString( "Re-Enter Room" );
-    public   static String MS_NEW_MESSAGE = loadString( "New Message" );
-    public   static String MS_ADD = loadString( "Add" );
-    public   static String MS_LOGON = loadString( "Logon" );
-    public   static String MS_STANZAS = loadString( "Stanzas" );
-    public   static String MS_AT_HOST = loadString( "at Host" );
-    public   static String MS_AUTO_CONFERENCES = loadString( "join conferences" );
-    public   static String MS_STATUS = loadString( "Status" );
-    public   static String MS_SMILES_TOGGLE = loadString( "Smiles" );
-    public   static String MS_CONTACT = loadString( "Contact >" );
-    public final static String MS_SLASHME = "/me";
-    public   static String MS_OFFLINE_CONTACTS = loadString( "offline contacts" );
-    public   static String MS_TRANSPORT = loadString( "Transport" );
-    public   static String MS_COMPOSING_EVENTS = loadString( "composing events" );
-    public   static String MS_ADD_SMILE = loadString( "Add Smile" );
-    public   static String MS_NICKNAME = loadString( "Nickname" );
-    public   static String MS_REVOKE_VOICE = loadString( "Revoke Voice" );
-    public   static String MS_NOT_IN_LIST = loadString( "Not-in-list" );
-    public   static String MS_COMMANDS = loadString( "Commands" );
-    public   static String MS_CHSIGN = loadString( "- (Sign)" );
-    public   static String MS_SETDEFAULT = loadString( "Set default" );
-    public   static String MS_BANNED = loadString( "Outcasts (Ban)" );
-    public   static String MS_SET_AFFILIATION = loadString( "Set affiliation to" );
-    public   static String MS_REGISTER_ACCOUNT = loadString( "Register Account" );
-    public   static String MS_AUTOLOGIN = loadString( "autologin" );
-    public   static String MS_LOGOFF = loadString( "Logoff" );
-    public   static String MS_PUBLISH = loadString( "Publish" );
-    public   static String MS_SUBSCR_REMOVE = loadString( "Remove subscription" );
-    public   static String MS_SET = loadString( "Set" );
-    public   static String MS_APPLICATION = loadString( "Application" );
-    public   static String MS_BOOKMARKS = loadString( "Bookmarks" );
-    public   static String MS_TEST_SOUND = loadString( "Test sound" );
-    
-    public   static String MS_TEST_VIBRATION = loadString( "Test Vibration" );
-    public   static String MS_VIBRATION_LEN = loadString( "Vibration Len" );
-    public   static String MS_VIBRATION_REPEAT = loadString( "Vibration Repeats" );
-    public   static String MS_VIBRATION_INTERVAL = loadString( "Vibration Repeats Interval" );
-    
-    public   static String MS_STARTUP = loadString( "Startup" );
-    public   static String MS_EDIT_RULE = loadString( "Edit rule" );
-    public   static String MS_CANCEL = loadString( "Cancel" );
-    public   static String MS_CLOSE = loadString( "Close" );
-    public   static String MS_ARCHIVE = loadString( "Archive" );
-    public   static String MS_CONFERENCE = loadString( "Conference" );
-    public   static String MS_SOUND = loadString( "Sound" );
-    public   static String MS_LOGIN_FAILED = loadString( "Login failed" );
-    public   static String MS_DISCOVER = loadString( "Browse" ); //"Discover"
-    public   static String MS_NEW_JID = loadString( "New Jid" );
-    public   static String MS_PLAIN_PWD = loadString( "plain-text password" );
-    public   static String MS_PASTE_NICKNAME = loadString( "Paste Nickname" );
-    public   static String MS_KICK = loadString( "Kick" );
-    public   static String MS_CLEAR_LIST = loadString( "Remove readed" );
-    public   static String MS_GRANT_VOICE = loadString( "Grant Voice" );
-    public   static String MS_MOVE_DOWN = loadString( "Move Down" );
-    public   static String MS_QUOTE = loadString( "Quote" );
-    public   static String MS_ROSTER_ELEMENTS = loadString( "Roster elements" );
-    public   static String MS_ENABLE_POPUP = loadString( "popup from background" );
-    public   static String MS_SMILES = loadString( "smiles" );
-    public   static String MS_ABOUT = loadString( "About" );
-    public   static String MS_RESOURCE = loadString( "Resource" );
-    public   static String MS_DISCONNECTED = loadString( "Disconnected" );
-    public   static String MS_EDIT = loadString( "Edit" );
-    public   static String MS_HOST_IP = loadString( "Host name/IP (optional)" );
-    public   static String MS_ADD_RULE = loadString( "Add rule" );
-    public   static String MS_ALL_STATUSES = loadString( "for all status types" );
-    public   static String MS_PASTE_JID = loadString( "Paste Jid" );
-    public   static String MS_GOTO_URL = loadString( "Goto URL" );
-    public   static String MS_CLOCK_OFFSET = loadString( "Clock offset" );
-    public   static String MS_YES = loadString( "Yes" );
-    public   static String MS_SUSPEND = loadString( "Suspend" );
-    public   static String MS_ALERT_PROFILE_CMD = loadString( "Alert Profile >" );
-    public   static String MS_MY_VCARD = loadString( "My vCard" );
-    public   static String MS_TRANSPORTS = loadString( "transports" );
-    public   static String MS_NEW_ACCOUNT = loadString( "Add Profile" );
-    public   static String MS_SELF_CONTACT = loadString( "self-contact" );
-    public   static String MS_VCARD = loadString( "vCard" );
-    public   static String MS_DELETE_VCARD = loadString( "vCard: delete current" );
-    public   static String MS_DELETE_ALL_VCARD = loadString( "vCard: delete ALL" );
-    public   static String MS_DELETE_AVATAR_VCARD = loadString( "User Avatar: delete current" );
-    public   static String MS_DELETE_ALL_AVATAR_VCARD = loadString( "User Avatar: delete from ALL vcards" );
-    
-    public   static String MS_USE_FIVE_TO_CREATEMSG = loadString( "Use 5 key to create Message");
-    public   static String MS_USE_LIGHT_TO_DRWPANELS = loadString( "Use Light to draw panels");
-    public   static String MS_MAINBAR_GRADIENTLIGHT = loadString( "MainBar Gradient Light #");
-    public   static String MS_GRAPHICSMENU_POS = loadString( "Graphisc Menu Screen Position");
-    public   static String MS_GRMENU_CENTER = loadString( "[center]");
-    public   static String MS_GRMENU_LEFT = loadString( "[Left:     ]");
-    public   static String MS_GRMENU_RIGHT = loadString( "[    :Right]");
-    public   static String MS_AUTOCONNECT_TRANSPORTS = loadString( "Auto-Load Transports after connect" );   
-    
-    public   static String MS_SET_SUBJECT = loadString( "Set Subject" );
-    //public   static String MS_TOOLS = loadString( "Options>" );
-    public   static String MS_PORT = loadString( "Port" );
-    public   static String MS_RESUME = loadString( "Resume Message" );
-    public   static String MS_ARE_YOU_SURE_WANT_TO_DISCARD = loadString( "Are You sure want to discard " );
-    public   static String MS_FROM_OWNER_TO = loadString( " from OWNER to " );
-    public   static String MS_MODIFY_AFFILIATION = loadString( "Modify affiliation" );
-    public   static String MS_CLEAR=loadString( "Clear" );
-    public   static String MS_SELLOGIN = loadString( "Connect" );
-    public   static String MS_UNAFFILIATE = loadString("Unaffiliate");
-    public   static String MS_GRANT_MODERATOR = loadString("Grant Moderator");
-    public   static String MS_REVOKE_MODERATOR = loadString("Revoke Moderator");
-    public   static String MS_GRANT_ADMIN = loadString("Grant Admin");
-    public   static String MS_GRANT_OWNERSHIP = loadString("Grant Ownership");
-    public   static String MS_VIZITORS_FORBIDDEN=loadString("Visitors are not allowed to send messages to all occupants");
-    public   static String MS_IS_INVITING_YOU=loadString(" is inviting You to ");
-    public   static String MS_ASK_SUBSCRIPTION=loadString( "Ask subscription");
-    public   static String MS_GRANT_SUBSCRIPTION=loadString("Grant subscription");
-    public   static String MS_INVITE=loadString("Invite to conference");
-    public   static String MS_REASON=loadString("Reason");
-    public   static String MS_YOU_HAVE_BEEN_INVITED=loadString("You have been invited to ");
-    public   static String MS_DISCO_ROOM=loadString("Participants");
-    public   static String MS_CAPS_STATE=loadString("Abc");
-    public   static String MS_STORE_PRESENCE = loadString( "room presences" );
-    public   static String MS_IS_NOW_KNOWN_AS=loadString(" is now known as ");
-    public   static String MS_WAS_BANNED=loadString(" was banned ");
-    public   static String MS_WAS_KICKED=loadString(" was kicked ");
-    public   static String MS_HAS_BEEN_KICKED_BECAUSE_ROOM_BECAME_MEMBERS_ONLY=loadString(" has been kicked because room became members-only");
-    public   static String MS_HAS_LEFT_CHANNEL=loadString(" has left the channel");
-    public   static String MS_HAS_JOINED_THE_CHANNEL_AS=loadString(" has joined the channel as ");
-    public   static String MS_AND=loadString(" and ");
-    public   static String MS_IS_NOW=loadString(" is now ");    
-    public  static String MS_ERROR=loadString("error");
-    public static String MS_SELECT_HISTORY_FOLDER=loadString("Select history folder");
-    
-    public   static String MS_HISTORY_TYPE = loadString( "Type History" );
-    public   static String MS_HISTORY_RMS = loadString( "History in RMS" );
-    public   static String MS_HISTORY_FS = loadString( "History in FS" );
-    public   static String MS_HISTORY_SERVER = loadString( "History on server" ); 
-    
-    public   static String MS_SIMPLE_CONTACTS_DRAW = loadString( "Simple Contacts" );     
-    
-    //public static String MS_NEW_MENU=loadString("show new menu");
-    public static String MS_SOUND_VOLUME=loadString("Sound volume");
-    public static String MS_LANGUAGE=loadString("Language");
-    public static String MS_SAVE_HISTORY=loadString("Save history");
-    public static String MS_SAVE_PRESENCES=loadString("Save presences");
-    public static String MS_SAVE_HISTORY_CONF=loadString("Save conference history");
-    public static String MS_SAVE_PRESENCES_CONF=loadString("Save conference presences");
-    public static String MS_1251_CORRECTION=loadString("convert to cp1251");
-    public static String MS_HISTORY_FOLDER=loadString("History folder");
+     public final static short MS_ONLINE  = 2; //online
+     public final static short MS_CHAT  = 3; //chat
+     public final static short MS_AWAY  = 4; //away
+     public final static short MS_XA  = 5; //xa
+     public final static short MS_INVISIBLE  = 6; //invisible
+     public final static short MS_DND  = 7; //dnd
+     public final static short MS_OFFLINE  = 8; //offline
+     public final static short MS_JID  = 9; //Jid
+     public final static short MS_PRIVACY_LISTS  = 10; //Privacy Lists
+     public final static short MS_MESSAGE_FONT  = 11; //Message font
+     public final static short MS_ROSTER_FONT  = 12; //Roster font
+     public final static short MS_PASTE_BODY  = 13; //Paste Body
+     public final static short MS_CONFIG_ROOM  = 14; //Configure Room
+     public final static short MS_PASTE_SUBJECT  = 15; //Paste Subject
+     public final static short MS_DISCO  = 16; //Service Discovery
+     public final static short MS_USER_JID  = 17; //User JID
+     public final static short MS_NEW_LIST  = 18; //New list
+     public final static short MS_NOLOGIN  = 19; //Select (no login)
+     public final static short MS_PRIVACY_RULE  = 20; //Privacy rule
+     public final static short MS_SSL  = 21; //use SSL
+     public final static short MS_MODIFY  = 22; //Modify
+     public final static short MS_UPDATE  = 23; //Update
+     public final static short MS_ACCOUNT_NAME  = 24; //Account name
+     public final static short MS_GMT_OFFSET  = 25; //GMT offset
+     public final static short MS_TIME_SETTINGS  = 26; //Time settings (hours)
+     public final static short MS_CONNECTED  = 27; //Connected
+     public final static short MS_CONNECT_TO_ = 28; //Connect to 
+     public final static short MS_ALERT_PROFILE  = 29; //Alert Profile
+     public final static short MS_MOVE_UP  = 30; //Move Up
+     public final static short MS_OWNERS  = 31; //Owners
+     public final static short MS_OK  = 32; //Ok
+     public final static short MS_APP_MINIMIZE  = 33; //Minimize
+     public final static short MS_ROOM  = 34; //Room
+     public final static short MS_MESSAGES  = 35; //Messages
+     public final static short MS_REFRESH  = 36; //Refresh
+     public final static short MS_RESOLVE_NICKNAMES  = 37; //Resolve Nicknames
+     public final static short MS_PRIVACY_ACTION  = 38; //Action
+     public final static short MS_ACTION = 39; //Action
+     public final static short MS_BAN  = 40; //Ban
+     public final static short MS_LEAVE_ROOM  = 41; //Leave Room
+     public final static short MS_PASSWORD  = 42; //Password
+     public final static short MS_ITEM_ACTIONS  = 43; //Actions
+     public final static short MS_ACTIVATE  = 44; //Activate
+     public final static short MS_AFFILIATION  = 45; //Affiliation
+     public final static short MS_ACCOUNTS  = 46; //Accounts
+     public final static short MS_DELETE_LIST  = 47; //Delete list
+     public final static short MS_ACCOUNT_ = 48; //Account >
+     public final static short MS_SELECT  = 49; //Select
+     public final static short MS_SUBJECT  = 50; //Subject
+     public final static short MS_APP_QUIT  = 51; //Quit
+     public final static short MS_EDIT_LIST  = 52; //Edit list
+     public final static short MS_REGISTERING  = 53; //Registering
+     public final static short MS_DONE  = 54; //Done
+     public final static short MS_ERROR_  = 55; //Error: 
+     public final static short MS_BROWSE  = 56; //Browse
+     public final static short MS_DISCOVER  = 57; //Browse
+     public final static short MS_SAVE_LIST  = 58; //Save list
+     public final static short MS_KEEPALIVE_PERIOD  = 59; //Keep-Alive period
+     public final static short MS_NEWGROUP  = 60; //<New Group>
+     public final static short MS_SEND  = 61; //Send
+     public final static short MS_PRIORITY  = 62; //Priority
+     public final static short MS_FAILED  = 63; //Failed
+     public final static short MS_SET_PRIORITY  = 64; //Set Priority
+     public final static short MS_DELETE_RULE  = 65; //Delete rule
+     public final static short MS_IGNORE_LIST  = 66; //Ignore-List
+     public final static short MS_ROSTER_REQUEST  = 67; //Roster request
+     public final static short MS_PRIVACY_TYPE  = 68; //Type
+     public final static short MS_NAME  = 69; //Name
+     public final static short MS_USERNAME  = 70; //Username
+     public final static short MS_FULLSCREEN  = 71; //fullscreen
+     public final static short MS_ADD_BOOKMARK  = 72; //Add bookmark
+     public final static short MS_CONFERENCES_ONLY  = 73; //conferences only
+     public final static short MS_CLIENT_INFO  = 74; //Client Version
+     public final static short MS_DISCARD  = 75; //Discard Search
+     public final static short MS_SEARCH_RESULTS  = 76; //Search Results
+     public final static short MS_MEMBERS  = 77; //Members
+     public final static short MS_ADD_CONTACT  = 78; //Add Contact
+     public final static short MS_SUBSCRIPTION  = 79; //Subscription
+     public final static short MS_STATUS_MENU  = 80; //Status
+     public final static short MS_STATUS  = 81; //Status
+     public final static short MS_JOIN  = 82; //Join
+     public final static short MS_STARTUP_ACTIONS  = 83; //Startup actions
+     public final static short MS_SERVER  = 84; //Server
+     public final static short MS_ADMINS  = 85; //Admins
+     public final static short MS_MK_ILIST  = 86; //Make Ignore-List
+     public final static short MS_GENERAL  = 87; //General Group
+     public final static short MS_OPTIONS  = 88; //Options
+     public final static short MS_DELETE  = 89; //Delete
+     public final static short MS_DELETE_ASK  = 90; //Delete contact?
+     public final static short MS_SUBSCRIBE  = 91; //Authorize
+     public final static short MS_NICKNAMES  = 92; //Nicknames
+     public final static short MS_ADD_ARCHIVE  = 93; //to Archive
+     public final static short MS_BACK  = 94; //Back
+     public final static short MS_HEAP_MONITOR  = 95; //heap monitor
+     public final static short MS_KEYS_FOR_OLD_SE = 96; //change softkeys
+     public final static short MS_MESSAGE  = 97; //Message
+     public final static short MS_OTHER  = 98; //<Other>
+     public final static short MS_APPEND  = 99; //Append
+     public final static short MS_ACTIVE_CONTACTS  = 100; //Active Contacts
+     public final static short MS_SELECT_NICKNAME  = 101; //Select nickname
+     public final static short MS_GROUP  = 102; //Group
+     public final static short MS_JOIN_CONFERENCE  = 103; //Join conference
+     public final static short MS_NO  = 104; //No
+     public final static short MS_REENTER  = 105; //Re-Enter Room
+     public final static short MS_NEW_MESSAGE  = 106; //New Message
+     public final static short MS_ADD  = 107; //Add
+     public final static short MS_LOGON  = 108; //Logon
+     public final static short MS_STANZAS  = 109; //Stanzas
+     public final static short MS_AT_HOST  = 110; //at Host
+     public final static short MS_AUTO_CONFERENCES  = 111; //join conferences
+     public final static short MS_STATUS_MENU_  = 112; //Status
+     public final static short MS_STATUS_  = 113; //Status
+     public final static short MS_SMILES_TOGGLE  = 114; //Smiles
+     public final static short MS_CONTACT  = 115; //Contact >
+     public final static short MS_OFFLINE_CONTACTS  = 116; //offline contacts
+     public final static short MS_TRANSPORT  = 117; //Transport
+     public final static short MS_COMPOSING_EVENTS  = 118; //composing events
+     public final static short MS_ADD_SMILE  = 119; //Add Smile
+     public final static short MS_NICKNAME  = 120; //Nickname
+     public final static short MS_REVOKE_VOICE  = 121; //Revoke Voice
+     public final static short MS_NOT_IN_LIST  = 122; //Not-in-list
+     public final static short MS_COMMANDS  = 123; //Commands
+     public final static short MS_CHSIGN  = 124; //- (Sign)
+     public final static short MS_SETDEFAULT  = 125; //Set default
+     public final static short MS_BANNED  = 126; //Outcasts (Ban)
+     public final static short MS_SET_AFFILIATION  = 127; //Set affiliation to
+     public final static short MS_REGISTER_ACCOUNT  = 128; //Register Account
+     public final static short MS_AUTOLOGIN  = 129; //autologin
+     public final static short MS_LOGOFF  = 130; //Logoff
+     public final static short MS_PUBLISH  = 131; //Publish
+     public final static short MS_SUBSCR_REMOVE  = 132; //Remove subscription
+     public final static short MS_SET  = 133; //Set
+     public final static short MS_APPLICATION  = 134; //Application
+     public final static short MS_appStr  = 135; //Application
+     public final static short MS_BOOKMARKS  = 136; //Bookmarks
+     public final static short MS_TEST_SOUND  = 137; //Test sound
+     public final static short MS_STARTUP  = 138; //Startup
+     public final static short MS_EDIT_RULE  = 139; //Edit rule
+     public final static short MS_CANCEL  = 140; //Cancel
+     public final static short MS_CLOSE  = 141; //Close
+     public final static short MS_ARCHIVE  = 142; //Archive
+     public final static short MS_CONFERENCE  = 143; //Conference
+     public final static short MS_SOUND  = 144; //Sound
+     public final static short MS_LOGIN_FAILED  = 145; //Login failed
+     public final static short MS_BROWSE_  = 146; //Browse
+     public final static short MS_DISCOVER_  = 147; //Browse
+     public final static short MS_NEW_JID  = 148; //New Jid
+     public final static short MS_PLAIN_PWD  = 149; //plain-text password
+     public final static short MS_PASTE_NICKNAME  = 150; //Paste Nickname
+     public final static short MS_KICK  = 151; //Kick
+     public final static short MS_CLEAR_LIST  = 152; //Remove readed
+     public final static short MS_GRANT_VOICE  = 153; //Grant Voice
+     public final static short MS_MOVE_DOWN  = 154; //Move Down
+     public final static short MS_QUOTE  = 155; //Quote
+     public final static short MS_ROSTER_ELEMENTS  = 156; //Roster elements
+     public final static short MS_ENABLE_POPUP  = 157; //popup from background
+     public final static short MS_SMILES  = 158; //smiles
+     public final static short MS_ABOUT  = 159; //About
+     public final static short MS_RESOURCE  = 160; //Resource
+     public final static short MS_DISCONNECTED  = 161; //Disconnected
+     public final static short MS_EDIT  = 162; //Edit
+     public final static short MS_HOST_IP  = 163; //Host name/IP (optional)
+     public final static short MS_ADD_RULE  = 164; //Add rule
+     public final static short MS_ALL_STATUSES  = 165; //for all status types
+     public final static short MS_PASTE_JID  = 166; //Paste Jid
+     public final static short MS_GOTO_URL  = 167; //Goto URL
+     public final static short MS_CLOCK_OFFSET  = 168; //Clock offset
+     public final static short MS_YES  = 169; //Yes
+     public final static short MS_SUSPEND  = 170; //Suspend
+     public final static short MS_ALERT_PROFILE_CMD  = 171; //Alert Profile >
+     public final static short MS_MY_VCARD  = 172; //My vCard
+     public final static short MS_TRANSPORTS  = 173; //transports
+     public final static short MS_NEW_ACCOUNT  = 174; //Add Profile
+     public final static short MS_SELF_CONTACT  = 175; //self-contact
+     public final static short MS_VCARD  = 176; //vCard
+     public final static short MS_SET_SUBJECT  = 177; //Set Subject
+     public final static short MS_PORT  = 178; //Port
+     public final static short MS_RESUME  = 179; //Resume Message
+     public final static short MS_ARE_YOU_SURE_WANT_TO_DISCARD  = 180; //Are You sure want to discard 
+     public final static short MS_FROM_OWNER_TO  = 181; // from OWNER to 
+     public final static short MS_MODIFY_AFFILIATION  = 182; //Modify affiliation
+     public final static short MS_CLEAR = 183; //Clear
+     public final static short MS_SELLOGIN  = 184; //Connect
+     public final static short MS_UNAFFILIATE  = 185; //Unaffiliate
+     public final static short MS_GRANT_MODERATOR  = 186; //Grant Moderator
+     public final static short MS_REVOKE_MODERATOR  = 187; //Revoke Moderator
+     public final static short MS_GRANT_ADMIN  = 188; //Grant Admin
+     public final static short MS_GRANT_OWNERSHIP  = 189; //Grant Ownership
+     public final static short MS_VIZITORS_FORBIDDEN = 190; //Visitors are not allowed to send messages to all occupants
+     public final static short MS_IS_INVITING_YOU = 191; // is inviting You to 
+     public final static short MS_ASK_SUBSCRIPTION = 192; //Ask subscription
+     public final static short MS_GRANT_SUBSCRIPTION = 193; //Grant subscription
+     public final static short MS_INVITE = 194; //Invite to conference
+     public final static short MS_REASON = 195; //Reason
+     public final static short MS_YOU_HAVE_BEEN_INVITED = 196; //You have been invited to 
+     public final static short MS_DISCO_ROOM = 197; //Participants
+     public final static short MS_CAPS_STATE = 198; //Abc
+     public final static short MS_STORE_PRESENCE  = 199; //room presences
+     public final static short MS_IS_NOW_KNOWN_AS = 200; // is now known as 
+     public final static short MS_WAS_BANNED = 201; // was banned 
+     public final static short MS_WAS_KICKED = 202; // was kicked 
+     public final static short MS_HAS_BEEN_KICKED_BECAUSE_ROOM_BECAME_MEMBERS_ONLY = 203; // has been kicked because room became members-only
+     public final static short MS_HAS_LEFT_CHANNEL = 204; // has left the channel
+     public final static short MS_HAS_JOINED_THE_CHANNEL_AS = 205; // has joined the channel as 
+     public final static short MS_AND = 206; // and 
+     public final static short MS_IS_NOW = 207; // is now 
+     public final static short MS_ERROR = 208; //error
+     public final static short MS_SELECT_HISTORY_FOLDER = 209; //Select history folder
+     public final static short MS_SOUND_VOLUME = 210; //Sound volume
+     public final static short MS_LANGUAGE = 211; //Language
+     public final static short MS_SAVE_HISTORY = 212; //Save history
+     public final static short MS_SAVE_PRESENCES = 213; //Save presences
+     public final static short MS_SAVE_HISTORY_CONF = 214; //Save conference history
+     public final static short MS_SAVE_PRESENCES_CONF = 215; //Save conference presences
+     public final static short MS_1251_CORRECTION = 216; //convert to cp1251
+     public final static short MS_HISTORY_FOLDER = 217; //History folder
+     public final static short MS_COPY = 218; //Copy
+     public final static short MS_PASTE = 219; //Paste
+     public final static short MS_SAVE_TEMPLATE = 220; //Save template
+     public final static short MS_TEMPLATE = 221; //Template
+     public final static short MS_HAS_SET_TOPIC_TO = 222; //has set topic to
+     public final static short MS_SEEN = 223; //Seen
+     public final static short MS_IDLE = 224; //Idle
+     public final static short MS_MAIN_MENU = 225; //Main menu
+     public final static short MS_CHOOSE_STATUS = 226; //Choose status
+     public final static short MS_ADD_STATUS = 227; //Add status
+     public final static short MS_REMOVE_STATUS = 228; //Remove status
+     public final static short MS_ADRESS = 229; //Address
+     public final static short MS_EXPORT_TO_FILE = 230; //Make BackUp
+     public final static short MS_IMPORT_TO_FILE = 231; //Import from BackUp
+     public final static short MS_VIEW = 232; //View
+     public final static short MS_STOP = 233; //Stop
+     public final static short MS_FILE_TRANSFERS = 234; //File transfers
+     public final static short MS_PATH = 235; //Path
+     public final static short MS_ACCEPT_FILE = 236; //Accept file
+     public final static short MS_FILE = 237; //File
+     public final static short MS_SAVE_TO = 238; //Save To
+     public final static short MS_SENDER = 239; //Sender
+     public final static short MS_REJECTED = 240; //Rejected
+     public final static short MS_SEND_FILE = 241; //Send file
+     public final static short MS_CANT_OPEN_FILE = 242; //Can't open file
+     public final static short MS_NEW = 243; //New
+     public final static short MS_NEW_TEMPLATE = 244; //New Template
+     public final static short MS_SAVE_PHOTO = 245; //Save photo
+     public final static short MS_BALLOON_INK = 246; //balloon ink
+     public final static short MS_BALLOON_BGND = 247; //balloon background
+     public final static short MS_LIST_BGND = 248; //messagelist & roster background
+     public final static short MS_LIST_BGND_EVEN = 249; //messagelist & roster even lines
+     public final static short MS_LIST_INK = 250; //messagelist & roster & common font
+     public final static short MS_MSG_SUBJ = 251; //message subject
+     public final static short MS_MSG_HIGHLIGHT = 252; //message highlight
+     public final static short MS_DISCO_CMD = 253; //service discovery commands
+     public final static short MS_BAR_BGND = 254; //panels background
+     public final static short MS_BAR_INK = 255; //header font
+     public final static short MS_CONTACT_DEFAULT = 256; //contact default
+     public final static short MS_CONTACT_CHAT = 257; //contact chat
+     public final static short MS_CONTACT_AWAY = 258; //contact away
+     public final static short MS_CONTACT_XA = 259; //contact extended away
+     public final static short MS_CONTACT_DND = 260; //contact do not disturb
+     public final static short MS_GROUP_INK = 261; //group color
+     public final static short MS_BLK_INK = 262; //keylock font
+     public final static short MS_BLK_BGND = 263; //keylock background
+     public final static short MS_MESSAGE_IN = 264; //message incoming
+     public final static short MS_MESSAGE_OUT = 265; //message outgoing
+     public final static short MS_MESSAGE_PRESENCE = 266; //message presence
+     public final static short MS_MESSAGE_AUTH = 267; //message auth
+     public final static short MS_MESSAGE_HISTORY = 268; //message history
+     public final static short MS_PGS_REMAINED = 269; //progress bar remained
+     public final static short MS_PGS_COMPLETE = 270; //progress bar complete
+     public final static short MS_PGS_INK = 271; //progress bar font
+     public final static short MS_HEAP_TOTAL = 272; //Heap mon total
+     public final static short MS_HEAP_FREE = 273; //Heap mon free
+     public final static short MS_CURSOR_BGND = 274; //Cursor background
+     public final static short MS_CURSOR_OUTLINE = 275; //Cursor ink & outline
+     public final static short MS_SCROLL_BRD = 276; //Scroll border
+     public final static short MS_SCROLL_BAR = 277; //Scroll bar
+     public final static short MS_SCROLL_BGND = 278; //Scroll back
+     public final static short MS_MESSAGE_IN_S = 279; //other message incoming
+     public final static short MS_MESSAGE_OUT_S = 280; //other message outgoing
+     public final static short MS_MESSAGE_PRESENCE_S = 281; //other message presence
+     public final static short MS_POPUP_MESSAGE = 282; //Popup font
+     public final static short MS_POPUP_MESSAGE_BGND = 283; //Popup background
+     public final static short MS_POPUP_SYSTEM = 284; //Popup system font
+     public final static short MS_POPUP_SYSTEM_BGND = 285; //Popup system background
+     public final static short MS_CONTACT_STATUS = 286; //Contact status font
+     public final static short MS_CONTROL_ITEM = 287; //Control color
+     public final static short MS_GRADIENT_BGND_LEFT = 288; //Gradient_Background_left color
+     public final static short MS_GRADIENT_BGND_RIGHT = 289; //Gradient_Background_right color
+     public final static short MS_COLOR_TUNE = 290; //Themes
+     public final static short MS_SOUNDS_OPTIONS = 291; //Sounds options
+     public final static short MS_TIME = 292; //Time
+     public final static short MS_ROLE_PARTICIPANT = 293; //participant
+     public final static short MS_ROLE_MODERATOR = 294; //moderator
+     public final static short MS_ROLE_VISITOR = 295; //visitor
+     public final static short MS_AFFILIATION_NONE = 296; //none
+     public final static short MS_SUBSCR_NONE  = 297; //none
+     public final static short MS_AFFILIATION_MEMBER = 298; //member
+     public final static short MS_AFFILIATION_ADMIN = 299; //admin
+     public final static short MS_AFFILIATION_OWNER = 300; //owner
+     public final static short MS_SEC3 = 301; //second's
+     public final static short MS_SEC2 = 302; //seconds
+     public final static short MS_SEC1 = 303; //second
+     public final static short MS_MIN3 = 304; //minute's
+     public final static short MS_MIN2 = 305; //minutes
+     public final static short MS_MIN1 = 306; //minute
+     public final static short MS_HOUR3 = 307; //hour's
+     public final static short MS_HOUR2 = 308; //hours
+     public final static short MS_HOUR1 = 309; //hour
+     public final static short MS_DAY3 = 310; //day's
+     public final static short MS_DAY2 = 311; //days
+     public final static short MS_DAY1 = 312; //day
+     public final static short MS_AWAY_PERIOD  = 313; //Minutes before away
+     public final static short MS_AWAY_TYPE  = 314; //Automatic Away
+     public final static short MS_AWAY_OFF  = 315; //disabled
+     public final static short MS_DISABLED = 316; //disabled
+     public final static short MS_AWAY_LOCK  = 317; //keyblock
+     public final static short MS_MESSAGE_LOCK  = 318; //by message
+     public final static short MS_AUTOSTATUS = 319; //AutoStatus
+     public final static short MS_AUTOSTATUS_TIME = 320; //AutoStatus time (min)
+     public final static short MS_AUTO_XA = 321; //Auto xa since %t
+     public final static short MS_AUTO_AWAY = 322; //Auto away since %t
+     public final static short MS_AUTOFOCUS  = 323; //autofocus
+     public final static short MS_GRANT_MEMBERSHIP  = 324; //Grant Membership
+     public final static short MS_SURE_CLEAR  = 325; //Are You sure want to clear messagelist?
+     public final static short MS_TOKEN  = 326; //Google token request
+     public final static short MS_FEATURES  = 327; //Features
+     public final static short MS_SHOWPWD  = 328; //Show password
+     public final static short MS_NO_VERSION_AVAILABLE  = 329; //No client version available
+     public final static short MS_MSG_LIMIT  = 330; //Message limit
+     public final static short MS_OPENING_STREAM  = 331; //Opening stream
+     public final static short MS_ZLIB  = 332; //Using compression
+     public final static short MS_AUTH  = 333; //Authenticating
+     public final static short MS_RESOURCE_BINDING  = 334; //Resource binding
+     public final static short MS_SESSION  = 335; //Initiating session
+     public final static short MS_TEXTWRAP  = 336; //Text wrapping
+     public final static short MS_TEXTWRAP_CHARACTER  = 337; //by chars
+     public final static short MS_TEXTWRAP_WORD  = 338; //by words
+     public final static short MS_INFO  = 339; //Info
+     public final static short MS_REPLY  = 340; //Reply
+     public final static short MS_DIRECT_PRESENCE  = 341; //Send status
+     public final static short MS_CONFIRM_BAN  = 342; //Are you sure want to BAN this person?
+     public final static short MS_NO_REASON  = 343; //No reason
+     public final static short MS_RECENT  = 344; //Recent
+     public final static short MS_CAMERASHOT  = 345; //Shot
+     public final static short MS_SELECT_FILE  = 346; //Select file
+     public final static short MS_LOAD_PHOTO  = 347; //Load Photo
+     public final static short MS_CLEAR_PHOTO  = 348; //Clear Photo
+     public final static short MS_CAMERA  = 349; //Camera
+     public final static short MS_HIDE_FINISHED  = 350; //Hide finished
+     public final static short MS_TRANSFERS  = 351; //Transfer tasks
+     public final static short MS_SURE_DELETE  = 352; //Are you sure want to delete this message?
+     public final static short MS_NEW_BOOKMARK  = 353; //New conference
+     public final static short MS_ROOT  = 354; //Root
+     public final static short MS_DECLINE  = 355; //Decline
+     public final static short MS_AUTH_NEW  = 356; //Authorize new contacts
+     public final static short MS_AUTH_AUTO  = 357; //[auto-subscribe]
+     public final static short MS_KEEPALIVE  = 358; //Keep-Alive
+     public final static short MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM  = 359; // has been unaffiliated and kicked from members-only room
+     public final static short MS_RENAME  = 360; //Rename
+     public final static short MS_MOVE  = 361; //Move
+     public final static short MS_SAVE  = 362; //Save
+     public final static short MS_TRANSLIT  = 363; //Translit
+     public final static short MS_DETRANSLIT  = 364; //ReTranslit
+     public final static short MS_AUTODETRANSLIT  = 365; //Auto translit2Cyr
+     public final static short MS_CHECK_UPDATE  = 366; //Check Updates
+     public final static short MS_SHOW_RESOURCES  = 367; //Show Resources
+     public final static short MS_COLLAPSED_GROUPS  = 368; //Collapsed groups
+     public final static short MS_SEND_BUFFER  = 369; //Send Buffer
+     public final static short MS_CHANGE_NICKNAME  = 370; //Change nickname
+     public final static short MS_MESSAGE_COLLAPSE_LIMIT  = 371; //Message collapse limit
+     public final static short MS_NO_CLIENT_INFO  = 372; //No client info
+     public final static short MS_CLEAN_ALL_MESSAGES  = 373; //Clear all chats
+     public final static short MS_DO_AUTOJOIN  = 374; //Join marked (auto)
+     public final static short MS_STATS  = 375; //Statistics
+     public final static short MS_STARTED = 376; //Started: 
+     public final static short MS_TRAFFIC_STATS = 377; //Traffic stats: 
+     public final static short MS_ALL = 378; //All: 
+     public final static short MS_CURRENT = 379; //Current: 
+     public final static short MS_LAST_MESSAGES  = 380; //Last Messages
+     public final static short MS_EDIT_JOIN  = 381; //Edit/join
+     public final static short MS_USE_COLOR_SCHEME  = 382; //Use this Color scheme
+     public final static short MS_DELETE_ALL  = 383; //Delete All
+     public final static short MS_HISTORY_OPTIONS  = 384; //History options
+     public final static short MS_1251_TRANSLITERATE_FILENAMES  = 385; //Filenames transliterate
+     public final static short MS_SAVE_CHAT  = 386; //Save chat
+     public final static short MS_SHOW_STATUSES  = 387; //show statuses
+     public final static short MS_SHOW_HARDWARE  = 388; //shared platform info
+     public final static short MS_DELIVERY  = 389; //delivery events
+     public final static short MS_NIL_DROP_MP  = 390; //drop all
+     public final static short MS_NIL_DROP_P  = 391; //receive messages
+     public final static short MS_NIL_ALLOW_ALL  = 392; //messages & presences
+     public final static short MS_FONTSIZE_NORMAL  = 393; //normal
+     public final static short MS_FONTSIZE_SMALL  = 394; //small
+     public final static short MS_FONTSIZE_LARGE  = 395; //large
+     public final static short MS_ALERT_PROFILE_ALLSIGNALS  = 396; //All signals
+     public final static short MS_ALERT_PROFILE_VIBRA  = 397; //Vibra
+     public final static short MS_ALERT_PROFILE_NOSIGNALS  = 398; //No signals
+     public final static short MS_IS_DEFAULT  = 399; // (default)
+     public final static short MS_QUIT_ASK  = 400; //Quit?
+     public final static short MS_SURE_QUIT  = 401; //Are you sure want to Quit?
+     public final static short MS_CONFIRM_EXIT  = 402; //exit confirmation
+     public final static short MS_SHOW_LAST_APPEARED_CONTACTS  = 403; //show last appeared contacts
+     public final static short MS_CUSTOM_KEYS  = 404; //custom keys
+     public final static short MS_ADD_CUSTOM_KEY  = 405; //Add custom key
+     public final static short MS_KEYS_ACTION  = 406; //keys action
+     public final static short MS_ENABLED  = 407; //enabled
+     public final static short MS_KEY  = 408; //key
+     public final static short MS_RECONNECT  = 409; //Reconnect
+     public final static short MS_SORT  = 410; //Sort list
+     public final static short MS_FLASHLIGHT  = 411; //Turn on light
+     public final static short MS_SHOW_TIME_TRAFFIC = 412; //show time and traffic
+     public final static short MS_CLEAR_POPUPS  = 413; //Clear popups
+     public final static short MS_MESSAGE_COUNT_LIMIT  = 414; //Chat history length
+     public final static short MS_SUBSCRIPTION_REQUEST_FROM_USER  = 415; //This user wants to subscribe to your presence
+     public final static short MS_SUBSCRIPTION_RECEIVED  = 416; //You are now authorized
+     public final static short MS_SUBSCRIPTION_DELETED  = 417; //Your authorization has been removed!
+     public final static short MS_SEND_FILE_TO  = 418; //To: 
+     public final static short MS_FILE_SIZE  = 419; //size:
+     public final static short MS_SUN  = 420; //Sun
+     public final static short MS_MON  = 421; //Mon
+     public final static short MS_TUE  = 422; //Tue
+     public final static short MS_WED  = 423; //Wed
+     public final static short MS_THU  = 424; //Thu
+     public final static short MS_FRI  = 425; //Fri
+     public final static short MS_SAT  = 426; //Sat
+     public final static short MS_SUBSCR_AUTO = 427; //Automatic subscription
+     public final static short MS_SUBSCR_ASK = 428; //Ask me
+     public final static short MS_SUBSCR_DROP = 429; //Drop subscription
+     public final static short MS_SUBSCR_REJECT = 430; //Deny subscription
+     public final static short MS_SEARCH = 431; //Search
+     public final static short MS_REGISTER = 432; //Register
+     public final static short MS_CHECK_GOOGLE_MAIL = 433; //Check Google mail
+     public final static short MS_BLINKING = 434; //Blink
+     public final static short MS_NOTICES_OPTIONS = 435; //Notices options
+     public final static short MS_MESSAGE_SOUND = 436; //Message sound
+     public final static short MS_ONLINE_SOUND = 437; //Online sound
+     public final static short MS_OFFLINE_SOUND = 438; //Offline sound
+     public final static short MS_MESSAGE_FOR_ME_SOUND = 439; //"Message for me" sound
+     public final static short MS_COMPOSING_SOUND = 440; //Composing sound
+     public final static short MS_CONFERENCE_SOUND = 441; //Conference sound
+     public final static short MS_STARTUP_SOUND = 442; //StartUP sound
+     public final static short MS_OUTGOING_SOUND = 443; //Outgoing sound
+     public final static short MS_VIP_SOUND = 444; //Vip sound
+     public final static short MS_COPY_JID = 445; //Copy JID
+     public final static short MS_PING = 446; //Ping request
+     public final static short MS_ONLINE_TIME = 447; //Online time
+     public final static short MS_BREAK_CONECTION = 448; //Break connection
+     public final static short MS_AUTOSCROLL = 449; //autoScroll
+     public final static short MS_EMULATE_TABS = 450; //emulate tabs
+     public final static short MS_SHOW_BALLONS = 451; //show balloons
+     public final static short MS_POPUPS = 452; //popUps
+     public final static short MS_AUTOSTATUS_MESSAGE = 453; //AutoStatus Message
+     public final static short MS_MEMORY = 454; //Memory:
+     public final static short MS_FREE  = 455; //Free: 
+     public final static short MS_TOTAL = 456; //Total: 
+     public final static short MS_CONN = 457; //Session(s): 
+     public final static short MS_DESCRIPTION = 458; //Description
+     public final static short MS_USER  = 459; //User
+     public final static short MS_IMPORT_EXPORT = 460; //Import/Export
+     public final static short MS_ieStr  = 461; //Import/Export
+     public final static short MS_BOLD_FONT = 462; //bold font for contacts
+     public final static short MS_RUNNING_MESSAGE = 463; //running message
+     public final static short MS_NOTIFY_MSGEDIT = 464; //Show latest message in alt message edit
+     public final static short MS_MSG_EDIT_TYPE = 465; //Message Edit Type
+     public final static short MS_MES_EDIT_OLD = 466; //Standart
+     public final static short MS_MES_EDIT_ALT = 467; //Alternative
+     public final static short MS_MES_EDIT_ALT_GUI = 468; //Alternative with GUI panels
+     public final static short MS_COMPOSING_NOTIFY = 469; //Composing message to you
+     public final static short MS_COMPRESSION  = 470; //compression
+     public final static short MS_NEW_ROOM_CREATED  = 471; //New room created
+     public final static short MS_IRCLIKESTATUS  = 472; //IRC-like conference nick-status
+     public final static short MS_SEND_RECEIVE_USERMOODS = 473; //user moods send/receive
+     public final static short MS_SIMULATED_BREAK = 474; //Simulated break
+     public final static short MS_BUILD_NEW = 475; //Build new version on constructor
+     public final static short MS_AUTOTASKS = 476; //Auto tasks
+     public final static short MS_AUTOTASK_TYPE = 477; //Auto task type
+     public final static short MS_BY_TIMER_ = 478; //by timer 
+     public final static short MS_BY_TIME_ = 479; //by time 
+     public final static short MS_AUTOTASK_ACTION_TYPE = 480; //Auto task action type
+     public final static short MS_AUTOTASK_QUIT_BOMBUSMOD = 481; //Quit BombusQD
+     public final static short MS_AUTOTASK_QUIT_CONFERENCES = 482; //Quit conferences
+     public final static short MS_AUTOTASK_LOGOFF = 483; //Disconnection
+     public final static short MS_AWAY_OFF_  = 484; //disabled
+     public final static short MS_DISABLED_ = 485; //disabled
+     public final static short MS_AUTOTASK_DELAY = 486; //Delay (min.)
+     public final static short MS_AUTOTASK_TIME = 487; //Start time
+     public final static short MS_AUTOTASK_HOUR = 488; //Hour
+     public final static short MS_AUTOTASK_MIN = 489; //Min
+     public final static short MS_LOAD_ROOMLIST  = 490; //Browse rooms
+     public final static short MS_AUTORESPOND  = 491; //Autorespond
+     public final static short MS_INVERT  = 492; //Invert colors
+     public final static short MS_XML_CONSOLE  = 493; //XML console
+     public final static short MS_CLIPBOARD  = 494; //Clipboard
+     public final static short MS_USERMOOD = 495; //User moods
+     public final static short MS_USERACTIVITY = 496; //User activity
+     public final static short MS_PEP_NOT_SUPPORTED  = 497; //Personal events not supported
+     public final static short MS_USERTUNE = 498; //User tune
+     public final static short MS_BAR_FONT = 499; //Bar font
+     public final static short MS_POPUP_FONT = 500; //Popup & ballon font
+     public final static short MS_FONTS_OPTIONS = 501; //Fonts options
+     public final static short MS_LOAD_HISTORY = 502; //Load history
+     public final static short MS_CONNECT_TO = 503; //Connect to
+     public final static short MS_SEND_COLOR_SCHEME = 504; //Send my color scheme
+     public final static short MS_UNREAD_MESSAGES = 505; //Unread messages
+     public final static short MS_VIBRATE_ONLY_HIGHLITED = 506; //vibrate only highlited
+     public final static short MS_EXTENDED_SETTINGS = 507; //Extended settings
+     public final static short MS_SAVE_TO_FILE = 508; //Save to file
+     public final static short MS_LOAD_FROM_FILE = 509; //Load from file
+     public final static short MS_SHOW_IQ_REQUESTS = 510; //Show IQ requests
+     public final static short MS_SHOW_CLIENTS_ICONS = 511; //Show clients icons
+     public final static short MS_PRIVACY_ACTION_  = 512; //Action
+     public final static short MS_ACTION_ = 513; //Action
+     public final static short MS_VALUE = 514; //Value
+     public final static short MS_RECONNECT_COUNT_RETRY = 515; //Quantity of attempts
+     public final static short MS_RECONNECT_WAIT = 516; //Delay before reconnect(sec.)
+     public final static short MS_MENU = 517; //Menu
+     public final static short MS_PREVIOUS = 518; //Previous
+     public final static short MS_PREVIOUS_ = 519; //Previous: 
+     public final static short MS_END_OF_VCARD = 520; //[End of vCard]
+     public final static short MS_NO_VCARD = 521; //[No vCard available]
+     public final static short MS_NO_PHOTO = 522; //[No photo available]
+     public final static short MS_UNSUPPORTED_FORMAT = 523; //[Unsupported format]
+     public final static short MS_PHOTO_TOO_LARGE = 524; //[large photo was dropped]
+     public final static short MS_DELETE_GROUP_ASK = 525; //Delete group?
+     public final static short MS_PANELS = 526; //Panels
+     public final static short MS_NO_BAR = 527; //[ ]
+     public final static short MS_MAIN_BAR = 528; //[main bar]
+     public final static short MS_INFO_BAR = 529; //[info bar]
+     public final static short MS_FLASH_BACKLIGHT = 530; //Flash backlight
+     public final static short MS_EXECUTE_MENU_BY_NUMKEY = 531; //execute menu by numkey
+     public final static short MS_SHOW_NACKNAMES = 532; //show nicknames
+     public final static short MS_SEND_PHOTO = 533; //Send photo
+     public final static short MS_ENABLE_AUTORESPOND = 534; //enable autorespond
+     public final static short MS_FILE_MANAGER = 535; //File manager
+     public final static short MS_ADHOC = 536; //remote control
+     public final static short MS_SAVING_CURSORE  = 537; //Saving cursor
+     public final static short MS_TRANSLATE  = 538; //Translate
+     public final static short MS_DESTROY_ROOM  = 539; //Destroy room
+     public final static short MS_STATICSTICS  = 540; //Stats users for
+     public final static short MS_CONTACT_HELPER  = 541; //Contact Helper
+     public final static short MS_CHANGE_PASSWORD  = 542; //Change password
+     public final static short MS_REMOVE_ACCOUNT  = 543; //Remove from server
+     public final static short MS_NEW_PASSWORD  = 544; //New password
+     public final static short MS_SEND_EVIL_MSG  = 545; //Send Evil Message
+     public final static short MS_ADD_SEL_TO_ARCHIVE  = 546; //save selection to archive
+     public final static short MS_COPY_CLIPBOARD  = 547; //To Clipboard
+     public final static short MS_COLLAPS_ALL  = 548; //Collapse All
+     public final static short MS_ADD_SEARCH_QUERY  = 549; //Add Search Query
+     public final static short MS_FIND_TEXT  = 550; //Find Text
+     public final static short MS_END_SEARCH  = 551; //End search!
+     public final static short MS_MOOD_IN_MSG  = 552; //Send Mood in Msg
+     public final static short MS_ANIMATION  = 553; //Turn OFF Animation
+     public final static short MS_ICON_COLP  = 554; //Turn OFF Message Icon
+     public final static short MS_PEP_OFF  = 555; //PEP is now OFF
+     public final static short MS_DYNAMIC_EVENTS  = 556; //Dynamic PEP
+     public final static short MS_DRAW_CONTACT_VCARD  = 557; //Draw vcard image on contact
+     public final static short MS_AUTOLOAD_VCARD  = 558; //Autoloading vcard from server
+     public final static short MS_AUTOLOAD_VCARD_FROMFS  = 559; //Autoloading vcard from FS Phone
+     public final static short MS_ACTIVITY  = 560; //MyActivity
+     public final static short MS_UPDATE_PEP  = 561; //Update Moods+Actions+Music
+     public final static short MS_STOP_MUSIC  = 562; //Stop Music
+     public final static short MS_NOT_FOUND  = 563; //Your text not found!
+     public final static short MS_UP_MOODS  = 564; //Send my Moods+Actions(PEP) to all contacts(YES-recommended)?
+     public final static short MS_DRAWED_FONT  = 565; //Drawed font
+     public final static short MS_REQUIRED_FIELDS  = 566; //Required field
+     public final static short MS_GENERATE  = 567; //Generate
+     public final static short MS_CONTACT_HELPER_  = 568; //Contact Helper
+     public final static short MS_FILL_VCARD_FIELDS  = 569; //Fill Required field(Full name,nickname and birthday)
+     public final static short MS_TRANSLATE_  = 570; //Translate
+     public final static short MS_DELETE_ALL_STATUSES  = 571; //Delete all statuses
+     public final static short MS_BOLD_AND_COLORS_NICKS  = 572; //Colored Bold String in chat(+many others strings)
+     public final static short MS_SAVE_CURSOR  = 573; //Autosave cursor position in chat
+     public final static short MS_MSG_BY_ME = 574; //Messages,sended by me
+     public final static short MS_MSG_ME = 575; //Messages with /me
+     public final static short MS_MSG_GET = 576; //All incoming messages
+     public final static short MS_BGND_IMAGE = 577; //Background Jimm image
+     public final static short MS_MY_BGND_IMAGE = 578; //Background image
+     public final static short MS_BGND_SCROLL = 579; //Draw Bgnd of Scroll
+     public final static short MS_SCROLL_OPTIONS = 580; //Scroll Options
+     public final static short MS_SCROLL_WIDTH = 581; //Scroll Width
+     public final static short MS_TYPE_BACKGROUND = 582; //Type of Background
+     public final static short MS_BGND_NONE = 583; //Background Default
+     public final static short MS_BGND_GRADIENT_ = 584; //Background Gradient
+     public final static short MS_MY_BGND_IMAGE_ = 585; //Background image
+     public final static short MS_MAX_AVATAR_WIDTH = 586; //Max Avatar Width
+     public final static short MS_MAX_AVATAR_HEIGHT = 587; //Max Avatar Height
+     public final static short MS_CLIENT_ICONS_LEFT = 588; //ClientIcons Left
+     public final static short MS_RESTART_APP = 589; //After Restart App
+     public final static short MS_LOAD_SJIN = 590; //Load skin.png from File
+     public final static short MS_SET_DEF_SKIN = 591; //Set Default skin.png
+     public final static short MS_SKIN_SUPPORT_ERROR = 592; //Error!Only 16x16 size support!
+     public final static short MS_CLCHAT_ON  = 593; //Classic Chat
+     public final static short MS_clchatStr  = 594; //Classic Chat
+     public final static short MS_CLCHAT_AUTO_SCR  = 595; //Auto Scrolling
+     public final static short MS_CLCHAT_BGNG_PHONE  = 596; //Background Phone theme
+     public final static short MS_CLCHAT_AOPEN  = 597; //Auto Open Classic Chat
+     public final static short MS_CLCHAT_HEIGHT  = 598; //Chat Height(max-320)
+     public final static short MS_CLCHAT_SCRLSPEED  = 599; //Scroll speed(msec,10sec-max)
+     public final static short MS_CLCHAT_MSGLIMIT  = 600; //Show messages limit(1000-max)
+     public final static short MS_USERS_SEARCH = 601; //Users search
+     public final static short MS_SUPPORT  = 602; //Support
+     public final static short MS_GRADIENT_CURSOR  = 603; //Gradient cursor
+     public final static short MS_ALTERNATING_CHAT_COLORS  = 604; //Alternating chat colors
+     public final static short MS_TRANSPARENCY_ARGB  = 605; //Transparency bgnd(argb)
+     public final static short MS_GRAPHICS_MENU_BGNG_ARGB  = 606; //Graphics menu bgnd(argb)
+     public final static short MS_GRAPHICS_MENU_FONT  = 607; //Graphics menu font
+     public final static short MS_SERVICE  = 608; //Service>
+     public final static short MS_MY_JABBER  = 609; //My Jabber>
+     public final static short AVATAR_HIGH_TRAFFIC  = 610; //(HIGH TRAFFIC!)
+     public final static short AVATAR_DRAW_RECT  = 611; //Draw Rect Avatar
+     public final static short AVATAR_AUTOSAVE_FS  = 612; //AutoSave In FS
+     public final static short AVATAR_FOLDER  = 613; //Avatar Folder
+     public final static short AVATAR_ROSTER_LOADFS  = 614; //Roster:Load all Avatars from FS
+     public final static short AVATAR_MUC_LOADFS  = 615; //Muc:Load all Avatars from FS
+     public final static short MS_AVATARS  = 616; //Avatars
+     public final static short MS_avatarStr  = 617; //Avatars
+     public final static short MS_QD_NEWS  = 618; //News
+     public final static short MS_SHOW_PRS_TIME = 619; //Show Presence Time
+     public final static short MS_ANIMATION_MENU_ROSTER  = 620; //Animation of Graphics Menu&Roster
+     public final static short MS_EDIT_COLORS  = 621; //Edit colors
+     public final static short MS_TRANSPARENT  = 622; //Transparent
+     public final static short MS_BGND_MIDLET  = 623; //Background of midlet
+     public final static short MS_GR_MENU  = 624; //Graphics Menu
+     public final static short MS_CURSOR_TR  = 625; //Cursor
+     public final static short MS_Bold  = 626; //Bold
+     public final static short MS_Italic  = 627; //Italic
+     public final static short GAME_CHECKERS_MSG  = 628; //User wants to play checkers with you
+     public final static short GAME_SEND_GAME  = 629; //Checkers:send invite
+     public final static short GAME_APPLIED  = 630; //Checkers:start game
+     public final static short GAME_STOP  = 631; //Checkers:stop game
+     public final static short GAME_RESUME  = 632; //Checkers:resume
+     public final static short DONT_LOAD_MUCCONTACTS  = 633; //Don't load conference contacts
+     public final static short MS_MODULES_CONFIG  = 634; //Modules config
+     public final static short MS_ADVANCED_OPT  = 635; //Advanced Options
+     public final static short MS_contactStr  = 636; //Contacts
+     public final static short MS_msgStr  = 637; //Chat
+     public final static short MS_netStr  = 638; //Network
+     public final static short MS_grStr  = 639; //Graphics
+     public final static short MS_APPLICATION_  = 640; //Application
+     public final static short MS_appStr_  = 641; //Application
+     public final static short MS_hotkeysStr  = 642; //Hotkeys
+     public final static short MS_astatusStr  = 643; //Autostatus
+     public final static short MS_CLCHAT_ON_  = 644; //Classic Chat
+     public final static short MS_clchatStr_  = 645; //Classic Chat
+     public final static short MS_cthemesStr  = 646; //Color Themes
+     public final static short MS_casheStr  = 647; //Cashe
+     public final static short MS_historyStr  = 648; //History
+     public final static short MS_fontsStr  = 649; //Fonts
+     public final static short MS_IMPORT_EXPORT_ = 650; //Import/Export
+     public final static short MS_ieStr_  = 651; //Import/Export
+     public final static short MS_notifyStr  = 652; //Notifications&Light Control
+     public final static short MS_taskstr  = 653; //Tasks
+     public final static short MS_AVATARS_  = 654; //Avatars
+     public final static short MS_avatarStr_  = 655; //Avatars
+     public final static short MS_config  = 656; //Config
+     public final static short MS_ANI_SMILES  = 657; //Use animated smiles
+     public final static short MS_NOKIA_RECONNECT_HACK  = 658; //Nokia Reconnect Hack
+     public final static short MS_DEBUG_MENU  = 659; //Debug Menu
+     public final static short MS_EDIT_ACCOUNT_MSG  = 660; //Please,edit this account to save new password!
+     public final static short MS_ACCOUNT_DELETED  = 661; //Account deleted!
+     public final static short MS_INSERT_NEW_PASSWORD  = 662; //Insert New Password
+     public final static short MS_SELECT_OUT_MESSAGES  = 663; //Highlite Out Messages
+     public final static short MS_ALERT_CONTACT_OFFLINE  = 664; //Contact is now offline.Continue?
+     public final static short MS_CLIPBOARD_SENDERROR  = 665; //clipboard NOT sended
+     public final static short MS_COLLAPSE_PRESENCE  = 666; //Collapse presences
+     public final static short MS_PRIVACY_ANY  = 667; //ANY
+     public final static short MS_PRIVACY_ALLOW  = 668; //allow
+     public final static short MS_PRIVACY_DENY  = 669; //deny
+     public final static short MS_PRIVACY_PRESENCE_IN  = 670; //presence-in
+     public final static short MS_PRIVACY_PRESENCE_OUT  = 671; //presence-out
+     public final static short MS_PRIVACY_IQ  = 672; //iq
+     public final static short MS_PRIVACY_IF  = 673; //if
+     public final static short MS_AFFILIATION_NONE_ = 674; //none
+     public final static short MS_SUBSCR_NONE_  = 675; //none
+     public final static short MS_SUBSCR_FROM  = 676; //from
+     public final static short MS_SUBSCR_TO  = 677; //to
+     public final static short MS_SUBSCR_BOTH  = 678; //both
+     public final static short MS_PRIVACY_ALL_STANZAS  = 679; //all stanzas
+     public final static short MS_CLOSE_ALL_ROOMS  = 680; //Exit from ALL Rooms
+     public final static short MS_CREATE_ANNOTATION  = 681; //Create Annotation
+     public final static short MS_REMOVE_ANNOTATION  = 682; //Remove Annotation
+     public final static short MS_CONTACT_ANNOTATIONS  = 683; //Contact Annotations
+     public final static short MS_ANNOTATION  = 684; //Note
+     public final static short MS_CHANGE_TRANSPORT  = 685; //Change transport
+     public final static short MS_TEST_VIBRATION  = 686; //Test Vibration
+     public final static short MS_VIBRATION_LEN  = 687; //Vibration Len
+     public final static short MS_VIBRATION_REPEAT  = 688; //Vibration Repeats
+     public final static short MS_VIBRATION_INTERVAL  = 689; //Vibration Repeats Interval
+     public final static short L_CONFIG  = 690; //Light control
+     public final static short L_ENABLED  = 691; //Enable light control
+     public final static short L_IDLE_VALUE  = 692; //Idle screen brightness
+     public final static short L_KEYPRESS_VALUE  = 693; //Keypress screen brightness
+     public final static short L_KEYPRESS_TIMEOUT  = 694; //Keypress idle timeout
+     public final static short L_MESSAGE_VALUE  = 695; //Message screen brightness
+     public final static short L_MESSAGE_TIMEOUT  = 696; //Message idle timeout
+     public final static short MS_METACONTACTS  = 697; //Metacontacts
+     public final static short MS_USE_FIVE_TO_CREATEMSG  = 698; //Use 5 key to create Message
+     public final static short MS_USE_LIGHT_TO_DRWPANELS  = 699; //Use Light to draw panels
+     public final static short MS_MAINBAR_GRADIENTLIGHT  = 700; //MainBar Gradient Light #
+     public final static short MS_GRAPHICSMENU_POS  = 701; //Graphisc Menu Screen Position
+     public final static short MS_GRMENU_CENTER  = 702; //[center]
+     public final static short MS_GRMENU_RIGHT  = 703; //[    :Right]
+     public final static short MS_MSGBUFFER_NOT_EMPTY  = 704; //Message Buffer is not empty.Clear it?
+     public final static short MS_MULTI_MESSAGE  = 705; //Create Multi Message
+     public final static short MS_SORT_TYPE  = 706; //Sort Type
+     public final static short MS_SORT_TYPE_DEF  = 707; //OFF (default)
+     public final static short MS_SORT_TYPE_STATUS  = 708; //By status
+     public final static short MS_SORT_TYPE_MSGS  = 709; //By Msgs count
+     public final static short MS_AUTOCONNECT_TRANSPORTS  = 710; //Auto-Load Transports after connect
+     public final static short MS_HISTORY_TYPE  = 711; //Type History
+     public final static short MS_HISTORY_RMS  = 712; //History in RMS
+     public final static short MS_HISTORY_FS  = 713; //History in FS
+     public final static short MS_HISTORY_SERVER  = 714; //History on server
+     public final static short MS_DELETE_VCARD  = 715; //vCard: delete current
+     public final static short MS_DELETE_ALL_VCARD  = 716; //vCard: delete ALL
+     public final static short MS_DELETE_AVATAR_VCARD  = 717; //User Avatar: delete current
+     public final static short MS_DELETE_ALL_AVATAR_VCARD  = 718; //User Avatar: delete from ALL vcards
+     public final static short MS_SUCCESS  = 719; //Success
+     public final static short MS_SIMPLE_CONTACTS_DRAW  = 720; //Simple Contacts
+
+     public final static short MS_ENABLE_DISABLE = 721;
+     public final static short MS_GRADIENT_CURSOR_1 =    722;
+     public final static short MS_GRADIENT_CURSOR_2 =  723;
+     public final static short MS_SLASHME =  724;
+     public final static short MS_VIP_GROUP =  725;
+     public final static short MS_VISIBLE_GROUP =   726;
+     public final static short MS_BGND_GRADIENT =  727;
+     public final static short MS_GRMENU_LEFT =  728;
+     public final static short MS_PEP =  729;
+     
+     public final static short MS_USER_APP_LEVEL =  730;
+     public final static short MS_USER_APP_LEVEL_0 =  731;
+     public final static short MS_USER_APP_LEVEL_1 =  732;
+     public final static short MS_USER_APP_LEVEL_2 =  733;
+     public final static short MS_WAS_ADDED =  734;  
+     
+    private static String[] localeItemsDefault = new String[0];
+    private static String[] localeItems = {
+        "en",  "en",
+        
+        "online",
+        "chat",
+        "away",
+        "xa",
+        "invisible",
+        "dnd",
+        "offline",
+        "Jid",
+        "Privacy Lists",
+        "Message font",
+        "Roster font",
+        "Paste Body",
+        "Configure Room",
+        "Paste Subject",
+        "Service Discovery",
+        "User JID",
+        "New list",
+        "Select (no login)",
+        "Privacy rule",
+        "use SSL",
+        "Modify",
+        "Update",
+        "Account name",
+        "GMT offset",
+        "Time settings (hours)",
+        "Connected",
+        "Connect to ",
+        "Alert Profile",
+        "Move Up",
+        "Owners",
+        "Ok",
+        "Minimize",
+        "Room",
+        "Messages",
+        "Refresh",
+        "Resolve Nicknames",
+        "Action",
+        "Action",
+        "Ban",
+        "Leave Room",
+        "Password",
+        "Actions",
+        "Activate",
+        "Affiliation",
+        "Accounts",
+        "Delete list",
+        "Account >",
+        "Select",
+        "Subject",
+        "Quit",
+        "Edit list",
+        "Registering",
+        "Done",
+        "Error: ",
+        "Browse",
+        "Browse",
+        "Save list",
+        "Keep-Alive period",
+        "<New Group>",
+        "Send",
+        "Priority",
+        "Failed",
+        "Set Priority",
+        "Delete rule",
+        "Ignore-List",
+        "Roster request",
+        "Type",
+        "Name",
+        "Username",
+        "fullscreen",
+        "Add bookmark",
+        "conferences only",
+        "Client Version",
+        "Discard Search",
+        "Search Results",
+        "Members",
+        "Add Contact",
+        "Subscription",
+        "Status",
+        "Status",
+        "Join",
+        "Startup actions",
+        "Server",
+        "Admins",
+        "Make Ignore-List",
+        "General Group",
+        "Options",
+        "Delete",
+        "Delete contact?",
+        "Authorize",
+        "Nicknames",
+        "to Archive",
+        "Back",
+        "heap monitor",
+        "change softkeys",
+        "Message",
+        "<Other>",
+        "Append",
+        "Active Contacts",
+        "Select nickname",
+        "Group",
+        "Join conference",
+        "No",
+        "Re-Enter Room",
+        "New Message",
+        "Add",
+        "Logon",
+        "Stanzas",
+        "at Host",
+        "join conferences",
+        "Status",
+        "Status",
+        "Smiles",
+        "Contact >",
+        "offline contacts",
+        "Transport",
+        "composing events",
+        "Add Smile",
+        "Nickname",
+        "Revoke Voice",
+        "Not-in-list",
+        "Commands",
+        "- (Sign)",
+        "Set default",
+        "Outcasts (Ban)",
+        "Set affiliation to",
+        "Register Account",
+        "autologin",
+        "Logoff",
+        "Publish",
+        "Remove subscription",
+        "Set",
+        "Application",
+        "Application",
+        "Bookmarks",
+        "Test sound",
+        "Startup",
+        "Edit rule",
+        "Cancel",
+        "Close",
+        "Archive",
+        "Conference",
+        "Sound",
+        "Login failed",
+        "Browse",
+        "Browse",
+        "New Jid",
+        "plain-text password",
+        "Paste Nickname",
+        "Kick",
+        "Remove readed",
+        "Grant Voice",
+        "Move Down",
+        "Quote",
+        "Roster elements",
+        "popup from background",
+        "smiles",
+        "About",
+        "Resource",
+        "Disconnected",
+        "Edit",
+        "Host name/IP",
+        "Add rule",
+        "for all status types",
+        "Paste Jid",
+        "Goto URL",
+        "Clock offset",
+        "Yes",
+        "Suspend",
+        "Alert Profile >",
+        "My vCard",
+        "transports",
+        "Add Profile",
+        "self-contact",
+        "vCard",
+        "Set Subject",
+        "Port",
+        "Resume Message",
+        "Are You sure want to discard ",
+        " from OWNER to ",
+        "Modify affiliation",
+        "Clear",
+        "Connect",
+        "Unaffiliate",
+        "Grant Moderator",
+        "Revoke Moderator",
+        "Grant Admin",
+        "Grant Ownership",
+        "Visitors are not allowed to send messages to all occupants",
+        " is inviting You to ",
+        "Ask subscription",
+        "Grant subscription",
+        "Invite to conference",
+        "Reason",
+        "You have been invited to ",
+        "Participants",
+        "Abc",
+        "room presences",
+        " is now known as ",
+        " was banned ",
+        " was kicked ",
+        " has been kicked because room became members-only",
+        " has left the channel",
+        " has joined the channel as ",
+        " and ",
+        " is now ",
+        "error",
+        "Select history folder",
+        "Sound volume",
+        "Language",
+        "Save history",
+        "Save presences",
+        "Save conference history",
+        "Save conference presences",
+        "convert to cp1251",
+        "History folder",
+        "Copy",
+        "Paste",
+        "Save template",
+        "Template",
+        "has set topic to",
+        "Seen",
+        "Idle",
+        "Main menu",
+        "Choose status",
+        "Add status",
+        "Remove status",
+        "Address",
+        "Make BackUp",
+        "Import from BackUp",
+        "View",
+        "Stop",
+        "File transfers",
+        "Path",
+        "Accept file",
+        "File",
+        "Save To",
+        "Sender",
+        "Rejected",
+        "Send file",
+        "Can't open file",
+        "New",
+        "New Template",
+        "Save photo",
+        "balloon ink",
+        "balloon background",
+        "messagelist & roster background",
+        "messagelist & roster even lines",
+        "messagelist & roster & common font",
+        "message subject",
+        "message highlight",
+        "service discovery commands",
+        "panels background",
+        "header font",
+        "contact default",
+        "contact chat",
+        "contact away",
+        "contact extended away",
+        "contact do not disturb",
+        "group color",
+        "keylock font",
+        "keylock background",
+        "message incoming",
+        "message outgoing",
+        "message presence",
+        "message auth",
+        "message history",
+        "progress bar remained",
+        "progress bar complete",
+        "progress bar font",
+        "Heap mon total",
+        "Heap mon free",
+        "Cursor background",
+        "Cursor ink & outline",
+        "Scroll border",
+        "Scroll bar",
+        "Scroll back",
+        "other message incoming",
+        "other message outgoing",
+        "other message presence",
+        "Popup font",
+        "Popup background",
+        "Popup system font",
+        "Popup system background",
+        "Contact status font",
+        "Control color",
+        "Gradient_Background_left color",
+        "Gradient_Background_right color",
+        "Themes",
+        "Sounds options",
+        "Time",
+        "participant",
+        "moderator",
+        "visitor",
+        "none",
+        "none",
+        "member",
+        "admin",
+        "owner",
+        "second's",
+        "seconds",
+        "second",
+        "minute's",
+        "minutes",
+        "minute",
+        "hour's",
+        "hours",
+        "hour",
+        "day's",
+        "days",
+        "day",
+        "Minutes before away",
+        "Automatic Away",
+        "disabled",
+        "disabled",
+        "keyblock",
+        "by message",
+        "AutoStatus",
+        "AutoStatus time (min)",
+        "Auto xa since %t",
+        "Auto away since %t",
+        "autofocus",
+        "Grant Membership",
+        "Are You sure want to clear messagelist?",
+        "Google token request",
+        "Features",
+        "Show password",
+        "No client version available",
+        "Message limit",
+        "Opening stream",
+        "Using compression",
+        "Authenticating",
+        "Resource binding",
+        "Initiating session",
+        "Text wrapping",
+        "by chars",
+        "by words",
+        "Info",
+        "Reply",
+        "Send status",
+        "Are you sure want to BAN this person?",
+        "No reason",
+        "Recent",
+        "Shot",
+        "Select file",
+        "Load Photo",
+        "Clear Photo",
+        "Camera",
+        "Hide finished",
+        "Transfer tasks",
+        "Are you sure want to delete this message?",
+        "New conference",
+        "Root",
+        "Decline",
+        "Authorize new contacts",
+        "[auto-subscribe]",
+        "Keep-Alive",
+        " has been unaffiliated and kicked from members-only room",
+        "Rename",
+        "Move",
+        "Save",
+        "Translit",
+        "ReTranslit",
+        "Auto translit2Cyr",
+        "Check Updates",
+        "Show Resources",
+        "Collapsed groups",
+        "Send Buffer",
+        "Change nickname",
+        "Message collapse limit",
+        "No client info",
+        "Clear all chats",
+        "Join marked (auto)",
+        "Statistics",
+        "Started: ",
+        "Traffic stats: ",
+        "All: ",
+        "Current: ",
+        "Last Messages",
+        "Edit/join",
+        "Use this Color scheme",
+        "Delete All",
+        "History options",
+        "Filenames transliterate",
+        "Save chat",
+        "show statuses",
+        "shared platform info",
+        "delivery events",
+        "drop all",
+        "receive messages",
+        "messages & presences",
+        "normal",
+        "small",
+        "large",
+        "All signals",
+        "Vibra",
+        "No signals",
+        " (default)",
+        "Quit?",
+        "Are you sure want to Quit?",
+        "exit confirmation",
+        "show last appeared contacts",
+        "custom keys",
+        "Add custom key",
+        "keys action",
+        "enabled",
+        "key",
+        "Reconnect",
+        "Sort list",
+        "Turn on light",
+        "show time and traffic",
+        "Clear popups",
+        "Chat history length",
+        "This user wants to subscribe to your presence",
+        "You are now authorized",
+        "Your authorization has been removed!",
+        "To: ",
+        "size:",
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Automatic subscription",
+        "Ask me",
+        "Drop subscription",
+        "Deny subscription",
+        "Search",
+        "Register",
+        "Check Google mail",
+        "Blink",
+        "Notices options",
+        "Message sound",
+        "Online sound",
+        "Offline sound",
+        "\"Message for me\" sound",
+        "Composing sound",
+        "Conference sound",
+        "StartUP sound",
+        "Outgoing sound",
+        "Vip sound",
+        "Copy JID",
+        "Ping request",
+        "Online time",
+        "Break connection",
+        "autoScroll",
+        "emulate tabs",
+        "show balloons",
+        "popUps",
+        "AutoStatus Message",
+        "Memory:",
+        "Free: ",
+        "Total: ",
+        "Session(s): ",
+        "Description",
+        "User",
+        "Import/Export",
+        "Import/Export",
+        "bold font for contacts",
+        "running message",
+        "Show latest message in alt message edit",
+        "Message Edit Type",
+        "Standart",
+        "Alternative",
+        "Alternative with GUI panels",
+        "Composing message to you",
+        "compression",
+        "New room created",
+        "IRC-like conference nick-status",
+        "user moods send/receive",
+        "Simulated break",
+        "Build new version on constructor",
+        "Auto tasks",
+        "Auto task type",
+        "by timer ",
+        "by time ",
+        "Auto task action type",
+        "Quit BombusQD",
+        "Quit conferences",
+        "Disconnection",
+        "disabled",
+        "disabled",
+        "Delay (min.)",
+        "Start time",
+        "Hour",
+        "Min",
+        "Browse rooms",
+        "Autorespond",
+        "Invert colors",
+        "XML console",
+        "Clipboard",
+        "User moods",
+        "User activity",
+        "Personal events not supported",
+        "User tune",
+        "Bar font",
+        "Popup & ballon font",
+        "Fonts options",
+        "Load history",
+        "Connect to",
+        "Send my color scheme",
+        "Unread messages",
+        "vibrate only highlited",
+        "Extended settings",
+        "Save to file",
+        "Load from file",
+        "Show IQ requests",
+        "Show clients icons",
+        "Action",
+        "Action",
+        "Value",
+        "Quantity of attempts",
+        "Delay before reconnect(sec.)",
+        "Menu",
+        "Previous",
+        "Previous: ",
+        "[End of vCard]",
+        "[No vCard available]",
+        "[No photo available]",
+        "[Unsupported format]",
+        "[large photo was dropped]",
+        "Delete group?",
+        "Panels",
+        "[ ]",
+        "[main bar]",
+        "[info bar]",
+        "Flash backlight",
+        "execute menu by numkey",
+        "show nicknames",
+        "Send photo",
+        "enable autorespond",
+        "File manager",
+        "remote control",
+        "Saving cursor",
+        "Translate",
+        "Destroy room",
+        "Stats users for",
+        "Contact Helper",
+        "Change password",
+        "Remove from server",
+        "New password",
+        "Send Evil Message",
+        "save selection to archive",
+        "To Clipboard",
+        "Collapse All",
+        "Add Search Query",
+        "Find Text",
+        "End search!",
+        "Send Mood in Msg",
+        "Turn OFF Animation",
+        "Turn OFF Message Icon",
+        "PEP is now OFF",
+        "Dynamic PEP",
+        "Draw vcard image on contact",
+        "Autoloading vcard from server",
+        "Autoloading vcard from FS Phone",
+        "MyActivity",
+        "Update Moods+Actions+Music",
+        "Stop Music",
+        "Your text not found!",
+        "Send my Moods+Actions(PEP) to all contacts(YES-recommended)?",
+        "Drawed font",
+        "Required field",
+        "Generate",
+        "Contact Helper",
+        "Fill Required field(Full name,nickname and birthday)",
+        "Translate",
+        "Delete all statuses",
+        "Colored Bold String in chat(+many others strings)",
+        "Autosave cursor position in chat",
+        "Messages,sended by me",
+        "Messages with /me",
+        "All incoming messages",
+        "Background Jimm image",
+        "Background image",
+        "Draw Bgnd of Scroll",
+        "Scroll Options",
+        "Scroll Width",
+        "Type of Background",
+        "Background Default",
+        "Background Gradient",
+        "Background image",
+        "Max Avatar Width",
+        "Max Avatar Height",
+        "ClientIcons Left",
+        "After Restart App",
+        "Load skin.png from File",
+        "Set Default skin.png",
+        "Error!Only 16x16 size support!",
+        "Classic Chat",
+        "Classic Chat",
+        "Auto Scrolling",
+        "Background Phone theme",
+        "Auto Open Classic Chat",
+        "Chat Height(max-320)",
+        "Scroll speed(msec,10sec-max)",
+        "Show messages limit(1000-max)",
+        "Users search",
+        "Support",
+        "Gradient cursor",
+        "Alternating chat colors",
+        "Transparency bgnd(argb)",
+        "Graphics menu bgnd(argb)",
+        "Graphics menu font",
+        "Service>",
+        "My Jabber>",
+        "(HIGH TRAFFIC!)",
+        "Draw Rect Avatar",
+        "AutoSave In FS",
+        "Avatar Folder",
+        "Roster:Load all Avatars from FS",
+        "Muc:Load all Avatars from FS",
+        "Avatars",
+        "Avatars",
+        "News",
+        "Show Presence Time",
+        "Animation of Graphics Menu&Roster",
+        "Edit colors",
+        "Transparent",
+        "Background of midlet",
+        "Graphics Menu",
+        "Cursor",
+        "Bold",
+        "Italic",
+        "User wants to play checkers with you",
+        "Checkers:send invite",
+        "Checkers:start game",
+        "Checkers:stop game",
+        "Checkers:resume",
+        "Don't load conference contacts",
+        "Modules config",
+        "Advanced Options",
+        "Contacts",
+        "Chat",
+        "Network",
+        "Graphics",
+        "Application",
+        "Application",
+        "Hotkeys",
+        "Autostatus",
+        "Classic Chat",
+        "Classic Chat",
+        "Color Themes",
+        "Cashe",
+        "History",
+        "Fonts",
+        "Import/Export",
+        "Import/Export",
+        "Notifications&Light Control",
+        "Tasks",
+        "Avatars",
+        "Avatars",
+        "Config",
+        "Use animated smiles",
+        "Nokia Reconnect Hack",
+        "Debug Menu",
+        "Please,edit this account to save new password!",
+        "Account deleted!",
+        "Insert New Password",
+        "Highlite Out Messages",
+        "Contact is now offline.Continue?",
+        "clipboard NOT sended",
+        "Collapse presences",
+        "ANY",
+        "allow",
+        "deny",
+        "presence-in",
+        "presence-out",
+        "iq",
+        "if",
+        "none",
+        "none",
+        "from",
+        "to",
+        "both",
+        "all stanzas",
+        "Exit from ALL Rooms",
+        "Create Annotation",
+        "Remove Annotation",
+        "Contact Annotations",
+        "Note",
+        "Change transport",
+        "Test Vibration",
+        "Vibration Len",
+        "Vibration Repeats",
+        "Vibration Repeats Interval",
+        "Light control",
+        "Enable light control",
+        "Idle screen brightness",
+        "Keypress screen brightness",
+        "Keypress idle timeout",
+        "Message screen brightness",
+        "Message idle timeout",
+        "Metacontacts",
+        "Use 5 key to create Message",
+        "Use Light to draw panels",
+        "MainBar Gradient Light #",
+        "Graphisc Menu Screen Position",
+        "[center]",
+        "[    :Right]",
+        "Message Buffer is not empty.Clear it?",
+        "Create Multi Message",
+        "Sort Type",
+        "OFF (default)",
+        "By status",
+        "By Msgs count",
+        "Auto-Load Transports after connect",
+        "Type History",
+        "History in RMS",
+        "History in FS",
+        "History on server",
+        "vCard: delete current",
+        "vCard: delete ALL",
+        "User Avatar: delete current",
+        "User Avatar: delete from ALL vcards",
+        "Success",
+        "Simple Contacts",
+        
+        "Enable/Disable",
+        "Gradient cursor(1)",
+        "Gradient cursor(2)",
+        "/me",
+        "VIP",
+        "Visible",
+        "MS_BGND_GRADIENT",
+        "[Left:     ]",
+        "Pubsub events",
+        
+        "User App Level",
+        "Started",
+        "Confident",
+        "Experienced",
+        "Was added:"
+    };  
 
-    public static String MS_COPY=loadString("Copy");
-    public static String MS_PASTE=loadString("Paste");
-    
-    public static String MS_SAVE_TEMPLATE=loadString("Save template");
-    public static String MS_TEMPLATE=loadString("Template");
 
-    public static String MS_HAS_SET_TOPIC_TO=loadString("has set topic to");
-
-    public static String MS_SEEN=loadString("Seen");
-    public static String MS_IDLE=loadString("Idle");
-    public static String MS_SHOW_PRS_TIME=loadString("Show Presence Time");    
-    
-
-    public static String MS_MAIN_MENU=loadString("Main menu");
-
-    public static String MS_CHOOSE_STATUS=loadString("Choose status");
-    public static String MS_ADD_STATUS=loadString("Add status");
-    public static String MS_REMOVE_STATUS=loadString("Remove status");
-
-    public static String MS_ADRESS=loadString("Address");
-    public static String MS_EXPORT_TO_FILE=loadString("Make BackUp");
-    public static String MS_IMPORT_TO_FILE=loadString("Import from BackUp");
-
-    public static String MS_VIEW=loadString("View");
-    public static String MS_STOP=loadString("Stop");
-    public static String MS_FILE_TRANSFERS=loadString("File transfers");
-//#ifdef FILE_TRANSFER
-    public static String MS_PATH=loadString("Path");
-    public static String MS_ACCEPT_FILE=loadString("Accept file");
-    public static String MS_FILE=loadString("File");
-    public static String MS_SAVE_TO=loadString("Save To");
-    public static String MS_SENDER=loadString("Sender");
-    public static String MS_REJECTED=loadString("Rejected");
-    public static String MS_SEND_FILE=loadString("Send file");
-    public static String MS_CANT_OPEN_FILE=loadString("Can't open file");
-//#endif
-    public static String MS_NEW=loadString("New");
-    public static String MS_NEW_TEMPLATE=loadString("New Template");
-
-    public static String MS_SAVE_PHOTO=loadString("Save photo");
-    
-//#ifdef COLOR_TUNE
-//#     public static String MS_BALLOON_INK=loadString("balloon ink");
-//#     public static String MS_BALLOON_BGND=loadString("balloon background");
-//#     public static String MS_LIST_BGND=loadString("messagelist & roster background");
-//#     public static String MS_LIST_BGND_EVEN=loadString("messagelist & roster even lines");
-//#     public static String MS_LIST_INK=loadString("messagelist & roster & common font");
-//#     public static String MS_MSG_SUBJ=loadString("message subject");
-//#     public static String MS_MSG_HIGHLIGHT=loadString("message highlight");
-//#     public static String MS_DISCO_CMD=loadString("service discovery commands");
-//#     public static String MS_BAR_BGND=loadString("panels background");
-//#     public static String MS_BAR_INK=loadString("header font");
-//#     public static String MS_CONTACT_DEFAULT=loadString("contact default");
-//#     public static String MS_CONTACT_CHAT=loadString("contact chat");
-//#     public static String MS_CONTACT_AWAY=loadString("contact away");
-//#     public static String MS_CONTACT_XA=loadString("contact extended away");
-//#     public static String MS_CONTACT_DND=loadString("contact do not disturb");
-//#     public static String MS_GROUP_INK=loadString("group color");
-//#     public static String MS_BLK_INK=loadString("keylock font");
-//#     public static String MS_BLK_BGND=loadString("keylock background");
-//#     public static String MS_MESSAGE_IN=loadString("message incoming");
-//#     public static String MS_MESSAGE_OUT=loadString("message outgoing");
-//#     public static String MS_MESSAGE_PRESENCE=loadString("message presence");
-//#     public static String MS_MESSAGE_AUTH=loadString("message auth");
-//#     public static String MS_MESSAGE_HISTORY=loadString("message history");
-//#     public static String MS_PGS_REMAINED=loadString("progress bar remained");
-//#     public static String MS_PGS_COMPLETE=loadString("progress bar complete");
-//#     public static String MS_PGS_INK=loadString("progress bar font");
-//#     public static String MS_HEAP_TOTAL=loadString("Heap mon total");
-//#     public static String MS_HEAP_FREE=loadString("Heap mon free");
-//#     public static String MS_CURSOR_BGND=loadString("Cursor background");
-//#     public static String MS_CURSOR_OUTLINE=loadString("Cursor ink & outline");
-//#     public static String MS_SCROLL_BRD=loadString("Scroll border");
-//#     public static String MS_SCROLL_BAR=loadString("Scroll bar");
-//#     public static String MS_SCROLL_BGND=loadString("Scroll back");
-//#     public static String MS_MESSAGE_IN_S=loadString("other message incoming");
-//#     public static String MS_MESSAGE_OUT_S=loadString("other message outgoing");
-//#     public static String MS_MESSAGE_PRESENCE_S=loadString("other message presence");
-//#     public static String MS_POPUP_MESSAGE=loadString("Popup font");
-//#     public static String MS_POPUP_MESSAGE_BGND=loadString("Popup background");
-//#     public static String MS_POPUP_SYSTEM=loadString("Popup system font");
-//#     public static String MS_POPUP_SYSTEM_BGND=loadString("Popup system background");
-//#     public static String MS_CONTACT_STATUS=loadString("Contact status font");
-//#     public static String MS_CONTROL_ITEM=loadString("Control color");
-//#     public static String MS_GRADIENT_BGND_LEFT=loadString("Gradient_Background_left color");
-//#     public static String MS_GRADIENT_BGND_RIGHT=loadString("Gradient_Background_right color");
-//#     
-//#     public static String MS_TRANSPARENCY_ARGB = loadString("Transparency bgnd(argb)"); 
-//#     public static String MS_GRAPHICS_MENU_BGNG_ARGB = loadString("Graphics menu bgnd(argb)");     
-//#     public static String MS_GRAPHICS_MENU_FONT = loadString("Graphics menu font");         
-//#endif
-    public static String MS_COLOR_TUNE=loadString("Themes");
-    public static String MS_LOAD_SKIN=loadString("Load Theme");
-
-    public static String MS_SOUNDS_OPTIONS=loadString("Sounds options");
-    
-    public static String MS_TIME=loadString("Time");
-    
-    public  static String MS_ROLE_PARTICIPANT=loadString("participant");
-    public  static String MS_ROLE_MODERATOR=loadString("moderator");
-    public  static String MS_ROLE_VISITOR=loadString("visitor");
-    
-    public  static String MS_AFFILIATION_NONE=loadString("none");
-    public  static String MS_AFFILIATION_MEMBER=loadString("member");
-    public  static String MS_AFFILIATION_ADMIN=loadString("admin");
-    public  static String MS_AFFILIATION_OWNER=loadString("owner");
-    
-    public  static String MS_SEC3=loadString("second's");
-    public  static String MS_SEC2=loadString("seconds");
-    public  static String MS_SEC1=loadString("second");
-    
-    public  static String MS_MIN3=loadString("minute's");
-    public  static String MS_MIN2=loadString("minutes");
-    public  static String MS_MIN1=loadString("minute");
-    
-    public  static String MS_HOUR3=loadString("hour's");    
-    public  static String MS_HOUR2=loadString("hours");
-    public  static String MS_HOUR1=loadString("hour");
-    
-    public  static String MS_DAY3=loadString("day's");  
-    public  static String MS_DAY2=loadString("days");
-    public  static String MS_DAY1=loadString("day");
-
-//#ifdef AUTOSTATUS
-//#     public   static String MS_AWAY_PERIOD = loadString( "Minutes before away" );
-//#     public   static String MS_AWAY_TYPE = loadString( "Automatic Away" );
-//#     public   static String MS_AWAY_OFF = loadString( "disabled" );
-//#     public   static String MS_AWAY_LOCK = loadString( "keyblock" );
-//#     public   static String MS_MESSAGE_LOCK = loadString( "by message" );
-//#     public static String MS_AUTOSTATUS=loadString("AutoStatus");
-//#     public static String MS_AUTOSTATUS_TIME=loadString("AutoStatus time (min)");
-//#     public static String MS_AUTO_XA=loadString("Auto xa since %t");
-//#     public static String MS_AUTO_AWAY=loadString("Auto away since %t");
-//#endif
-    
-    public   static String MS_AUTOFOCUS = loadString( "autofocus" );
-    public   static String MS_GRANT_MEMBERSHIP = loadString( "Grant Membership" );
-    public   static String MS_SURE_CLEAR = loadString( "Are You sure want to clear messagelist?" );
-
-
-    public   static String MS_TOKEN = loadString( "Google token request" );
-    public   static String MS_FEATURES = loadString( "Features" );
-    public   static String MS_SHOWPWD = loadString( "Show password" );
-    public   static String MS_NO_VERSION_AVAILABLE = loadString( "No client version available" );
-    public   static String MS_MSG_LIMIT = loadString( "Message limit" );
-    public   static String MS_OPENING_STREAM = loadString( "Opening stream" );
-     //public final static String MS_SASL_STREAM="SASL handshake";
-
-
-    public   static String MS_ZLIB = loadString( "Using compression" );
-    public   static String MS_AUTH = loadString( "Authenticating" );
-    public   static String MS_RESOURCE_BINDING = loadString( "Resource binding" );
-    public   static String MS_SESSION = loadString( "Initiating session" );
-    public   static String MS_TEXTWRAP = loadString( "Text wrapping" );
-    public   static String MS_TEXTWRAP_CHARACTER = loadString( "by chars" );
-    public   static String MS_TEXTWRAP_WORD = loadString( "by words" );
-    public   static String MS_INFO = loadString( "Info" );
-    public   static String MS_REPLY = loadString( "Reply" );
-    public   static String MS_DIRECT_PRESENCE = loadString( "Send status" );
-
-    public   static String MS_CONFIRM_BAN = loadString( "Are you sure want to BAN this person?" );
-    public   static String MS_NO_REASON = loadString( "No reason" );
-    public   static String MS_RECENT = loadString( "Recent" );
-    public   static String MS_CAMERASHOT = loadString( "Shot" );
-    public   static String MS_SELECT_FILE = loadString( "Select file" );
-    public   static String MS_LOAD_PHOTO = loadString( "Load Photo" );
-    public   static String MS_CLEAR_PHOTO = loadString( "Clear Photo" );
-    public   static String MS_CAMERA = loadString( "Camera" );
-    public   static String MS_HIDE_FINISHED = loadString( "Hide finished" );
-    public   static String MS_TRANSFERS = loadString( "Transfer tasks" );
-    public   static String MS_SURE_DELETE = loadString( "Are you sure want to delete this message?" );
-    public   static String MS_NEW_BOOKMARK = loadString( "New conference" );
-    public   static String MS_ROOT = loadString( "Root" );
-    public   static String MS_DECLINE = loadString( "Decline" );
-    public   static String MS_AUTH_NEW = loadString( "Authorize new contacts" );
-    public   static String MS_AUTH_AUTO = loadString( "[auto-subscribe]" );
-    public   static String MS_KEEPALIVE = loadString( "Keep-Alive" );
-    public   static String MS_HAS_BEEN_UNAFFILIATED_AND_KICKED_FROM_MEMBERS_ONLY_ROOM = loadString( " has been unaffiliated and kicked from members-only room" );
-
-    public   static String MS_RENAME = loadString( "Rename" );
-    public   static String MS_MOVE = loadString( "Move" );
-    public static String MS_SAVE = loadString( "Save" );
-    
-//#ifdef DETRANSLIT
-//#     public static String MS_TRANSLIT = loadString( "Translit" );
-//#     public static String MS_DETRANSLIT = loadString( "ReTranslit" );
-//#     public static String MS_AUTODETRANSLIT = loadString( "Auto translit2Cyr" );
-//#endif
-    public static String MS_CHECK_UPDATE = loadString( "Check Updates" );
-    public static String MS_SHOW_RESOURCES = loadString( "Show Resources" );
-    public static String MS_COLLAPSED_GROUPS = loadString( "Collapsed groups" );
-    public static String MS_SEND_BUFFER = loadString( "Send Buffer" );
-    public static String MS_CHANGE_NICKNAME = loadString( "Change nickname" );
-    public static String MS_MESSAGE_COLLAPSE_LIMIT = loadString( "Message collapse limit" );
-    public static String MS_NO_CLIENT_INFO = loadString( "No client info" );
-    public static String MS_CLEAN_ALL_MESSAGES = loadString( "Clear all chats" );
-    public static String MS_DO_AUTOJOIN = loadString( "Join marked (auto)" ); //temporary
-    
-    public static String MS_STATS = loadString( "Statistics" );
-
-    public static String MS_STARTED=loadString("Started: ");
-    public static String MS_TRAFFIC_STATS=loadString("Traffic stats: ");
-    public static String MS_ALL=loadString("All: ");
-    public static String MS_CURRENT=loadString("Current: ");
-
-    public static String MS_LAST_MESSAGES = loadString( "Last Messages" );
-    public static String MS_EDIT_JOIN = loadString( "Edit/join" );
-    public static String MS_USE_COLOR_SCHEME = loadString( "Use this Color scheme" );
-    public static String MS_DELETE_ALL = loadString( "Delete All" );
-    
-//#ifdef FILE_IO
-    public static String MS_HISTORY_OPTIONS = loadString( "History options" );
-//#ifdef DETRANSLIT
-//#     public static String MS_1251_TRANSLITERATE_FILENAMES = loadString( "Filenames transliterate" );
-//#endif
-    public static String MS_SAVE_CHAT = loadString( "Save chat" );
-//#endif
-    public static String MS_SHOW_STATUSES = loadString( "show statuses" );
-
-    public static String MS_SHOW_HARDWARE = loadString( "shared platform info" );
-    public static String MS_DELIVERY = loadString( "delivery events" );
-    public static String MS_NIL_DROP_MP = loadString( "drop all" );
-    public static String MS_NIL_DROP_P = loadString( "receive messages" );
-    public static String MS_NIL_ALLOW_ALL = loadString( "messages & presences" );
-    public static String MS_FONTSIZE_NORMAL = loadString( "normal" );
-    public static String MS_FONTSIZE_SMALL = loadString( "small" );
-    public static String MS_FONTSIZE_LARGE = loadString( "large" );
-    //public static String MS_ALERT_PROFILE_AUTO = loadString( "Auto" );
-    public static String MS_ALERT_PROFILE_ALLSIGNALS = loadString( "All signals" );
-    public static String MS_ALERT_PROFILE_VIBRA = loadString( "Vibra" );
-    public static String MS_ALERT_PROFILE_NOSIGNALS = loadString( "No signals" );
-    public static String MS_IS_DEFAULT = loadString( " (default)" );
-
-    public static String MS_QUIT_ASK = loadString( "Quit?" );
-
-    public static String MS_SURE_QUIT = loadString( "Are you sure want to Quit?" );
-
-    public static String MS_CONFIRM_EXIT = loadString( "exit confirmation" );
-
-    public static String MS_SHOW_LAST_APPEARED_CONTACTS = loadString( "show last appeared contacts" );
-
-//#ifdef USER_KEYS
-//#     public static String MS_CUSTOM_KEYS = loadString( "custom keys" );
-//#     public static String MS_ADD_CUSTOM_KEY = loadString( "Add custom key" );
-//#     public static String MS_KEYS_ACTION = loadString( "keys action" );
-//#     public static String MS_ENABLED = loadString( "enabled" );
-//#     public static String MS_KEY = loadString( "key" );
-//#endif
-
-    public static String MS_RECONNECT = loadString( "Reconnect" );
-    public static String MS_SORT = loadString( "Sort list" );
-    public static String MS_FLASHLIGHT = loadString( "Turn on light" );
-    public static String MS_CLEAR_POPUPS = loadString( "Clear popups" );
-    public static String MS_MESSAGE_COUNT_LIMIT = loadString( "Chat history length" );
-
-//2007-10-24 voffk
-    public static String MS_SUBSCRIPTION_REQUEST_FROM_USER = loadString ( "This user wants to subscribe to your presence" );
-    public static String MS_SUBSCRIPTION_RECEIVED = loadString ( "You are now authorized" );
-    public static String MS_SUBSCRIPTION_DELETED = loadString ( "Your authorization has been removed!" );
-    public static String MS_SEND_FILE_TO = loadString ( "To: " );
-    public static String MS_FILE_SIZE = loadString( "size:" );  
-
-    public static String MS_SUN = loadString( "Sun" );
-    public static String MS_MON = loadString( "Mon" );
-    public static String MS_TUE = loadString( "Tue" );
-    public static String MS_WED = loadString( "Wed" );
-    public static String MS_THU = loadString( "Thu" );
-    public static String MS_FRI = loadString( "Fri" );
-    public static String MS_SAT = loadString( "Sat" );
-    
-//2007-11-04
-    public static String MS_SUBSCR_AUTO=loadString("Automatic subscription");
-    public static String MS_SUBSCR_ASK=loadString("Ask me");
-    public static String MS_SUBSCR_DROP=loadString("Drop subscription");
-    public static String MS_SUBSCR_REJECT=loadString("Deny subscription");  //TODO: correct according to RFC
-    
-    public static String MS_VISIBLE_GROUP="Visible";
-    
-//2007-11-07
-    public static String MS_SEARCH=loadString("Search");
-    public static String MS_REGISTER=loadString("Register");
-
-    public static String MS_CHECK_GOOGLE_MAIL=loadString("Check Google mail");
-   
-//2008-01-18
-    public static String MS_BLINKING=loadString("Blink");
-    public static String MS_NOTICES_OPTIONS=loadString("Notices options");
-
-    public static String MS_MESSAGE_SOUND=loadString("Message sound");
-    public static String MS_ONLINE_SOUND=loadString("Online sound");
-    public static String MS_OFFLINE_SOUND=loadString("Offline sound");
-    public static String MS_MESSAGE_FOR_ME_SOUND=loadString("\"Message for me\" sound");
-    public static String MS_COMPOSING_SOUND=loadString("Composing sound");
-    public static String MS_CONFERENCE_SOUND=loadString("Conference sound");
-    public static String MS_STARTUP_SOUND=loadString("StartUP sound");
-    public static String MS_OUTGOING_SOUND=loadString("Outgoing sound");
-    public static String MS_VIP_SOUND=loadString("Vip sound");
-
-//2008-01-19
-    public static String MS_COPY_JID=loadString("Copy JID");
-    public static String MS_PING=loadString("Ping request");
-    public static String MS_ONLINE_TIME=loadString("Online time");
-
-//2008-01-20
-    public static String MS_BREAK_CONECTION=loadString("Break connection");
-    public static String MS_AUTOSCROLL=loadString("autoScroll");
-    public static String MS_EMULATE_TABS=loadString("emulate tabs");
-    public static String MS_SHOW_BALLONS=loadString("show balloons");
-    public static String MS_POPUPS=loadString("popUps");
-    public static String MS_AUTOSTATUS_MESSAGE=loadString("AutoStatus Message");
-
-    public static String MS_MEMORY=loadString("Memory:");
-    public static String MS_FREE = loadString("Free: ");
-    public static String MS_TOTAL=loadString("Total: ");
-
-    public static String MS_CONN=loadString("Session(s): ");
-    public static String MS_DESCRIPTION=loadString("Description");
-    
-//2008-01-24
-    public static String MS_USER = loadString( "User" );
-//#if IMPORT_EXPORT
-//#     public static String MS_IMPORT_EXPORT=loadString("Import/Export");
-//#endif
-    
-//2008-02-03
-    public static String MS_BOLD_FONT=loadString("bold font for contacts");
-    public static String MS_RUNNING_MESSAGE=loadString("running message");
-    
-    public static String MS_NOTIFY_MSGEDIT=loadString("Show latest message in alt message edit");
-    public static String MS_MSG_EDIT_TYPE=loadString("Message Edit Type");
-    public static String MS_MES_EDIT_OLD=loadString("Standart");    
-    public static String MS_MES_EDIT_ALT=loadString("Alternative");    
-    public static String MS_MES_EDIT_ALT_GUI=loadString("Alternative with GUI panels");        
-    
-    
-    public static String MS_COMPOSING_NOTIFY=loadString("Composing message to you");
-    public static String MS_COMPRESSION = loadString( "compression" );
-    public static String MS_NEW_ROOM_CREATED = loadString( "New room created" );
-
-    public static String MS_IRCLIKESTATUS = loadString( "IRC-like conference nick-status" );
-    public static String MS_SEND_RECEIVE_USERMOODS=loadString("user moods send/receive");
-    public static String MS_SIMULATED_BREAK=loadString("Simulated break");
-    public static String MS_BUILD_NEW=loadString("Build new version on constructor");
-    
-    
-//2008-03-20
-    public static String MS_AUTOTASKS=loadString("Auto tasks");
-    public static String MS_AUTOTASK_TYPE=loadString("Auto task type");
-    public static String MS_BY_TIMER_=loadString("by timer ");
-    public static String MS_BY_TIME_=loadString("by time ");
-    public static String MS_AUTOTASK_ACTION_TYPE=loadString("Auto task action type");
-    public static String MS_AUTOTASK_QUIT_BOMBUSMOD=loadString("Quit BombusQD");
-    public static String MS_AUTOTASK_QUIT_CONFERENCES=loadString("Quit conferences");
-    public static String MS_AUTOTASK_LOGOFF=loadString("Disconnection");
-    public static String MS_DISABLED=loadString("disabled");
-    public static String MS_AUTOTASK_DELAY=loadString("Delay (min.)");
-    public static String MS_AUTOTASK_TIME=loadString("Start time");
-    public static String MS_AUTOTASK_HOUR=loadString("Hour");
-    public static String MS_AUTOTASK_MIN=loadString("Min");
-
-    public static String MS_LOAD_ROOMLIST = loadString( "Browse rooms");
-    public static String MS_AUTORESPOND = loadString( "Autorespond");
-
-    public static String MS_INVERT = loadString("Invert colors");
-    public static String MS_EDIT_COLORS = loadString("Edit colors");
-
-    public static String MS_XML_CONSOLE = loadString("XML console");
-
-//#ifdef CLIPBOARD
-//#     public static String MS_CLIPBOARD = loadString("Clipboard");
-//#endif
-
-    public static String MS_BAR_FONT=loadString("Bar font");
-    public static String MS_POPUP_FONT=loadString("Popup & ballon font");
-
-    public static String MS_FONTS_OPTIONS=loadString("Fonts options");
-
-    public static String MS_LOAD_HISTORY=loadString("Load history");
-
-    public static String MS_CONNECT_TO=loadString("Connect to");
-
-    public static String MS_SEND_COLOR_SCHEME=loadString("Send my color scheme");
-
-    public static String MS_UNREAD_MESSAGES=loadString("Unread messages");
-
-    public static String MS_VIBRATE_ONLY_HIGHLITED=loadString("vibrate only highlited");
-
-    public static String MS_EXTENDED_SETTINGS=loadString("Extended settings");
-
-    public static String MS_SAVE_TO_FILE=loadString("Save to file");
-
-    public static String MS_LOAD_FROM_FILE=loadString("Load from file");
-
-    public static String MS_SHOW_IQ_REQUESTS=loadString("Show IQ requests");
-
-    public static String MS_SHOW_CLIENTS_ICONS=loadString("Show clients icons");
-
-    public static String MS_ACTION=loadString("Action");
-
-    public static String MS_VALUE=loadString("Value");
-
-    public static String MS_RECONNECT_COUNT_RETRY=loadString("Quantity of attempts");
-    public static String MS_RECONNECT_WAIT=loadString("Delay before reconnect(sec.)");
-
-    public static String MS_MENU=loadString("Menu");
-
-    //public static String MS_CHANGE=loadString("Change");
-
-    public static String MS_PREVIOUS=loadString("Previous");
-    public static String MS_PREVIOUS_=loadString("Previous: ");
-
-    public static String MS_END_OF_VCARD=loadString("[End of vCard]");
-    public static String MS_NO_VCARD=loadString("[No vCard available]");
-    public static String MS_NO_PHOTO=loadString("[No photo available]");
-    public static String MS_UNSUPPORTED_FORMAT=loadString("[Unsupported format]");
-    public static String MS_PHOTO_TOO_LARGE=loadString("[large photo was dropped]");
-
-    public static String MS_DELETE_GROUP_ASK=loadString("Delete group?");
-
-    public static String MS_PANELS=loadString("Panels");
-    public static String MS_NO_BAR=loadString("[ ]");
-    public static String MS_MAIN_BAR=loadString("[main bar]");
-    public static String MS_INFO_BAR=loadString("[info bar]");
-
-    public static String MS_FLASH_BACKLIGHT=loadString("Flash backlight");
-
-    public static String MS_EXECUTE_MENU_BY_NUMKEY=loadString("execute menu by numkey");
-
-    public static String MS_SHOW_NACKNAMES=loadString("show nicknames");
-
-    public static String MS_SEND_PHOTO=loadString("Send photo");
-    
-    public static String MS_ENABLE_AUTORESPOND=loadString("enable autorespond");
-
-    public static String MS_FILE_MANAGER=loadString("File manager");
-    
-    public static String MS_ADHOC=loadString("remote control");
-    
-    public static String MS_USE_DNS_SRV_RESOLVER=loadString("resolve hostname");
-    
-    public static String MS_SHOW_TIME_TRAFFIC=loadString("show time and traffic");
-    
-    public static String MS_KEYS_FOR_OLD_SE=loadString("change softkeys");
-
-    public static String MS_USERS_SEARCH=loadString("Users search");
-    
-//#ifdef PEP
-//#     public static String MS_PEP=loadString("Pubsub events");
-//#     public static String MS_USERMOOD=loadString("User moods");
-//#     public static String MS_USERTUNE=loadString("User tune");
-//#     public static String MS_USERACTIVITY=loadString("User activity");
-//#     
-//#     public static String MS_PEP_NOT_SUPPORTED = loadString("Personal events not supported");
-//#endif
-    
-    public static String MS_VIP_GROUP = loadString("VIP");
-    public static String MS_ENABLE_DISABLE = loadString("Enable/Disable");
-    
-   
-    
-    
-    
-    public static String MS_SUCCESS = loadString("Success");
-    public static String MS_SAVING_CURSORE = loadString("Saving cursor");
-    public static String MS_DESTROY_ROOM = loadString("Destroy room");
-    public static String MS_VCARD_SUCCESS_PUBLISH = loadString("Vcard succesfull published");
-
-    public static String MS_STATICSTICS = loadString("Stats users for");   
-    public static String MS_CHANGE_PASSWORD = loadString("Change password");       
-    public static String MS_REMOVE_ACCOUNT = loadString("Remove from server");   
-    public static String MS_NEW_PASSWORD = loadString("New password");
-    public static String MS_SEND_EVIL_MSG = loadString("Send Evil Message");   
-    public static String MS_ADD_SEL_TO_ARCHIVE = loadString("save selection to archive");   
-    public static String MS_COPY_CLIPBOARD = loadString("To Clipboard");       
-    public static String MS_COLLAPS_ALL = loadString("Collapse All");   
-    public static String MS_ADD_SEARCH_QUERY = loadString("Add Search Query");
-    public static String MS_FIND_TEXT = loadString("Find Text");    
-    public static String MS_END_SEARCH = loadString( "End search!");
-    
-    public static String MS_MSGBUFFER_NOT_EMPTY = loadString( "Message Buffer is not empty.Clear it?" );
-    public static String MS_MULTI_MESSAGE = loadString( "Create Multi Message" );
-    public static String MS_SORT_TYPE = loadString( "Sort Type" );
-    public static String MS_SORT_TYPE_DEF = loadString( "OFF (default)" );
-    public static String MS_SORT_TYPE_STATUS = loadString( "By status" );
-    public static String MS_SORT_TYPE_MSGS = loadString( "By Msgs count" );
-    
-    public static String MS_MOOD_IN_MSG = loadString( "Send Mood in Msg" );
-    public static String MS_ADVANCED_OPT = loadString( "Advanced Options" );
-    public static String MS_ANIMATION = loadString( "Turn OFF Animation"); 
-    public static String MS_ANIMATION_MENU_ROSTER = loadString( "Animation of Graphics Menu&Roster"); 
-    public static String MS_ICON_COLP = loadString( "Turn OFF Message Icon");
-    public static String MS_PEP_OFF = loadString("PEP is now OFF");
-    public static String MS_DYNAMIC_EVENTS = loadString("Dynamic PEP");
-    public static String MS_DRAW_CONTACT_VCARD = loadString("Draw vcard image on contact");   
-    public static String MS_AVATARS = loadString("Avatars");       
-    public static String MS_AUTOLOAD_VCARD = loadString("Autoloading vcard from server");   
-    public static String MS_AUTOLOAD_VCARD_FROMFS = loadString("Autoloading vcard from FS Phone"); 
-    
-    public static String MS_ACTIVITY = loadString("MyActivity");
-    public static String MS_UPDATE_PEP = loadString("Update Moods+Actions+Music");
-    public static String MS_STOP_MUSIC = loadString("Stop Music");           
-    
-    public static String MS_NOT_FOUND = loadString("Your text not found!");
-    public static String MS_UP_MOODS = loadString("Send my Moods+Actions(PEP) to all contacts(YES-recommended)?");
-    public static String MS_DRAWED_FONT = loadString("Drawed font");    
-    
-    public static String MS_REQUIRED_FIELDS = loadString("Required field");        
-    public static String MS_GENERATE = loadString("Generate");        
-    public static String MS_CONTACT_HELPER = loadString("Contact Helper");
-    public static String MS_FILL_VCARD_FIELDS = loadString("Fill Required field(Full name,nickname and birthday)");
-    
-    public static String MS_TRANSLATE = loadString("Translate");    
-    public static String MS_DELETE_ALL_STATUSES = loadString("Delete all statuses"); 
-    public static String MS_SAVE_CURSOR = loadString("Autosave cursor position in chat");
-    public static String MS_BOLD_AND_COLORS_NICKS = loadString("Colored Bold String in chat(+many others strings)"); 
-    
-    public static String MS_MSG_BY_ME= loadString("Messages,sended by me");   
-    public static String MS_MSG_ME= loadString("Messages with /me");       
-    public static String MS_MSG_GET= loadString("All incoming messages");     
-    
-    public static String MS_BGND_SCROLL= loadString("Draw Bgnd of Scroll");    
-    public static String MS_SCROLL_OPTIONS= loadString("Scroll Options"); 
-    public static String MS_SCROLL_WIDTH= loadString("Scroll Width");     
-    
-    public static String MS_MAX_AVATAR_WIDTH= loadString("Max Avatar Width");
-    public static String MS_MAX_AVATAR_HEIGHT= loadString("Max Avatar Height");    
-    
-    public static String MS_CLIENT_ICONS_LEFT= loadString("ClientIcons Left");
-    public static String MS_RESTART_APP= loadString("After Restart App");    
-    
-    public static String MS_TYPE_BACKGROUND= loadString("Type of Background");             
-    public static String MS_BGND_IMAGE= loadString("Background Jimm image");
-    public static String MS_MY_BGND_IMAGE= loadString("Background image");    
-    public static String MS_BGND_GRADIENT= loadString("Background Gradient");    
-    public static String MS_BGND_NONE= loadString("Background Default");
-    
-    public static String MS_LOAD_SJIN= loadString("Load skin.png from File");    
-    public static String MS_SET_DEF_SKIN= loadString("Set Default skin.png"); 
-    
-   public static String MS_SKIN_SUPPORT_ERROR= loadString("Error!Only 16x16 size support!");            
-   public static String MS_CLCHAT_ON = loadString("Classic Chat");
-   public static String MS_CLCHAT_AUTO_SCR = loadString("Auto Scrolling");
-   public static String MS_CLCHAT_BGNG_PHONE = loadString("Background Phone theme");
-   public static String MS_CLCHAT_AOPEN = loadString("Auto Open Classic Chat");
-   public static String MS_CLCHAT_HEIGHT = loadString("Chat Height(max-320)");
-   public static String MS_CLCHAT_SCRLSPEED = loadString("Scroll speed(msec,10sec-max)");
-   public static String MS_CLCHAT_MSGLIMIT = loadString("Show messages limit(1000-max)");   
-   public static String MS_SUPPORT = loadString("Support");      
-   public static String MS_GRADIENT_CURSOR = loadString("Gradient cursor");    
-
-   public static String MS_GRADIENT_CURSOR_1 = loadString(MS_GRADIENT_CURSOR+"(1)");      
-   public static String MS_GRADIENT_CURSOR_2 = loadString(MS_GRADIENT_CURSOR+"(2)");  
-   public static String MS_ALTERNATING_CHAT_COLORS = loadString("Alternating chat colors");  
-
-   public static String AVATAR_HIGH_TRAFFIC = loadString("(HIGH TRAFFIC!)");      
-   public static String AVATAR_DRAW_RECT = loadString("Draw Rect Avatar");  
-   public static String AVATAR_AUTOSAVE_FS = loadString("AutoSave In FS");  
-   public static String AVATAR_FOLDER = loadString("Avatar Folder");      
-   public static String AVATAR_ROSTER_LOADFS = loadString("Roster:Load all Avatars from FS");  
-   public static String AVATAR_MUC_LOADFS = loadString("Muc:Load all Avatars from FS");
-
-   public static String GAME_CHECKERS_MSG = loadString("User wants to play checkers with you");    
-   public static String GAME_SEND_GAME = loadString("Checkers:send invite");  
-   public static String GAME_APPLIED = loadString("Checkers:start game");
-   public static String GAME_STOP = loadString("Checkers:stop game");  
-   public static String GAME_RESUME = loadString("Checkers:resume");
-   
-   public static String DONT_LOAD_MUCCONTACTS = loadString("Don't load conference contacts");
-   public static String USE_CASHE = loadString("Cashe elements of app");      
-  
-
-   
-   public static String MS_ONLINE = loadString("online");
-   public static String MS_CHAT = loadString("chat");
-   public static String MS_AWAY = loadString("away");
-   public static String MS_XA = loadString("xa");
-   public static String MS_INVISIBLE = loadString("invisible");
-   public static String MS_DND = loadString("dnd");
-   public static String MS_OFFLINE = loadString("offline");
-   
-   public static String MS_MY_JABBER = loadString("My Jabber>");
-   public static String MS_SERVICE = loadString("Service>");
-   public static String MS_QD_NEWS = loadString("News");
-
-   
-   public static String MS_TRANSPARENT = loadString("Transparent");
-   public static String MS_BGND_MIDLET = loadString("Background of midlet");
-   public static String MS_GR_MENU = loadString("Graphics Menu");
-   public static String MS_CURSOR_TR = loadString("Cursor");
-   
-   public static String MS_Bold = loadString("Bold");
-   public static String MS_Italic = loadString("Italic");
-   
-   
-   
-   public static String MS_MODULES_CONFIG = loadString("Modules config");   
-   public static String MS_config = loadString("Config");    
-   public static String MS_contactStr = loadString("Contacts");    
-   public static String MS_msgStr = loadString( "Chat");
-   public static String MS_netStr = loadString( "Network");    
-   public static String MS_grStr = loadString( "Graphics");
-   public static String MS_appStr = loadString( "Application"); 
-   public static String MS_hotkeysStr = loadString( "Hotkeys");
-   public static String MS_astatusStr = loadString( "Autostatus"); 
-   public static String MS_clchatStr = loadString( "Classic Chat");
-   public static String MS_cthemesStr = loadString( "Color Themes"); 
-   public static String MS_casheStr = loadString( "Cashe");
-   public static String MS_historyStr = loadString( "History");
-   public static String MS_fontsStr = loadString( "Fonts");
-   public static String MS_ieStr = loadString( "Import/Export");
-   public static String MS_notifyStr = loadString( "Notifications&Light Control");
-   public static String MS_taskstr = loadString( "Tasks");
-   public static String MS_avatarStr = loadString( "Avatars");   
-
-   public static String MS_ANI_SMILES = loadString( "Use animated smiles");     
-   public static String MS_NOKIA_RECONNECT_HACK = loadString( "Nokia Reconnect Hack" );    
-   public static String MS_DEBUG_MENU = loadString("Debug Menu");
-   public static String MS_EDIT_ACCOUNT_MSG = loadString("Please,edit this account to save new password!");
-   public static String MS_ACCOUNT_DELETED = loadString("Account deleted!");
-   public static String MS_INSERT_NEW_PASSWORD = loadString("Insert New Password");
-   public static String MS_SELECT_OUT_MESSAGES = loadString("Highlite Out Messages");
-   public static String MS_ALERT_CONTACT_OFFLINE = loadString("Contact is now offline.Continue?"); 
-   
-   public static String MS_COLLAPSE_PRESENCE = loadString("Collapse presences");
-   public static String MS_CLIPBOARD_SENDERROR = loadString("clipboard NOT sended");
-   public static String MS_PRIVACY_ANY = loadString("ANY");
-   public static String MS_PRIVACY_ALLOW = loadString("allow");
-   public static String MS_PRIVACY_DENY = loadString("deny");
-   public static String MS_PRIVACY_PRESENCE_IN = loadString("presence-in");
-   public static String MS_PRIVACY_PRESENCE_OUT = loadString("presence-out");
-   public static String MS_PRIVACY_IQ = loadString("iq");   
-   public static String MS_PRIVACY_ALL_STANZAS = loadString("all stanzas");
-   public static String MS_PRIVACY_IF = loadString("if");
-   
-   public static String MS_SUBSCR_NONE = loadString("none");
-   public static String MS_SUBSCR_FROM = loadString("from");
-   public static String MS_SUBSCR_TO = loadString("to");
-   public static String MS_SUBSCR_BOTH = loadString("both");
-   
-   public static String MS_CLOSE_ALL_ROOMS = loadString("Exit from ALL Rooms");
-   public static String MS_CREATE_ANNOTATION = loadString("Create Annotation");
-   public static String MS_REMOVE_ANNOTATION = loadString("Remove Annotation");   
-   public static String MS_CONTACT_ANNOTATIONS = loadString("Contact Annotations");
-   public static String MS_METACONTACTS = loadString("Metacontacts");
-   public static String MS_ANNOTATION = loadString("Note");  
-   public static String MS_CHANGE_TRANSPORT = loadString("Change transport");
-   
-
-   public static String L_CONFIG = loadString("Light control");
-   public static String L_ENABLED = loadString("Enable light control");
-   public static String L_IDLE_VALUE = loadString("Idle screen brightness");
-   public static String L_KEYPRESS_VALUE = loadString("Keypress screen brightness");
-   public static String L_KEYPRESS_TIMEOUT = loadString("Keypress idle timeout");
-   public static String L_MESSAGE_VALUE = loadString("Message screen brightness");
-   public static String L_MESSAGE_TIMEOUT = loadString("Message idle timeout");
-   
-   
     private SR() { }
-    
-    public static String MS_XMLLANG;
-    public static String MS_IFACELANG;
 
-    private synchronized static void loadLang() {
-        if (lang==null) {
-            String langFile=Config.getInstance().langFileName();
-            System.out.print("Loading locale ");
-            System.out.println(langFile);
-            if (langFile!=null) lang=new StringLoader().hashtableLoader(langFile);
-            if (lang==null) lang=new Hashtable(0); 
-            MS_XMLLANG=(String)lang.get("xmlLang");
-            MS_IFACELANG=MS_XMLLANG;
-            if (MS_IFACELANG==null) MS_IFACELANG="en";
-        }
-    }    
-
-    private static String loadString(String key) {
-        if (lang==null) loadLang();
-        String value=(String)lang.get(key);
-//#if LOCALE_DEBUG
-//#        if (value==null) {
-//#            if (!lang.isEmpty()) {
-//#                System.out.print("Can't find local string for <");
-//#                System.err.print(key);
-//#                System.err.println('>');
-//#            }
-//#        }
-//#endif
-        return (value==null)?key:value;
+    public final static String get(short id){
+        return localeItems[id];
     }
-    
+
     public static String getPresence(String presenceName) {
-        if (presenceName.equals("online"))       return MS_ONLINE;
-   else if (presenceName.equals("chat"))         return MS_CHAT;
-   else if (presenceName.equals("away"))         return MS_AWAY;
-   else if (presenceName.equals("xa"))           return MS_XA;
-   else if (presenceName.equals("invisible"))    return MS_INVISIBLE;
-   else if (presenceName.equals("dnd"))          return MS_DND;
-   else if (presenceName.equals("unavailable"))  return MS_OFFLINE;
+        if (presenceName.equals("online"))       return get(MS_ONLINE);
+   else if (presenceName.equals("chat"))         return get(MS_CHAT);
+   else if (presenceName.equals("away"))         return get(MS_AWAY);
+   else if (presenceName.equals("xa"))           return get(MS_XA);
+   else if (presenceName.equals("invisible"))    return get(MS_INVISIBLE);
+   else if (presenceName.equals("dnd"))          return get(MS_DND);
+   else if (presenceName.equals("unavailable"))  return get(MS_OFFLINE);
         return null;
     }
-
-    public static void loaded() {
-        lang.clear();
-        lang=null;
+    
+    private static StringLoader stringLoader = new StringLoader();
+    public final static short  MS_XMLLANG = 0;
+    public final static short  MS_IFACELANG = 1;
+    
+    
+    private static void resetLang(){
+            int size = localeItems.length;
+              if(localeItemsDefault.length == 0) {
+                localeItemsDefault = new String[localeItems.length];
+                for(int i=0; i<size;++i) localeItemsDefault[i] = localeItems[i];//en==const
+              }
+            
+            size = localeItemsDefault.length;
+            for(int i=0; i<size;++i) localeItems[i] = localeItemsDefault[i];
+            localeItems[0] = "en";
+            localeItems[1] = "en";        
     }
+    
+    
+    public static void changeLocale() {
+        String langFile = Config.getInstance().langFileName();
+        System.out.print("   Loading locale -> " + langFile + "\n"); /* lang/ru.txt */
+        resetLang();
+        if (langFile==null){ //en
+           return;
+        }
+        int index = langFile.indexOf('.');
+        String langName = langFile.substring(6, index);
+            localeItems[0] = langName;
+            localeItems[1] = langName;
+        localeItems  = stringLoader.arrayLoader(langFile, localeItems);
+        midlet.BombusQD.commands.initCommands();
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

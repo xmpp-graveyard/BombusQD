@@ -40,16 +40,19 @@ public class SimpleString
         extends IconTextElement {
 
     private String text;
-    
-    private boolean selectable=false;
-
     private boolean bold;
-    
+    private boolean isSelectable = false;
     private Font font=null;
     
     /**
      * Creates a new instance of SimpleString
      */
+    public SimpleString(String text) {
+        super(null);
+        this.text=text;
+        this.bold=bold;
+        this.font=FontCache.getFont(true, Font.SIZE_MEDIUM);
+    }
     public SimpleString(String text, boolean bold) {
         super(null);
         this.text=text;
@@ -59,9 +62,12 @@ public class SimpleString
     public int getVWidth(){ 
         return -1;
     }
-    public String toString() { return text; }
+    public String toString() {
+        if(text.equals(locale.SR.get(locale.SR.MS_USER_APP_LEVEL))) isSelectable = true;
+        return text;
+    }
     
-    public boolean isSelectable() { return selectable; }
+    public boolean isSelectable() { return isSelectable; }
     
     public Font getFont() { return font; }
 }

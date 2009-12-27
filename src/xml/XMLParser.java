@@ -35,17 +35,17 @@ import java.io.IOException;
 public class XMLParser {
     private final static int MAX_BIN_DATASIZE=40*1024; //40 KB - experimental
         
-    private final static int PLAIN_TEXT=0;
-    private final static int TAGNAME=1;
-    private final static int ENDTAGNAME=2;
-    private final static int ATRNAME=3;
-    private final static int ATRVALQS=4;
-    private final static int ATRVALQD=5;
-    private final static int CDATA=6;
-    private final static int BASE64=7;
-    private final static int BASE64_INIT=8;
+    private final static byte PLAIN_TEXT=0;
+    private final static byte TAGNAME=1;
+    private final static byte ENDTAGNAME=2;
+    private final static byte ATRNAME=3;
+    private final static byte ATRVALQS=4;
+    private final static byte ATRVALQD=5;
+    private final static byte CDATA=6;
+    private final static byte BASE64=7;
+    private final static byte BASE64_INIT=8;
 
-    private int state;
+    private byte state;
     
     private XMLEventListener eventListener;
     

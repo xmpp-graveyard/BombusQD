@@ -64,9 +64,9 @@ public class TextListBox
 //#endif
     {
 
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK,99);
-    private Command cmdOk=new Command(SR.MS_OK, Command.OK,1);
-    private Command cmdClear=new Command(SR.MS_CLEAR, Command.SCREEN, 2);
+    private Command cmdCancel;
+    private Command cmdOk;
+    private Command cmdClear;
 
     private Vector recentList;
 
@@ -74,9 +74,14 @@ public class TextListBox
 
     public TextListBox(Display display, EditBox ti) {
         super(display);
+        
+        cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK,99);
+        cmdOk=new Command(SR.get(SR.MS_OK), Command.OK,1);
+        cmdClear=new Command(SR.get(SR.MS_CLEAR), Command.SCREEN, 2);    
+        
         this.ti=ti;
         this.recentList=ti.recentList;
-        setMainBarItem(new MainBar(SR.MS_SELECT));
+        setMainBarItem(new MainBar(SR.get(SR.MS_SELECT)));
 
         commandState();
     }

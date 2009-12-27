@@ -118,7 +118,7 @@
 //#                 sd.roster.cmdCleanAllMessages();
 //#                 break;
 //#             case 3: 
-//#                 sd.roster.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+//#                 sd.roster.connectionTerminated(new Exception(SR.get(SR.MS_SIMULATED_BREAK)));
 //#                 break;
 //#ifdef POPUPS
 //#ifdef STATS

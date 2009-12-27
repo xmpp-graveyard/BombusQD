@@ -65,7 +65,7 @@ public class DefForm
     
     public Vector itemsList=new Vector(0);
 
-    public Command cmdCancel = new Command(SR.MS_BACK, Command.BACK, 99);
+    public Command cmdCancel;
 
     public int superWidth;
     /**
@@ -76,7 +76,8 @@ public class DefForm
     public DefForm(final Display display, Displayable pView, String caption) {
 	this.display=display;
         
-	setMainBarItem(new MainBar(caption));
+        cmdCancel = new Command(SR.get(SR.MS_BACK), Command.BACK, 99);
+        setMainBarItem(new MainBar(caption));
         
         superWidth=super.getWidth();
         
@@ -195,6 +196,6 @@ public class DefForm
 //#endif    
 
     
-    public String touchLeftCommand(){ return SR.MS_OK; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_OK); }
 //#endif
 }

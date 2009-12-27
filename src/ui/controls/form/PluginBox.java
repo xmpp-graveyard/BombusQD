@@ -8,6 +8,7 @@
 package ui.controls.form;
 
 import Colors.ColorTheme;
+import Client.Config;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 import images.RosterIcons;
@@ -17,18 +18,17 @@ import javax.microedition.lcdui.Font;
  *
  * @author aqent
  */
-public abstract class PluginBox extends IconTextElement {
+public class PluginBox extends IconTextElement {
     
     private boolean state=false;
     private String text="";
-    private boolean selectable=true;
-    private boolean edit = false;
+    private int edit = 0;
     private int colorItem;
     private Font font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD ,Font.SIZE_SMALL);
     int fH = font.getHeight();
 
 
-    public PluginBox(String text, boolean state,boolean edit) {
+    public PluginBox(String text, boolean state,int edit) {
         super(RosterIcons.getInstance());
         this.text=text;
         this.state=state;
@@ -53,11 +53,22 @@ public abstract class PluginBox extends IconTextElement {
        }
     }
 
+    
     public void onSelect(){
-        if(edit==true) {
+        if(edit>0) {
            state=!state;
+           Config cf = midlet.BombusQD.cf;
+           switch(edit){
+               case 1: cf.module_autostatus = !cf.module_autostatus; break;
+               case 2: cf.userKeys = !cf.userKeys; break;               
+               case 3: cf.module_avatars = !cf.module_avatars; break;
+               case 4: cf.module_history = !cf.module_history; break;
+               case 5: cf.module_ie = !cf.module_ie; break;
+               case 6: cf.module_tasks = !cf.module_tasks; break;
+               case 7: cf.module_classicchat = !cf.module_classicchat; break;
+               case 8: cf.debug = !cf.debug; break;
+           }
          }
-         doAction(state);
     }
     
     public int getVHeight(){ 
@@ -65,8 +76,7 @@ public abstract class PluginBox extends IconTextElement {
         return itemHeight;
     }    
     
-    public abstract void doAction(boolean state);  
-    public int getImageIndex(){ return edit ? (state?0x36:0x37) : 0x36; }
+    public int getImageIndex(){ return edit>0 ? (state?0x36:0x37) : 0x36; }
     public boolean getValue() { return state; }
-    public boolean isSelectable() { return selectable; }
+    public boolean isSelectable() { return true; }
 }
