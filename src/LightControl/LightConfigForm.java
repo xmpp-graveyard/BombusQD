@@ -54,36 +54,36 @@ public class LightConfigForm
 
     /** Creates a new instance of ConfigForm */
     public LightConfigForm(Display display, Displayable pView) {
-        super(display, pView, SR.L_CONFIG);
+        super(display, pView, SR.get(SR.L_CONFIG));
         this.display=display;
 
         light=LightConfig.getInstance();
 
-        config_enabled=new CheckBox(SR.L_ENABLED, light.light_control);
+        config_enabled=new CheckBox(SR.get(SR.L_ENABLED), light.light_control);
         itemsList.addElement(config_enabled);
 
         itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString(SR.L_IDLE_VALUE, true));
+        itemsList.addElement(new SimpleString(SR.get(SR.L_IDLE_VALUE), true));
         light_idle=new TrackItem(light.light_idle, 100);
         itemsList.addElement(light_idle);
 
         itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString(SR.L_KEYPRESS_VALUE, true));
+        itemsList.addElement(new SimpleString(SR.get(SR.L_KEYPRESS_VALUE), true));
         light_keypressed=new TrackItem(light.light_keypress, 100);
         itemsList.addElement(light_keypressed);
-        light_keypressed_time=new NumberInput(display, SR.L_KEYPRESS_TIMEOUT, Integer.toString(light.light_keypressed_time), 1, 600);
+        light_keypressed_time=new NumberInput(display, SR.get(SR.L_KEYPRESS_TIMEOUT), Integer.toString(light.light_keypressed_time), 1, 600);
         itemsList.addElement(light_keypressed_time);
 
         itemsList.addElement(new SpacerItem(10));
-        itemsList.addElement(new SimpleString(SR.L_MESSAGE_VALUE, true));
+        itemsList.addElement(new SimpleString(SR.get(SR.L_MESSAGE_VALUE), true));
         light_message=new TrackItem(light.light_message, 100);
         itemsList.addElement(light_message);
-        light_message_time=new NumberInput(display, SR.L_MESSAGE_TIMEOUT, Integer.toString(light.light_message_time), 1, 600);
+        light_message_time=new NumberInput(display, SR.get(SR.L_MESSAGE_TIMEOUT), Integer.toString(light.light_message_time), 1, 600);
         itemsList.addElement(light_message_time);
 
         /*
         itemsList.addElement(new SpacerItem(5));
-        lightState = new CheckBox(SR.MS_FLASHLIGHT, midlet.BombusQD.cf.lightState);
+        lightState = new CheckBox(SR.get(SR.MS_FLASHLIGHT), midlet.BombusQD.cf.lightState);
            if (phoneManufacturer==Config.SIEMENS || phoneManufacturer==Config.SIEMENS2 
            || phoneManufacturer==Config.SONYE || phoneManufacturer==Config.NOKIA) itemsList.addElement(lightState);  
          */

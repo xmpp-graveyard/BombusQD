@@ -143,74 +143,74 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 
         // if(contact.bareJid.equals(StaticData.HELPER_CONTACT)==false){            
 	    if (grType==Groups.TYPE_TRANSP) {
-		addItem(SR.MS_LOGON,5, menuIcons.ICON_ON);
-		addItem(SR.MS_LOGOFF,6, menuIcons.ICON_OFF);
-                addItem(SR.MS_RESOLVE_NICKNAMES, 7, menuIcons.ICON_NICK_RESOLVE);
+		addItem(SR.get(SR.MS_LOGON),5, menuIcons.ICON_ON);
+		addItem(SR.get(SR.MS_LOGOFF),6, menuIcons.ICON_OFF);
+                addItem(SR.get(SR.MS_RESOLVE_NICKNAMES), 7, menuIcons.ICON_NICK_RESOLVE);
 //#if CHANGE_TRANSPORT
 //#ifdef PLUGINS
 //#                 if (sd.ChangeTransport);
 //#endif
-//#                     addItem(SR.MS_CHANGE_TRANSPORT,915, menuIcons.ICON_NICK_RESOLVE);
+//#                     addItem(SR.get(SR.MS_CHANGE_TRANSPORT),915, menuIcons.ICON_NICK_RESOLVE);
 //#endif
 	    }
 
-	    if(!originGroupchat) addItem(SR.MS_VCARD,1, menuIcons.ICON_VCARD);
+	    if(!originGroupchat) addItem(SR.get(SR.MS_VCARD),1, menuIcons.ICON_VCARD);
             if(contact.vcard!=null){
-             addItem(SR.MS_DELETE_VCARD,88, menuIcons.ICON_VCARD, true);
-             addItem(SR.MS_DELETE_ALL_VCARD,89, menuIcons.ICON_VCARD, true);
+             addItem(SR.get(SR.MS_DELETE_VCARD),88, menuIcons.ICON_VCARD, true);
+             addItem(SR.get(SR.MS_DELETE_ALL_VCARD),89, menuIcons.ICON_VCARD, true);
             }
               if(contact.img_vcard!=null){
-                addItem(SR.MS_DELETE_AVATAR_VCARD,90, menuIcons.ICON_VCARD, true);
-                addItem(SR.MS_DELETE_ALL_AVATAR_VCARD,91, menuIcons.ICON_VCARD, true);
+                addItem(SR.get(SR.MS_DELETE_AVATAR_VCARD),90, menuIcons.ICON_VCARD, true);
+                addItem(SR.get(SR.MS_DELETE_ALL_AVATAR_VCARD),91, menuIcons.ICON_VCARD, true);
               }
             
-            addItem(SR.MS_FEATURES,250,menuIcons.ICON_INFO);
+            addItem(SR.get(SR.MS_FEATURES),250,menuIcons.ICON_INFO);
 
 //#ifdef POPUPS
-            addItem(SR.MS_INFO,86, menuIcons.ICON_INFO);
+            addItem(SR.get(SR.MS_INFO),86, menuIcons.ICON_INFO);
 //#endif
             
            if (!(contact instanceof MucContact) && midlet.BombusQD.cf.networkAnnotation) { 
                //XEP-0145: Annotations
                if (grType!=Groups.TYPE_TRANSP && grType!=Groups.TYPE_SELF){
-                   addItem(SR.MS_CREATE_ANNOTATION,888, menuIcons.ICON_VOICE);
-                   if(contact.annotations!=null) addItem(SR.MS_REMOVE_ANNOTATION,887, menuIcons.ICON_VOICE);
+                   addItem(SR.get(SR.MS_CREATE_ANNOTATION),888, menuIcons.ICON_VOICE);
+                   if(contact.annotations!=null) addItem(SR.get(SR.MS_REMOVE_ANNOTATION),887, menuIcons.ICON_VOICE);
                }
            }   
 
-            if(!originGroupchat) addItem(SR.MS_CLIENT_INFO,0, menuIcons.ICON_VERSION);
+            if(!originGroupchat) addItem(SR.get(SR.MS_CLIENT_INFO),0, menuIcons.ICON_VERSION);
 
 //#ifdef SERVICE_DISCOVERY
-	    if(!originGroupchat) addItem(SR.MS_COMMANDS,30, menuIcons.ICON_COMMAND);
+	    if(!originGroupchat && midlet.BombusQD.cf.userAppLevel>1) addItem(SR.get(SR.MS_COMMANDS),30, menuIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
 //#             if (midlet.BombusQD.cf.useClipBoard) {
 //#                 if (!midlet.BombusQD.clipboard.isEmpty())
-//#                     addItem(SR.MS_SEND_BUFFER,914, menuIcons.ICON_SEND_BUFFER);
+//#                     addItem(SR.get(SR.MS_SEND_BUFFER),914, menuIcons.ICON_SEND_BUFFER);
 //#                 if (grType!=Groups.TYPE_SELF)
-//#                     addItem(SR.MS_COPY_JID,892, menuIcons.ICON_COPY_JID);
+//#                     addItem(SR.get(SR.MS_COPY_JID),892, menuIcons.ICON_COPY_JID);
 //#             }
 //#endif
-            if(!originGroupchat) addItem(SR.MS_SEND_COLOR_SCHEME, 912, menuIcons.ICON_SEND_COLORS);
+            if(!originGroupchat) addItem(SR.get(SR.MS_SEND_COLOR_SCHEME), 912, menuIcons.ICON_SEND_COLORS);
             if (contact.status<Presence.PRESENCE_OFFLINE && !originGroupchat) {
-                addItem(SR.MS_TIME,891, menuIcons.ICON_TIME);
-                addItem(SR.MS_IDLE,889, menuIcons.ICON_IDLE);
-                addItem(SR.MS_PING,893, menuIcons.ICON_PING);
+                addItem(SR.get(SR.MS_TIME),891, menuIcons.ICON_TIME);
+                addItem(SR.get(SR.MS_IDLE),889, menuIcons.ICON_IDLE);
+                addItem(SR.get(SR.MS_PING),893, menuIcons.ICON_PING);
             }
 	    
 	    if (grType!=Groups.TYPE_SELF && grType!=Groups.TYPE_SEARCH_RESULT && contact.origin<Constants.ORIGIN_GROUPCHAT) {
 		if (contact.status<Presence.PRESENCE_OFFLINE) {
-                    addItem(SR.MS_ONLINE_TIME,890, menuIcons.ICON_ONLINE);    
+                    addItem(SR.get(SR.MS_ONLINE_TIME),890, menuIcons.ICON_ONLINE);    
                 } else {
-                    addItem(SR.MS_SEEN,894, menuIcons.ICON_ONLINE); 
+                    addItem(SR.get(SR.MS_SEEN),894, menuIcons.ICON_ONLINE); 
                 }
                 if (grType!=Groups.TYPE_TRANSP) {
-                    addItem(SR.MS_EDIT,2, menuIcons.ICON_RENAME);
+                    addItem(SR.get(SR.MS_EDIT),2, menuIcons.ICON_RENAME);
                 }
-		addItem(SR.MS_SUBSCRIPTION,3, menuIcons.ICON_SUBSCR);
-//		addItem(SR.MS_MOVE,1003, menuIcons.ICON_MOVE);
-		addItem(SR.MS_DELETE, 4, menuIcons.ICON_DELETE);
-		addItem(SR.MS_DIRECT_PRESENCE,45, menuIcons.ICON_SET_STATUS);
+		addItem(SR.get(SR.MS_SUBSCRIPTION),3, menuIcons.ICON_SUBSCR);
+//		addItem(SR.get(SR.MS_MOVE),1003, menuIcons.ICON_MOVE);
+		addItem(SR.get(SR.MS_DELETE), 4, menuIcons.ICON_DELETE);
+		addItem(SR.get(SR.MS_DIRECT_PRESENCE),45, menuIcons.ICON_SET_STATUS);
 	    }
          //}
 	    if (originGroupchat) return;
@@ -227,35 +227,35 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                     myAffiliation++; // allow owner to change owner's affiliation
 
             
-                //addItem(SR.MS_TIME,891); 
+                //addItem(SR.get(SR.MS_TIME),891); 
                 
                 //invite
                 if (mc.realJid!=null) {
                     //if (onlineConferences)
                     if (selfContact.roleCode==Constants.ROLE_MODERATOR || myAffiliation==Constants.AFFILIATION_MEMBER){
-                        addItem(SR.MS_INVITE,40, menuIcons.ICON_INVITE);
+                        addItem(SR.get(SR.MS_INVITE),40, menuIcons.ICON_INVITE);
                     }
                 }
                 //invite                
                 
                 if (selfContact.roleCode==Constants.ROLE_MODERATOR) {
                     if(mc.roleCode<Constants.ROLE_MODERATOR)
-                        addItem(SR.MS_KICK,8, menuIcons.ICON_KICK);
+                        addItem(SR.get(SR.MS_KICK),8, menuIcons.ICON_KICK);
                     
                     if (myAffiliation>=Constants.AFFILIATION_ADMIN && mc.affiliationCode<myAffiliation)
-                        addItem(SR.MS_BAN,9, menuIcons.ICON_BAN);
+                        addItem(SR.get(SR.MS_BAN),9, menuIcons.ICON_BAN);
                     
                     if (mc.affiliationCode<Constants.AFFILIATION_ADMIN) 
                         /* 5.1.1 *** A moderator MUST NOT be able to revoke voice privileges from an admin or owner. */ 
-                    if (mc.roleCode==Constants.ROLE_VISITOR) addItem(SR.MS_GRANT_VOICE,31, menuIcons.ICON_VOICE);
-                    else addItem(SR.MS_REVOKE_VOICE, 32, menuIcons.ICON_DEVOICE);
+                    if (mc.roleCode==Constants.ROLE_VISITOR) addItem(SR.get(SR.MS_GRANT_VOICE),31, menuIcons.ICON_VOICE);
+                    else addItem(SR.get(SR.MS_REVOKE_VOICE), 32, menuIcons.ICON_DEVOICE);
                 }
 //#ifdef REQUEST_VOICE
 //# 		if (selfContact.roleCode==MucContact.ROLE_VISITOR) {
 //#                     //System.out.println("im visitor");
 //#                     if (mc.roleCode==MucContact.ROLE_MODERATOR) {
 //#                         //System.out.println(mc.getJid()+" is a moderator");
-//#                         addItem(SR.MS_REQUEST_PARTICIPANT_ROLE,39);
+//#                         addItem(SR.get(SR.MS_REQUEST_PARTICIPANT_ROLE),39);
 //#                     }
 //#  		}
 //#endif
@@ -266,17 +266,17 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                     if (mc.affiliationCode<Constants.AFFILIATION_ADMIN) 
                         /* 5.2.1 ** An admin or owner MUST NOT be able to revoke moderation privileges from another admin or owner. */ 
                     if (mc.roleCode==Constants.ROLE_MODERATOR) 
-                        addItem(SR.MS_REVOKE_MODERATOR,31, menuIcons.ICON_MEMBER);
+                        addItem(SR.get(SR.MS_REVOKE_MODERATOR),31, menuIcons.ICON_MEMBER);
                     else 
-                        addItem(SR.MS_GRANT_MODERATOR,33, menuIcons.ICON_ADMIN);
+                        addItem(SR.get(SR.MS_GRANT_MODERATOR),33, menuIcons.ICON_ADMIN);
                     
                     //affiliations
                     if (mc.affiliationCode<myAffiliation) {
                         if (mc.affiliationCode!=Constants.AFFILIATION_NONE) 
-                            addItem(SR.MS_UNAFFILIATE,36, menuIcons.ICON_DEMEMBER);
+                            addItem(SR.get(SR.MS_UNAFFILIATE),36, menuIcons.ICON_DEMEMBER);
                         /* 5.2.2 */
                         if (mc.affiliationCode!=Constants.AFFILIATION_MEMBER) 
-                            addItem(SR.MS_GRANT_MEMBERSHIP,35, menuIcons.ICON_MEMBER);
+                            addItem(SR.get(SR.MS_GRANT_MEMBERSHIP),35, menuIcons.ICON_MEMBER);
                     }
                     
                     
@@ -285,10 +285,10 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                 if (myAffiliation>=Constants.AFFILIATION_OWNER) {
                     // owner use cases
                     if (mc.affiliationCode!=Constants.AFFILIATION_ADMIN) 
-                        addItem(SR.MS_GRANT_ADMIN,37, menuIcons.ICON_ADMIN);
+                        addItem(SR.get(SR.MS_GRANT_ADMIN),37, menuIcons.ICON_ADMIN);
                     
                     if (mc.affiliationCode!=Constants.AFFILIATION_OWNER) 
-                        addItem(SR.MS_GRANT_OWNERSHIP,38, menuIcons.ICON_OWNER);
+                        addItem(SR.get(SR.MS_GRANT_OWNERSHIP),38, menuIcons.ICON_OWNER);
                 }
                 if (mc.realJid!=null && mc.status<Presence.PRESENCE_OFFLINE) {
                     
@@ -296,7 +296,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
             } else if (grType!=Groups.TYPE_TRANSP && grType!=Groups.TYPE_SEARCH_RESULT) {
                 // usual contact - invite item check
                  if (onlineConferences) 
-                     addItem(SR.MS_INVITE,40, menuIcons.ICON_INVITE);
+                     addItem(SR.get(SR.MS_INVITE),40, menuIcons.ICON_INVITE);
             }
 //#endif
 //#if (FILE_IO && FILE_TRANSFER)
@@ -305,7 +305,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 //#ifdef PLUGINS
 //#                     if (sd.FileTransfer)
 //#endif
-                        addItem(SR.MS_SEND_FILE, 50, menuIcons.ICON_SEND_FILE);
+                        addItem(SR.get(SR.MS_SEND_FILE), 50, menuIcons.ICON_SEND_FILE);
                 }
             
 //#endif
@@ -317,7 +317,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 //#ifdef PLUGINS
 //#                         if (sd.ImageTransfer)
 //#endif
-                            addItem(SR.MS_SEND_PHOTO, 51, menuIcons.ICON_SEND_FILE);
+                            addItem(SR.get(SR.MS_SEND_PHOTO), 51, menuIcons.ICON_SEND_FILE);
                     }
                 }
             }
@@ -325,28 +325,28 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
         } else {
 	    Group group=(Group)item;
 	    if (group.type==Groups.TYPE_SEARCH_RESULT)
-		addItem(SR.MS_DISCARD,21, menuIcons.ICON_BAN);
+		addItem(SR.get(SR.MS_DISCARD),21, menuIcons.ICON_BAN);
 //#ifndef WMUC
 	    if (group instanceof ConferenceGroup) {
 		MucContact self=((ConferenceGroup)group).selfContact;
                 
-		addItem(SR.MS_LEAVE_ROOM,22, menuIcons.ICON_LEAVE);
-                addItem(SR.MS_CLOSE_ALL_ROOMS,900, menuIcons.ICON_LEAVE);
+		addItem(SR.get(SR.MS_LEAVE_ROOM),22, menuIcons.ICON_LEAVE);
+                addItem(SR.get(SR.MS_CLOSE_ALL_ROOMS),900, menuIcons.ICON_LEAVE);
 
                 if (self.status>=Presence.PRESENCE_OFFLINE) {// offline or error
-		    addItem(SR.MS_REENTER,23, menuIcons.ICON_CHANGE_NICK);
+		    addItem(SR.get(SR.MS_REENTER),23, menuIcons.ICON_CHANGE_NICK);
                 } else {
-                    addItem(SR.MS_DIRECT_PRESENCE,46, menuIcons.ICON_SET_STATUS);
-                    addItem(SR.MS_CHANGE_NICKNAME,23, menuIcons.ICON_CHANGE_NICK);
+                    addItem(SR.get(SR.MS_DIRECT_PRESENCE),46, menuIcons.ICON_SET_STATUS);
+                    addItem(SR.get(SR.MS_CHANGE_NICKNAME),23, menuIcons.ICON_CHANGE_NICK);
 		    if (self.affiliationCode>=Constants.AFFILIATION_OWNER) {
-			addItem(SR.MS_CONFIG_ROOM,10, menuIcons.ICON_CONFIGURE);
-                        addItem(SR.MS_DESTROY_ROOM,49,menuIcons.ICON_OUTCASTS);
+			addItem(SR.get(SR.MS_CONFIG_ROOM),10, menuIcons.ICON_CONFIGURE);
+                        addItem(SR.get(SR.MS_DESTROY_ROOM),49,menuIcons.ICON_OUTCASTS);
                     }
 		    if (self.affiliationCode>=Constants.AFFILIATION_ADMIN) {
-			addItem(SR.MS_OWNERS,11, menuIcons.ICON_OWNERS);
-			addItem(SR.MS_ADMINS,12, menuIcons.ICON_ADMINS);
-			addItem(SR.MS_MEMBERS,13, menuIcons.ICON_MEMBERS);
-			addItem(SR.MS_BANNED,14, menuIcons.ICON_OUTCASTS);
+			addItem(SR.get(SR.MS_OWNERS),11, menuIcons.ICON_OWNERS);
+			addItem(SR.get(SR.MS_ADMINS),12, menuIcons.ICON_ADMINS);
+			addItem(SR.get(SR.MS_MEMBERS),13, menuIcons.ICON_MEMBERS);
+			addItem(SR.get(SR.MS_BANNED),14, menuIcons.ICON_OUTCASTS);
  		    }
  		}
 	    } else {
@@ -361,8 +361,8 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                         && group.type!=Groups.TYPE_SELF
                         && group.type!=Groups.TYPE_TRANSP)
                  {
-                    addItem(SR.MS_RENAME,1001, menuIcons.ICON_RENAME);
-                    addItem(SR.MS_DELETE, 1004, menuIcons.ICON_DELETE);
+                    addItem(SR.get(SR.MS_RENAME),1001, menuIcons.ICON_RENAME);
+                    addItem(SR.get(SR.MS_DELETE), 1004, menuIcons.ICON_DELETE);
                  }
              //  }
 //#ifndef WMUC
@@ -477,7 +477,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                     new SubscriptionEdit(display, midlet.BombusQD.sd.roster, c);
                     return; //break;
                 case 4:
-                    new AlertBox(SR.MS_DELETE_ASK, c.getNickJid(), display,  midlet.BombusQD.sd.roster) {
+                    new AlertBox(SR.get(SR.MS_DELETE_ASK), c.getNickJid(), display,  midlet.BombusQD.sd.roster) {
                         public void yes() {
                             midlet.BombusQD.sd.roster.deleteContact((Contact)item);
                         }
@@ -537,7 +537,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                     midlet.BombusQD.sd.roster.theStream.send(IqTimeReply.query(c.getJid()));
                     break;
                 case 888:
-                    new MIDPTextBox(display, SR.MS_NEW, c.annotations==null?"":c.annotations, this, TextField.ANY,200);
+                    new MIDPTextBox(display, SR.get(SR.MS_NEW), c.annotations==null?"":c.annotations, this, TextField.ANY,200);
                     break;
                 case 887:
                     OkNotify(null);
@@ -731,7 +731,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                         new RenameGroup(display, midlet.BombusQD.sd.roster, sg/*, null*/);
                         return;
                     case 1004: //delete
-                        new AlertBox(SR.MS_DELETE_GROUP_ASK, sg.getName(), display, midlet.BombusQD.sd.roster) {
+                        new AlertBox(SR.get(SR.MS_DELETE_GROUP_ASK), sg.getName(), display, midlet.BombusQD.sd.roster) {
                             public void yes() {
                                 midlet.BombusQD.sd.roster.deleteGroup((Group)item);
                             }

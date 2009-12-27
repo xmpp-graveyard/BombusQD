@@ -56,20 +56,20 @@ public class TransferSendFile
 
     /** Creates a new instance of TransferAcceptFile */
     public TransferSendFile(final Display display, Displayable pView, String recipientJid) {
-        super(display, pView, SR.MS_SEND_FILE);
+        super(display, pView, SR.get(SR.MS_SEND_FILE));
         this.display=display;
         this.to=recipientJid;
 
-        itemsList.addElement(new SimpleString(SR.MS_SEND_FILE_TO, true));
+        itemsList.addElement(new SimpleString(SR.get(SR.MS_SEND_FILE_TO), true));
         itemsList.addElement(new SimpleString(recipientJid, false));
         
-        fileName = new TextInput(display, SR.MS_FILE, null, "sendfile", TextField.ANY);
+        fileName = new TextInput(display, SR.get(SR.MS_FILE), null, "sendfile", TextField.ANY);
         itemsList.addElement(fileName);
         
-        selectFile=new LinkString(SR.MS_SELECT_FILE) { public void doAction() { initBrowser(); } };
+        selectFile=new LinkString(SR.get(SR.MS_SELECT_FILE)) { public void doAction() { initBrowser(); } };
         itemsList.addElement(selectFile);
         
-        description = new TextInput(display, SR.MS_DESCRIPTION, null, null, TextField.ANY);
+        description = new TextInput(display, SR.get(SR.MS_DESCRIPTION), null, null, TextField.ANY);
         itemsList.addElement(description);
         
         moveCursorTo(2);

@@ -56,7 +56,7 @@ public class TranslateSelect extends DefForm {
     
     public TranslateSelect(Display display, Displayable pView,Contact to,String text,String fromMucNick,
             boolean trCMsgList,int cursor) {
-        super(display, pView, SR.MS_TRANSLATE);
+        super(display, pView, SR.get(SR.MS_TRANSLATE));
         this.display=display;
         this.to=to;
         this.text=text;

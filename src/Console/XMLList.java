@@ -62,10 +62,10 @@
 //#     StanzasList stanzas;
 //#     private StaticData sd=StaticData.getInstance();
 //#     
-//#     private Command cmdNew=new Command(SR.MS_NEW, Command.SCREEN, 5);
-//#     private Command cmdEnableDisable=new Command(SR.MS_ENABLE_DISABLE, Command.SCREEN, 6);
-//#     private Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 10);
-//#     private Command cmdDebugLog=new Command("CREATE DEBUG LOG", Command.SCREEN, 13);
+//#     private Command cmdNew;
+//#     private Command cmdEnableDisable;
+//#     private Command cmdPurge;
+//#     private Command cmdDebugLog;
 //#     
 //#ifdef CLIPBOARD    
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
@@ -74,6 +74,11 @@
 //#     /** Creates a new instance of XMLList */
 //#     public XMLList(Display display, Displayable pView) {
 //#         super ();
+//#         
+//#         cmdNew=new Command(SR.get(SR.MS_NEW), Command.SCREEN, 5);
+//#         cmdEnableDisable=new Command(SR.get(SR.MS_ENABLE_DISABLE), Command.SCREEN, 6);
+//#         cmdPurge=new Command(SR.get(SR.MS_CLEAR_LIST), Command.SCREEN, 10);
+//#         cmdDebugLog=new Command("CREATE DEBUG LOG", Command.SCREEN, 13);
 //#         
 //#         super.smiles=false;
 //#         
@@ -86,7 +91,7 @@
 //#         moveCursorHome();
 //# 
 //# 
-//#  	MainBar mainbar=new MainBar(SR.MS_XML_CONSOLE);
+//#  	MainBar mainbar=new MainBar(SR.get(SR.MS_XML_CONSOLE));
 //#          setMainBarItem(mainbar);
 //# 
 //#         attachDisplay(display);

@@ -184,7 +184,7 @@ public abstract class MessageList extends VirtualList
             midlet.BombusQD.sd.roster.activeContact=null;
             destroyView();
         }
-        /*
+        
         if (c==midlet.BombusQD.commands.cmdUrl) {
             try {
                 Vector urls=((MessageItem) getFocusedObject()).getUrlList();
@@ -193,9 +193,8 @@ public abstract class MessageList extends VirtualList
         }
         if (c==midlet.BombusQD.commands.cmdxmlSkin) {
            try {
-               if (((MessageItem)getFocusedObject()).msg.body.indexOf("xmlSkin")>-1) {
-                    ColorTheme.loadSkin(((MessageItem)getFocusedObject()).msg.body,2);
-               }
+               if (((MessageItem)getFocusedObject()).msg.body.indexOf("xmlSkin")>-1) 
+                   ColorTheme.loadSkin(((MessageItem)getFocusedObject()).msg.body,2,true);
             } catch (Exception e){}
         }
         
@@ -213,33 +212,9 @@ public abstract class MessageList extends VirtualList
 //#             } catch (Exception e) {}
 //#         }
 //#endif
-       */
     }
 
     protected void keyPressed(int keyCode) { // overriding this method to avoid autorepeat
-//#ifdef MENU_LISTENER
-        /*
-        if (keyCode==Config.SOFT_RIGHT || keyCode==Config.KEY_BACK) {
-            if (!reconnectWindow.getInstance().isActive() && !cf.oldSE) {
-                midlet.BombusQD.sd.roster.activeContact=null;
-                destroyView();
-                return;
-            }
-        }
-         */
-//#endif
-       if (keyCode==13) { //copy
-            VirtualList.setWobble(1, null, "Copy to buffer is OK.");            
-            try {
-                midlet.BombusQD.clipboard.append( replaceNickTags( ((MessageItem)getFocusedObject()).msg) );
-            } catch (Exception e) {/*no messages*/}        
-       } 
-       if (keyCode==14) { //clear
-            VirtualList.setWobble(1, null, "Clear buffer is OK.");                        
-            try {
-                midlet.BombusQD.clipboard.setClipBoard("");
-            } catch (Exception e) {/*no messages*/}            
-       }        
 //#ifdef SMILES
         if (keyCode=='*') {
             try {

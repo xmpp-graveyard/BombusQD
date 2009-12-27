@@ -67,20 +67,25 @@ public class TransferManager
 //#     public static String plugin = new String("PLUGIN_FILE_TRANSFER");
 //#endif
     
-    private Vector taskList=new Vector(0);;
+    private Vector taskList=new Vector(0);
     
-    Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
-    Command cmdDel=new Command(SR.MS_DECLINE, Command.SCREEN, 10);
-    Command cmdClrF=new Command(SR.MS_HIDE_FINISHED, Command.SCREEN, 11);
-    Command cmdInfo=new Command(SR.MS_INFO, Command.SCREEN, 12);
+    Command cmdBack;
+    Command cmdDel;
+    Command cmdClrF;
+    Command cmdInfo;
     
     /** Creates a new instance of TransferManager */
     public TransferManager(Display display) {
         super(display);
 
+        cmdBack=new Command(SR.get(SR.MS_BACK), Command.BACK, 99);
+        cmdDel=new Command(SR.get(SR.MS_DECLINE), Command.SCREEN, 10);
+        cmdClrF=new Command(SR.get(SR.MS_HIDE_FINISHED), Command.SCREEN, 11);
+        cmdInfo=new Command(SR.get(SR.MS_INFO), Command.SCREEN, 12);
+    
         commandState();
         setCommandListener(this);
-        setMainBarItem(new MainBar(2, null, SR.MS_TRANSFERS, false));
+        setMainBarItem(new MainBar(2, null, SR.get(SR.MS_TRANSFERS), false));
         
         taskList=TransferDispatcher.getInstance().getTaskList();
     }
@@ -161,7 +166,7 @@ public class TransferManager
 //#ifdef MENU_LISTENER
     
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_MENU); }
     
 //#ifdef GRAPHICS_MENU  
 //#     public void touchLeftPressed(){
@@ -185,7 +190,7 @@ public class TransferManager
     
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_VCARD, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_VCARD), null, menuCommands);
    }  
 //#endif    
     

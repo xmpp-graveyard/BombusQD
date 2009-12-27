@@ -60,7 +60,7 @@ public class PrivacyList extends IconTextElement {
     
     public String toString() {
         StringBuffer result=new StringBuffer((name==null)? "<none>": name).append(' ');
-        if (isDefault) result.append(locale.SR.MS_IS_DEFAULT);
+        if (isDefault) result.append(locale.SR.get(locale.SR.MS_IS_DEFAULT));
         return result.toString();
     }
     

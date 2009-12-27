@@ -197,7 +197,7 @@ public class TranslateText implements Runnable{
                //System.out.println(str);
                 //fixit
                 if(str.indexOf("invalid translation language pair")>-1){
-                  midlet.BombusQD.sd.roster.replaceMessageEditText(c, SR.MS_TRANSLATE+": [" + from + "-" + to + "]"+
+                  midlet.BombusQD.sd.roster.replaceMessageEditText(c, SR.get(SR.MS_TRANSLATE)+": [" + from + "-" + to + "]"+
                          "\nERROR: invalid translation language pair", pView);             
                 }else{
                 
@@ -224,7 +224,7 @@ public class TranslateText implements Runnable{
 //#if NICK_COLORS
                                   b.append("<nick>");
 //#endif
-                                 b.append(SR.MS_TRANSLATE+" [");
+                                 b.append(SR.get(SR.MS_TRANSLATE)+" [");
                                   if(from.length()>0){
                                       b.append(from);
                                   }else{

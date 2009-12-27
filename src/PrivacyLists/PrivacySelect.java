@@ -70,22 +70,29 @@ public class PrivacySelect
     
     private Vector list=new Vector(0);
     
-    private Command cmdCancel=new Command (SR.MS_BACK, Command.BACK, 99);
-    private Command cmdActivate=new Command (SR.MS_ACTIVATE, Command.SCREEN, 10);
-    private Command cmdDefault=new Command (SR.MS_SETDEFAULT, Command.SCREEN, 11);
-    private Command cmdNewList=new Command (SR.MS_NEW_LIST, Command.SCREEN, 12);
-    private Command cmdDelete=new Command (SR.MS_DELETE_LIST, Command.SCREEN, 13);
-    //private Command cmdEdit=new Command (SR.MS_EDIT_LIST, Command.SCREEN, 14);
-    private Command cmdIL=new Command (SR.MS_MK_ILIST, Command.SCREEN, 16);
+    private Command cmdCancel;
+    private Command cmdActivate;
+    private Command cmdDefault;
+    private Command cmdNewList;
+    private Command cmdDelete;
+    private Command cmdIL;
     
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
     /** Creates a new instance of PrivacySelect */
     public PrivacySelect(Display display, Displayable pView) {
         super(display);
+        
+       cmdCancel=new Command (SR.get(SR.MS_BACK), Command.BACK, 99);
+       cmdActivate=new Command (SR.get(SR.MS_ACTIVATE), Command.SCREEN, 10);
+       cmdDefault=new Command (SR.get(SR.MS_SETDEFAULT), Command.SCREEN, 11);
+       cmdNewList=new Command (SR.get(SR.MS_NEW_LIST), Command.SCREEN, 12);
+       cmdDelete=new Command (SR.get(SR.MS_DELETE_LIST), Command.SCREEN, 13);
+       cmdIL=new Command (SR.get(SR.MS_MK_ILIST), Command.SCREEN, 16);
+    
         this.parentView=pView;
 
-        setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
+        setMainBarItem(new MainBar(2, null, SR.get(SR.MS_PRIVACY_LISTS), false));
 
         list.addElement(new PrivacyList(null));//none
         
@@ -158,7 +165,7 @@ public class PrivacySelect
             }
         }
         if (c==cmdNewList)
-            new MIDPTextBox(display, SR.MS_NEW, "", this, TextField.ANY,50);
+            new MIDPTextBox(display, SR.get(SR.MS_NEW), "", this, TextField.ANY,50);
     }
     
 //#ifdef MENU_LISTENER
@@ -173,7 +180,7 @@ public class PrivacySelect
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_STATUS), null, menuCommands);
     }   
 //#endif    
 
@@ -233,7 +240,7 @@ public class PrivacySelect
     }
     private void generateIgnoreList(){
         JabberDataBlock ignoreList=new JabberDataBlock("list", null, null);
-        ignoreList.setAttribute("name", SR.MS_IGNORE_LIST);
+        ignoreList.setAttribute("name", SR.get(SR.MS_IGNORE_LIST));
         JabberDataBlock item=PrivacyItem.itemIgnoreList().constructBlock();
         ignoreList.addChild(item);
         PrivacyList.privacyListRq(true, ignoreList, "ignlst");

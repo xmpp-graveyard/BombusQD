@@ -42,8 +42,8 @@ import locale.SR;
  */
 public class DiscoFeatures implements CommandListener {
     
-    Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 99);
-    Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
+    Command cmdBack;
+    Command cmdOk;
     
     List list;
 
@@ -53,6 +53,9 @@ public class DiscoFeatures implements CommandListener {
     /** Creates a new instance of DiscoFeatures */
     public DiscoFeatures(Display display, String entity, Vector features) {
         if (features.isEmpty()) return;
+        
+        cmdBack=new Command(SR.get(SR.MS_BACK), Command.BACK, 99);
+        cmdOk=new Command(SR.get(SR.MS_OK), Command.OK, 1);        
         
         list=new List(entity, List.IMPLICIT);
         for (Enumeration i=features.elements(); i.hasMoreElements(); ) {

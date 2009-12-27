@@ -68,20 +68,29 @@ public class PrivacyModifyList
     
     private PrivacyList plist;
     
-    private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
-    private Command cmdAdd=new Command (SR.MS_ADD_RULE, Command.SCREEN, 10);
-    private Command cmdDel=new Command (SR.MS_DELETE_RULE, Command.SCREEN, 11);
-    private Command cmdEdit=new Command (SR.MS_EDIT_RULE, Command.SCREEN, 12);
-    private Command cmdUp=new Command (SR.MS_MOVE_UP, Command.SCREEN, 13);
-    private Command cmdDwn=new Command (SR.MS_MOVE_DOWN, Command.SCREEN, 14);
-    private Command cmdSave=new Command (SR.MS_SAVE_LIST, Command.SCREEN, 16);
+    private Command cmdCancel;
+    private Command cmdAdd;
+    private Command cmdDel;
+    private Command cmdEdit;
+    private Command cmdUp;
+    private Command cmdDwn;
+    private Command cmdSave;
     
     JabberStream stream=StaticData.getInstance().roster.theStream;
     
     /** Creates a new instance of PrivacySelect */
     public PrivacyModifyList(Display display, Displayable pView, PrivacyList privacyList) {
         super(display);
-        setMainBarItem(new MainBar(2, null, SR.MS_PRIVACY_LISTS, false));
+        
+        cmdCancel=new Command (SR.get(SR.MS_CANCEL), Command.BACK, 99);
+        cmdAdd=new Command (SR.get(SR.MS_ADD_RULE), Command.SCREEN, 10);
+        cmdDel=new Command (SR.get(SR.MS_DELETE_RULE), Command.SCREEN, 11);
+        cmdEdit=new Command (SR.get(SR.MS_EDIT_RULE), Command.SCREEN, 12);
+        cmdUp=new Command (SR.get(SR.MS_MOVE_UP), Command.SCREEN, 13);
+        cmdDwn=new Command (SR.get(SR.MS_MOVE_DOWN), Command.SCREEN, 14);
+        cmdSave=new Command (SR.get(SR.MS_SAVE_LIST), Command.SCREEN, 16);
+        
+        setMainBarItem(new MainBar(2, null, SR.get(SR.MS_PRIVACY_LISTS), false));
 
         commandState();
         setCommandListener(this);
@@ -118,7 +127,7 @@ public class PrivacyModifyList
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_STATUS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_STATUS), null, menuCommands);
     }  
 //#endif   
 

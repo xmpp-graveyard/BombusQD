@@ -62,7 +62,7 @@ public class SearchResult
 {
     
     StaticData sd=StaticData.getInstance();
-    private Command cmdAdd=new Command(SR.MS_ADD, Command.SCREEN, 1);
+    private Command cmdAdd;
     
     private Vector items;
     boolean xData;
@@ -71,6 +71,7 @@ public class SearchResult
     public SearchResult(Display display, JabberDataBlock result) {
         super(display);
         
+        cmdAdd=new Command(SR.get(SR.MS_ADD), Command.SCREEN, 1);
         String service=result.getAttribute("from");
         
         setMainBarItem(new MainBar(2, null, service, false));
@@ -160,7 +161,7 @@ public class SearchResult
     
     
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_ADD; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_ADD); }
     public void touchLeftPressed(){ new ContactEdit(display, sd.roster, (Contact)getFocusedObject()); }
     public void touchRigthPressed(){ destroyView(); }
     
@@ -179,7 +180,7 @@ public class SearchResult
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_DISCO), null, menuCommands);
     } 
 //#endif
 

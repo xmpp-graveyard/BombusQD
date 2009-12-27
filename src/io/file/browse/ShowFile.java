@@ -52,8 +52,8 @@ public class ShowFile implements CommandListener{
     private Display display;
     private Displayable parentView;
     
-    private Command back = new Command(SR.MS_BACK, Command.BACK, 2);
-    private Command stop = new Command(SR.MS_STOP, Command.BACK, 3);
+    private Command back;
+    private Command stop;
     //private Command appliedRES = new Command("Yes", Command.BACK, 4);    
 
     private int len;
@@ -69,6 +69,10 @@ public class ShowFile implements CommandListener{
     
     public ShowFile(Display display, String fileName, int type,String trackname) {
         this.display=display;
+        
+        back = new Command(SR.get(SR.MS_BACK), Command.BACK, 2);
+        stop = new Command(SR.get(SR.MS_STOP), Command.BACK, 3);
+    
         parentView=display.getCurrent();
         cf=Config.getInstance();
   

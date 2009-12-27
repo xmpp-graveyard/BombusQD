@@ -46,7 +46,6 @@ import locale.*;
 import Client.Config;
 import Client.StaticData;
 import Client.Roster;
-import Client.Cashe;
 import Info.Version;
 import ui.GMenu;
 import ui.SplashScreen;
@@ -82,8 +81,6 @@ public class BombusQD extends MIDlet implements Runnable
     public final static StaticData sd = StaticData.getInstance();
     public final static Config cf = Config.getInstance();
     public final static ClipBoard clipboard=ClipBoard.getInstance();
-    
-    public final static Cashe cashe = Cashe.get();  
     public final static Commands commands=Commands.get();
 //#ifdef CONSOLE    
 //#     public final static DebugList debug = DebugList.get();
@@ -103,6 +100,7 @@ public class BombusQD extends MIDlet implements Runnable
 //#endif    
 
     public BombusQD() {
+        SR.changeLocale();
 	instance=this; 
         ct=ColorTheme.getInstance();
         s=SplashScreen.getInstance(display);
@@ -134,18 +132,20 @@ public class BombusQD extends MIDlet implements Runnable
 
     
     public void run(){ 
+
         //long s1 = System.currentTimeMillis();
         AccountSelect acc = new AccountSelect(display, null , true,-1);
 
+        if(sd.roster==null) sd.roster=new Roster(display);
         //s.setProgress(18);
         
         s.getKeys();
         width=s.width;
         height=s.height;
         
-        boolean selAccount=((cf.accountIndex<0) /*|| s.keypressed!=0*/ );
+        boolean selAccount=((cf.accountIndex<0));
           if (!selAccount && cf.autoLogin) {
-            sd.roster=new Roster(display);
+            //sd.roster=new Roster(display);
             Account.loadAccount(cf.autoLogin, cf.accountIndex,-1);
             display.setCurrent(sd.roster);
           }
@@ -171,8 +171,6 @@ public class BombusQD extends MIDlet implements Runnable
         } catch (Exception e) { }    
         
         //cf.path_skin="";
-        
-        SR.loaded();
         HistoryConfig.getInstance().loadFromStorage();
         FontClass.getInstance().Init(cf.drwd_fontname);  
         
@@ -181,9 +179,8 @@ public class BombusQD extends MIDlet implements Runnable
 //#         CustomLight.switchOn(lcf.light_control);
 //#endif        
         
-        if(sd.roster==null){
-          sd.roster=new Roster(display);
-        }
+        //if(sd.roster==null) sd.roster=new Roster(display);
+        
         HistoryStorage hs = new HistoryStorage(); 
 //#ifdef STATS
 //#         Stats.getInstance().loadFromStorage();

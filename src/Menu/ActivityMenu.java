@@ -80,7 +80,7 @@
 //#     };  
 //#             
 //#     public ActivityMenu(Display display, Displayable pView) {
-//#         super(locale.SR.MS_ACTIVITY, ActivityIcons.getInstance(),null);
+//#         super(locale.SR.get(locale.SR.MS_ACTIVITY), ActivityIcons.getInstance(),null);
 //# 
 //#         cf=Config.getInstance();
 //#         boolean connected=sd.roster.isLoggedIn();

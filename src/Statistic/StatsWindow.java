@@ -63,8 +63,8 @@
 //#     
 //#     Stats st=Stats.getInstance();
 //#     
-//#     public Command cmdClear = new Command(SR.MS_CLEAR, Command.SCREEN, 2);
-//#     public Command cmdSave = new Command(SR.MS_SAVE, Command.OK, 3);   
+//#     public Command cmdClear;
+//#     public Command cmdSave;   
 //#     
 //#     MultiLine item=null;
 //#     
@@ -72,26 +72,30 @@
 //#      * Creates a new instance of StatsWindow
 //#      */
 //#     public StatsWindow(Display display) {
-//#         super(display, midlet.BombusQD.sd.roster , SR.MS_STATS);
+//#         super(display, midlet.BombusQD.sd.roster , SR.get(SR.MS_STATS));
+//#         
+//#         cmdClear = new Command(SR.get(SR.MS_CLEAR), Command.SCREEN, 2);
+//#         cmdSave = new Command(SR.get(SR.MS_SAVE), Command.OK, 3);  
+//#         
 //#         this.display=display;
 //# 
-//#         item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#         item=new MultiLine(SR.get(SR.MS_ALL), StringUtils.getSizeString(st.getAllTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //# 
-//#         item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest()), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#         item=new MultiLine(SR.get(SR.MS_PREVIOUS_), StringUtils.getSizeString(st.getLatest()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#         
-//#         item=new MultiLine(SR.MS_CURRENT, StringUtils.getSizeString(st.getCurrentTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#         item=new MultiLine(SR.get(SR.MS_CURRENT), StringUtils.getSizeString(st.getCurrentTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#         
 //#         if (midlet.BombusQD.sd.roster.isLoggedIn()) {
-//#             item=new MultiLine(SR.MS_COMPRESSION, midlet.BombusQD.sd.roster.theStream.getStreamStats(), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#             item=new MultiLine(SR.get(SR.MS_COMPRESSION), midlet.BombusQD.sd.roster.theStream.getStreamStats(), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#         }
 //# 
 //#         if (midlet.BombusQD.sd.roster.isLoggedIn()) {
-//#             item=new MultiLine(SR.MS_CONNECTED, midlet.BombusQD.sd.roster.theStream.getConnectionData(), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#             item=new MultiLine(SR.get(SR.MS_CONNECTED), midlet.BombusQD.sd.roster.theStream.getConnectionData(), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#         }
 //#         
-//#         item=new MultiLine(SR.MS_CONN, Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#         item=new MultiLine(SR.get(SR.MS_CONN), Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#                 
-//#         item=new MultiLine(SR.MS_STARTED, midlet.BombusQD.sd.roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#         item=new MultiLine(SR.get(SR.MS_STARTED), midlet.BombusQD.sd.roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#  
 //#         commandState();
 //# 
@@ -154,7 +158,7 @@
 //#     
 //#     
 //#ifdef MENU_LISTENER
-//#     public String touchLeftCommand(){ return SR.MS_MENU; }
+//#     public String touchLeftCommand(){ return SR.get(SR.MS_MENU); }
 //#     
 //#     
 //#ifdef GRAPHICS_MENU       
@@ -174,7 +178,7 @@
 //#     }
 //#     public void showMenu() {
 //#         commandState();
-//#         new MyMenu(display, parentView, this, SR.MS_STATS, null, menuCommands);
+//#         new MyMenu(display, parentView, this, SR.get(SR.MS_STATS), null, menuCommands);
 //#    }  
 //#endif    
 //# 

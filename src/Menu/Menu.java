@@ -48,8 +48,8 @@ public class Menu extends VirtualList
 {
     Vector menuitems;
 //#ifndef MENU_LISTENER
-//#     Command cmdBack=new Command(SR.MS_BACK,Command.BACK,99);
-//#     Command cmdOk=new Command(SR.MS_OK,Command.OK,1);
+//#     Command cmdBack=new Command(SR.get(SR.MS_BACK),Command.BACK,99);
+//#     Command cmdOk=new Command(SR.get(SR.MS_OK),Command.OK,1);
 //#endif
     private ImageList il,alt;
 //#ifdef MENU_LISTENER
@@ -66,7 +66,7 @@ public class Menu extends VirtualList
 //#         addCommand(cmdOk);
 //#         setCommandListener(this);
 //#else
-        executeByNum=Config.getInstance().executeByNum;
+        executeByNum=midlet.BombusQD.cf.executeByNum;
 //#endif
     }
     
@@ -124,7 +124,7 @@ public class Menu extends VirtualList
 //#     }
 //#else
     
-    public String touchLeftCommand(){ return SR.MS_OK; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_OK); }
     
     public void touchLeftPressed(){
         eventOk();

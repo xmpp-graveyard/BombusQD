@@ -130,7 +130,7 @@ public class TransferTask
             } catch (Exception e) {
                 e.printStackTrace();
                 state=ERROR;
-                errMsg=SR.MS_CANT_OPEN_FILE;
+                errMsg=SR.get(SR.MS_CANT_OPEN_FILE);
                 showEvent=true;
             }
         } else {
@@ -171,7 +171,7 @@ public class TransferTask
         TransferDispatcher.getInstance().send(reject, true);
         
         state=ERROR;
-        errMsg=SR.MS_REJECTED;
+        errMsg=SR.get(SR.MS_REJECTED);
         showEvent=true;
     }
 

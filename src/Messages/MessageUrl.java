@@ -30,7 +30,6 @@ package Messages;
 import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.Display;
-import midlet.BombusQD;
 import Menu.Menu;
 
 /**
@@ -54,7 +53,7 @@ public class MessageUrl extends Menu{
     
     public void eventOk() {
         try {
-            BombusQD.getInstance().platformRequest((String)urlList.elementAt(cursor));
+            midlet.BombusQD.getInstance().platformRequest((String)urlList.elementAt(cursor));
         } catch (ConnectionNotFoundException ex) {
             ex.printStackTrace();
         }

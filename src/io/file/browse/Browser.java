@@ -70,13 +70,13 @@ public class Browser
  
     private Vector dir;
 
-    Command cmdOk=new Command(SR.MS_BROWSE, Command.OK, 1);
-    Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 2);
-    Command cmdView=new Command(SR.MS_VIEW, Command.SCREEN, 3);
-    Command cmdRoot=new Command(SR.MS_ROOT, Command.SCREEN, 4);
-    Command cmdDelete=new Command(SR.MS_DELETE, Command.SCREEN, 5);
-    Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 98);
-    Command cmdExit=new Command(SR.MS_CANCEL, Command.EXIT, 99);
+    Command cmdOk;
+    Command cmdSelect;
+    Command cmdView;
+    Command cmdRoot;
+    Command cmdDelete;
+    Command cmdCancel;
+    Command cmdExit;
     //Command cmdLoadPngSkin=new Command("Load Resource from File", Command.BACK, 100);    
 
     private String path;
@@ -87,7 +87,14 @@ public class Browser
     /** Creates a new instance of Browser */
     public Browser(String path, Display display, Displayable pView, BrowserListener browserListener, boolean getDirectory) {
         super(display);
-        
+
+        cmdOk=new Command(SR.get(SR.MS_BROWSE), Command.OK, 1);
+        cmdSelect=new Command(SR.get(SR.MS_SELECT), Command.SCREEN, 2);
+        cmdView=new Command(SR.get(SR.MS_VIEW), Command.SCREEN, 3);
+        cmdRoot=new Command(SR.get(SR.MS_ROOT), Command.SCREEN, 4);
+        cmdDelete=new Command(SR.get(SR.MS_DELETE), Command.SCREEN, 5);
+        cmdCancel=new Command(SR.get(SR.MS_BACK), Command.BACK, 98);
+        cmdExit=new Command(SR.get(SR.MS_CANCEL), Command.EXIT, 99);
         //new Browser(null, display, this, this, true);
         
         this.browserListener=browserListener;
@@ -345,7 +352,7 @@ public class Browser
 //#     }
 //#else
     public void showMenu() {
-        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_DISCO), null, menuCommands);
     }
 //#endif    
 

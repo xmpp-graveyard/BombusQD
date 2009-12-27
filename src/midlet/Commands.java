@@ -16,65 +16,132 @@ import locale.SR;
  */
 public class Commands {
     
-    public static Command cmdOk = new Command(SR.MS_OK, Command.OK, 1);
+    public static Command cmdOk ;
+    public static Command cmdCancel;
     
     //MessageList
-    public static Command cmdTranslate=new Command(SR.MS_TRANSLATE, Command.SCREEN /*Command.SCREEN*/,337);    
-    public static Command cmdSubscribe=new Command(SR.MS_SUBSCRIBE, Command.SCREEN, 1);
-    public static Command cmdUnsubscribed=new Command(SR.MS_DECLINE, Command.SCREEN, 2);
-    public static Command cmdMessage=new Command(SR.MS_NEW_MESSAGE,Command.SCREEN,3);
-    public static Command cmdResume=new Command(SR.MS_RESUME,Command.SCREEN,1);
-    public static Command cmdReply=new Command(SR.MS_REPLY,Command.SCREEN,4);
-    public static Command cmdQuote=new Command(SR.MS_QUOTE,Command.SCREEN,5);
+    public static Command cmdTranslate;   
+    public static Command cmdSubscribe;
+    public static Command cmdUnsubscribed;
+    public static Command cmdMessage;
+    public static Command cmdResume;
+    public static Command cmdReply;
+    public static Command cmdQuote;
 //#ifdef ARCHIVE
-    public static Command cmdArch=new Command(SR.MS_ADD_ARCHIVE,Command.SCREEN,6);
+    public static Command cmdArch;
 //#endif
-    public static Command cmdPurge=new Command(SR.MS_CLEAR_LIST, Command.SCREEN, 7);
-    public static Command cmdSelect=new Command(SR.MS_SELECT, Command.SCREEN, 8);
-    public static Command cmdActions=new Command(SR.MS_CONTACT,Command.SCREEN,9);
-    public static Command cmdActive=new Command(SR.MS_ACTIVE_CONTACTS,Command.SCREEN,10);
+    public static Command cmdPurge;
+    public static Command cmdSelect;
+    public static Command cmdActions;
+    public static Command cmdActive;
 //#if TEMPLATES
-//#     public static Command cmdTemplate=new Command(SR.MS_SAVE_TEMPLATE,Command.SCREEN,11);
+//#     public static Command cmdTemplate; //MS_SAVE_TEMPLATE),Command.SCREEN,11);
 //#endif
 //#ifdef FILE_IO
-    public static Command cmdSaveChat=new Command(SR.MS_SAVE_CHAT, Command.SCREEN, 12);
+    public static Command cmdSaveChat;
 //#endif
 
 //#ifdef CLIPBOARD    
-//#     public static Command cmdSendBuffer=new Command(SR.MS_SEND_BUFFER, Command.SCREEN, 14);
+//#     public static Command cmdSendBuffer;
 //#endif
-    public static Command cmdAddSearchQuery = new Command(SR.MS_ADD_SEARCH_QUERY, Command.SCREEN, 400);        
-    public static Command cmdClrPresences=new Command(SR.MS_DELETE_ALL_STATUSES, Command.SCREEN,403); 
+    public static Command cmdAddSearchQuery ; 
+    public static Command cmdClrPresences;
 //#if BREDOGENERATOR             
-//#     public static Command cmdAutoGenON=new Command(SR.MS_BREDO_ON,Command.SCREEN,87);    
-//#     public static Command cmdAutoGenOff=new Command(SR.MS_BREDO_OFF,Command.SCREEN,88);    
+//#     public static Command cmdAutoGenON; //MS_BREDO_ON),Command.SCREEN,87);    
+//#     public static Command cmdAutoGenOff; //MS_BREDO_OFF),Command.SCREEN,88);    
 //#endif       
-    public static Command cmdMyService=new Command(SR.MS_SERVICE, Command.SCREEN, 31);
+    public static Command cmdMyService;
     
 //#ifdef CLIPBOARD
-//#     public static Command cmdCopy = new Command(SR.MS_COPY, Command.SCREEN, 20);
-//#     public static Command cmdCopyPlus = new Command("+ "+SR.MS_COPY, Command.SCREEN, 30);
+//#     public static Command cmdCopy ;
+//#     public static Command cmdCopyPlus ;
 //#endif    
-    public static Command cmdxmlSkin = new Command(SR.MS_USE_COLOR_SCHEME, Command.SCREEN, 40);
-    public static Command cmdUrl = new Command(SR.MS_GOTO_URL, Command.SCREEN, 80);
-    public static Command cmdBack = new Command(SR.MS_BACK, Command.BACK, 99);    
-  
-    
-    public static Command cmdHistory = new Command(SR.MS_HISTORY_OPTIONS, Command.SCREEN, 101);
-    public static Command cmdHistoryRMS = new Command("Show RMS History", Command.SCREEN, 102);
-    public static Command cmdHistoryFS = new Command("Show FS History", Command.SCREEN, 103);
-    public static Command cmdHistorySERVER = new Command("Show Server History", Command.SCREEN, 104);
+    public static Command cmdxmlSkin ;
+    public static Command cmdUrl ;
+    public static Command cmdBack ;
+
+    public static Command cmdHistory ;
+    public static Command cmdHistoryRMS ;
+    public static Command cmdHistoryFS ;
+    public static Command cmdHistorySERVER ;
 //#ifdef JUICK.COM   
 //#     /*
-//#     public static Command cmdJuickLastPopular = new Command("", Command.SCREEN, 101);//#
-//#     public static Command cmdJuickLastMsgs = new Command("", Command.SCREEN, 102);//#+
-//#     public static Command cmdJuickSubscribe = new Command("", Command.SCREEN, 103);//S #
-//#     public static Command cmdJuickUnsubscribe = new Command("", Command.SCREEN, 104);//U #
-//#     public static Command cmdJuickSendPM = new Command("", Command.SCREEN, 105);//PM @nick msg
-//#     public static Command cmdJuickUsersMsgs = new Command("", Command.SCREEN, 106); //@nick+
+//#     public static Command cmdJuickLastPopular ; //"", Command.SCREEN, 101);//#
+//#     public static Command cmdJuickLastMsgs ; //"", Command.SCREEN, 102);//#+
+//#     public static Command cmdJuickSubscribe ; //"", Command.SCREEN, 103);//S #
+//#     public static Command cmdJuickUnsubscribe ; //"", Command.SCREEN, 104);//U #
+//#     public static Command cmdJuickSendPM ; //"", Command.SCREEN, 105);//PM @nick msg
+//#     public static Command cmdJuickUsersMsgs ; //"", Command.SCREEN, 106); //@nick+
 //#     */    
 //#endif 
+    
+    
+    
 
+    
+    public static void initCommands(){
+              cmdOk = new Command(SR.get(SR.MS_OK), Command.OK, 1);
+              cmdCancel = new Command(SR.get(SR.MS_BACK),Command.BACK, 2);
+    
+              //MessageList
+              cmdTranslate=new Command(SR.get(SR.MS_TRANSLATE), Command.SCREEN /*Command.SCREEN*/,337);    
+              cmdSubscribe=new Command(SR.get(SR.MS_SUBSCRIBE), Command.SCREEN, 1);
+              cmdUnsubscribed=new Command(SR.get(SR.MS_DECLINE), Command.SCREEN, 2);
+              cmdMessage=new Command(SR.get(SR.MS_NEW_MESSAGE),Command.SCREEN,3);
+              cmdResume=new Command(SR.get(SR.MS_RESUME),Command.SCREEN,1);
+              cmdReply=new Command(SR.get(SR.MS_REPLY),Command.SCREEN,4);
+              cmdQuote=new Command(SR.get(SR.MS_QUOTE),Command.SCREEN,5);
+//#ifdef ARCHIVE
+              cmdArch=new Command(SR.get(SR.MS_ADD_ARCHIVE),Command.SCREEN,6);
+//#endif
+              cmdPurge=new Command(SR.get(SR.MS_CLEAR_LIST), Command.SCREEN, 7);
+              cmdSelect=new Command(SR.get(SR.MS_SELECT), Command.SCREEN, 8);
+              cmdActions=new Command(SR.get(SR.MS_CONTACT),Command.SCREEN,9);
+              cmdActive=new Command(SR.get(SR.MS_ACTIVE_CONTACTS),Command.SCREEN,10);
+//#if TEMPLATES
+//#               cmdTemplate=new Command(SR.get(SR.MS_SAVE_TEMPLATE),Command.SCREEN,11);
+//#endif
+//#ifdef FILE_IO
+              cmdSaveChat=new Command(SR.get(SR.MS_SAVE_CHAT), Command.SCREEN, 12);
+//#endif
+
+//#ifdef CLIPBOARD    
+//#               cmdSendBuffer=new Command(SR.get(SR.MS_SEND_BUFFER), Command.SCREEN, 14);
+//#endif
+              cmdAddSearchQuery = new Command(SR.get(SR.MS_ADD_SEARCH_QUERY), Command.SCREEN, 400);        
+              cmdClrPresences=new Command(SR.get(SR.MS_DELETE_ALL_STATUSES), Command.SCREEN,403); 
+//#if BREDOGENERATOR             
+//#               cmdAutoGenON=new Command(SR.get(SR.MS_BREDO_ON),Command.SCREEN,87);    
+//#               cmdAutoGenOff=new Command(SR.get(SR.MS_BREDO_OFF),Command.SCREEN,88);    
+//#endif       
+              cmdMyService=new Command(SR.get(SR.MS_SERVICE), Command.SCREEN, 31);
+    
+//#ifdef CLIPBOARD
+//#               cmdCopy = new Command(SR.get(SR.MS_COPY), Command.SCREEN, 20);
+//#               cmdCopyPlus = new Command("+ "+SR.get(SR.MS_COPY), Command.SCREEN, 30);
+//#endif    
+              cmdxmlSkin = new Command(SR.get(SR.MS_USE_COLOR_SCHEME), Command.SCREEN, 40);
+              cmdUrl = new Command(SR.get(SR.MS_GOTO_URL), Command.SCREEN, 80);
+              cmdBack = new Command(SR.get(SR.MS_BACK), Command.BACK, 99);    
+  
+    
+              cmdHistory = new Command(SR.get(SR.MS_HISTORY_OPTIONS), Command.SCREEN, 101);
+              cmdHistoryRMS = new Command("Show RMS History", Command.SCREEN, 102);
+              cmdHistoryFS = new Command("Show FS History", Command.SCREEN, 103);
+              cmdHistorySERVER = new Command("Show Server History", Command.SCREEN, 104);
+//#ifdef JUICK.COM   
+//#     /*
+//#               cmdJuickLastPopular = new Command("", Command.SCREEN, 101);//#
+//#               cmdJuickLastMsgs = new Command("", Command.SCREEN, 102);//#+
+//#               cmdJuickSubscribe = new Command("", Command.SCREEN, 103);//S #
+//#               cmdJuickUnsubscribe = new Command("", Command.SCREEN, 104);//U #
+//#               cmdJuickSendPM = new Command("", Command.SCREEN, 105);//PM @nick msg
+//#               cmdJuickUsersMsgs = new Command("", Command.SCREEN, 106); //@nick+
+//#     */    
+//#endif 
+          setImages();
+    }
+    
     private static void setImages(){
         cmdOk.setImg(0x60);
                 
@@ -105,14 +172,15 @@ public class Commands {
         cmdHistoryRMS.setImg(0x64);
         cmdHistoryFS.setImg(0x64);
         cmdHistorySERVER.setImg(0x64);
-
     }
         
-    private Commands() { }
+    private Commands() {
+    }
+    
     public static Commands get(){
         if (commands==null) {
             commands=new Commands();
-            setImages();
+            //initCommands();
         }
         return commands;
     }    

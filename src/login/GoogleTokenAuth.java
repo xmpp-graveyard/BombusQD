@@ -80,7 +80,7 @@ public class GoogleTokenAuth {
             
             String sid = readLine(is);
             if(!sid.startsWith("SID=")) {
-                throw new SecurityException(SR.MS_LOGIN_FAILED);
+                throw new SecurityException(SR.get(SR.MS_LOGIN_FAILED));
             }
             
             String lsid = readLine(is);

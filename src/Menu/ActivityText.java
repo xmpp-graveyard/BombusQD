@@ -63,12 +63,12 @@
 //#         }
 //#         
 //#         if(cat!=null && descr!=null){
-//#           text=new TextInput(display, locale.SR.MS_MESSAGE, "", "text", TextField.ANY);
+//#           text=new TextInput(display, locale.SR.get(locale.SR.MS_MESSAGE), "", "text", TextField.ANY);
 //#           itemsList.addElement(text);            
 //#         }
 //#         
 //#         if(cat!=null && descr==null){
-//#            itemsList.addElement(new SimpleString(locale.SR.MS_PUBLISH+"?", true)); 
+//#            itemsList.addElement(new SimpleString(locale.SR.get(locale.SR.MS_PUBLISH)+"?", true)); 
 //#            midlet.BombusQD.cf.actDescr=null;
 //#         }
 //#                 

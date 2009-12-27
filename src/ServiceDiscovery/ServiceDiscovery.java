@@ -82,14 +82,14 @@ public class ServiceDiscovery
     private final static String strCmds="Execute";
     private final int AD_HOC_INDEX=17;
     
-    private Command cmdOk=new Command(SR.MS_BROWSE, Command.SCREEN, 1);
-    private Command cmdRfsh=new Command(SR.MS_REFRESH, Command.SCREEN, 2);
-    private Command cmdFeatures=new Command(SR.MS_FEATURES, Command.SCREEN, 3);
-    private Command cmdSrv=new Command(SR.MS_SERVER, Command.SCREEN, 10);
-    //private Command cmdAdd=new Command(SR.MS_ADD_TO_ROSTER, Command.SCREEN, 11); //FS#464 => this string is commented in SR.java'
-    private Command cmdBack=new Command(SR.MS_BACK, Command.BACK, 98);
-    private Command cmdCancel=new Command(SR.MS_CANCEL, Command.EXIT, 99);
-    private Command cmdShowStatistics=new Command(SR.MS_STATICSTICS, Command.SCREEN, 4);
+    //private Command cmdAdd=new Command(SR.get(SR.MS_ADD_TO_ROSTER), Command.SCREEN, 11); //FS#464 => this string is commented in SR.get(SR.java'
+    private Command cmdOk;
+    private Command cmdRfsh;
+    private Command cmdFeatures;
+    private Command cmdSrv;
+    private Command cmdBack;
+    private Command cmdCancel;
+    private Command cmdShowStatistics;
     
     private StaticData sd=StaticData.getInstance();
     
@@ -112,6 +112,14 @@ public class ServiceDiscovery
     public ServiceDiscovery(Display display, String service, String node, boolean search) {
         super(display);
 
+        cmdOk=new Command(SR.get(SR.MS_BROWSE), Command.SCREEN, 1);
+        cmdRfsh=new Command(SR.get(SR.MS_REFRESH), Command.SCREEN, 2);
+        cmdFeatures=new Command(SR.get(SR.MS_FEATURES), Command.SCREEN, 3);
+        cmdSrv=new Command(SR.get(SR.MS_SERVER), Command.SCREEN, 10);
+        cmdBack=new Command(SR.get(SR.MS_BACK), Command.BACK, 98);
+        cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.EXIT, 99);
+        cmdShowStatistics=new Command(SR.get(SR.MS_STATICSTICS), Command.SCREEN, 4);
+    
         setMainBarItem(new MainBar(3, null, null, false));
         getMainBarItem().addRAlign();
         getMainBarItem().addElement(null);
@@ -186,7 +194,7 @@ public class ServiceDiscovery
     
     private void mainbarUpdate(){
         getMainBarItem().setElementAt(new Integer(discoIcon), 0);
-        getMainBarItem().setElementAt((service==null)?SR.MS_RECENT:service, 2);
+        getMainBarItem().setElementAt((service==null)?SR.get(SR.MS_RECENT):service, 2);
         getMainBarItem().setElementAt(sd.roster.getEventIcon(), 4);
 	
 	int size=0;
@@ -315,11 +323,11 @@ public class ServiceDiscovery
                         cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
                     }
                     if (category.equals("conference")) {
-                        cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.MS_JOIN_CONFERENCE));
+                        cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.get(SR.MS_JOIN_CONFERENCE)));
                         if (service.indexOf('@')<=0) {
                             loadItems=false;
                             showPartialResults=true;
-                            cmds.addElement(new DiscoCommand(RosterIcons.ICON_ROOMLIST, SR.MS_LOAD_ROOMLIST));
+                            cmds.addElement(new DiscoCommand(RosterIcons.ICON_ROOMLIST, SR.get(SR.MS_LOAD_ROOMLIST)));
                         }
                     }
                  }
@@ -329,8 +337,8 @@ public class ServiceDiscovery
                         String var=i.getAttribute("var");
                         features.addElement(var);
                         //if (var.equals(NS_MUC)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, strJoin)); }
-                        if (var.equals(NS_SRCH)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_SEARCH_INDEX, SR.MS_SEARCH)); }
-                        if (var.equals(NS_REGS)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_REGISTER_INDEX, SR.MS_REGISTER)); }
+                        if (var.equals(NS_SRCH)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_SEARCH_INDEX, SR.get(SR.MS_SEARCH))); }
+                        if (var.equals(NS_REGS)) { cmds.addElement(new DiscoCommand(RosterIcons.ICON_REGISTER_INDEX, SR.get(SR.MS_REGISTER))); }
                         if (var.equals(NS_GATE)) { showPartialResults=true; }
                         //if (var.equals(NODE_CMDS)) { cmds.addElement(new DiscoCommand(AD_HOC_INDEX,strCmds)); }
                     }
@@ -353,12 +361,12 @@ public class ServiceDiscovery
             discoIcon=0;
             new DiscoForm(display, data, stream, "discoRSearch", "query");
         } else if (id.startsWith("discoR")) {
-            String text=SR.MS_DONE;
+            String text=SR.get(SR.MS_DONE);
             String mainbar=data.getTypeAttribute();
             if (mainbar.equals("error")) {
                 text=XmppError.findInStanza(data).toString();
             }
-            if (text.equals(SR.MS_DONE) && id.endsWith("Search") ) {
+            if (text.equals(SR.get(SR.MS_DONE)) && id.endsWith("Search") ) {
                 new SearchResult(display, data);
             } else {
                 new AlertBox(mainbar, text, display, null) {
@@ -542,12 +550,12 @@ public class ServiceDiscovery
 //#     }
 //#else
     public void showMenu() {
-        new MyMenu(display, parentView, this, SR.MS_DISCO, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_DISCO), null, menuCommands);
     }   
 //#endif
 
-    public String touchLeftCommand(){ return (Config.getInstance().oldSE)?SR.MS_BACK:SR.MS_MENU; }
-    public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.MS_MENU:SR.MS_BACK; }    
+    public String touchLeftCommand(){ return (Config.getInstance().oldSE)?SR.get(SR.MS_BACK):SR.get(SR.MS_MENU); }
+    public String touchRightCommand(){ return (Config.getInstance().oldSE)?SR.get(SR.MS_MENU):SR.get(SR.MS_BACK); }    
     
 //#endif
 

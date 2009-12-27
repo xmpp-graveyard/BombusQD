@@ -61,16 +61,16 @@ public class TransferImage
     
     /** Creates a new instance of TransferImage */
     public TransferImage(final Display display, Displayable pView, String recipientJid) {
-        super(display, pView, SR.MS_SEND_PHOTO);
+        super(display, pView, SR.get(SR.MS_SEND_PHOTO));
         this.display=display;
         this.to=recipientJid;
 
         itemsList.addElement(new SimpleString(recipientJid, false));
         
-        shot=new LinkString(SR.MS_CAMERASHOT) { public void doAction() { initCamera(); } };
+        shot=new LinkString(SR.get(SR.MS_CAMERASHOT)) { public void doAction() { initCamera(); } };
         itemsList.addElement(shot);
         
-        description = new TextInput(display, SR.MS_DESCRIPTION, null, null, TextField.ANY);
+        description = new TextInput(display, SR.get(SR.MS_DESCRIPTION), null, null, TextField.ANY);
         itemsList.addElement(description);
         
         moveCursorTo(1);

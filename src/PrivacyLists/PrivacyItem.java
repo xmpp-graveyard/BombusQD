@@ -41,7 +41,7 @@ public class PrivacyItem extends IconTextElement {
 //#endif
     
     public final static String types[]={"jid", "group", "subscription", "ANY"};
-    public final static String types_[]={"jid", SR.MS_GROUP, SR.MS_SUBSCRIPTION, SR.MS_PRIVACY_ANY};
+    public final static String types_[]={"jid", SR.get(SR.MS_GROUP), SR.get(SR.MS_SUBSCRIPTION), SR.get(SR.MS_PRIVACY_ANY)};
     
     public final static int ITEM_JID=0;
     public final static int ITEM_GROUP=1;
@@ -49,13 +49,13 @@ public class PrivacyItem extends IconTextElement {
     public final static int ITEM_ANY=3;
 
     public final static String actions[]={"allow", "deny"};
-    public final static String actions_[]={SR.MS_PRIVACY_ALLOW, SR.MS_PRIVACY_DENY};
+    public final static String actions_[]={SR.get(SR.MS_PRIVACY_ALLOW), SR.get(SR.MS_PRIVACY_DENY)};
     
     public final static int ITEM_ALLOW=0;
     public final static int ITEM_BLOCK=1;
 
     public final static String stanzas[]={"message", "presence-in", "presence-out", "iq"};
-    public final static String stanzas_[]={SR.MS_MESSAGES, SR.MS_PRIVACY_PRESENCE_IN, SR.MS_PRIVACY_PRESENCE_OUT , SR.MS_PRIVACY_IQ};   
+    public final static String stanzas_[]={SR.get(SR.MS_MESSAGES), SR.get(SR.MS_PRIVACY_PRESENCE_IN), SR.get(SR.MS_PRIVACY_PRESENCE_OUT) , SR.get(SR.MS_PRIVACY_IQ)};   
     
     public final static int STANZA_MSG=0;
     public final static int STANZA_PRESENCE_IN=1;
@@ -63,7 +63,7 @@ public class PrivacyItem extends IconTextElement {
     public final static int STANZA_IQ=3;
     
     public final static String subscrs[]={"none", "from", "to", "both"};
-    public final static String subscrs_[]={SR.MS_SUBSCR_NONE, SR.MS_SUBSCR_FROM, SR.MS_SUBSCR_TO, SR.MS_SUBSCR_BOTH};
+    public final static String subscrs_[]={SR.get(SR.MS_SUBSCR_NONE), SR.get(SR.MS_SUBSCR_FROM), SR.get(SR.MS_SUBSCR_TO), SR.get(SR.MS_SUBSCR_BOTH)};
     
     int type;    //jid|group|subscription|ANY
     String value=new String();
@@ -112,7 +112,7 @@ public class PrivacyItem extends IconTextElement {
     public static PrivacyItem itemIgnoreList(){
         PrivacyItem item=new PrivacyItem();
         item.type=ITEM_GROUP;
-        item.value=SR.MS_IGNORE_LIST;
+        item.value=SR.get(SR.MS_IGNORE_LIST);
         item.iqStz=true;
         item.presenceOutStz=true;
         return item;
@@ -138,20 +138,20 @@ public class PrivacyItem extends IconTextElement {
     public String getTipString() {
         StringBuffer tip=new StringBuffer(0);
 
-        tip.append(SR.MS_PRIVACY_IF+" ").append(types_[type]);
+        tip.append(SR.get(SR.MS_PRIVACY_IF)+" ").append(types_[type]);
         if (type!=ITEM_ANY) {
             tip.append("==");
-            if(value.indexOf("both")>-1) tip.append(SR.MS_SUBSCR_BOTH);
-            else if(value.indexOf("from")>-1) tip.append(SR.MS_SUBSCR_FROM);
-            else if(value.indexOf("to")>-1) tip.append(SR.MS_SUBSCR_TO);
-            else if(value.indexOf("none")>-1) tip.append(SR.MS_SUBSCR_NONE);
+            if(value.indexOf("both")>-1) tip.append(SR.get(SR.MS_SUBSCR_BOTH));
+            else if(value.indexOf("from")>-1) tip.append(SR.get(SR.MS_SUBSCR_FROM));
+            else if(value.indexOf("to")>-1) tip.append(SR.get(SR.MS_SUBSCR_TO));
+            else if(value.indexOf("none")>-1) tip.append(SR.get(SR.MS_SUBSCR_NONE));
             else tip.append(value);
         }
         
         tip.append("\n"+actions_[action]);
         tip.append(": ");         
         if (messageStz && presenceInStz && presenceOutStz && iqStz) {
-            tip.append("\n"+SR.MS_PRIVACY_ALL_STANZAS); 
+            tip.append("\n"+SR.get(SR.MS_PRIVACY_ALL_STANZAS)); 
         } else if (!messageStz && !presenceInStz && !presenceOutStz && !iqStz) { 
             tip.append("-");
         } else {

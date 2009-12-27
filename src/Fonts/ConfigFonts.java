@@ -61,50 +61,50 @@ public class ConfigFonts
     
     /** Creates a new instance of ConfigFonts */
     public ConfigFonts(Display display, Displayable pView) {
-        super(display, pView, SR.MS_FONTS_OPTIONS);
+        super(display, pView, SR.get(SR.MS_FONTS_OPTIONS));
         this.display=display;
         
         cf=Config.getInstance();
-        itemsList.addElement(new SimpleString("(!)"+SR.MS_RESTART_APP, true));
+        itemsList.addElement(new SimpleString("(!)"+SR.get(SR.MS_RESTART_APP), true));
 
-        font1=new DropChoiceBox(display, SR.MS_ROSTER_FONT);
-        font1.append(SR.MS_FONTSIZE_NORMAL);
-        font1.append(SR.MS_FONTSIZE_SMALL);
-        font1.append(SR.MS_FONTSIZE_LARGE);
+        font1=new DropChoiceBox(display, SR.get(SR.MS_ROSTER_FONT));
+        font1.append(SR.get(SR.MS_FONTSIZE_NORMAL));
+        font1.append(SR.get(SR.MS_FONTSIZE_SMALL));
+        font1.append(SR.get(SR.MS_FONTSIZE_LARGE));
         font1.setSelectedIndex(cf.rosterFont/8);
         itemsList.addElement(font1);
 
-        font2=new DropChoiceBox(display, SR.MS_MESSAGE_FONT);
-        font2.append(SR.MS_FONTSIZE_NORMAL);
-        font2.append(SR.MS_FONTSIZE_SMALL);
-        font2.append(SR.MS_FONTSIZE_LARGE);
+        font2=new DropChoiceBox(display, SR.get(SR.MS_MESSAGE_FONT));
+        font2.append(SR.get(SR.MS_FONTSIZE_NORMAL));
+        font2.append(SR.get(SR.MS_FONTSIZE_SMALL));
+        font2.append(SR.get(SR.MS_FONTSIZE_LARGE));
         font2.setSelectedIndex(cf.msgFont/8);
         itemsList.addElement(font2);
  
-        font3=new DropChoiceBox(display, SR.MS_BAR_FONT);
-        font3.append(SR.MS_FONTSIZE_NORMAL);
-        font3.append(SR.MS_FONTSIZE_SMALL);
-        font3.append(SR.MS_FONTSIZE_LARGE);
+        font3=new DropChoiceBox(display, SR.get(SR.MS_BAR_FONT));
+        font3.append(SR.get(SR.MS_FONTSIZE_NORMAL));
+        font3.append(SR.get(SR.MS_FONTSIZE_SMALL));
+        font3.append(SR.get(SR.MS_FONTSIZE_LARGE));
         font3.setSelectedIndex(cf.barFont/8);
         itemsList.addElement(font3);
         
-        font4=new DropChoiceBox(display, SR.MS_POPUP_FONT);
-        font4.append(SR.MS_FONTSIZE_NORMAL);
-        font4.append(SR.MS_FONTSIZE_SMALL);
-        font4.append(SR.MS_FONTSIZE_LARGE);
+        font4=new DropChoiceBox(display, SR.get(SR.MS_POPUP_FONT));
+        font4.append(SR.get(SR.MS_FONTSIZE_NORMAL));
+        font4.append(SR.get(SR.MS_FONTSIZE_SMALL));
+        font4.append(SR.get(SR.MS_FONTSIZE_LARGE));
         font4.setSelectedIndex(cf.baloonFont/8);
         itemsList.addElement(font4);
         
-        cursivUse = new CheckBox(SR.MS_Italic, cf.cursivUse); itemsList.addElement(cursivUse); 
+        cursivUse = new CheckBox(SR.get(SR.MS_Italic), cf.cursivUse); itemsList.addElement(cursivUse); 
          /*
-        item=new MultiLine(SR.MS_DRAWED_FONT+":", (cf.use_drawed_font)?cf.drwd_fontname:"<..>", super.superWidth); 
+        item=new MultiLine(SR.get(SR.MS_DRAWED_FONT)+":", (cf.use_drawed_font)?cf.drwd_fontname:"<..>", super.superWidth); 
         item.selectable=true;
         itemsList.addElement(item);    
        
         try {
             files=new StringLoader().stringLoader("/images/fonts/fonts.txt",2);
             if (files[0].size()>0) {
-                drawedfonts=new DropChoiceBox(display, SR.MS_SELECT);
+                drawedfonts=new DropChoiceBox(display, SR.get(SR.MS_SELECT));
                 for (int i=0; i<files[0].size(); i++) {
                     drawedfonts.append((String)files[1].elementAt(i));
                 }

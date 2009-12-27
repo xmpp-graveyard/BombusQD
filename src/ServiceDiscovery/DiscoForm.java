@@ -67,8 +67,8 @@ public class DiscoForm extends DefForm {
     
     private boolean xData;
     
-    private Command cmdOk=new Command(SR.MS_SEND, Command.OK /*Command.SCREEN*/, 1);
-    private Command cmdCancel=new Command(SR.MS_BACK, Command.BACK, 99);
+    private Command cmdOk;
+    private Command cmdCancel;
     
     private String id;
     
@@ -80,6 +80,10 @@ public class DiscoForm extends DefForm {
     /** Creates a new instance of RegForm */
     public DiscoForm(Display display,JabberDataBlock regform, JabberStream stream, String resultId, String childName) {
         super(display, StaticData.getInstance().roster , "Update");
+        
+        cmdOk=new Command(SR.get(SR.MS_SEND), Command.OK /*Command.SCREEN*/, 1);
+        cmdCancel=new Command(SR.get(SR.MS_BACK), Command.BACK, 99);
+        
         this.display=display;
         service=regform.getAttribute("from");
         this.childName=childName;
@@ -205,7 +209,7 @@ public class DiscoForm extends DefForm {
     }    
 
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_MENU); }
 
     public void touchLeftPressed(){
         showGraphicsMenu();

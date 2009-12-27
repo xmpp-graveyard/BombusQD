@@ -67,7 +67,7 @@ public class TransferAcceptFile
 
     /** Creates a new instance of TransferAcceptFile */
     public TransferAcceptFile(Display display, Displayable pView, TransferTask transferTask) {
-        super(display, pView, SR.MS_ACCEPT_FILE);
+        super(display, pView, SR.get(SR.MS_ACCEPT_FILE));
         
         this.display=display;
         
@@ -90,19 +90,19 @@ public class TransferAcceptFile
             }
         }
         
-        fileName=new TextInput(display, SR.MS_FILE, name, "", TextField.ANY);
+        fileName=new TextInput(display, SR.get(SR.MS_FILE), name, "", TextField.ANY);
         itemsList.addElement(fileName);
-        itemsList.addElement(new SimpleString(SR.MS_FILE_SIZE+" "+String.valueOf(t.fileSize)+" bytes", true));
+        itemsList.addElement(new SimpleString(SR.get(SR.MS_FILE_SIZE)+" "+String.valueOf(t.fileSize)+" bytes", true));
 
-        path=new TextInput(display, SR.MS_SAVE_TO, t.filePath, "recvPath", TextField.ANY);
+        path=new TextInput(display, SR.get(SR.MS_SAVE_TO), t.filePath, "recvPath", TextField.ANY);
         itemsList.addElement(path);
         
-        selectFile=new LinkString(SR.MS_PATH) { public void doAction() { initBrowser(); } };
+        selectFile=new LinkString(SR.get(SR.MS_PATH)) { public void doAction() { initBrowser(); } };
         itemsList.addElement(selectFile);
                 
-        itemsList.addElement(new MultiLine(SR.MS_SENDER, t.jid, super.superWidth));
+        itemsList.addElement(new MultiLine(SR.get(SR.MS_SENDER), t.jid, super.superWidth));
 
-        itemsList.addElement(new MultiLine(SR.MS_DESCRIPTION, t.description, super.superWidth));
+        itemsList.addElement(new MultiLine(SR.get(SR.MS_DESCRIPTION), t.description, super.superWidth));
 
         attachDisplay(display);
         this.parentView=pView;

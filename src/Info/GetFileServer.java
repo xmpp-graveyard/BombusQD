@@ -104,7 +104,7 @@ public class GetFileServer
             focusedItem(0);
         } catch (Exception e) {}
         
-	MainBar mainbar=new MainBar(SR.MS_CHECK_UPDATE);
+	MainBar mainbar=new MainBar(SR.get(SR.MS_CHECK_UPDATE));
         setMainBarItem(mainbar);
         mainbar.addElement(null);
         mainbar.addRAlign();
@@ -149,7 +149,7 @@ public class GetFileServer
             if(is!= null) is.close();is=null;
             if(c != null) c.close();c=null;
         } catch (Exception e) {
-            news.addElement(new Msg(Constants.MESSAGE_TYPE_IN, null, null, SR.MS_ERROR));
+            news.addElement(new Msg(Constants.MESSAGE_TYPE_IN, null, null, SR.get(SR.MS_ERROR)));
         } 
         wait=false;
         rePaint();
@@ -205,7 +205,7 @@ public class GetFileServer
     }
     
 //#ifdef MENU_LISTENER
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_MENU); }
     
 //#ifdef GRAPHICS_MENU  
 //#     public void touchLeftPressed(){
@@ -226,7 +226,7 @@ public class GetFileServer
     
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_HISTORY_OPTIONS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_HISTORY_OPTIONS), null, menuCommands);
    }  
 //#endif      
     

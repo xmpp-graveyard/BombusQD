@@ -47,8 +47,8 @@ import locale.SR;
  */
 public class CameraImage implements CommandListener{
     
-    private Command cmdShot=new Command (SR.MS_CAMERASHOT, Command.OK, 1);
-    private Command cmdCancel=new Command (SR.MS_CANCEL, Command.BACK, 99);
+    private Command cmdShot;
+    private Command cmdCancel;
     
     private Display display;
     private Displayable parentView;
@@ -64,6 +64,10 @@ public class CameraImage implements CommandListener{
     /** Creates a new instance of CameraImage */
     public CameraImage(Display display, CameraImageListener imgListener/*, String sizes*/) {
         this.display=display;
+        
+        cmdShot=new Command (SR.get(SR.MS_CAMERASHOT), Command.OK, 1);
+        cmdCancel=new Command (SR.get(SR.MS_CANCEL), Command.BACK, 99);
+        
         parentView=display.getCurrent();
         this.imgListener=imgListener;
 

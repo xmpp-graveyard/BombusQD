@@ -57,7 +57,7 @@
 //#         
 //#         XmppError e=XmppError.findInStanza(data);
 //#         
-//#         new AlertBox(SR.MS_ERROR_, SR.MS_PEP_NOT_SUPPORTED+"("+e.toString()+")", display, null) {
+//#         new AlertBox(SR.get(SR.MS_ERROR_), SR.get(SR.MS_PEP_NOT_SUPPORTED)+"("+e.toString()+")", display, null) {
 //#             public void yes() { }
 //#             public void no() { }
 //#         };

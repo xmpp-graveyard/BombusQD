@@ -74,7 +74,7 @@ public class PrivacyForm
 
     /** Creates a new instance of PrivacyForm */
     public PrivacyForm(Display display, Displayable pView, PrivacyItem item, PrivacyList plist) {
-        super(display, pView, SR.MS_PRIVACY_RULE);
+        super(display, pView, SR.get(SR.MS_PRIVACY_RULE));
         this.display=display;
         
         this.item=item;
@@ -96,7 +96,7 @@ public class PrivacyForm
         itemsList=null;
         itemsList=new Vector(0);
 
-        choiceAction=new DropChoiceBox(display, SR.MS_PRIVACY_ACTION);
+        choiceAction=new DropChoiceBox(display, SR.get(SR.MS_PRIVACY_ACTION));
         len = PrivacyItem.actions.length;
         for(int i=0; i<len; i++){
             choiceAction.append(PrivacyItem.actions_[i]);
@@ -114,7 +114,7 @@ public class PrivacyForm
         itemsList.addElement(presenceOutStz);
         itemsList.addElement(iqStz);
         
-        choiceType=new DropChoiceBox(display, SR.MS_PRIVACY_TYPE);
+        choiceType=new DropChoiceBox(display, SR.get(SR.MS_PRIVACY_TYPE));
         len = PrivacyItem.types.length;
         for(int i=0; i<len; i++){
             choiceType.append(PrivacyItem.types_[i]);
@@ -124,7 +124,7 @@ public class PrivacyForm
         newSubscrPos=itemsList.indexOf(choiceType)+1;
         
        
-        choiceSubscr=new DropChoiceBox(display, SR.MS_SUBSCRIPTION);
+        choiceSubscr=new DropChoiceBox(display, SR.get(SR.MS_SUBSCRIPTION));
           len = PrivacyItem.subscrs.length;
           for(int i=0; i<len; i++) choiceSubscr.append(PrivacyItem.subscrs_[i]);
           
@@ -137,7 +137,7 @@ public class PrivacyForm
          }
         }
 
-        textValue=new TextInput(display, SR.MS_VALUE, tValue, "", TextField.ANY);//64, TextField.ANY);
+        textValue=new TextInput(display, SR.get(SR.MS_VALUE), tValue, "", TextField.ANY);//64, TextField.ANY);
         try{
          switch (selectedAction) {
             case 0: //jid
@@ -159,7 +159,7 @@ public class PrivacyForm
     
     protected void beginPaint(){
         if (choiceType!=null) {
-            if (choiceType.toString()==SR.MS_SUBSCRIPTION) {
+            if (choiceType.toString()==SR.get(SR.MS_SUBSCRIPTION)) {
                 if (subscrField==false) {
                     itemsList.insertElementAt(choiceSubscr, newSubscrPos);
                     itemsList.removeElement(textValue);

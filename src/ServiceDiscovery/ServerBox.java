@@ -49,11 +49,11 @@ public class ServerBox
      * Creates a new instance of ServerBox
      */
     public ServerBox(Display display, Displayable pView, String service, ServiceDiscovery sd) {
-        super(display, pView, SR.MS_DISCO);
+        super(display, pView, SR.get(SR.MS_DISCO));
         
         this.display=display;
         this.sd=sd;
-        serverName=new TextInput(display, SR.MS_ADRESS, service, "disco", TextField.ANY);
+        serverName=new TextInput(display, SR.get(SR.MS_ADRESS), service, "disco", TextField.ANY);
         itemsList.addElement(serverName);
         
         moveCursorTo(getNextSelectableRef(-1));

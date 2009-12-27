@@ -76,7 +76,7 @@ public class InfoWindow
     
 //#ifdef CLIPBOARD
 //#ifndef MENU
-//#     public Command cmdOk = new Command(SR.MS_COPY, Command.SCREEN, 1);
+//#     public Command cmdOk;
 //#endif
 //#     private ClipBoard clipboard=ClipBoard.getInstance();
 //#endif
@@ -87,7 +87,9 @@ public class InfoWindow
     MultiLine item=null;
 
     public InfoWindow(Display display, Displayable pView) {
-        super(display, pView, SR.MS_ABOUT);
+        super(display, pView, SR.get(SR.MS_ABOUT));
+        
+        cmdOk = new Command(SR.get(SR.MS_COPY), Command.SCREEN, 1);
         this.display=display;
 
         name=new MultiLine(Version.getName(), Version.getVersionNumber()+
@@ -106,7 +108,7 @@ public class InfoWindow
         itemsList.addElement(description);
         
         thanks = new MultiLine("Thanks to:","Testing: zaetz,balor,demon(Dmitry Krylov),magnit,Sniffy,NNn,DsXack and many others\n" +
-                "Patches: Vladimir Krukov (aspro)\n" +
+                "Patches: Vladimir Krukov (aspro),vinz@\n" +
                 "Graphics: Xa,Makasim\n" +
                 "Actions icons: Rederick Asher\n" +
                 "Site managment: BiLLy\n" +
@@ -130,13 +132,13 @@ public class InfoWindow
         
         itemsList.addElement(new SpacerItem(10));
         
-        StringBuffer memInfo=new StringBuffer(SR.MS_FREE);
+        StringBuffer memInfo=new StringBuffer(SR.get(SR.MS_FREE));
         System.gc();
         memInfo.append(Runtime.getRuntime().freeMemory()>>10)
                .append("\n")
-               .append(SR.MS_TOTAL)
+               .append(SR.get(SR.MS_TOTAL))
                .append(Runtime.getRuntime().totalMemory()>>10);
-        memory=new MultiLine(SR.MS_MEMORY, memInfo.toString(), super.superWidth);
+        memory=new MultiLine(SR.get(SR.MS_MEMORY), memInfo.toString(), super.superWidth);
         memory.selectable=true;
         itemsList.addElement(memory);
         memInfo=null;
@@ -191,7 +193,7 @@ public class InfoWindow
     
 //#ifdef MENU_LISTENER
     /*
-    public String touchLeftCommand(){ return SR.MS_MENU; }
+    public String touchLeftCommand(){ return SR.get(SR.MS_MENU; }
     
 //#ifdef GRAPHICS_MENU     
 //#     public void touchLeftPressed(){
@@ -212,7 +214,7 @@ public class InfoWindow
     
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.MS_STATS, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_STATS), null, menuCommands);
    } 
 //#endif      
 

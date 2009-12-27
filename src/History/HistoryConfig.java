@@ -61,7 +61,7 @@ public class HistoryConfig extends DefForm implements BrowserListener {
        historyFolder.setValue(pathSelected);
     }
     
-    Command cmdPath=new Command(SR.MS_SELECT_HISTORY_FOLDER, Command.SCREEN, 2);
+    Command cmdPath;
 
     private DropChoiceBox historyType; 
     private CheckBox saveHistoryBox;
@@ -84,17 +84,18 @@ public class HistoryConfig extends DefForm implements BrowserListener {
     
     /** Creates a new instance of HistoryConfig */
     public HistoryConfig(Display display, Displayable pView) {
-        super(display, pView, SR.MS_HISTORY_OPTIONS);
+        super(display, pView, SR.get(SR.MS_HISTORY_OPTIONS));
+        cmdPath=new Command(SR.get(SR.MS_SELECT_HISTORY_FOLDER), Command.SCREEN, 2);
         loadFromStorage();
         
-           windows1251 = new CheckBox(SR.MS_1251_CORRECTION, cp1251); 
-           translit = new CheckBox(SR.MS_1251_TRANSLITERATE_FILENAMES, transliterateFilenames);
+           windows1251 = new CheckBox(SR.get(SR.MS_1251_CORRECTION), cp1251); 
+           translit = new CheckBox(SR.get(SR.MS_1251_TRANSLITERATE_FILENAMES), transliterateFilenames);
            
-           historyFolder = new TextInput(display, SR.MS_HISTORY_FOLDER, historyPath, null, TextField.ANY);
-           historyType=new DropChoiceBox(display, SR.MS_HISTORY_TYPE);
-           historyType.append(SR.MS_HISTORY_RMS);//0
-           historyType.append('*' + SR.MS_HISTORY_FS);//1
-           //historyType.append('*' + SR.MS_HISTORY_SERVER);//2
+           historyFolder = new TextInput(display, SR.get(SR.MS_HISTORY_FOLDER), historyPath, null, TextField.ANY);
+           historyType=new DropChoiceBox(display, SR.get(SR.MS_HISTORY_TYPE));
+           historyType.append(SR.get(SR.MS_HISTORY_RMS));//0
+           historyType.append('*' + SR.get(SR.MS_HISTORY_FS));//1
+           //historyType.append('*' + SR.get(SR.MS_HISTORY_SERVER));//2
            historyType.setSelectedIndex(historyTypeIndex);
            itemsList.addElement(historyType);
 
@@ -206,5 +207,5 @@ public class HistoryConfig extends DefForm implements BrowserListener {
      public void touchLeftPressed(){
          showGraphicsMenu();
      }
-     public String touchLeftCommand(){ return menuCommands.size() == 0 ? SR.MS_OK : SR.MS_MENU; }
+     public String touchLeftCommand(){ return menuCommands.size() == 0 ? SR.get(SR.MS_OK) : SR.get(SR.MS_MENU); }
 }

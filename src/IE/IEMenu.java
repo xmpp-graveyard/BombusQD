@@ -50,22 +50,22 @@
 //#     private int choice = -1;
 //#     
 //#     public IEMenu(Display display, Displayable pView) {
-//#         super(SR.MS_IMPORT_EXPORT, null,null);
-//#         //addItem(SR.MS_OPTIONS+": "+SR.MS_LOAD_FROM_FILE, 0);
-//#         //addItem(SR.MS_OPTIONS+": "+SR.MS_SAVE_TO_FILE, 1);
+//#         super(SR.get(SR.MS_IMPORT_EXPORT), null,null);
+//#         //addItem(SR.get(SR.MS_OPTIONS)+": "+SR.get(SR.MS_LOAD_FROM_FILE), 0);
+//#         //addItem(SR.get(SR.MS_OPTIONS)+": "+SR.get(SR.MS_SAVE_TO_FILE), 1);
 //#ifdef PLUGINS
 //#         if (StaticData.getInstance().Archive) {
 //#endif
-//#             addItem(SR.MS_ARCHIVE+": "+SR.MS_LOAD_FROM_FILE, 2);
-//#             addItem(SR.MS_ARCHIVE+": "+SR.MS_SAVE_TO_FILE, 3);
+//#             addItem(SR.get(SR.MS_ARCHIVE)+": "+SR.get(SR.MS_LOAD_FROM_FILE), 2);
+//#             addItem(SR.get(SR.MS_ARCHIVE)+": "+SR.get(SR.MS_SAVE_TO_FILE), 3);
 //#ifdef PLUGINS
 //#         }
 //#endif
-//#         //addItem(SR.MS_TEMPLATE+": "+SR.MS_LOAD_FROM_FILE, 4);
-//#         //addItem(SR.MS_TEMPLATE+": "+SR.MS_SAVE_TO_FILE, 5);
+//#         //addItem(SR.get(SR.MS_TEMPLATE)+": "+SR.get(SR.MS_LOAD_FROM_FILE), 4);
+//#         //addItem(SR.get(SR.MS_TEMPLATE)+": "+SR.get(SR.MS_SAVE_TO_FILE), 5);
 //#         
-//#         addItem(SR.MS_ACCOUNTS+": "+SR.MS_LOAD_FROM_FILE, 6);
-//#         addItem(SR.MS_ACCOUNTS+": "+SR.MS_SAVE_TO_FILE, 7);
+//#         addItem(SR.get(SR.MS_ACCOUNTS)+": "+SR.get(SR.MS_LOAD_FROM_FILE), 6);
+//#         addItem(SR.get(SR.MS_ACCOUNTS)+": "+SR.get(SR.MS_SAVE_TO_FILE), 7);
 //# 
 //#         attachDisplay(display);
 //#         this.parentView=pView;

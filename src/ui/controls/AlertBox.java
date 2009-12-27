@@ -64,8 +64,8 @@ public abstract class AlertBox
     protected Displayable next;
     
 //#ifndef MENU_LISTENER
-//#     protected Command cmdOk=new Command(SR.MS_OK, Command.OK, 1);
-//#     protected Command cmdCancel=new Command(SR.MS_CANCEL, Command.BACK, 2);
+//#     protected Command cmdOk=new Command(SR.get(SR.MS_OK), Command.OK, 1);
+//#     protected Command cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK, 2);
 //#endif
     
     public boolean isShowing;
@@ -73,8 +73,8 @@ public abstract class AlertBox
     Font messageFont;
     Font barFont;
 
-    private String left=SR.MS_OK;
-    private String right=SR.MS_CANCEL;
+    private String left=SR.get(SR.MS_OK);
+    private String right=SR.get(SR.MS_CANCEL);
     
     boolean init;
     CommandsPointer ar=new CommandsPointer();

@@ -3,6 +3,7 @@
  * Created on 29.08.2008, 0:20
  *
  * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2009, Alexej Kotov (aqent), http://bombusmod-qd.wen.ru
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,72 +33,137 @@ import util.StringLoader;
 
 /**
  *
- * @author ad
+ * @author ad,aqent
  */
 public class ClientsIconsData {
-//#ifdef PLUGINS
-//#     public static String plugin = new String("PLUGIN_CLIENTS_ICONS");
-//#endif
-    
-    private static Vector clients[]=new Vector[2];
-
-    private static String restxt= "/images/clients.txt";
     
     private static ClientsIconsData instance;
+    private static String[] clientName = {
+        "BombusMod",
+        "Bombus",
+        "Bombus-ng",
+        "Psi",
+        "Miranda",
+        "Bombus+",
+        "Google",
+        "Tkabber",
+        "Gajim",
+        "QIP",
+        "Pidgin",
+        "Kopete",
+        "Exodus",
+        "Siemens Native Jabber Client",
+        "BitlBee",
+        "Coccinella",
+        "mcabber",
+        "iChatAgent",
+        "Jabbim",
+        "BombusMod (PL)",
+        "Home",//?
+        "Office",//?
+        "JAJC",
+        "Bombus-Avalon",
+        "Sm@per",
+        "mChat",
+        "Gaim",
+        "Ya.Online",
+        "qutIM",
+        "Vacuum",
+        "BombusQD",
+        "Ex",
+        "Jimm",
+        "Talkonaut",
+        "Lampiro",
+        "Nimbuzz",
+        "movamessenger",
+        "Psi+",
+        "MailAgent",
+        "Bayan",
+        "Simak.ru",
+        "JETI",
+        "Trillian",
+        "WokJab",
+        "Adium"
+        //"svn.xmpp.ru/repos/mrim",
+        //"jit.mytlt.ru"        
+    };
+    
+    private static String[] sites = {
+        "bombusmod.net.ru",
+        "bombus-im.org",
+        "bombus-im.org/ng",
+        "psi-im.org",
+        "miranda-im.org",
+        "voffk.org.ru",
+        "google.com/xmpp/client/caps",
+        "tkabber.jabber.ru",
+        "gajim.org",
+        "qip.ru",
+        "pidgin.im",
+        "kopete.kde.org/jabber/caps",
+        "exodus.jabberstudio.org",
+        "Siemens Native Jabber Client",
+        "bitlbee.org",
+        "coccinella.sourceforge.net",
+        "mcabber",
+        "apple.com/ichat/caps",
+        "dev.jabbim.cz/jabbim/caps",
+        "bombus.pl",
+        "Home",
+        "Office",
+        "jajc.jrudevels.org",
+        "java.util.Random",
+        "smaper",
+        "mchat.mgslab.com",
+        "gaim.sf.net",
+        "online.yandex.ru",
+        "qutim",
+        "vacuum",
+        "bombusmod-qd.wen.ru",
+        "ex-im.name",
+        "jimm.net.ru",
+        "talkonaut.com",
+        "Lampiro",
+        "nimbuzz.com",
+        "movamessenger",
+        "psi-dev.googlecode.com",
+        "agent.mail.ru",
+        "barobin.com",
+        "simak.ru",
+        "jeti.sf.net",
+        "trillian.cc",
+        "wokjab.nedo.se",
+        "adiumx.com"
+        //"svn.xmpp.ru/repos/mrim",
+        //"jit.mytlt.ru"
+    };
+    
     public static ClientsIconsData getInstance() {
-	if (instance==null){
-            try {
-                clients[0]=new Vector(0);
-                clients[1]=new Vector(0);
-
-                clients=new StringLoader().stringLoader(restxt, 2);
-            } catch (Exception e) {
-                System.out.print("Can't load ");
-                System.out.println(restxt);
-            }
-            instance=new ClientsIconsData();
-        }
+	if (instance==null) instance=new ClientsIconsData();
 	return instance;
     }
     
     private ClientsIconsData() { }
 
     private static byte getClientIDByCaps(String caps) {
-        if (clients.length==0) return -1;
-        caps=caps.toLowerCase();
-        byte clientsSize = (byte)clients[0].size();
-        String client;
-        for (byte i=0; i<clientsSize; ++i) {//max-127 clients
-            client = ((String) clients[0].elementAt(i)).toLowerCase();
-            if (client.indexOf(',')>-1) {
-                boolean parse = true;
-                int pos=0;
-                while (parse) {
-                    if (pos>-1) {
-                        int endpos=client.indexOf(',', pos);
-                        client = (endpos<0)?client.substring(pos):client.substring(pos, endpos);
-                        if (caps.indexOf(client)>-1) return i;
-                        
-                        pos=client.indexOf(',', pos+1);
-                        if (pos<0) parse=false; else pos=pos+1;
-                    } else parse=false;
-                }
-            } else {
-                if (caps.indexOf(client)>-1) return i;
-            }
-	}
-        client = null;
+        byte clientsSize = (byte)sites.length;
+         //System.out.println("   client_www-> " + sites[i] );
+         //System.out.println("   client_name-> " + clientName[i] );
+        for (byte i=0; i<clientsSize; ++i) {
+           if(-1 != caps.indexOf(sites[i])) return i;
+        }
         return -1;
     }
     
     public static void processData(Contact c, String data) {
-        c.client=getClientIDByCaps(data);
-        c.clientName=(c.client>-1)?c.clientName=getClientNameByID(c.client):"";
+        //System.out.println("set-> " + c);
+        c.client = getClientIDByCaps(data);
+        c.clientName = (c.client>-1)?c.clientName=getClientNameByID(c.client):"";
+        //System.out.println("set->OK. " + c + "->" + c.client + "/" + c.clientName );
     }
     
-    private static String getClientNameByID(int id) {
-        if (clients.length==0) return "";
-        return (String) clients[1].elementAt(id);
+    private static String getClientNameByID(byte id) {
+        return clientName[id];
     }
     
 }

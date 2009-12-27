@@ -97,7 +97,7 @@ public class CheckBox
 
     public int getImageIndex(){ return state?0x57:0x56; }
     
-    int fontHeight=getFont().getHeight();
+    int fontHeight = getFont().getHeight();
     
 
     public int getVWidth(){
@@ -117,6 +117,7 @@ public class CheckBox
        }
 
        if (toString()!=null){
+        fontHeight=getFont().getHeight();
         Vector lines=(Vector)checkBox.elementAt(0);   
         int size=lines.size(); 
         width = f.stringWidth(toString());
@@ -163,7 +164,7 @@ public class CheckBox
              return fontHeight;
            }else{
               if(toString().indexOf("%")>-1){
-                return fontHeight*str.size() + 7;  
+                return fontHeight*(str.size() + 1);  
               }else{
                 return fontHeight;   
               }
