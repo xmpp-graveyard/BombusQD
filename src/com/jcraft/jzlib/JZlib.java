@@ -26,7 +26,7 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/* 
+/*
  * This program is based on zlib-1.1.3, so all credit should go authors
  * Jean-loup Gailly(jloup@gzip.org) and Mark Adler(madler@alumni.caltech.edu)
  * and contributors of zlib.
@@ -40,8 +40,8 @@ final public class JZlib{
 
   // compression levels
   static final public byte Z_NO_COMPRESSION=0;
-  static final public byte Z_BEST_SPEED=2;
-  static final public byte Z_BEST_COMPRESSION=8;
+  static final public byte Z_BEST_SPEED=1;
+  static final public byte Z_BEST_COMPRESSION=9;
   static final public byte Z_DEFAULT_COMPRESSION=(-1);
 
   // compression strategy

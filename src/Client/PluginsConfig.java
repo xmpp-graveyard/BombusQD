@@ -220,10 +220,115 @@ public class PluginsConfig extends DefForm implements MenuListener
     private static TrackItem userAppLevel;        
     private static StringBuffer sb = new StringBuffer(0);
 
+    private static void destroyItems() {
+        midlet.BombusQD.debug.add("::destroy options..", 10);
+         showOfflineContacts = null;
+         selfContact = null;
+         showTransports = null;
+         ignore = null;
+         collapsedGroups = null;
+         autoFocus = null;
+         showResources = null;
+         useBoldFont = null;
+         rosterStatus = null;
+//#ifdef CLIENTS_ICONS
+         showClientIcon = null;
+//#endif
+         //dont_loadMC;
+         gradient_cursor = null;
+         smiles = null;
+         eventComposing = null;
+         capsState = null;
+         storeConfPresence = null;
+         createMessageByFive = null;
+         showCollapsedPresences = null;
+         timePresence = null;
+         autoScroll = null;
+         useTabs = null;
+         autoDetranslit = null;
+//#ifdef PEP        
+//#           sndrcvmood = null;
+//#           rcvtune = null;
+//#           rcvactivity = null;
+//#endif
+          runningMessage = null;
+          popUps = null;
+          graphicsMenu = null;
+          showBaloons = null;
+          animatedSmiles = null;
+          eventDelivery = null;
+          networkAnnotation = null;
+          //metaContacts = null;
+          executeByNum = null;
+          //sendMoodInMsg = null;
+          savePos = null;
+          boldNicks = null;
+          selectOutMessages = null;
+          useClipBoard = null;
+          autoLogin = null;
+          useLowMemory_userotator = null;
+          useLowMemory_iconmsgcollapsed = null;
+          iconsLeft = null;
+          autoJoinConferences = null;
+          nokiaReconnectHack = null;
+//#ifdef FILE_TRANSFER
+          fileTransfer = null;
+//#endif   
+//#ifdef ADHOC
+//#           adhoc = null;
+//#endif
+          fullscr = null;
+          memMon = null;
+          enableVersionOs = null;
+          queryExit = null;
+          popupFromMinimized = null;
+          drawScrollBgnd = null;
+          gradientBarLigth = null;
+          autoLoadTransports = null;
+//#ifdef AUTOSTATUS
+//#           awayStatus = null;
+//#endif
+          drawMenuCommand = null;
+          showNickNames = null;
+          oldSE = null;
+          use_phone_theme = null;
+          simpleContacts = null;
+          gradientBarLight1 = null;
+          gradientBarLight2 = null;
+          appLevel = null;
+          appLevel = null;
+          str = null;
+          gradient_light1 = null;
+          gradient_light2 = null;
+          
+          
+          contacts = null;
+          messages = null;
+          notify = null;
+          network = null;
+          app = null;
+          graphics = null;
+          theme = null;
+          fonts = null;
+          autostatus = null;
+          userKeys = null;
+          avatars = null;
+          history = null;
+ //#ifdef IMPORT_EXPORT         
+//#           ie = null;
+//#endif
+          tasks = null;
+          classicchat = null;
+          debug = null;
+          userAppLevel = null;
+          
+          Runtime.getRuntime().gc();
+          midlet.BombusQD.debug.add("::destroy options..ok", 10);
+    }
     
-    public static void initItems(boolean reInit){
-       if(showOfflineContacts == null || reInit) {
-         //System.out.println("initItems->" + reInit);
+    
+    private static void initItems() {
+        System.out.println("init items");
          showOfflineContacts = new CheckBox(SR.get(SR.MS_OFFLINE_CONTACTS), cf.showOfflineContacts);
          selfContact = new CheckBox(SR.get(SR.MS_SELF_CONTACT), cf.selfContact);
          showTransports = new CheckBox(SR.get(SR.MS_TRANSPORTS), cf.showTransports);
@@ -296,7 +401,6 @@ public class PluginsConfig extends DefForm implements MenuListener
           drawMenuCommand = new CheckBox(SR.get(SR.MS_SHOW_TIME_TRAFFIC), cf.showTimeTraffic); 
           showNickNames = new CheckBox(SR.get(SR.MS_SHOW_NACKNAMES), cf.showNickNames); 
           oldSE = new CheckBox(SR.get(SR.MS_KEYS_FOR_OLD_SE), cf.oldSE);
-          //useClassicChat = new CheckBox(SR.get(SR.MS_CLCHAT_ON), cf.useClassicChat);
           use_phone_theme = new CheckBox(SR.get(SR.MS_CLCHAT_BGNG_PHONE), cf.use_phone_theme);
           simpleContacts = new CheckBox(SR.get(SR.MS_SIMPLE_CONTACTS_DRAW), cf.simpleContacts);
           
@@ -308,11 +412,10 @@ public class PluginsConfig extends DefForm implements MenuListener
           str = new SimpleString(SR.get(SR.MS_ADVANCED_OPT), true);
           gradient_light1 = new SimpleString(SR.get(SR.MS_MAINBAR_GRADIENTLIGHT)+"1", true);
           gradient_light2 = new SimpleString(SR.get(SR.MS_MAINBAR_GRADIENTLIGHT)+"2", true);
-
-       }
     }
     
     public void reloadItems() {
+       System.out.println("reload items");
        mainbar = new MainBar(SR.get(SR.MS_MODULES_CONFIG));
        setMainBarItem(new MainBar(mainbar));
           infobar=new MainBar("", true);
@@ -384,7 +487,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     public PluginsConfig(Display display, Displayable pView) {
         super(display, pView, null);
         this.display=display;
-        initItems(true);
+        initItems();
 
           contacts = new PluginBox(SR.get(SR.MS_contactStr), cf.module_contacts, 0);
           messages = new PluginBox(SR.get(SR.MS_msgStr), cf.module_messages, 0);
@@ -491,6 +594,7 @@ public class PluginsConfig extends DefForm implements MenuListener
 
     public void destroyView(){
        display.setCurrent(parentView);
+       destroyItems();
        midlet.BombusQD.sd.roster.pluginsConfig = null;
        cf.saveToStorage();
     }
@@ -643,7 +747,7 @@ public class PluginsConfig extends DefForm implements MenuListener
            bgnd_image.setSelectedIndex(cf.bgnd_image);
            itemsList.addElement(bgnd_image);                     
            itemsList.addElement(new SpacerItem(3));                   
-	   scrollWidth=new NumberInput(display, SR.get(SR.MS_SCROLL_WIDTH), Integer.toString(cf.scrollWidth), 4, 25); 
+	   scrollWidth=new NumberInput(display, SR.get(SR.MS_SCROLL_WIDTH), Integer.toString(cf.scrollWidth), 3, 25); 
            itemsList.addElement(scrollWidth);   
            itemsList.addElement(new SpacerItem(3));      
 
@@ -806,7 +910,11 @@ public class PluginsConfig extends DefForm implements MenuListener
            cf.gradientBarLigth=gradientBarLigth.getValue();
            cf.gradientBarLight1=gradientBarLight1.getValue()*10;
            cf.gradientBarLight2=gradientBarLight2.getValue()*10;
+           
+           boolean oldValue = cf.graphicsMenu;
            cf.graphicsMenu=graphicsMenu.getValue();
+           //System.out.println(oldValue + "/" +cf.graphicsMenu);
+           
            cf.graphicsMenuPosition=graphicsMenuPosition.getSelectedIndex();
            cf.bgnd_image=bgnd_image.getSelectedIndex();
            cf.scrollWidth=Integer.parseInt(scrollWidth.getValue());
@@ -839,6 +947,11 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#             }
 //#            } catch (Exception e) { }
 //#endif   
+           if(oldValue != cf.graphicsMenu && oldValue == false) {
+              midlet.BombusQD.sd.roster.pluginsConfig = null;
+              cf.saveToStorage();
+              midlet.BombusQD.sd.roster.clearMenu();
+           }           
          }
          else if(type==SR.get(SR.MS_appStr)){
             cf.autoLogin=autoLogin.getValue();
@@ -882,6 +995,7 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.classic_chat_height=Integer.parseInt(classic_chat_height.getValue());
             cf.line_count=Integer.parseInt(line_count.getValue()); 
          }          
+      reloadItems();
       destroyView();
     }
     
@@ -895,6 +1009,7 @@ public class PluginsConfig extends DefForm implements MenuListener
         }
         itemsList.removeAllElements();
         display.setCurrent(parentView);
+        reloadItems();
     }    
  }
     

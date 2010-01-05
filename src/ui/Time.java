@@ -67,7 +67,7 @@ public class Time {
      }
     
     private static Calendar calDate(long date){
-        c.setTime(new Date(date+utcToLocalOffsetMillis));
+        c.setTime(new Date(date+utcToLocalOffsetMillis));//memory leak
         return c;
     }
     
@@ -246,10 +246,11 @@ public class Time {
         return suf[field][index];
     }
     
+    private final static StringBuffer s = new StringBuffer(0);
     public static String getTimeWeekDay() {
-        StringBuffer s=new StringBuffer(localWeekDay());
-        s.append(" ").append(localTime());
-        
+        s.setLength(0);
+        s.append(localWeekDay());
+        s.append(' ').append(localTime());
         return s.toString();
     }
 }

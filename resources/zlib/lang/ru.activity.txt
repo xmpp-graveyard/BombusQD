@@ -67,8 +67,8 @@ cycling	На велосипеде
 driving	Вождение
 in_a_car	В машине
 on_a_bus	В автобусе
-on_a_plane	В самолете
 on_a_train	В поезде
+on_a_plane	В самолете
 on_a_trip	В поездке
 walking	Прогулка
 working	Работаю

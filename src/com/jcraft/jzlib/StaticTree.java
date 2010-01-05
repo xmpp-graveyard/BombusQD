@@ -131,7 +131,7 @@ final class StaticTree{
 		   0, BL_CODES, MAX_BL_BITS);
 
   short[] static_tree;     // static tree or null
-  byte[] extra_bits;        // extra bits for each code or null
+  int[] extra_bits;        // extra bits for each code or null
   int extra_base;          // base index for extra_bits
   int elems;               // max number of elements in the tree
   int max_length;          // max bit length for the codes
@@ -139,7 +139,7 @@ final class StaticTree{
     private static short[] static_ltree;
 
   StaticTree(short[] static_tree,
-	     byte[] extra_bits,
+	     int[] extra_bits,
 	     int extra_base,
 	     int elems,
 	     int max_length

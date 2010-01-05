@@ -54,6 +54,7 @@ import java.util.Timer;
 //#ifdef LIGHT_CONTROL
 //# import LightControl.CustomLight;
 //#endif
+import net.jscience.math.MathFP;
 
 
 public abstract class VirtualList         
@@ -1046,15 +1047,13 @@ public abstract class VirtualList
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
 //#endif
-        int hElements = 12 + 5;
-        int posY = (h - hElements)/2;
-        setAbsOrg(g, 0, y);
         if(midlet.BombusQD.sd.roster!=null) {
             //midlet.BombusQD.sd.roster.messageCount = 1;
-            if (midlet.BombusQD.sd.roster.messageCount>0) drawEnvelop(g , width/2 - 5, posY);
-            if (System.currentTimeMillis()-sd.getTrafficIn()<2000) drawTraffic(g, false, posY + 12 + 3);
-            if (System.currentTimeMillis()-sd.getTrafficOut()<2000) drawTraffic(g, true, posY + 12 + 3);
+            if (midlet.BombusQD.sd.roster.messageCount>0) drawEnvelop(g , width/2 - 5, y + 1);
+            if (System.currentTimeMillis()-sd.getTrafficIn()<2000) drawTraffic(g, false, y + 15); // y + 1 + ( 9 + 5 )
+            if (System.currentTimeMillis()-sd.getTrafficOut()<2000) drawTraffic(g, true, y + 15);
         }
+        setAbsOrg(g, 0, y);
         g.setColor(getMainBarRGB());
         infobar.drawItem(g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
     }
@@ -1632,8 +1631,7 @@ public abstract class VirtualList
 //#             break; 
 //#         case KEY_STAR:
 //#             popUpshow=true;
-//#             System.gc();
-//#             try { Thread.yield(); } catch (Exception ex) { }
+//#             midlet.BombusQD.sd.roster.systemGC();
 //#ifdef POPUPS
 //#             mem.setLength(0);
 //#             mem.append("Time: ")
@@ -1641,14 +1639,23 @@ public abstract class VirtualList
 //#                 .append("\nTraffic: ")
 //#                 .append(getTraffic())
 //#                 .append("\n");
-//#             
-//#             mem.append(SR.get(SR.MS_MEMORY));
-//#             mem.append("\n");
+//#             if(midlet.BombusQD.cf.userAppLevel == 2) {            
+//#               mem.append(SR.get(SR.MS_MEMORY))
+//#                .append("\n");
 //#                   long free = Runtime.getRuntime().freeMemory()>>10;
 //#                   long total = Runtime.getRuntime().totalMemory()>>10; 
-//#              mem.append("BombusQD use: "+ Long.toString(total-free)+" kb\n");
-//#              mem.append("Free/Total: "+Long.toString(free)+"/"+Long.toString(total)+"kb\n" );
-//#              mem.append("*Stanzas(in/out): "+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz));            
+//#                   long qd_use = total - free;
+//#                   
+//#                   long a = MathFP.toFP(qd_use);
+//#                   long b = MathFP.toFP(total);
+//#                   long res = MathFP.mul( MathFP.div(a,b) , MathFP.toFP(100) ); // (use/total)*100
+//#                   
+//#               mem.append("Current Threads: " + Integer.toString(Thread.activeCount()) + "\n")
+//#                .append( "QD use: " + qd_use + " kb\n")
+//#                .append( "Memory using: " + MathFP.toString(res,1) + "%\n" )        
+//#                .append( "Free/Total: " + free + "/" + total + " kb\n" )
+//#                .append("*Stanzas(in/out): "+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz));     
+//#             }
 //#             setWobble(1, null, mem.toString());
 //#endif
 //#             break;

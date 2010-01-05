@@ -106,13 +106,14 @@ public class GMenu extends Canvas {
    
    
    public GMenu(Display display, Displayable parentView, MenuListener menuListener, ImageList il, Vector menuCommands) {
-        if(!midlet.BombusQD.cf.graphicsMenu){
+        if(midlet.BombusQD.cf.graphicsMenu == false){
             new MyMenu(display, parentView, menuListener, "Menu", il, menuCommands);
             return;
         }
         gm.ml=menuListener;
         this.parentView=parentView;
         this.display=display;
+        if(null == menuCommands) return;
         int size = menuCommands.size();
         gm.commandslist = new String[size];//3
         for (int index=0; index<size; index++) {
@@ -125,7 +126,7 @@ public class GMenu extends Canvas {
    
    public GMenu(Display display,Displayable parentView,MenuListener menuListener,ImageList il,Vector menuCommands,
            Vector cmdfirstList,Vector cmdsecondList,Vector cmdThirdList){//Количество вкладок
-        if(!midlet.BombusQD.cf.graphicsMenu){
+        if(midlet.BombusQD.cf.graphicsMenu == false){
             if(il == null) il = MenuIcons.getInstance();
             new MyMenu(display, parentView, menuListener, "Menu", il, menuCommands);
             return;
@@ -133,6 +134,10 @@ public class GMenu extends Canvas {
         gm.ml=menuListener;
         this.parentView=parentView;
         this.display=display;
+        if(null == menuCommands){
+            gm.menuCommands=null;
+            return;
+        }
         int size = menuCommands.size();
         gm.commandslist = new String[size];//3
         for (int index=0; index<size; index++) {
@@ -244,7 +249,7 @@ public class GMenu extends Canvas {
    void drawAllItems(Graphics g,Vector menuCommands,String[] commandslist,int itemCursorIndex){
 
         fh = bm.himg_menu>fh?bm.himg_menu:fh;
-        if(commandslist == null) return;
+        if(commandslist == null || menuCommands == null) return;
         size = commandslist.length-1;
         int hitem = 0;        
         int maxHeight=commandslist.length;

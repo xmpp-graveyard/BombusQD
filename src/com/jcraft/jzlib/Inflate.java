@@ -25,7 +25,7 @@ OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
 LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 /*
  * This program is based on zlib-1.1.3, so all credit should go authors
  * Jean-loup Gailly(jloup@gzip.org) and Mark Adler(madler@alumni.caltech.edu)
@@ -36,10 +36,10 @@ package com.jcraft.jzlib;
 
 final class Inflate{
   
-  static final public byte MAX_WBITS=15; // 32K LZ77 window
+  static final public int MAX_WBITS=15; // 32K LZ77 window
 
   // preset dictionary flag in zlib header
-  static final private byte PRESET_DICT=0x20;
+  static final private int PRESET_DICT=0x20;
 
   static final byte Z_NO_FLUSH=0;
   static final byte Z_PARTIAL_FLUSH=1;
@@ -96,7 +96,8 @@ final class Inflate{
     if(z == null || z.istate == null) return Z_STREAM_ERROR;
     
     z.total_in = z.total_out = 0;
-    z.msg = null;
+    z.addDebugMsg("inflate::inflateReset -> null");
+    //z.msg = null;
     z.istate.mode = z.istate.nowrap!=0 ? BLOCKS : METHOD;
     z.istate.blocks.reset(z, null);
     return Z_OK;
@@ -111,7 +112,8 @@ final class Inflate{
   }
 
   int inflateInit(ZStream z, int w){
-    z.msg = null;
+    z.addDebugMsg("inflate::inflateInit -> null");
+    //z.msg = null;
     blocks = null;
 
     // handle undocumented nowrap option (no zlib header or check)
@@ -155,13 +157,15 @@ final class Inflate{
         z.avail_in--; z.total_in++;
         if(((z.istate.method = z.next_in[z.next_in_index++])&0xf)!=Z_DEFLATED){
           z.istate.mode = BAD;
-          z.msg="unknown compression method";
+          z.addDebugMsg("inflate::inflate -> unknown compression method");
+          //z.msg="unknown compression method";
           z.istate.marker = 5;       // can't try inflateSync
           break;
         }
         if((z.istate.method>>4)+8>z.istate.wbits){
           z.istate.mode = BAD;
-          z.msg="invalid window size";
+          z.addDebugMsg("inflate::inflate -> invalid window size");
+          //z.msg="invalid window size";
           z.istate.marker = 5;       // can't try inflateSync
           break;
         }
@@ -175,7 +179,8 @@ final class Inflate{
 
         if((((z.istate.method << 8)+b) % 31)!=0){
           z.istate.mode = BAD;
-          z.msg = "incorrect header check";
+          z.addDebugMsg("inflate::inflate -> incorrect header check");
+          //z.msg = "incorrect header check";
           z.istate.marker = 5;       // can't try inflateSync
           break;
         }
@@ -217,7 +222,8 @@ final class Inflate{
         return Z_NEED_DICT;
       case DICT0:
         z.istate.mode = BAD;
-        z.msg = "need dictionary";
+        z.addDebugMsg("inflate::inflate -> need dictionary");
+        //z.msg = "need dictionary";
         z.istate.marker = 0;       // can try inflateSync
         return Z_STREAM_ERROR;
       case BLOCKS:
@@ -271,7 +277,8 @@ final class Inflate{
 
         if(((int)(z.istate.was[0])) != ((int)(z.istate.need))){
           z.istate.mode = BAD;
-          z.msg = "incorrect data check";
+          z.addDebugMsg("inflate::inflate -> incorrect data check");
+          //z.msg = "incorrect data check";
           z.istate.marker = 5;       // can't try inflateSync
           break;
         }

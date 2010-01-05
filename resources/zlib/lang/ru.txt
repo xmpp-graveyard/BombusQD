@@ -159,7 +159,7 @@ About	О программе
 Resource	Ресурс
 Disconnected	Соединение разорвано
 Edit	Редактировать
-Host name/IP (optional)	Имя хоста/IP (необязательно)
+Host name/IP	Имя хоста/IP
 Add rule	Добавить правило
 for all status types	для всех статусов
 Paste Jid	Вставить Jid
@@ -582,7 +582,7 @@ Background Jimm image	Фоновая картинка Jimm
 Background image	Фоновое картинка
 Draw Bgnd of Scroll	Рисовать фон скролла
 Scroll Options	Настройка скролла
-Scroll Width	Ширина скролла(4-по умолчанию)
+Scroll Width	Ширина скролла
 Type of Background	Выберите тип фона
 Background Default	Фон по умолчанию
 Background Gradient	Градиент-фон
@@ -716,3 +716,8 @@ User Avatar: delete current	Аватар: удалить текущий
 User Avatar: delete from ALL vcards	Аватар: удалить ВСЕ
 Success	Успешно
 Simple Contacts	Простые контакты%Включает отображение контактов только в виде иконки статуса и имени
+User App Level	Уровень сложности
+Started	Начинающий
+Confident	Уверенный
+Experienced	Опытный
+Was added:	Добавлено:

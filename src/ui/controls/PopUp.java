@@ -74,7 +74,6 @@ public class PopUp {
             
     synchronized public void addPopup(int type, String contact, String message){
         if (message!=null)
-            //popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, height-border-padding, false, font)));
             font=FontCache.getFont(false, FontCache.baloon);//den_po
             popUps.addElement(new PopUpElement(type, contact, StringUtils.parseMessage(message, width-border-padding, font)));
 //#ifdef DEBUG
@@ -98,9 +97,14 @@ public class PopUp {
             return ((PopUpElement)popUps.elementAt(0)).getContact();
         return null;
     }
-
+    
+    public int size() {
+        if(null == popUps) return -1;
+        return popUps.size();
+    }
+    
     public void next() {
-        if(size()>0){
+        if(size()>0) {
             popUps.removeElementAt(0);
             scrollable=SCROLLABLE_NONE;
             startLine=0;
@@ -303,11 +307,6 @@ public class PopUp {
           drawAllStrings(graph, widthBorder+2, heightBorder+3);
     }
 
-    public int size() {
-        return popUps.size();
-    }
-
-    
     class PopUpElement {
         private int type;
         private String from;

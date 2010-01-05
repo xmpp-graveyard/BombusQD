@@ -194,7 +194,8 @@ final class InfCodes{
 	  break;
 	}
 	mode = BADCODE;        // invalid code
-	z.msg = "invalid literal/length code";
+        z.addDebugMsg("infCodes::proc -> invalid literal/length code");
+	//z.msg = "invalid literal/length code";
 	r = Z_DATA_ERROR;
 
 	s.bitb=b;s.bitk=k;
@@ -261,7 +262,8 @@ final class InfCodes{
 	  break;
 	}
 	mode = BADCODE;        // invalid code
-	z.msg = "invalid distance code";
+        z.addDebugMsg("infCodes::proc -> invalid distance code");
+	//z.msg = "invalid distance code";
 	r = Z_DATA_ERROR;
 
 	s.bitb=b;s.bitk=k;
@@ -539,7 +541,8 @@ final class InfCodes{
 	      e=tp[tp_index_t_3];
 	    }
 	    else{
-	      z.msg = "invalid distance code";
+              z.addDebugMsg("infCodes::inflate_fast -> invalid distance code");
+	      //z.msg = "invalid distance code";
 
 	      c=z.avail_in-n;c=(k>>3)<c?k>>3:c;n+=c;p-=c;k-=c<<3;
 
@@ -578,7 +581,8 @@ final class InfCodes{
 	  return Z_STREAM_END;
 	}
 	else{
-	  z.msg="invalid literal/length code";
+          z.addDebugMsg("infCodes::inflate_fast -> invalid literal/length code");  
+	  //z.msg="invalid literal/length code";
 
 	  c=z.avail_in-n;c=(k>>3)<c?k>>3:c;n+=c;p-=c;k-=c<<3;
 

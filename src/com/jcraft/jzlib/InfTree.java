@@ -25,7 +25,7 @@ OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
 LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
+ */
 /*
  * This program is based on zlib-1.1.3, so all credit should go authors
  * Jean-loup Gailly(jloup@gzip.org) and Mark Adler(madler@alumni.caltech.edu)
@@ -50,8 +50,8 @@ final class InfTree{
   static final private byte Z_BUF_ERROR=-5;
   static final private byte Z_VERSION_ERROR=-6;
 
-  static final byte fixed_bl = 9;
-  static final byte fixed_bd = 5;
+  static final int fixed_bl = 9;
+  static final int fixed_bd = 5;
 
 /*  static final int[] fixed_tl = {
     96,7,256, 0,8,80, 0,8,16, 84,8,115,
@@ -203,7 +203,7 @@ final class InfTree{
   };
 
   // see note #13 above about 258
-  static final byte[] cplext = { // Extra bits for literal codes 257..285
+  static final int[] cplext = { // Extra bits for literal codes 257..285
         0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
         3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 112, 112  // 112==invalid
   };
@@ -214,13 +214,13 @@ final class InfTree{
         8193, 12289, 16385, 24577
   };
 
-  static final byte[] cpdext = { // Extra bits for distance codes
+  static final int[] cpdext = { // Extra bits for distance codes
         0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
         7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
         12, 12, 13, 13};
 
   // If BMAX needs to be larger than 16, then h and x[] should be uLong.
-  static final byte BMAX=15;         // maximum bit length of any code
+  static final int BMAX=15;         // maximum bit length of any code
 
   int[] hn = null;  // hufts used in space
   int[] v = null;   // work area for huft_build 
@@ -238,7 +238,7 @@ final class InfTree{
                          int n,   // number of codes (assumed <= 288)
                          int s,   // number of simple-valued codes (0..s-1)
                          int[] d, // list of base values for non-simple codes
-                         byte[] e, // list of extra bits for non-simple codes
+                         int[] e, // list of extra bits for non-simple codes
                          int[] t, // result: starting table
                          int[] m, // maximum lookup bits, returns actual
                          int[] hp,// space for trees
@@ -338,7 +338,7 @@ final class InfTree{
     z = 0;                        // ditto
 
     // go through the bit lengths (k already is bits in shortest code)
-    for (; k <= g; ++k){
+    for (; k <= g; k++){
       a = c[k];
       while (a--!=0){
 	// here i is the Huffman code of length k bits for value *p
@@ -390,11 +390,11 @@ final class InfTree{
           r[0] = 128 + 64;      // out of values--invalid code
 	}
         else if (v[p] < s){
-          r[0] = (byte)(v[p] < 256 ? 0 : 96);  // 256 is end-of-block
+          r[0] = (byte)(v[p] < 256 ? 0 : 32 + 64);  // 256 is end-of-block
           r[2] = v[p++];          // simple code is just the value
         }
         else{
-          r[0]=(byte)(e[v[p]-s]+80); // non-simple--look up in lists
+          r[0]=(byte)(e[v[p]-s]+16+64); // non-simple--look up in lists
           r[2]=d[v[p++] - s];
         }
 
@@ -435,10 +435,12 @@ final class InfTree{
     result = huft_build(c, 0, 19, 19, null, null, tb, bb, hp, hn, v);
 
     if(result == Z_DATA_ERROR){
-      z.msg = "oversubscribed dynamic bit lengths tree";
+      z.addDebugMsg("infTree::inflate_trees_bits -> oversubscribed dynamic bit lengths tree");
+      //z.msg = "oversubscribed dynamic bit lengths tree";
     }
     else if(result == Z_BUF_ERROR || bb[0] == 0){
-      z.msg = "incomplete dynamic bit lengths tree";
+      z.addDebugMsg("infTree::inflate_trees_bits -> incomplete dynamic bit lengths tree");
+      //z.msg = "incomplete dynamic bit lengths tree";
       result = Z_DATA_ERROR;
     }
     return result;
@@ -462,10 +464,12 @@ final class InfTree{
     result = huft_build(c, 0, nl, 257, cplens, cplext, tl, bl, hp, hn, v);
     if (result != Z_OK || bl[0] == 0){
       if(result == Z_DATA_ERROR){
-        z.msg = "oversubscribed literal/length tree";
+        z.addDebugMsg("infTree::inflate_trees_dynamic -> oversubscribed literal/length tree");
+        //z.msg = "oversubscribed literal/length tree";
       }
       else if (result != Z_MEM_ERROR){
-        z.msg = "incomplete literal/length tree";
+        z.addDebugMsg("infTree::inflate_trees_dynamic -> incomplete literal/length tree");
+        //z.msg = "incomplete literal/length tree";
         result = Z_DATA_ERROR;
       }
       return result;
@@ -477,14 +481,17 @@ final class InfTree{
 
     if (result != Z_OK || (bd[0] == 0 && nl > 257)){
       if (result == Z_DATA_ERROR){
-        z.msg = "oversubscribed distance tree";
+        z.addDebugMsg("infTree::inflate_trees_dynamic -> oversubscribed distance tree");
+        //z.msg = "oversubscribed distance tree";
       }
       else if (result == Z_BUF_ERROR) {
-        z.msg = "incomplete distance tree";
+        z.addDebugMsg("infTree::inflate_trees_dynamic -> incomplete distance tree");  
+        //z.msg = "incomplete distance tree";
         result = Z_DATA_ERROR;
       }
       else if (result != Z_MEM_ERROR){
-        z.msg = "empty distance tree with lengths";
+        z.addDebugMsg("infTree::inflate_trees_dynamic -> empty distance tree with lengths");
+        //z.msg = "empty distance tree with lengths";
         result = Z_DATA_ERROR;
       }
       return result;

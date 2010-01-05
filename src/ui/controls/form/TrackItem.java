@@ -124,15 +124,13 @@ public class TrackItem
                 value=(value>0)?value-1:steps-1;
                 if(items!=null && isUserLevel == false)
                     loadSkin();
-                else 
-                    changeLevelApp(value);
+                else if(maxValue ==2 ) changeLevelApp(value);
                 return true;
             case 6: 
                 value=(value+1)%steps;
                 if(items!=null && isUserLevel == false)
                     loadSkin();
-                else 
-                    changeLevelApp(value);
+                else if(maxValue ==2 ) changeLevelApp(value);
                 return true;
          }
         return false;

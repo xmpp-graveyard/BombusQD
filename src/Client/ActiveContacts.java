@@ -112,6 +112,7 @@ public final class ActiveContacts
     public void setActiveContacts(Displayable pView, Contact current){
         this.parentView=pView;
         
+        commandState();
         activeContacts.setSize(0);
         Contact c = null;
         
@@ -142,13 +143,12 @@ public final class ActiveContacts
         mainbar=new MainBar(2, String.valueOf(getItemCount()), " ", false);
         mainbar.addElement(SR.get(SR.MS_ACTIVE_CONTACTS));
         setMainBarItem(mainbar);
-
-	commandState();
     }
     
     public void commandState() {
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
+        cmdfirstList.removeAllElements();
 //#endif
         if(cmdOk == null) initCommands();
         addCommand(cmdOk); cmdOk.setImg(0x43);

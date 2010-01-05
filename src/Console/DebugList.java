@@ -35,7 +35,9 @@
 //#     public void add(String msg, int type) {
 //#       if (midlet.BombusQD.cf.debug) {
 //# 	  try {
-//#             Msg stanza=new Msg((byte)type, "debug", null, msg.toString());
+//#             int free = (int)Runtime.getRuntime().freeMemory()>>10;
+//#             int total = (int)Runtime.getRuntime().totalMemory()>>10;
+//#             Msg stanza=new Msg((byte)type, "debug", null, "[" + free + "/" + total + "]\t" + msg.toString());
 //#             stanza.itemCollapsed=false;
 //#             stanzas.addElement(stanza);
 //#             stanza=null;

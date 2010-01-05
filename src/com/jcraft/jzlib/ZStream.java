@@ -31,13 +31,13 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * Jean-loup Gailly(jloup@gzip.org) and Mark Adler(madler@alumni.caltech.edu)
  * and contributors of zlib.
  */
- 
+
 package com.jcraft.jzlib;
 
 final public class ZStream{
 
-  //static final private byte MAX_WBITS=15;        // 32K LZ77 window
-  //static final private byte DEF_WBITS=MAX_WBITS;
+  //static final private int MAX_WBITS=15;        // 32K LZ77 window
+  //static final private int DEF_WBITS=MAX_WBITS;
 
   static final private byte Z_NO_FLUSH=0;
   static final private byte Z_PARTIAL_FLUSH=1;
@@ -68,6 +68,10 @@ final public class ZStream{
   public long total_out;     // total nb of bytes output so far
 
   public String msg;
+  
+  public void addDebugMsg(String msg) {
+     midlet.BombusQD.debug.add("::ZLIB->" + msg, 10);
+  }
 
   Deflate dstate; 
   Inflate istate; 

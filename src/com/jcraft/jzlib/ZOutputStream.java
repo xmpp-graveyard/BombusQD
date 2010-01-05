@@ -85,8 +85,9 @@ public class ZOutputStream extends OutputStream {
       else
         err=z.inflate(flush);
       if(err!=JZlib.Z_OK)
-        throw new ZStreamException((compress?"de":"in")+"flating: "+z.msg);
+        throw new IOException(/*(compress?"de":"in")+"flating: "+z.msg*/);
       out.write(buf, 0, bufsize-z.avail_out);
+      midlet.BombusQD.sd.roster.theStream.updateTraffic(false, bufsize-z.avail_out);
     } 
     while(z.avail_in>0 || z.avail_out==0);
   }
@@ -108,7 +109,7 @@ public class ZOutputStream extends OutputStream {
       if(compress){ err=z.deflate(JZlib.Z_FINISH);  }
       else{ err=z.inflate(JZlib.Z_FINISH); }
       if(err!=JZlib.Z_STREAM_END && err != JZlib.Z_OK)
-      throw new ZStreamException((compress?"de":"in")+"flating: "+z.msg);
+      throw new IOException(/*(compress?"de":"in")+"flating: "+z.msg*/);
       if(bufsize-z.avail_out>0){
 	out.write(buf, 0, bufsize-z.avail_out);
       }

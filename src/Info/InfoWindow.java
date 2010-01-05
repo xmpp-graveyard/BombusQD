@@ -62,16 +62,7 @@ import util.StringLoader;
 public class InfoWindow
         extends DefForm {
     
-    LinkString siteUrl;
-    MultiLine description;
-    MultiLine thanks;
-    MultiLine name;
-    MultiLine memory;
-    MultiLine abilities;
-    
-    LinkString news;
-    LinkString versions; 
-    
+    Object name;
     StaticData sd=StaticData.getInstance();
     
 //#ifdef CLIPBOARD
@@ -84,30 +75,35 @@ public class InfoWindow
     /**
      * Creates a new instance of InfoWindow
      */
-    MultiLine item=null;
-
+    
     public InfoWindow(Display display, Displayable pView) {
         super(display, pView, SR.get(SR.MS_ABOUT));
         
         cmdOk = new Command(SR.get(SR.MS_COPY), Command.SCREEN, 1);
         this.display=display;
-
+        
+        name=new MultiLine("Current Threads: ", Integer.toString(Thread.activeCount()), super.superWidth);
+        midlet.BombusQD.sd.roster.systemGC();
+        
+        ((MultiLine)name).selectable=true;
+        //itemsList.addElement(name);
+        
         name=new MultiLine(Version.getName(), Version.getVersionNumber()+
                 "\n"+Config.platformName+
                 "\nMobile Jabber client" , super.superWidth);
 
-        name.selectable=true;
+        ((MultiLine)name).selectable=true;
         itemsList.addElement(name);
         
 
-        description=new MultiLine("Copyright (c) 2005-2009", 
+        name=new MultiLine("Copyright (c) 2005-2009", 
                 "Eugene Stahov (evgs,Bombus);\nDaniel Apatin (ad,BombusMod);\nAlexej Kotov(aqent,BombusQD);\n" +
                 "Andrey Tikhonov(Tishka17,BombusQD)\n" +
                 "Distributed under GPL v2 License \n", super.superWidth);
-        description.selectable=true;
-        itemsList.addElement(description);
+        ((MultiLine)name).selectable=true;
+        itemsList.addElement(name);
         
-        thanks = new MultiLine("Thanks to:","Testing: zaetz,balor,demon(Dmitry Krylov),magnit,Sniffy,NNn,DsXack and many others\n" +
+        name = new MultiLine("Thanks to:","Testing: zaetz,balor,demon(Dmitry Krylov),magnit,Sniffy,NNn,DsXack and many others\n" +
                 "Patches: Vladimir Krukov (aspro),vinz@\n" +
                 "Graphics: Xa,Makasim\n" +
                 "Actions icons: Rederick Asher\n" +
@@ -116,8 +112,8 @@ public class InfoWindow
                 "Windows Fonts: magdelphi(mobilab.ru)" +
                 "\nMathFP library" +
                 "\nSmiles Author: Copyright (c) Aiwan. Kolobok smiles",super.superWidth);
-        thanks.selectable=false;
-        itemsList.addElement(thanks);
+        ((MultiLine)name).selectable=false;
+        itemsList.addElement(name);
         itemsList.addElement(new LinkString("http://www.kolobok.us")
                 { public void doAction() { try { BombusQD.getInstance().platformRequest("http://www.kolobok.us"); } 
                   catch (ConnectionNotFoundException ex) { }}}
@@ -127,8 +123,8 @@ public class InfoWindow
                 { public void doAction() { try { BombusQD.getInstance().platformRequest("http://bombusmod-qd.wen.ru"); } 
                   catch (ConnectionNotFoundException ex) { }}}
         );
-        siteUrl=new LinkString("http://bombusmod.net.ru"){ public void doAction() { try { BombusQD.getInstance().platformRequest("http://bombusmod.net.ru"); } catch (ConnectionNotFoundException ex) { }}};
-        itemsList.addElement(siteUrl);
+        name=new LinkString("http://bombusmod.net.ru"){ public void doAction() { try { BombusQD.getInstance().platformRequest("http://bombusmod.net.ru"); } catch (ConnectionNotFoundException ex) { }}};
+        itemsList.addElement(name);
         
         itemsList.addElement(new SpacerItem(10));
         
@@ -138,14 +134,14 @@ public class InfoWindow
                .append("\n")
                .append(SR.get(SR.MS_TOTAL))
                .append(Runtime.getRuntime().totalMemory()>>10);
-        memory=new MultiLine(SR.get(SR.MS_MEMORY), memInfo.toString(), super.superWidth);
-        memory.selectable=true;
-        itemsList.addElement(memory);
+        name=new MultiLine(SR.get(SR.MS_MEMORY), memInfo.toString(), super.superWidth);
+        ((MultiLine)name).selectable=true;
+        itemsList.addElement(name);
         memInfo=null;
         
-        abilities=new MultiLine("Abilities", getAbilities(), super.superWidth);
-        abilities.selectable=true;
-        itemsList.addElement(abilities);
+        name=new MultiLine("Abilities", getAbilities(), super.superWidth);
+        ((MultiLine)name).selectable=true;
+        itemsList.addElement(name);
         
         
 //#ifdef CLIPBOARD
@@ -169,7 +165,14 @@ public class InfoWindow
     
 //#ifdef CLIPBOARD
 //#     public void cmdOk(){
-//#         clipboard.setClipBoard(name.toString()+"\n"+memory.toString()+"\n"+abilities.toString());
+//#         StringBuffer memory=new StringBuffer(SR.get(SR.MS_FREE));
+//#         System.gc();
+//#         memory.append(Runtime.getRuntime().freeMemory()>>10)
+//#                .append("\n")
+//#                .append(SR.get(SR.MS_TOTAL))
+//#                .append(Runtime.getRuntime().totalMemory()>>10);
+//#         clipboard.setClipBoard(memory.toString() + "\n" + getAbilities().toString());
+//#         System.out.println(clipboard.getClipBoard());
 //#         destroyView();
 //# 
 //#     }
@@ -230,7 +233,7 @@ public class InfoWindow
     }
     
     private String getAbilities() {
-        Vector abilitiesList=new Vector();
+        Vector abilitiesList=new Vector(0);
 //#ifdef ADHOC
 //#ifdef PLUGINS
 //#         if (sd.Adhoc)
@@ -389,13 +392,13 @@ public class InfoWindow
 //#         abilitiesList.addElement((String)"USER_KEYS");
 //#endif
 //#ifdef USE_ROTATOR
-        if(Config.getInstance().useLowMemory_userotator==false){    abilitiesList.addElement((String)"USE_ROTATOR");   }
+        if(midlet.BombusQD.cf.useLowMemory_userotator==false){    abilitiesList.addElement((String)"USE_ROTATOR");   }
 //#endif
 //#ifdef WMUC
 //#         abilitiesList.addElement((String)"WMUC");
 //#endif
 //#ifdef WSYSTEMGC
-//#         abilitiesList.addElement((String)"WSYSTEMGC");
+//#         //abilitiesList.addElement((String)"WSYSTEMGC");
 //#endif
 //#ifdef ZLIB
         abilitiesList.addElement((String)"ZLIB");

@@ -32,8 +32,7 @@ import Client.Config;
 import locale.SR;
 
 public class Version { 
-
-    public static String version = "0.8.r55" + midlet.BombusQD.cf.getStringProperty("build", "") ;
+    public static String version = "0.8.5(r57)" + midlet.BombusQD.cf.getStringProperty("build", "") ;
     public final static String NAME="BombusQD";
     public final static String BOMBUS_SITE_URL="http://bombusmod-qd.wen.ru";
 
@@ -42,13 +41,7 @@ public class Version {
         return (build!="0" && build!=null)?" ["+build+"]":"";
     }
     
-    public static String getVersionLang() { 
-        switch(midlet.BombusQD.cf.userAppLevel){
-           case 0:  version = "0.8.r55s";  break;
-           case 1:  version = "0.8.r55a";  break;
-           case 2:  version = "0.8.r55p";  break;
-        }
-        version += midlet.BombusQD.cf.getStringProperty("build", "");
+    public static String getVersionLang() {
         return version+" ("+SR.get(SR.MS_IFACELANG)+")"+getBuildNum();
     }
     

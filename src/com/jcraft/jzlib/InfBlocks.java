@@ -26,7 +26,7 @@ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/* 
+/*
  * This program is based on zlib-1.1.3, so all credit should go authors
  * Jean-loup Gailly(jloup@gzip.org) and Mark Adler(madler@alumni.caltech.edu)
  * and contributors of zlib.
@@ -46,7 +46,7 @@ final class InfBlocks{
   };
 
   // Table for deflate from PKZIP's appnote.txt.
-  static final byte[] border = { // Order of the bit length code lengths
+  static final int[] border = { // Order of the bit length code lengths
     16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
   };
 
@@ -192,7 +192,8 @@ final class InfBlocks{
 
           {b>>>=(3);k-=(3);}
           mode = BAD;
-          z.msg = "invalid block type";
+          z.addDebugMsg("infBlocks::proc -> invalid block type");
+          //z.msg = "invalid block type";
           r = Z_DATA_ERROR;
 
 	  bitb=b; bitk=k; 
@@ -221,7 +222,8 @@ final class InfBlocks{
 
 	if ((((~b) >>> 16) & 0xffff) != (b & 0xffff)){
 	  mode = BAD;
-	  z.msg = "invalid stored block lengths";
+          z.addDebugMsg("infBlocks::proc -> invalid stored block lengths");
+	  //z.msg = "invalid stored block lengths";
 	  r = Z_DATA_ERROR;
 
 	  bitb=b; bitk=k; 
@@ -294,7 +296,8 @@ final class InfBlocks{
 	if ((t & 0x1f) > 29 || ((t >> 5) & 0x1f) > 29)
 	  {
 	    mode = BAD;
-	    z.msg = "too many length or distance symbols";
+            z.addDebugMsg("infBlocks::proc -> too many length or distance symbols");
+	    //z.msg = "too many length or distance symbols";
 	    r = Z_DATA_ERROR;
 
 	    bitb=b; bitk=k; 
@@ -429,7 +432,8 @@ final class InfBlocks{
 		(c == 16 && i < 1)){
 	      blens=null;
 	      mode = BAD;
-	      z.msg = "invalid bit length repeat";
+              z.addDebugMsg("infBlocks::proc -> invalid bit length repeat");
+	      //z.msg = "invalid bit length repeat";
 	      r = Z_DATA_ERROR;
 
 	      bitb=b; bitk=k; 

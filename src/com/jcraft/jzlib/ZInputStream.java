@@ -31,11 +31,11 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * Jean-loup Gailly(jloup@gzip.org) and Mark Adler(madler@alumni.caltech.edu)
  * and contributors of zlib.
  */
- 
+
 package com.jcraft.jzlib;
 import java.io.*;
 
-public class ZInputStream extends FilterInputStream {
+public class ZInputStream extends InputStream {
 
   protected ZStream z=new ZStream();
   protected int bufsize=512;
@@ -50,7 +50,6 @@ public class ZInputStream extends FilterInputStream {
     this(in, false);
   }
   public ZInputStream(InputStream in, boolean nowrap) {
-    super(in);
     this.in=in;
     z.inflateInit(nowrap);
     compress=false;
@@ -60,7 +59,6 @@ public class ZInputStream extends FilterInputStream {
   }
 
   public ZInputStream(InputStream in, int level) {
-    super(in);
     this.in=in;
     z.deflateInit(level);
     compress=true;
@@ -81,53 +79,53 @@ public class ZInputStream extends FilterInputStream {
 
   private boolean nomoreinput=false;
 
-
   public int read(byte[] b, int off, int len) throws IOException {
-    if(len==0)
-      return(0);
-    int err;
-    z.next_out=b;
-    z.next_out_index=off;
-    z.avail_out=len;
-    do {
-      if((z.avail_in==0)&&(!nomoreinput)) { // if buffer is empty and more input is avaiable, refill it
-	z.next_in_index=0;
-        
-        int avail=in.available();
-        
-        while (avail==0) {
-            try { Thread.sleep(100); } catch (Exception e) { }
-            avail=in.available();
-        }
+      if(len==0)
+          return(0);
+      int err;
+      z.next_out=b;
+      z.next_out_index=off;
+      z.avail_out=len;
+      do {
+          if((z.avail_in==0)&&(!nomoreinput)) { // if buffer is empty and more input is avaiable, refill it
+              z.next_in_index=0;
+              
+              int avail=in.available();
 
-	z.avail_in=in.read(buf, 0, (avail<bufsize)?avail:bufsize);//(bufsize<z.avail_out ? bufsize : z.avail_out));
-        
-	if(z.avail_in==-1) {
-	  z.avail_in=0;
-	  nomoreinput=true;
-	}
+              if (avail==0) return 0;
+              while (avail==0) {
+                  try { Thread.sleep(100); } catch (Exception e) { }
+                  avail=in.available();
+              }
+              
+              z.avail_in=in.read(buf, 0, (avail<bufsize)?avail:bufsize);//(bufsize<z.avail_out ? bufsize : z.avail_out));
+              
+              if(z.avail_in==-1) {
+                  z.avail_in=0;
+                  nomoreinput=true;
+              }
+              midlet.BombusQD.sd.roster.theStream.updateTraffic(true, z.avail_in);
+          }
+          if(compress)
+              err=z.deflate(flush);
+          else
+              err=z.inflate(flush);
+          if(nomoreinput&&(err==JZlib.Z_BUF_ERROR))
+              return(-1);
+          if(err!=JZlib.Z_OK && err!=JZlib.Z_STREAM_END)
+              throw new IOException(/*(compress ? "de" : "in")+"flating: "+z.msg*/);
+          if((nomoreinput||err==JZlib.Z_STREAM_END)&&(z.avail_out==len))
+              return(-1);
       }
-      if(compress)
-	err=z.deflate(flush);
-      else
- 	err=z.inflate(flush);
-      if(nomoreinput&&(err==JZlib.Z_BUF_ERROR))
-         return(-1);
-      if(err!=JZlib.Z_OK && err!=JZlib.Z_STREAM_END)
- 	throw new ZStreamException((compress ? "de" : "in")+"flating: "+z.msg);
-      if((nomoreinput||err==JZlib.Z_STREAM_END)&&(z.avail_out==len))
- 	return(-1);
-     } 
-    while(z.avail_out==len&&err==JZlib.Z_OK);
-     //System.err.print("("+(len-z.avail_out)+")");
-     //    for (int i=0; i<len-z.avail_out; i++) {
-    //         System.out.print((char) b[i]);
-    //     }
-    //    System.out.println();
-      
-     return(len-z.avail_out);
+      while(z.avail_out==len&&err==JZlib.Z_OK);
+      //System.err.print("("+(len-z.avail_out)+")");
+     /*    for (int i=0; i<len-z.avail_out; i++) {
+             System.out.print((char) b[i]);
+         }
+        System.out.println();
+      */
+      return(len-z.avail_out);
   }
-  
 
   public long skip(long n) throws IOException {
     int len=512;

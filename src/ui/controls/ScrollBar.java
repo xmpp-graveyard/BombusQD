@@ -95,7 +95,7 @@ public class ScrollBar {
     public void setHasPointerEvents(boolean hasPointerEvents) {
         this.hasPointerEvents = hasPointerEvents;
 	midlet.BombusQD.cf.scrollWidth=//если значение пол€ ширины скролла Ѕольше 4,то:
-            (Config.getInstance().scrollWidth>4)? Config.getInstance().scrollWidth:
+            (midlet.BombusQD.cf.scrollWidth>3)? midlet.BombusQD.cf.scrollWidth:
                 ( (hasPointerEvents)? WIDTH_SCROLL_2: 4 );
     }
 
@@ -153,7 +153,7 @@ public class ScrollBar {
 	scrollerX=drawWidth-scrollWidth;
 
 	g.translate(scrollerX, 0);
-        if(Config.getInstance().drawScrollBgnd){
+        if(midlet.BombusQD.cf.drawScrollBgnd){
          g.setColor(colorTop);
 	 g.fillRect(1, 0, scrollWidth-2, drawHeight-1);
 	
@@ -167,7 +167,7 @@ public class ScrollBar {
 	scrollerSize=(drawHeight*windowSize)/size+minimumHeight;
 	
 	scrollerPos=(drawHeight*position)/size;
-       if(Config.getInstance().drawScrollBgnd){   
+       if(midlet.BombusQD.cf.drawScrollBgnd){   
         g.setColor(colorBar);
         g.fillRect(1, scrollerPos, scrollWidth-2, scrollerSize);
         
