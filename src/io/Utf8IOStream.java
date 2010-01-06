@@ -99,7 +99,7 @@ public class Utf8IOStream {
             data.setLength(0);
             
             if(isZlib == false){
-              setInTraffic(avail);
+              addOutTraffic(avail);
               updateTraffic(false, 0);
             }
 	}
@@ -129,7 +129,7 @@ public class Utf8IOStream {
 //# 	System.out.println("<< "+new String(buf, 0, avail));
 //#endif
         if(isZlib == false){
-            setInTraffic(avail);
+            addInTraffic(avail);
             updateTraffic(false, 0);
         }
         return avail;
@@ -149,20 +149,16 @@ public class Utf8IOStream {
      }
     
 
-     //zlib
      private static final int TCP_SERVICEINFO_OUT_PROCENT = 75;
      private static final int TCP_SERVICEINFO_IN_PROCENT = 80;
-     public static void addInTraffic(int bytes) {
-         bytesRecv  = ( bytes  + (bytes * TCP_SERVICEINFO_IN_PROCENT)/100 );
+     
+     private static int getBytes(int bytes){ 
+         return bytes + (bytes * TCP_SERVICEINFO_IN_PROCENT)/100;
      }
-     public static void addOutTraffic(int bytes) {
-         bytesSent  = ( bytes  + (bytes * TCP_SERVICEINFO_OUT_PROCENT)/100 );
-     }
- 
-     //non zlib
-     private static void setInTraffic(int bytes) { bytesRecv  = bytes; }
-     private static void setOutTraffic(int bytes) { bytesSent  = bytes; }
-
+     
+     public static void addInTraffic(int bytes) { bytesRecv += getBytes(bytes); }
+     public static void addOutTraffic(int bytes) { bytesSent += getBytes(bytes); }
+     
      
     public void close() {
          bytesSent = 0;

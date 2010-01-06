@@ -96,7 +96,7 @@ public class InfoWindow
         itemsList.addElement(name);
         
 
-        name=new MultiLine("Copyright (c) 2005-2009", 
+        name=new MultiLine("Copyright (c) 2005-2010", 
                 "Eugene Stahov (evgs,Bombus);\nDaniel Apatin (ad,BombusMod);\nAlexej Kotov(aqent,BombusQD);\n" +
                 "Andrey Tikhonov(Tishka17,BombusQD)\n" +
                 "Distributed under GPL v2 License \n", super.superWidth);
