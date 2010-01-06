@@ -67,7 +67,7 @@ public class InviteForm
             try {
                 MucContact mc=(MucContact)c.nextElement();
 
-                if (mc.origin==Constants.ORIGIN_GROUPCHAT && mc.status==Presence.PRESENCE_ONLINE) {
+                if (mc.origin==Constants.ORIGIN_GROUPCHAT && mc.status==Constants.PRESENCE_ONLINE) {
                     conferenceList.append(mc.getJid());
                     conferences.addElement(mc.getJid());
                 }

@@ -241,7 +241,7 @@ public class ArchiveList
 	    data=m.from;
 	    break;
 	default:
-	    data=m.quoteString();
+	    data=util.StringUtils.quoteString(m);
 	}
         if(midlet.BombusQD.cf.msgEditType>0){
            tf.insert(data, caretPos);

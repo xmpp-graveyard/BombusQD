@@ -319,8 +319,8 @@ public final class ConferenceForm
         } catch (Exception e) {}
         
         int status=midlet.BombusQD.sd.roster.myStatus;
-        if (status==Presence.PRESENCE_INVISIBLE) 
-            status=Presence.PRESENCE_ONLINE;
+        if (status==Constants.PRESENCE_INVISIBLE) 
+            status=Constants.PRESENCE_ONLINE;
         midlet.BombusQD.sd.roster.sendDirectPresence(status, jid, x);
         grp.inRoom=true;
         midlet.BombusQD.sd.roster.reEnumRoster();

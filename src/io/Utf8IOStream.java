@@ -50,15 +50,18 @@ public class Utf8IOStream {
 
     private boolean iStreamWaiting;
 
-    private long bytesRecv;
-    private long bytesSent;
+    private static int bytesRecv;
+    private static int bytesSent;
+    private boolean isZlib = false;
 
 //#if (ZLIB)
-    public void setStreamCompression(){
-        inpStream=new ZInputStream(inpStream);
-        outStream=new ZOutputStream(outStream, JZlib.Z_DEFAULT_COMPRESSION);
-        ((ZOutputStream)outStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
-    }
+     public void setStreamCompression(){
+        inpStream = new ZInputStream(inpStream);
+        outStream = new ZOutputStream(outStream, JZlib.Z_DEFAULT_COMPRESSION);
+         ((ZOutputStream)outStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
+        this.isZlib = true;
+        midlet.BombusQD.debug.add("::ZLIB->" + this.isZlib,10);
+     }
 //#endif
     
     /** Creates a new instance of Utf8IOStream */
@@ -89,13 +92,16 @@ public class Utf8IOStream {
             byte[] bytes = Strconv.stringToByteArray(data.toString());
             int outLen=bytes.length;
 	    outStream.write(bytes);
-            setSent(bytesSent+outLen);
 
 	    outStream.flush();
             bytes=null;
             bytes=new byte[0];
             data.setLength(0);
-            updateTraffic();
+            
+            if(isZlib == false){
+              setInTraffic(avail);
+              updateTraffic(false, 0);
+            }
 	}
 //#if (XML_STREAM_DEBUG)        
 //#         System.out.println(">> "+data);
@@ -122,28 +128,59 @@ public class Utf8IOStream {
 //#if (XML_STREAM_DEBUG)
 //# 	System.out.println("<< "+new String(buf, 0, avail));
 //#endif
-        setRecv(bytesRecv+avail);
-        updateTraffic();
+        if(isZlib == false){
+            setInTraffic(avail);
+            updateTraffic(false, 0);
+        }
         return avail;
     }
 
-    private void updateTraffic() {
-        midlet.BombusQD.sd.traffic=getBytes();
-        midlet.BombusQD.sd.updateTrafficOut();
-    }
     
+    public void updateTraffic(boolean in, int value) {
+        if(isZlib) {
+           if(in) addInTraffic(value); 
+           else 
+               addOutTraffic(value);
+           midlet.BombusQD.sd.traffic = bytesSent + bytesRecv;
+        } else {
+          midlet.BombusQD.sd.traffic = getBytes();
+        }
+         midlet.BombusQD.sd.updateTrafficOut();
+     }
     
-    private void setRecv(long bytes) {
-        bytesRecv=bytes;
-    }
-    
-    private void setSent(long bytes) {
-        bytesSent=bytes;
-    }    
-    
+
+     //zlib
+     private static final int TCP_SERVICEINFO_OUT_PROCENT = 75;
+     private static final int TCP_SERVICEINFO_IN_PROCENT = 80;
+     public static void addInTraffic(int bytes) {
+         bytesRecv  = ( bytes  + (bytes * TCP_SERVICEINFO_IN_PROCENT)/100 );
+     }
+     public static void addOutTraffic(int bytes) {
+         bytesSent  = ( bytes  + (bytes * TCP_SERVICEINFO_OUT_PROCENT)/100 );
+     }
+ 
+     //non zlib
+     private static void setInTraffic(int bytes) { bytesRecv  = bytes; }
+     private static void setOutTraffic(int bytes) { bytesSent  = bytes; }
+
+     
     public void close() {
-	try { outStream.close(); outStream=null; }  catch (Exception e) {}
-	try { inpStream.close(); inpStream=null; }  catch (Exception e) {}
+         bytesSent = 0;
+         bytesRecv = 0;
+ 	try { 
+             boolean outZ = (outStream instanceof ZOutputStream);
+             midlet.BombusQD.debug.add("::CLOSE_OUT_ZLIB->"  + outZ,10);
+             if(outZ) 
+                 ((ZOutputStream)outStream).close();
+             else outStream.close(); 
+         } catch (Exception e) {} finally {  outStream = null; }
+ 	try { 
+             boolean inZ = (inpStream instanceof ZInputStream);
+             midlet.BombusQD.debug.add("::CLOSE_IN_ZLIB->" +  inZ,10);
+             if(inZ) 
+                 ((ZInputStream)inpStream).close();
+             else inpStream.close();
+         } catch (Exception e) {} finally {  inpStream = null; }
     }
 
 //#if ZLIB
@@ -158,7 +195,7 @@ public class Utf8IOStream {
         try {
             long sent=bytesSent;
             long recv=bytesRecv;
-            if (inpStream instanceof ZInputStream) {
+            if (isZlib) {
                 ZInputStream z = (ZInputStream) inpStream;
                 recv+=z.getTotalIn()-z.getTotalOut();
                 ZOutputStream zo = (ZOutputStream) outStream;
@@ -192,18 +229,19 @@ public class Utf8IOStream {
         try {
             long sent=bytesSent;
             long recv=bytesRecv;
-            if (inpStream instanceof ZInputStream) {
+            if (isZlib) {
                 ZInputStream z = (ZInputStream) inpStream;
                 recv+=z.getTotalIn()-z.getTotalOut();
                 ZOutputStream zo = (ZOutputStream) outStream;
                 sent+=zo.getTotalOut()-zo.getTotalIn();
                 stats.append("ZLib:\nin: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
                 stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
+            } else {
+              stats.append("\nin: ")
+                  .append(recv)
+                  .append("\nout: ")
+                  .append(sent);
             }
-            stats.append("\nin: ")
-                 .append(recv)
-                 .append("\nout: ")
-                 .append(sent);
         } catch (Exception e) {
             stats=null;
             return "";
@@ -247,7 +285,7 @@ public class Utf8IOStream {
     public long getBytes() {
         long startBytes=bytesSent+bytesRecv;
         try {
-            if (inpStream instanceof ZInputStream) {
+            if (isZlib) {
                 ZOutputStream zo = (ZOutputStream) outStream;
                 ZInputStream z = (ZInputStream) inpStream;
                 return (long)zo.getTotalOut()+(long)z.getTotalIn();

@@ -192,14 +192,14 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 //#             }
 //#endif
             if(!originGroupchat) addItem(SR.get(SR.MS_SEND_COLOR_SCHEME), 912, menuIcons.ICON_SEND_COLORS);
-            if (contact.status<Presence.PRESENCE_OFFLINE && !originGroupchat) {
+            if (contact.status<Constants.PRESENCE_OFFLINE && !originGroupchat) {
                 addItem(SR.get(SR.MS_TIME),891, menuIcons.ICON_TIME);
                 addItem(SR.get(SR.MS_IDLE),889, menuIcons.ICON_IDLE);
                 addItem(SR.get(SR.MS_PING),893, menuIcons.ICON_PING);
             }
 	    
 	    if (grType!=Groups.TYPE_SELF && grType!=Groups.TYPE_SEARCH_RESULT && contact.origin<Constants.ORIGIN_GROUPCHAT) {
-		if (contact.status<Presence.PRESENCE_OFFLINE) {
+		if (contact.status<Constants.PRESENCE_OFFLINE) {
                     addItem(SR.get(SR.MS_ONLINE_TIME),890, menuIcons.ICON_ONLINE);    
                 } else {
                     addItem(SR.get(SR.MS_SEEN),894, menuIcons.ICON_ONLINE); 
@@ -290,7 +290,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                     if (mc.affiliationCode!=Constants.AFFILIATION_OWNER) 
                         addItem(SR.get(SR.MS_GRANT_OWNERSHIP),38, menuIcons.ICON_OWNER);
                 }
-                if (mc.realJid!=null && mc.status<Presence.PRESENCE_OFFLINE) {
+                if (mc.realJid!=null && mc.status<Constants.PRESENCE_OFFLINE) {
                     
                 }
             } else if (grType!=Groups.TYPE_TRANSP && grType!=Groups.TYPE_SEARCH_RESULT) {
@@ -333,7 +333,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 		addItem(SR.get(SR.MS_LEAVE_ROOM),22, menuIcons.ICON_LEAVE);
                 addItem(SR.get(SR.MS_CLOSE_ALL_ROOMS),900, menuIcons.ICON_LEAVE);
 
-                if (self.status>=Presence.PRESENCE_OFFLINE) {// offline or error
+                if (self.status>=Constants.PRESENCE_OFFLINE) {// offline or error
 		    addItem(SR.get(SR.MS_REENTER),23, menuIcons.ICON_CHANGE_NICK);
                 } else {
                     addItem(SR.get(SR.MS_DIRECT_PRESENCE),46, menuIcons.ICON_SET_STATUS);
@@ -487,7 +487,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                 case 6: // logoff
                     midlet.BombusQD.sd.roster.blockNotify(-111,10000); //block sounds to 10 sec
                     Presence presence = new Presence(
-                    Presence.PRESENCE_OFFLINE, -1, "", null);
+                    Constants.PRESENCE_OFFLINE, -1, "", null);
                     presence.setTo(c.getJid());
                     midlet.BombusQD.sd.roster.theStream.send( presence );
                     presence=null;
@@ -616,7 +616,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                             for (Enumeration cJ=midlet.BombusQD.sd.roster.getHContacts().elements(); cJ.hasMoreElements(); ) {
                                 try {
                                     MucContact mcN=(MucContact)cJ.nextElement();
-                                    if (mcN.origin==Constants.ORIGIN_GROUPCHAT && mcN.status==Presence.PRESENCE_ONLINE)
+                                    if (mcN.origin==Constants.ORIGIN_GROUPCHAT && mcN.status==Constants.PRESENCE_ONLINE)
                                         onlineConferences=true;
                                 } catch (Exception e) {}
                             }

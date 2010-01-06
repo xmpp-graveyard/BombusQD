@@ -26,13 +26,57 @@
 
 
 package Client;
-
+import Colors.ColorTheme;
+import images.RosterIcons;
 /**
  *
  * @author aqent
  */
 public final class Constants {
 
+     
+     public final static String PRS_OFFLINE="unavailable";
+     public final static String PRS_ERROR="error";
+     public final static String PRS_CHAT="chat";
+     public final static String PRS_AWAY="away";
+     public final static String PRS_XA="xa";
+     public final static String PRS_DND="dnd";
+     public final static String PRS_ONLINE="online";
+     public final static String PRS_INVISIBLE="invisible";    
+     
+     public final static byte PRESENCE_ONLINE=0;
+     public final static byte PRESENCE_CHAT=1;
+     public final static byte PRESENCE_AWAY=2;
+     public final static byte PRESENCE_XA=3;
+     public final static byte PRESENCE_DND=4;
+     public final static byte PRESENCE_OFFLINE=5;
+     public final static byte PRESENCE_ASK=6;
+     public final static byte PRESENCE_UNKNOWN=7;
+     public final static byte PRESENCE_INVISIBLE=RosterIcons.ICON_INVISIBLE_INDEX;
+     public final static byte PRESENCE_ERROR=RosterIcons.ICON_ERROR_INDEX;
+     public final static byte PRESENCE_TRASH=RosterIcons.ICON_TRASHCAN_INDEX;
+     public final static byte PRESENCE_AUTH=-1;
+     public final static byte PRESENCE_AUTH_ASK=-2;
+     public final static byte PRESENCE_SAME=-100;    
+     
+     
+     public final static int getMessageColor(int messageType) {
+         switch (messageType) {
+             case MESSAGE_TYPE_IN: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+             case MESSAGE_TYPE_PRESENCE: return ColorTheme.getColor(ColorTheme.MESSAGE_PRESENCE);
+             case MESSAGE_TYPE_OUT: return ColorTheme.getColor(ColorTheme.MESSAGE_OUT);
+             case MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.MSG_SUBJ);
+             case MESSAGE_TYPE_HEADLINE: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+             case MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
+             case MESSAGE_TYPE_EVIL: return 0xFF0000;
+             case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
+ //#ifdef JUICK.COM    
+ //#             case MESSAGE_TYPE_JUICK: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+ //#endif
+         }
+         return ColorTheme.getColor(ColorTheme.LIST_INK);
+     }
+         
     // without signaling
     public final static byte MESSAGE_TYPE_OUT=1;
     public final static byte MESSAGE_TYPE_PRESENCE=2;

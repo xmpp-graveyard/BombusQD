@@ -101,21 +101,7 @@ public class Msg {
     public int getColor() {
         if (selected || highlite) return ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT);
         if (color>-1) return color; 
-
-        switch (messageType) {
-            case Constants.MESSAGE_TYPE_IN: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
-            case Constants.MESSAGE_TYPE_PRESENCE: return ColorTheme.getColor(ColorTheme.MESSAGE_PRESENCE);
-            case Constants.MESSAGE_TYPE_OUT: return ColorTheme.getColor(ColorTheme.MESSAGE_OUT);
-            case Constants.MESSAGE_TYPE_SUBJ:return ColorTheme.getColor(ColorTheme.MSG_SUBJ);
-            case Constants.MESSAGE_TYPE_HEADLINE: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
-            case Constants.MESSAGE_TYPE_AUTH: return ColorTheme.getColor(ColorTheme.MESSAGE_AUTH);
-            case Constants.MESSAGE_TYPE_EVIL: return 0xFF0000;
-            case Constants.MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
-//#ifdef JUICK.COM    
-//#             case Constants.MESSAGE_TYPE_JUICK: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
-//#endif
-        }
-        return ColorTheme.getColor(ColorTheme.LIST_INK);
+        return Constants.getMessageColor(messageType);
     }
     
 
@@ -147,20 +133,5 @@ public class Msg {
 	dateGmt=is.readLong();
         messageType=Constants.MESSAGE_TYPE_IN;
 	try { subject=is.readUTF(); } catch (Exception e) { subject=null; }
-    }
-
-    public String quoteString(){
-        StringBuffer out=new StringBuffer(0);
-        if (subject!=null)
-            if (subject.length()>0)
-                out.append(subject).append("\n");
-        out.append(body);
-        int i=0;
-        int len = out.length();
-        while (i<len) {
-            if (out.charAt(i)<0x03) out.deleteCharAt(i);
-            else i++;
-        }
-        return out.toString();
     }
 }

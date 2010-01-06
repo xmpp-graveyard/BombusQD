@@ -166,10 +166,12 @@ public class Contact extends IconTextElement{
             messageList.destroy();
             messageList = null;
         }
-        if(temp.length()>0) temp.setLength(0);
         if(null != msgSuspended) msgSuspended = null;
         if(null != vcard) clearVCard();
         if(null != clientName) clientName = null;
+        if(null != version) version = null;
+        if(null != lang) lang = null;
+        client = -1;        
 
         if(null != version) version = null;
         if(null != lastSendedMessage) lastSendedMessage = null;
@@ -203,32 +205,6 @@ public class Contact extends IconTextElement{
         transport=RosterIcons.getInstance().getTransportIndex(jid.getTransport());
     }
     
-    public Contact clone(Jid newjid, final int status) {
-        Contact clone=new Contact();
-        clone.setGroup(group);
-        clone.jid=newjid; 
-        clone.nick=nick;
-        clone.key1=key1;
-        clone.subscr=subscr;
-        clone.offline_type=offline_type;
-        clone.origin=Constants.ORIGIN_CLONE;
-        clone.status=status; 
-        clone.transport=RosterIcons.getInstance().getTransportIndex(newjid.getTransport()); //<<<<
-//#ifdef PEP
-//#         clone.pepMood=pepMood;
-//#         clone.pepMoodName=pepMoodName;
-//#         clone.pepMoodText=pepMoodText;
-//#ifdef PEP
-//#         clone.pepTune=pepTune;
-//#         clone.pepTuneText=pepTuneText;
-//#         clone.activity=activity;
-//#endif
-//#endif
-        clone.bareJid=bareJid;
-        return clone;
-    }
-    
-    
     public int getColor() {
 //#if USE_ROTATOR        
         if (isnew>0){
@@ -249,10 +225,10 @@ public class Contact extends IconTextElement{
     
     public int getMainColor() {
         switch (status) {
-            case Presence.PRESENCE_CHAT: return ColorTheme.getColor(ColorTheme.CONTACT_CHAT);
-            case Presence.PRESENCE_AWAY: return ColorTheme.getColor(ColorTheme.CONTACT_AWAY);
-            case Presence.PRESENCE_XA: return ColorTheme.getColor(ColorTheme.CONTACT_XA);
-            case Presence.PRESENCE_DND: return ColorTheme.getColor(ColorTheme.CONTACT_DND);
+            case Constants.PRESENCE_CHAT: return ColorTheme.getColor(ColorTheme.CONTACT_CHAT);
+            case Constants.PRESENCE_AWAY: return ColorTheme.getColor(ColorTheme.CONTACT_AWAY);
+            case Constants.PRESENCE_XA: return ColorTheme.getColor(ColorTheme.CONTACT_XA);
+            case Constants.PRESENCE_DND: return ColorTheme.getColor(ColorTheme.CONTACT_DND);
         }
         return ColorTheme.getColor(ColorTheme.CONTACT_DEFAULT);
     }
@@ -312,7 +288,6 @@ public class Contact extends IconTextElement{
         return c.transport-transport;
     }
 
-    private static StringBuffer temp = new StringBuffer(0);
     public void addMessage(Msg m) {
         boolean first_replace=false;
         boolean first_msgreplace=false;
@@ -320,6 +295,7 @@ public class Contact extends IconTextElement{
             if (m.isPresence()) first_replace = chatInfo.isOnlyStatusMessage();
             else {
                 first_msgreplace = chatInfo.isFirstMessage();
+                StringBuffer temp = new StringBuffer(0);
                 if (midlet.BombusQD.cf.showNickNames) {
                     temp.setLength(0);
                     temp.append((m.messageType==Constants.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
@@ -329,6 +305,7 @@ public class Contact extends IconTextElement{
                     if (m.subject!=null) temp.append(m.subject);
                     m.subject=temp.toString();
                     temp.setLength(0);
+                    temp = null;
                 }
                 if (m.body.startsWith("/me ")) {
                     temp.setLength(0);
@@ -346,7 +323,7 @@ public class Contact extends IconTextElement{
                 }
             }
         } else {
-            status = Presence.PRESENCE_ONLINE;
+            status = Constants.PRESENCE_ONLINE;
             if (null != messageList) {
                 getML().deleteOldMessages();
             }
@@ -462,7 +439,7 @@ public class Contact extends IconTextElement{
     public void setStatus(int status) {
         setIncoming(0);
         this.status = status;
-        if (status>=Presence.PRESENCE_OFFLINE) acceptComposing=false;
+        if (status>=Constants.PRESENCE_OFFLINE) acceptComposing=false;
     }
 
     final void markDelivered(String id) {
@@ -520,10 +497,10 @@ public class Contact extends IconTextElement{
  
     public int transport;
     public int status;
-    public int offline_type=Presence.PRESENCE_UNKNOWN;
+    public int offline_type=Constants.PRESENCE_UNKNOWN;
     public int getImageIndex() {
         if (showComposing) return RosterIcons.ICON_COMPOSING_INDEX;
-        int st=(status==Presence.PRESENCE_OFFLINE)?offline_type:status;
+        int st=(status==Constants.PRESENCE_OFFLINE)?offline_type:status;
         return (st < 8) ? st + transport : st;
     }
 

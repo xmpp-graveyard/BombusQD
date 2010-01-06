@@ -17,7 +17,7 @@ import Conference.ConferenceGroup;
 import com.alsutton.jabber.datablocks.Presence;
 import java.util.Vector;
 import locale.SR;
-
+import Client.Constants;
 /**
  *
  * @author Vladimir Krukov
@@ -91,7 +91,7 @@ public final class ContactList {
     public Contact getSelfContact(Jid selfJid) {
         Contact selfContact = findContact(contacts, selfJid, false);
         if (null == selfContact) {
-            selfContact = new Contact(midlet.BombusQD.sd.account.getNick(), selfJid.getBareJid(), Presence.PRESENCE_OFFLINE, null);
+            selfContact = new Contact(midlet.BombusQD.sd.account.getNick(), selfJid.getBareJid(), Constants.PRESENCE_OFFLINE, null);
             Group group = getGroup(SR.get(SR.MS_SELF_CONTACT));
             if (null == group) {
                 group = new Group(SR.get(SR.MS_SELF_CONTACT), Groups.TYPE_COMMON);
@@ -162,7 +162,7 @@ public final class ContactList {
     public void setOfflineStatus() {
         for (int index = contacts.size() - 1; 0 <= index; --index) {
             Contact c = (Contact) contacts.elementAt(index);
-            c.setStatus(Presence.PRESENCE_OFFLINE); // keep error & unknown
+            c.setStatus(Constants.PRESENCE_OFFLINE); // keep error & unknown
         }
     }
 

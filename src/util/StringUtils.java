@@ -23,6 +23,7 @@ import Client.ClassicChat;
 import Client.Msg;
 import Client.Config;
 import Client.StaticData;
+import Client.Constants;
 /**
  *
  * @author ad
@@ -31,6 +32,23 @@ public class StringUtils {
     
     /** Creates a new instance of StringUtils */
     public StringUtils() { }
+    
+     
+    public static String quoteString(Msg msg) {
+        StringBuffer out=new StringBuffer(0);
+        String subject = msg.subject;
+        if (subject!=null)
+            if (subject.length()>0)
+                out.append(subject).append('\n');
+        out.append(msg.body);
+        int i=0;
+        int len = out.length();
+        while (i<len) {
+            if (out.charAt(i)<0x03) out.deleteCharAt(i);
+            else i++;
+        }
+        return out.toString();
+    }
     
     private final static String[] badChars= { "?", "\\", "/", "*", ".", "\"", ":", "%", "@", "|", "<", ">", "COM", "LPT", "NULL", "PRINT"};
  
@@ -356,9 +374,9 @@ public class StringUtils {
         int errCode=xe.getCondition();
 
         //ConferenceGroup grp=(ConferenceGroup)group;//? 
-        if (presenceType>=Presence.PRESENCE_OFFLINE) 
-            muc.testMeOffline(true);
-        if (errCode!=XmppError.CONFLICT || presenceType>=Presence.PRESENCE_OFFLINE)
+        if (presenceType>=Constants.PRESENCE_OFFLINE) 
+            midlet.BombusQD.sd.roster.testMeOffline(muc, group, true);
+        if (errCode!=XmppError.CONFLICT || presenceType>=Constants.PRESENCE_OFFLINE)
             muc.setStatus(presenceType);
 
         String errText=xe.getText();

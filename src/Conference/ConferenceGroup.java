@@ -127,7 +127,7 @@ public final class ConferenceGroup extends Group{
         }
 
         // rename contact
-        if (Presence.PRESENCE_OFFLINE <= selfContact.status) {
+        if (Constants.PRESENCE_OFFLINE <= selfContact.status) {
             selfContact.setNick(nick);
             selfContact.jid.setJid(jid);
             //selfContact.setBareJid(jid);

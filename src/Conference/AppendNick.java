@@ -98,7 +98,7 @@ public class AppendNick
         int size=StaticData.getInstance().roster.getHContacts().size();        
             for(int i=0;i<size;i++){    
               Contact c=(Contact)StaticData.getInstance().roster.getHContacts().elementAt(i);
-              if (c.group==to.group && c.origin>Constants.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
+              if (c.group==to.group && c.origin>Constants.ORIGIN_GROUPCHAT && c.status<Constants.PRESENCE_OFFLINE)
                 nicknames.addElement(c);             
             }
         commandState();
@@ -122,7 +122,7 @@ public class AppendNick
         int size=StaticData.getInstance().roster.getHContacts().size();        
             for(int i=0;i<size;i++){    
               Contact c=(Contact)StaticData.getInstance().roster.getHContacts().elementAt(i);
-              if (c.group==to.group && c.origin>Constants.ORIGIN_GROUPCHAT && c.status<Presence.PRESENCE_OFFLINE)
+              if (c.group==to.group && c.origin>Constants.ORIGIN_GROUPCHAT && c.status<Constants.PRESENCE_OFFLINE)
                 nicknames.addElement(c);             
             }
         sort(nicknames);

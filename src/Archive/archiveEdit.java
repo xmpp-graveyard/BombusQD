@@ -82,7 +82,7 @@ public class archiveEdit
         
         if (pos>-1) {
             this.msg=archive.msg(pos);
-            body=msg.quoteString();
+            body=util.StringUtils.quoteString(msg);
         }
         
         t.setString(body);

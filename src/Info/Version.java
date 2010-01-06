@@ -32,7 +32,7 @@ import Client.Config;
 import locale.SR;
 
 public class Version { 
-    public static String version = "0.8.5(r57)" + midlet.BombusQD.cf.getStringProperty("build", "") ;
+    public static String version = "0.8.5(r58)" + midlet.BombusQD.cf.getStringProperty("build", "") ;
     public final static String NAME="BombusQD";
     public final static String BOMBUS_SITE_URL="http://bombusmod-qd.wen.ru";
 

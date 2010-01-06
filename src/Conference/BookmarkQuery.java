@@ -35,7 +35,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 import Client.Config;
 import com.alsutton.jabber.datablocks.Presence;
-
+import Client.Constants;
 import util.StringLoader;
 
 /**
@@ -75,7 +75,7 @@ public class BookmarkQuery implements JabberBlockListener{
             if (data.getAttribute("id").equals("getbookmarks")) {
                 JabberDataBlock storage=data.findNamespace("query", "jabber:iq:private"). findNamespace("storage", "storage:bookmarks");
                 Vector bookmarks=new Vector(0);
-		boolean autojoin=midlet.BombusQD.cf.autoJoinConferences && midlet.BombusQD.sd.roster.myStatus!=Presence.PRESENCE_INVISIBLE;
+		boolean autojoin=midlet.BombusQD.cf.autoJoinConferences && midlet.BombusQD.sd.roster.myStatus!=Constants.PRESENCE_INVISIBLE;
 
                 try {
                     int size=storage.getChildBlocks().size();

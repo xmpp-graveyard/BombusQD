@@ -176,6 +176,11 @@ public class JabberStream extends XmppParser implements Runnable {
         dispatcher.broadcastTerminatedConnection(null);
     }
 
+    public void updateTraffic(boolean in, int value) {
+       if(null == iostream) return;
+       iostream.updateTraffic(in,value);
+    }     
+    
     
     public void run() {
         XMLParser parser = new XMLParser( this );

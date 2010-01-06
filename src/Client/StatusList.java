@@ -57,13 +57,13 @@ public class StatusList {
         try {
 	    DataInputStream inputStream=NvStorage.ReadFileRecord("status", 0);
 	    
-	    createFromStream(Presence.PRESENCE_ONLINE, Presence.PRS_ONLINE, inputStream);
-	    createFromStream(Presence.PRESENCE_CHAT, Presence.PRS_CHAT, inputStream);
-	    createFromStream(Presence.PRESENCE_AWAY, Presence.PRS_AWAY, inputStream);
- 	    createFromStream(Presence.PRESENCE_XA, Presence.PRS_XA, inputStream);
- 	    createFromStream(Presence.PRESENCE_DND, Presence.PRS_DND, inputStream);
- 	    createFromStream(Presence.PRESENCE_INVISIBLE, Presence.PRS_INVISIBLE, inputStream);
-	    createFromStream(Presence.PRESENCE_OFFLINE, Presence.PRS_OFFLINE, inputStream);
+	    createFromStream(Constants.PRESENCE_ONLINE, Constants.PRS_ONLINE, inputStream);
+	    createFromStream(Constants.PRESENCE_CHAT, Constants.PRS_CHAT, inputStream);
+	    createFromStream(Constants.PRESENCE_AWAY, Constants.PRS_AWAY, inputStream);
+ 	    createFromStream(Constants.PRESENCE_XA, Constants.PRS_XA, inputStream);
+ 	    createFromStream(Constants.PRESENCE_DND, Constants.PRS_DND, inputStream);
+ 	    createFromStream(Constants.PRESENCE_INVISIBLE, Constants.PRS_INVISIBLE, inputStream);
+	    createFromStream(Constants.PRESENCE_OFFLINE, Constants.PRS_OFFLINE, inputStream);
 	    
 	    inputStream.close();
             inputStream=null;

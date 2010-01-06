@@ -89,7 +89,7 @@ public class Group extends IconTextElement {
     }
     
     private final boolean isOnline(Contact c) {
-        return Presence.PRESENCE_OFFLINE > c.status;
+        return Constants.PRESENCE_OFFLINE > c.status;
     }
     
     public void removeContact(Contact c) {
@@ -198,7 +198,7 @@ public class Group extends IconTextElement {
 
     private final boolean isAlwaysVisible() {
         return type == Groups.TYPE_NOT_IN_LIST || type == Groups.TYPE_TRANSP
-                || type == Groups.TYPE_VISIBLE || type == Groups.TYPE_SEARCH_RESULT;
+                || type == Groups.TYPE_VISIBLE || type == Groups.TYPE_SEARCH_RESULT || type == Groups.TYPE_CONFERENCE;
     }
     
     public int getNContacts() {

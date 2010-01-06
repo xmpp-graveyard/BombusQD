@@ -38,7 +38,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import ui.IconTextElement;
 import io.NvStorage;
-
+import Client.Constants;
 
 public class Account extends IconTextElement{
     
@@ -79,8 +79,8 @@ public class Account extends IconTextElement{
 	    midlet.BombusQD.sd.roster.resetRoster();
             if (launch) {
                 int loginstatus=Config.getInstance().loginstatus;
-                if (loginstatus>=Presence.PRESENCE_OFFLINE) {
-                    midlet.BombusQD.sd.roster.sendPresence(Presence.PRESENCE_INVISIBLE, null);    
+                if (loginstatus>=Constants.PRESENCE_OFFLINE) {
+                    midlet.BombusQD.sd.roster.sendPresence(Constants.PRESENCE_INVISIBLE, null);    
                 } else {
                     if(status==-1){
                       midlet.BombusQD.sd.roster.sendPresence(loginstatus, null);

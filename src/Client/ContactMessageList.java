@@ -793,7 +793,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
         try {
             String msg=new StringBuffer(0)
                 .append((char)0xab) //
-                .append(replaceNickTags(getMessage(cursor)).quoteString())
+                .append( util.StringUtils.quoteString( replaceNickTags(getMessage(cursor)) ) )
                 .append((char)0xbb)
                 .append("\n")
                 .toString();

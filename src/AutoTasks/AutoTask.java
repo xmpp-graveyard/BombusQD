@@ -162,7 +162,7 @@
 //#ifndef WMUC
 //#             case TASK_ACTION_CONFERENCE_QUIT:
 //#                 caption+=SR.get(SR.MS_AUTOTASK_QUIT_CONFERENCES);
-//#                 //sd.roster.multicastConferencePresence(Presence.PRESENCE_OFFLINE, caption, 0);
+//#                 //sd.roster.multicastConferencePresence(Constants.PRESENCE_OFFLINE, caption, 0);
 //#                 sd.roster.leaveAllMUCs();//Tishka17
 //#                 break;
 //#endif
