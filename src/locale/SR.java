@@ -769,6 +769,7 @@ public class SR {
      public final static short MS_USER_APP_LEVEL_1 =  732;
      public final static short MS_USER_APP_LEVEL_2 =  733;
      public final static short MS_WAS_ADDED =  734;  
+     public final static short MS_CONFIGURATION_MASTER =  735;       
      
     private static String[] localeItemsDefault = new String[0];
     private static String[] localeItems = {
@@ -1508,7 +1509,8 @@ public class SR {
         "Started",
         "Confident",
         "Experienced",
-        "Was added:"
+        "Was added:",
+        "Configuration Master"
     };  
 
 

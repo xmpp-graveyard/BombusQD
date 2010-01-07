@@ -130,7 +130,7 @@ public class Contact extends IconTextElement{
     public boolean fileQuery;
 //#endif
 
-    public final ChatInfo chatInfo = new ChatInfo();
+    private ChatInfo chatInfo = null;
     private ContactMessageList messageList = null;
     private ContactMessageList getML() {
         if (null == messageList) {
@@ -156,12 +156,19 @@ public class Contact extends IconTextElement{
     }
     
     public final ChatInfo getChatInfo() {
+        if(chatInfo == null){
+            chatInfo = new ChatInfo();
+            chatInfo.initMsgs();
+        }
         return chatInfo;
     }
     
     public void destroy() {
         if(!midlet.BombusQD.sd.roster.isLoggedIn()) return;
-        chatInfo.destroy();
+        if(chatInfo != null){
+           chatInfo.destroy();
+           chatInfo = null;
+        }
         if (null != messageList) {
             messageList.destroy();
             messageList = null;
@@ -185,7 +192,9 @@ public class Contact extends IconTextElement{
 
     protected Contact (){
         super(RosterIcons.getInstance());
-        chatInfo.initMsgs();
+        if(chatInfo != null) {
+          chatInfo.initMsgs();
+        }
         scroller=null;
         key1="";
         maxImgHeight = ilHeight= il.getHeight();
@@ -240,6 +249,7 @@ public class Contact extends IconTextElement{
 
     public final int getNewMsgsCount() {
         if (Groups.TYPE_IGNORE == getGroupType()) return 0;
+        if(chatInfo == null) return 0;
         return chatInfo.getNewMessageCount();
     }
     
@@ -249,10 +259,12 @@ public class Contact extends IconTextElement{
     
     public int getNewHighliteMsgsCount() {
         if (Groups.TYPE_IGNORE == getGroupType()) return 0;
+        if(chatInfo == null) return 0;
         return chatInfo.getNewHighliteMessageCount();
     }
 
     public boolean active() {
+        if(chatInfo == null) return false;
         return chatInfo.isActiveChat();
     }
     
@@ -291,6 +303,9 @@ public class Contact extends IconTextElement{
     public void addMessage(Msg m) {
         boolean first_replace=false;
         boolean first_msgreplace=false;
+        if(chatInfo == null) getChatInfo();
+        int msgCount = getChatInfo().getMessageCount();
+        if (msgCount >= midlet.BombusQD.cf.msglistLimit) getML().deleteOldMessages();
         if (origin!=Constants.ORIGIN_GROUPCHAT) {
             if (m.isPresence()) first_replace = chatInfo.isOnlyStatusMessage();
             else {
@@ -324,10 +339,15 @@ public class Contact extends IconTextElement{
             }
         } else {
             status = Constants.PRESENCE_ONLINE;
-            if (null != messageList) {
-                getML().deleteOldMessages();
-            }
         }
+        /*
+            midlet.BombusQD.debug.add("deleteOldMessages "+this+" ..",10);
+            if (null != messageList) {
+                midlet.BombusQD.debug.add("deleteOldMessages "+this+" ...",10);
+                getML().deleteOldMessages( getChatInfo().getMessageCount() );
+                
+            }
+         */
         
         if (first_replace) {
             chatInfo.setFirstMessage(m);
@@ -363,14 +383,10 @@ public class Contact extends IconTextElement{
 
     public boolean getFontIndex(){
        if (midlet.BombusQD.cf.useBoldFont && status<5) return true;
+       if(chatInfo == null) return false;
        return chatInfo.isActiveChat();
     }
-/*
-    public int getFontIndex(){
-        return (status<5)?1:0;
-    }
-*/
-
+    
     public final String getName(){ 
         return (null == nick)?bareJid:nick; 
     }
@@ -403,20 +419,6 @@ public class Contact extends IconTextElement{
             }
         } catch (Exception e) { }
     }
-    
-//#ifdef LOGROTATE
-//#     public final boolean deleteOldMessages() {
-//#         int limit=midlet.BombusQD.cf.msglistLimit;
-//#         if (msgs.size()<limit)
-//#             return false;
-//#         
-//#         int trash = msgs.size()-limit;
-//#         for (int i=0; i<trash; i++)
-//#             msgs.removeElementAt(0);
-//#         
-//#         return true;
-//#     }
-//#endif
     
     public final void setSortKey(String sortKey){
         key1=(sortKey==null)? "": sortKey.toLowerCase();
@@ -695,19 +697,7 @@ public class Contact extends IconTextElement{
         return (client>-1);
     }
 //#endif
-    
-   /* 
-    //public String[][] checkersPos = null; //board
-    private int checkers = -1; //END_GAME_FLAG
-    public void setCheckers(int checkers) {
-      this.checkers=checkers;
-    }
-    public int getCheckers() {
-      return checkers;
-    }
-   */
-    
-   
+
 //#ifdef PEP
 //#     boolean hasMood() {
 //#         return (pepMood>-1 && pepMood<85);

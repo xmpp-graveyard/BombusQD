@@ -94,10 +94,10 @@ public class MessageItem
     
     public void destroy(){
         int size = msgLines.size();
+        ComplexString complexStr;
         for(int i = 0; i<size; ++i){
-          ComplexString complexStr = (ComplexString)msgLines.elementAt(i);
+          complexStr = (ComplexString)msgLines.elementAt(i);
           complexStr.destroy();
-          complexStr = null;
         }
         msgLines.removeAllElements();
         msgLines = null;

@@ -104,9 +104,12 @@ public abstract class AlertBox
     private int height;
     private int width;    
     
-    public AlertBox(String mainbar, String text, Display display, Displayable nextDisplayable) {
+    public AlertBox(String mainbar, String text, Display display, Displayable nextDisplayable, boolean optionsMaster) {
         this.display=display;
-        
+        if(optionsMaster){
+            left=SR.get(SR.MS_YES);
+            right=SR.get(SR.MS_NO);
+        }
         setFullScreenMode(Config.getInstance().fullscreen);
 
         messageFont=FontCache.getFont(false, FontCache.msg);

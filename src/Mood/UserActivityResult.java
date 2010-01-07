@@ -54,7 +54,7 @@
 //#         
 //#         String type=data.getTypeAttribute();
 //#         if (type.equals("result")){
-//#             new AlertBox(SR.get(SR.MS_USERACTIVITY), SR.get(SR.MS_SUCCESS) + '!', display, null) {
+//#             new AlertBox(SR.get(SR.MS_USERACTIVITY), SR.get(SR.MS_SUCCESS) + '!', display, null, false) {
 //#                public void yes() { }
 //#                public void no() { }
 //#             };
@@ -64,7 +64,7 @@
 //#         
 //#         XmppError e=XmppError.findInStanza(data);
 //#         
-//#         new AlertBox(SR.get(SR.MS_ERROR_), SR.get(SR.MS_PEP_NOT_SUPPORTED)+"("+e.toString()+")", display, null) {
+//#         new AlertBox(SR.get(SR.MS_ERROR_), SR.get(SR.MS_PEP_NOT_SUPPORTED)+"("+e.toString()+")", display, null, false) {
 //#             public void yes() { }
 //#             public void no() { }
 //#         };

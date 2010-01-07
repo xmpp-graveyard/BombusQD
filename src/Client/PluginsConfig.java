@@ -65,162 +65,164 @@ public class PluginsConfig extends DefForm implements MenuListener
     private int pos = -1;
     private static Config cf = midlet.BombusQD.cf;
 
-    private static CheckBox showOfflineContacts;
-    private static CheckBox selfContact;
-    private static CheckBox showTransports;
-    private static CheckBox ignore;
-    private static CheckBox collapsedGroups;
-    private static CheckBox autoFocus;
-    private static CheckBox showResources;
-    private static CheckBox useBoldFont;
-    private static CheckBox rosterStatus;
+    private CheckBox showOfflineContacts;
+    private CheckBox selfContact;
+    private CheckBox showTransports;
+    private CheckBox ignore;
+    private CheckBox collapsedGroups;
+    private CheckBox autoFocus;
+    private CheckBox showResources;
+    private CheckBox useBoldFont;
+    private CheckBox rosterStatus;
 //#ifdef CLIENTS_ICONS
-    private static CheckBox showClientIcon;
+    private CheckBox showClientIcon;
 //#endif
-    private static CheckBox dont_loadMC;
-    private static CheckBox gradient_cursor;  
+    private CheckBox dont_loadMC;
+    private CheckBox gradient_cursor;  
 //#ifdef SMILES
-    private static CheckBox smiles;
+    private CheckBox smiles;
 //#endif    
-    private static CheckBox eventComposing;
-    private static CheckBox capsState;
-    private static CheckBox storeConfPresence;
-    private static CheckBox createMessageByFive;
-    private static CheckBox showCollapsedPresences;
-    private static CheckBox timePresence;
-    private static CheckBox autoScroll;
-    private static CheckBox useTabs;
+    private CheckBox eventComposing;
+    private CheckBox capsState;
+    private CheckBox storeConfPresence;
+    private CheckBox createMessageByFive;
+    private CheckBox showCollapsedPresences;
+    private CheckBox timePresence;
+    private CheckBox autoScroll;
+    private CheckBox useTabs;
 //#ifdef DETRANSLIT
-//#     private static CheckBox autoDetranslit;
+//#     private CheckBox autoDetranslit;
 //#endif
     
 //#ifdef PEP
-//#     private static CheckBox sndrcvmood;
-//#     private static CheckBox rcvtune;
-//#     private static CheckBox rcvactivity;
+//#     private CheckBox sndrcvmood;
+//#     private CheckBox rcvtune;
+//#     private CheckBox rcvactivity;
 //#endif
     
 //#ifdef RUNNING_MESSAGE
-//#     private static CheckBox runningMessage;
+//#     private CheckBox runningMessage;
 //#endif
 //#ifdef POPUPS
-    private static CheckBox popUps;
+    private CheckBox popUps;
 //#endif
 
-    private static CheckBox graphicsMenu;
-    private static CheckBox showBaloons;
-    private static CheckBox animatedSmiles;
-    private static CheckBox eventDelivery;
-    private static CheckBox networkAnnotation;
-    //private static CheckBox metaContacts;
-    private static CheckBox executeByNum;
-    private static CheckBox sendMoodInMsg;
-    private static CheckBox savePos;
-    private static CheckBox boldNicks;    
-    private static CheckBox selectOutMessages;
+    private CheckBox graphicsMenu;
+    private CheckBox showBaloons;
+    private CheckBox animatedSmiles;
+    private CheckBox eventDelivery;
+    private CheckBox networkAnnotation;
+    //private CheckBox metaContacts;
+    private CheckBox executeByNum;
+    private CheckBox sendMoodInMsg;
+    private CheckBox savePos;
+    private CheckBox boldNicks;    
+    private CheckBox selectOutMessages;
 //#ifdef CLIPBOARD
-//#     private static CheckBox useClipBoard;
+//#     private CheckBox useClipBoard;
 //#endif
     
-    private static CheckBox autoLogin;
-    private static CheckBox useLowMemory_userotator;  
-  //private static CheckBox animateMenuAndRoster;
-    private static CheckBox useLowMemory_iconmsgcollapsed;
-    private static CheckBox iconsLeft;    
-    private static CheckBox autoJoinConferences;
+    private CheckBox autoLogin;
+    private CheckBox useLowMemory_userotator;  
+  //private CheckBox animateMenuAndRoster;
+    private CheckBox useLowMemory_iconmsgcollapsed;
+    private CheckBox iconsLeft;    
+    private CheckBox autoJoinConferences;
     
-    private static CheckBox nokiaReconnectHack;
+    private CheckBox nokiaReconnectHack;
 //#ifdef FILE_TRANSFER
-    private static CheckBox fileTransfer;
+    private CheckBox fileTransfer;
 //#endif
 //#ifdef ADHOC
-//#     private static CheckBox adhoc;
+//#     private CheckBox adhoc;
 //#endif
     
-    private static CheckBox fullscr;
-    private static CheckBox memMon;
-    private static CheckBox enableVersionOs;
-    private static CheckBox queryExit;
-    private static CheckBox popupFromMinimized;
-    private static CheckBox drawScrollBgnd; 
-    private static CheckBox gradientBarLigth;
-    private static CheckBox autoLoadTransports;
+    private CheckBox fullscr;
+    private CheckBox memMon;
+    private CheckBox enableVersionOs;
+    private CheckBox queryExit;
+    private CheckBox popupFromMinimized;
+    private CheckBox drawScrollBgnd; 
+    private CheckBox gradientBarLigth;
+    private CheckBox autoLoadTransports;
 //#ifdef AUTOSTATUS
-//#     private static CheckBox awayStatus;
+//#     private CheckBox awayStatus;
 //#endif
-    private static CheckBox drawMenuCommand;
-    private static CheckBox showNickNames;
-    private static CheckBox oldSE;
-    //private static CheckBox useClassicChat; 
-    private static CheckBox use_phone_theme;
-    private static CheckBox simpleContacts;
+    private CheckBox drawMenuCommand;
+    private CheckBox showNickNames;
+    private CheckBox oldSE;
+    //private CheckBox useClassicChat; 
+    private CheckBox use_phone_theme;
+    private CheckBox simpleContacts;
     
 
-    private static TrackItem gradientBarLight1; 
-    private static TrackItem gradientBarLight2; 
+    private TrackItem gradientBarLight1; 
+    private TrackItem gradientBarLight2; 
     
 
     
     
     
-    private static DropChoiceBox subscr;
-    private static DropChoiceBox nil;
-    private static DropChoiceBox msgEditType;
+    private DropChoiceBox subscr;
+    private DropChoiceBox nil;
+    private DropChoiceBox msgEditType;
 //#if LOGROTATE
-//#     private static NumberInput messageCountLimit;
+//#     private NumberInput messageCountLimit;
 //#endif
-    private static NumberInput messageLimit;
-    private static NumberInput reconnectCount;
-    private static NumberInput reconnectTime;
-    private static NumberInput fieldGmt; 
-    private static NumberInput scrollWidth; 
-    private static DropChoiceBox textWrap;
-    private static DropChoiceBox langFiles;
-    private static DropChoiceBox bgnd_image;    
-    private static DropChoiceBox graphicsMenuPosition;  
+    private NumberInput messageLimit;
+    private NumberInput msglistLimit;
+    
+    private NumberInput reconnectCount;
+    private NumberInput reconnectTime;
+    private NumberInput fieldGmt; 
+    private NumberInput scrollWidth; 
+    private DropChoiceBox textWrap;
+    private DropChoiceBox langFiles;
+    private DropChoiceBox bgnd_image;    
+    private DropChoiceBox graphicsMenuPosition;  
 //#ifdef AUTOSTATUS
-//#     private static DropChoiceBox autoAwayType;
-//#     private static NumberInput fieldAwayDelay; 
+//#     private DropChoiceBox autoAwayType;
+//#     private NumberInput fieldAwayDelay; 
 //#endif
-    private static DropChoiceBox panels;
-    private static NumberInput classic_chat_height;     
-    private static NumberInput line_count;    
+    private DropChoiceBox panels;
+    private NumberInput classic_chat_height;     
+    private NumberInput line_count;    
     
     private static Vector langs[];
     
 
-    private static PluginBox contacts;    
-    private static PluginBox messages;    
-    private static PluginBox network;
-    private static PluginBox graphics;    
-    private static PluginBox app;
-    private static PluginBox userKeys;    
-    private static PluginBox autostatus;
-    private static PluginBox classicchat;
-    private static PluginBox debug;
-    private static PluginBox theme;
-    private static PluginBox cashe;
+    private PluginBox contacts;    
+    private PluginBox messages;    
+    private PluginBox network;
+    private PluginBox graphics;    
+    private PluginBox app;
+    private PluginBox userKeys;    
+    private PluginBox autostatus;
+    private PluginBox classicchat;
+    private PluginBox debug;
+    private PluginBox theme;
+    private PluginBox cashe;
     
-    private static PluginBox history;
-    private static PluginBox fonts; 
+    private PluginBox history;
+    private PluginBox fonts; 
 //#ifdef IMPORT_EXPORT
-//#     private static PluginBox ie;  
+//#     private PluginBox ie;  
 //#endif
-    private static PluginBox notify; 
-    private static PluginBox tasks;
-    private static PluginBox avatars;  
+    private PluginBox notify; 
+    private PluginBox tasks;
+    private PluginBox avatars;  
 
     
-    private static SimpleString str;
-    private static SimpleString appLevel;    
-    private static CheckBox appLevelName;    
-    private static SimpleString appLevelID;
-    private static SimpleString gradient_light1;
-    private static SimpleString gradient_light2;
-    private static TrackItem userAppLevel;        
-    private static StringBuffer sb = new StringBuffer(0);
+    private SimpleString str;
+    private SimpleString appLevel;    
+    private CheckBox appLevelName;    
+    private SimpleString appLevelID;
+    private SimpleString gradient_light1;
+    private SimpleString gradient_light2;
+    private TrackItem userAppLevel;        
+    private StringBuffer sb = new StringBuffer(0);
 
-    private static void destroyItems() {
+    private void destroyItems() {
         midlet.BombusQD.debug.add("::destroy options..", 10);
          showOfflineContacts = null;
          selfContact = null;
@@ -327,7 +329,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     }
     
     
-    private static void initItems() {
+    private void initItems() {
         System.out.println("init items");
          showOfflineContacts = new CheckBox(SR.get(SR.MS_OFFLINE_CONTACTS), cf.showOfflineContacts);
          selfContact = new CheckBox(SR.get(SR.MS_SELF_CONTACT), cf.selfContact);
@@ -495,7 +497,7 @@ public class PluginsConfig extends DefForm implements MenuListener
           network = new PluginBox(SR.get(SR.MS_netStr), cf.module_network, 0);
           app = new PluginBox(SR.get(SR.MS_appStr), cf.module_app, 0);
           graphics = new PluginBox(SR.get(SR.MS_grStr), cf.module_graphics, 0);
-          theme = new PluginBox(SR.get(SR.MS_cthemesStr), cf.module_theme, 0);
+          theme = new PluginBox(SR.get(SR.MS_COLOR_TUNE), cf.module_theme, 0);
           fonts = new PluginBox(SR.get(SR.MS_fontsStr), cf.module_fonts, 0);
           autostatus = new PluginBox(SR.get(SR.MS_astatusStr), cf.module_autostatus, 1);
           userKeys = new PluginBox(SR.get(SR.MS_hotkeysStr), cf.userKeys, 2);
@@ -535,7 +537,7 @@ public class PluginsConfig extends DefForm implements MenuListener
              else if(text==SR.get(SR.MS_astatusStr)){ return cf.module_autostatus?SR.get(SR.MS_config):""; } 
              else if(text==SR.get(SR.MS_clchatStr)){ return cf.module_classicchat?SR.get(SR.MS_config):""; }
              else if(text==SR.get(SR.MS_DEBUG_MENU)){ return ""; }           
-             else if(text==SR.get(SR.MS_cthemesStr)){ return cf.module_theme?SR.get(SR.MS_config):""; }
+             else if(text==SR.get(SR.MS_COLOR_TUNE)){ return cf.module_theme?SR.get(SR.MS_config):""; }
              
              //else if(text==SR.get(SR.MS_casheStr)){ return cf.module_cashe?"Clear":""; }
              else if(text==SR.get(SR.MS_historyStr)){ return cf.module_history?SR.get(SR.MS_config):""; }
@@ -560,7 +562,7 @@ public class PluginsConfig extends DefForm implements MenuListener
           if(type==SR.get(SR.MS_hotkeysStr)){
            display.setCurrent(new ui.keys.userKeysList(display));
           }
-          else if(type==SR.get(SR.MS_cthemesStr)){
+          else if(type==SR.get(SR.MS_COLOR_TUNE)){
            display.setCurrent(new Colors.ColorConfigForm(display, this));
           }         
           else if(type==SR.get(SR.MS_historyStr)){
@@ -658,6 +660,10 @@ public class PluginsConfig extends DefForm implements MenuListener
                   itemsList.addElement(new SpacerItem(3));
                   messageLimit=new NumberInput(display, SR.get(SR.MS_MESSAGE_COLLAPSE_LIMIT), Integer.toString(cf.messageLimit), 200, 1000);
                   itemsList.addElement(messageLimit);
+                  
+                  msglistLimit=new NumberInput(display, SR.get(SR.MS_MESSAGE_COUNT_LIMIT), Integer.toString(cf.msglistLimit), 3, 1000);
+                  itemsList.addElement(msglistLimit);
+                  
                   itemsList.addElement(new SpacerItem(3));
                 
              itemsList.addElement(createMessageByFive);
@@ -860,6 +866,7 @@ public class PluginsConfig extends DefForm implements MenuListener
             cf.runningMessage=runningMessage.getValue();
             cf.textWrap=textWrap.getSelectedIndex();                              
             cf.messageLimit=Integer.parseInt(messageLimit.getValue());
+            cf.msglistLimit=Integer.parseInt(msglistLimit.getValue());
       
             cf.createMessageByFive=createMessageByFive.getValue();
             cf.storeConfPresence=storeConfPresence.getValue();

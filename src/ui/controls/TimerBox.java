@@ -38,7 +38,7 @@ public abstract class TimerBox extends AlertBox implements Runnable {
     private int timeout;
 
     public TimerBox(String mainbar, String text, int timeout, Display display, Displayable nextDisplayable) {
-        super(mainbar, text, display, nextDisplayable);
+        super(mainbar, text, display, nextDisplayable, false);
         
         this.timeout=timeout;
         isShowing=true;

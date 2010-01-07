@@ -477,7 +477,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                     new SubscriptionEdit(display, midlet.BombusQD.sd.roster, c);
                     return; //break;
                 case 4:
-                    new AlertBox(SR.get(SR.MS_DELETE_ASK), c.getNickJid(), display,  midlet.BombusQD.sd.roster) {
+                    new AlertBox(SR.get(SR.MS_DELETE_ASK), c.getNickJid(), display,  midlet.BombusQD.sd.roster, false) {
                         public void yes() {
                             midlet.BombusQD.sd.roster.deleteContact((Contact)item);
                         }
@@ -731,7 +731,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                         new RenameGroup(display, midlet.BombusQD.sd.roster, sg/*, null*/);
                         return;
                     case 1004: //delete
-                        new AlertBox(SR.get(SR.MS_DELETE_GROUP_ASK), sg.getName(), display, midlet.BombusQD.sd.roster) {
+                        new AlertBox(SR.get(SR.MS_DELETE_GROUP_ASK), sg.getName(), display, midlet.BombusQD.sd.roster, false) {
                             public void yes() {
                                 midlet.BombusQD.sd.roster.deleteGroup((Group)item);
                             }

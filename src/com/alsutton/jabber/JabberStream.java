@@ -232,6 +232,7 @@ public class JabberStream extends XmppParser implements Runnable {
             // unavailable, which is irrelevant.
         } finally {
             dispatcher.halt();
+            dispatcher.restart();
 	    iostream.close();
              if(!midlet.BombusQD.cf.nokiaReconnectHack) {
                iostream=null;
@@ -263,16 +264,19 @@ public class JabberStream extends XmppParser implements Runnable {
          }
      }
     
-    //private Vector outPackets = new Vector();
-    
+    private StringBuffer sendData = new StringBuffer(0);
     public void send( String data ) throws IOException {
-        sendBuf(new StringBuffer(data));
-//#ifdef CONSOLE
-//#         if (data.equals("</iq") || data.equals(" "))
-//#             addLog("Ping myself", 1);
-//#         else
-//#             addLog(data, 1);
-//#endif
+        sendData.setLength(0);
+        sendData.append(data);
+        sendBuf(sendData);
+        /*
+ //#ifdef CONSOLE
+ //#         if (data.equals("</iq") || data.equals(" "))
+ //#             addLog("Ping myself", 1);
+ //#         else
+ //#             addLog(data, 1);
+ //#endif
+         */
     }
     
     public void sendBuf( StringBuffer data ) throws IOException {
@@ -284,6 +288,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#ifdef CONSOLE
 //#         addLog(data.toString(), 1);
 //#endif
+        data.setLength(0);//Tishka17
     }
 
     

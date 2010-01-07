@@ -289,7 +289,7 @@ public final class Bookmarks
     }
     
     protected void keyClear(){
-        new AlertBox(SR.get(SR.MS_DELETE_ASK), ((BookmarkItem)getFocusedObject()).getJid(), display, this) {
+        new AlertBox(SR.get(SR.MS_DELETE_ASK), ((BookmarkItem)getFocusedObject()).getJid(), display, this, false) {
             public void yes() {
                 deleteBookmark();
             }

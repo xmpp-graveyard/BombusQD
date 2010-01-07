@@ -215,7 +215,7 @@ public class ArchiveList
     }
     
     private void deleteAllMessages() {
-        new AlertBox(SR.get(SR.MS_ACTION), SR.get(SR.MS_DELETE_ALL)+"?", display, this) {
+        new AlertBox(SR.get(SR.MS_ACTION), SR.get(SR.MS_DELETE_ALL)+"?", display, this, false) {
             public void yes() {
                 archive.deleteAll();
                 messages.removeAllElements();
@@ -255,7 +255,7 @@ public class ArchiveList
     
     public void keyClear() { 
         if (getItemCount()>0) {
-            new AlertBox(SR.get(SR.MS_DELETE), SR.get(SR.MS_SURE_DELETE), display, this) {
+            new AlertBox(SR.get(SR.MS_DELETE), SR.get(SR.MS_SURE_DELETE), display, this, false) {
                 public void yes() {
                     deleteMessage();
                 }

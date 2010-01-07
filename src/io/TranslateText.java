@@ -213,12 +213,12 @@ public class TranslateText implements Runnable{
                 
                 translated_text=msgt.substring(18,msgt.length());             
                 if(trCMsgList){
-                  Msg tr_mess=(Msg)c.chatInfo.msgs.elementAt(cursor); 
-                    int size=c.chatInfo.msgs.size();        
+                  Msg tr_mess=(Msg)c.getChatInfo().msgs.elementAt(cursor); 
+                    int size=c.getChatInfo().msgs.size();        
                      for(int k=0;k<size;k++){    
-                         Msg msg=(Msg) c.chatInfo.msgs.elementAt(k);
+                         Msg msg=(Msg) c.getChatInfo().msgs.elementAt(k);
                             if (tr_mess==msg) {
-                                 c.chatInfo.msgs.removeElement(msg);
+                                 c.getChatInfo().msgs.removeElement(msg);
                                   StringBuffer b=new StringBuffer();
                                   b.append("<==Lang "+from+": " + msg.from +"> "+msg.body+"\n");
 //#if NICK_COLORS
@@ -241,7 +241,7 @@ public class TranslateText implements Runnable{
                                  }                                  
                                  b.append(" "+translated_text);
                                  Msg tr=new Msg(tr_mess.messageType,tr_mess.from,tr_mess.subject,b.toString());
-                                 c.chatInfo.msgs.insertElementAt(tr,cursor);
+                                 c.getChatInfo().msgs.insertElementAt(tr,cursor);
                                  display.setCurrent(c.getMessageList());
                                  //new ContactMessageList(c);//  
                              }

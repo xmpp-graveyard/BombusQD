@@ -296,9 +296,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     }
     
     public void deleteOldMessages() {
-//#ifdef LOGROTATE
-//#         getChatInfo().deleteOldMessages(messages);
-//#endif
+       getChatInfo().deleteOldMessages(messages);
     }
     
     protected final int getItemCount(){ return messages.size(); }
@@ -582,7 +580,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
        } catch (Exception e) { msg = null; }
        
        if(!found&&msg!=null) { new ui.controls.AlertBox(msg.from,
-           SR.get(SR.MS_ALERT_CONTACT_OFFLINE), midlet.BombusQD.getInstance().display, this) {
+           SR.get(SR.MS_ALERT_CONTACT_OFFLINE), midlet.BombusQD.getInstance().display, this, false) {
            public void yes() { Reply(true); }
            public void no() { }
          };
@@ -627,7 +625,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#              if(contact.msgSuspended != null && check) {
 //#                final String msgText = messg;
 //#                ui.controls.AlertBox obj =  new ui.controls.AlertBox(msg.from, SR.get(SR.MS_MSGBUFFER_NOT_EMPTY),
-//#                        midlet.BombusQD.getInstance().display, this) {
+//#                        midlet.BombusQD.getInstance().display, this, false) {
 //#                    public void yes() { showMsgEdit(msgText); }
 //#                    public void no()  { keyGreen(); }
 //#                }; 
@@ -747,7 +745,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
                 for(int i=0;i<size;i++){
                         c = (Contact)midlet.BombusQD.sd.roster.contactList.contacts.elementAt(i);
                         if (c.getNewMsgsCount()>0){
-                            contact.chatInfo.opened = false;
+                            contact.getChatInfo().opened = false;
                             midlet.BombusQD.getInstance().display.setCurrent(c.getMessageList());
                            break;
                         }
@@ -762,7 +760,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
                 contact.setCursor(cursor);
                 break;
             case KEY_NUM3:
-                contact.chatInfo.opened = false;
+                contact.getChatInfo().opened = false;
                 midlet.BombusQD.sd.roster.createActiveContacts(this, contact);
                 contact.setCursor(cursor);
                 break;        
@@ -823,7 +821,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     }
     
     public void addMessage(Msg msg) {
-        if(contact.chatInfo.opened) contact.chatInfo.reEnumCounts();
+        if(contact.getChatInfo().opened) contact.getChatInfo().reEnumCounts();
         MessageItem mi = new MessageItem(msg, this, smiles);
         mi.setEven((messages.size() & 1) == 0);
         mi.parse(this);
@@ -891,7 +889,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
         if (display!=null) display.setCurrent(sd.roster);
 //#endif     
-           contact.chatInfo.opened = false;
+           contact.getChatInfo().opened = false;
     }
 
     
@@ -905,7 +903,6 @@ public final class ContactMessageList extends MessageList implements MenuListene
           MessageItem mi = (MessageItem)messages.elementAt(msgIndex);
           mi.destroy();
           mi = null;
-          
         msgs.removeElementAt(msgIndex);
         messages.removeElementAt(msgIndex);
     }

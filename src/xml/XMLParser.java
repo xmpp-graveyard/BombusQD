@@ -326,14 +326,19 @@ public class XMLParser {
     public final static String extractAttribute(String attributeName, Vector attributes) {
       if (attributes==null) return null;
       int index=0;
-      int attr_size=attributes.size();
-      while (index<attr_size) {
-          if ( ((String)attributes.elementAt(index)).equals(attributeName) )
-              return (String)attributes.elementAt(index+1);
-          
-          index+=2;
-      }
-      
-      return null;
+       try {
+        int attr_size=attributes.size();
+        while (index<attr_size) {
+          if ( ((String)attributes.elementAt(index)).equals(attributeName) ) return (String)attributes.elementAt(index + 1);
+           index+=2;
+        }
+       } catch (Exception e) {
+         midlet.BombusQD.debug.add("::xmlParser->exception::extractAttribute->" 
+                 + attributeName + "/" 
+                 + attributes.toString() + " Error on index: " 
+                 + index, 10);
+         return null;
+       }
+       return null;
     }
 }

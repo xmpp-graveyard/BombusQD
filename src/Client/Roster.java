@@ -799,7 +799,7 @@ public class Roster
         if (s==null) return;
         Msg m=new Msg(Constants.MESSAGE_TYPE_OUT, "local", "Info", s);
         messageStore(selfContact(), m);
-        selfContact().chatInfo.reEnumCounts();
+        selfContact().getChatInfo().reEnumCounts();
 //#ifdef CONSOLE 
 //#         midlet.BombusQD.debug.add(s,10);
 //#endif
@@ -893,7 +893,7 @@ public class Roster
 
     public void cmdCleanAllMessages(){
         if (messageCount>0) {
-           new AlertBox(SR.get(SR.MS_UNREAD_MESSAGES)+": "+messageCount, SR.get(SR.MS_SURE_DELETE), display, this) {
+           new AlertBox(SR.get(SR.MS_UNREAD_MESSAGES)+": "+messageCount, SR.get(SR.MS_SURE_DELETE), display, this, false) {
                 public void yes() { cleanAllMessages(); }
                 public void no() { }
             };
@@ -2821,7 +2821,7 @@ public class Roster
      private static byte roleCode;
      private static byte affiliationCode;
      
-     public int getConferenceColor(int status) {
+     public final int getConferenceColor(int status) {
          switch (status) {
              case Constants.PRESENCE_CHAT: return ColorTheme.getColor(ColorTheme.CONTACT_CHAT);
              case Constants.PRESENCE_AWAY: return ColorTheme.getColor(ColorTheme.CONTACT_AWAY);
@@ -2831,7 +2831,7 @@ public class Roster
          return ColorTheme.getColor(ColorTheme.CONTACT_DEFAULT);
      }
      
-     private static String getAffiliationLocale(int aff) {
+     private final static String getAffiliationLocale(int aff) {
          switch (aff) {
              case Constants.AFFILIATION_NONE: return SR.get(SR.MS_AFFILIATION_NONE);
              case Constants.AFFILIATION_MEMBER: return SR.get(SR.MS_AFFILIATION_MEMBER);
@@ -2841,7 +2841,7 @@ public class Roster
          return null;
      }
 
-     private static String getRoleLocale(int rol) {
+     private final static String getRoleLocale(int rol) {
          switch (rol) {
              case Constants.ROLE_VISITOR: return SR.get(SR.MS_ROLE_VISITOR);
              case Constants.ROLE_PARTICIPANT: return SR.get(SR.MS_ROLE_PARTICIPANT);
@@ -2850,7 +2850,7 @@ public class Roster
          return null;
      }
      
-     public static void testMeOffline(MucContact mc, ConferenceGroup grp, boolean isKick) {
+     public final static void testMeOffline(MucContact mc, ConferenceGroup grp, boolean isKick) {
           if ( grp.selfContact == mc ) {
              if(isKick) midlet.BombusQD.sd.roster.showRoster();
              midlet.BombusQD.sd.roster.roomOffline(grp, true);
@@ -2858,7 +2858,7 @@ public class Roster
      }    
      
      private static StringBuffer mucContactBuf = new StringBuffer(0);
-     private final static String processPresence(MucContact mc, JabberDataBlock xmuc, Presence presence, String Prtext) {
+     private String processPresence(MucContact mc, JabberDataBlock xmuc, Presence presence, String Prtext) {
           midlet.BombusQD.debug.add("::role: processPresence", 10);
           midlet.BombusQD.debug.add("::role: processPresence->affiliation.." +  mc.affiliation, 10);
           midlet.BombusQD.debug.add("::role: processPresence->role.." +  mc.role, 10);
@@ -3394,7 +3394,7 @@ public class Roster
         Object e=getFocusedObject();
         if (e instanceof Contact) {
            Contact c = (Contact)e;
-           if(c.chatInfo.getMessageCount()==0){
+           if(c.getChatInfo().getMessageCount()==0){
                createMessageEdit(c, c.msgSuspended, this, true);
                return null;
            }
@@ -3440,7 +3440,7 @@ public class Roster
         if (pview!=null) {
             Contact c=(Contact)getFocusedObject();
                if(!midlet.BombusQD.cf.module_classicchat){
-                  createMessageEdit(c, c.msgSuspended, pview, (c.chatInfo.getMessageCount()==0) );
+                  createMessageEdit(c, c.msgSuspended, pview, (c.getChatInfo().getMessageCount()==0) );
                }
                else new SimpleItemChat(display,this,c);
             c.msgSuspended=null;
@@ -3458,7 +3458,7 @@ public class Roster
 //#             boolean isMucContact=false;
 //#endif
                 if (isContact && !isMucContact) {
-                   new AlertBox(SR.get(SR.MS_DELETE_ASK), c.getNickJid(), display, this) {
+                   new AlertBox(SR.get(SR.MS_DELETE_ASK), c.getNickJid(), display, this, false) {
                         public void yes() {
                             deleteContact((Contact)getFocusedObject());
                         }
@@ -3494,7 +3494,7 @@ public class Roster
             Contact c = (Contact)e;
 //#if METACONTACTS
 //#endif         
-            if(c.chatInfo.getMessageCount()==0){
+            if(c.getChatInfo().getMessageCount()==0){
                 createMessageEdit(c, c.msgSuspended, this, true);
                 return;
             }
@@ -3851,7 +3851,7 @@ public class Roster
 
     public void cmdQuit() { 
         if (midlet.BombusQD.cf.queryExit) {
-            new AlertBox(SR.get(SR.MS_QUIT_ASK), SR.get(SR.MS_SURE_QUIT), display, null) {
+            new AlertBox(SR.get(SR.MS_QUIT_ASK), SR.get(SR.MS_SURE_QUIT), display, null, false) {
                 public void yes() {quit(); }
                 public void no() { }
             };

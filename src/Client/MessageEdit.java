@@ -471,7 +471,7 @@ public final class MessageEdit
     private void destroyView() {
        if(emptyChat) {
            if(null != to) {
-              if(to.chatInfo.getMessageCount()==0) {
+              if(to.getChatInfo().getMessageCount()==0) {
                  midlet.BombusQD.sd.roster.showRoster();
               } else display.setCurrent(parentView);
            }

@@ -39,7 +39,7 @@ import Client.Config;
  * avoid holding up the stream reader.
  */
 
-public class JabberDataBlockDispatcher extends Thread
+public class JabberDataBlockDispatcher
 {
   /**
    * The recipient waiting on this stream
@@ -53,8 +53,6 @@ public class JabberDataBlockDispatcher extends Thread
   /**
    * The list of messages waiting to be dispatched
    */
-
-  private Vector waitingQueue = new Vector(0);
 
   /**
    * Flag to watch the dispatching loop
@@ -70,7 +68,6 @@ public class JabberDataBlockDispatcher extends Thread
 
   public JabberDataBlockDispatcher(JabberStream stream)  {
       this.stream=stream;
-      start();
   }
 
   /**
@@ -103,42 +100,16 @@ public class JabberDataBlockDispatcher extends Thread
           }
       }
   }
-  
-  /**
-   * Method to add a datablock to the dispatch queue
-   *
-   * @param datablock The block to add
-   */
 
-  public void broadcastJabberDataBlock( JabberDataBlock dataBlock )
-  {
-    waitingQueue.addElement( dataBlock );
-    if(Runtime.getRuntime().freeMemory()<150000) {
-        //se crashes after entering room with >=400 occupants
-        while( waitingQueue.size() != 0 ) {
-            try {
-                Thread.sleep( 50L );
-            } catch( InterruptedException e ) { }
-        }
-    }    
-  }
+  
+  public void broadcastJabberDataBlock( JabberDataBlock dataBlock ) { arriveDataBlock(dataBlock); }
 
   /**
    * The thread loop that handles dispatching any waiting datablocks
    */
 
-    public void run(){
+    public void arriveDataBlock(JabberDataBlock dataBlock) {
         dispatcherActive = true;
-        while( dispatcherActive ) {
-            while( waitingQueue.size() == 0 ) {
-                try {
-                    Thread.sleep(100L);//200
-                } catch( InterruptedException e ) { }
-            }
-
-            JabberDataBlock dataBlock = (JabberDataBlock) waitingQueue.elementAt(0);
-            waitingQueue.removeElementAt( 0 );
-
             try {
                 int processResult=JabberBlockListener.BLOCK_REJECTED;
                 int block_size = blockListeners.size();
@@ -179,16 +150,17 @@ public class JabberDataBlockDispatcher extends Thread
 //#endif
                 dataBlock.destroy();
             } catch (Exception e) { }
-        }
-        halt();
-        listener = null;
-        stream = null;
-        while (!waitingQueue.isEmpty()) {
-            ((JabberDataBlock)waitingQueue.elementAt(0)).destroy();
-            waitingQueue.removeElementAt(0);
-        }
-        resetBlockListners();
     }
+    
+
+  public void restart() {
+       midlet.BombusQD.debug.add("restart dispatcher", 10);
+       halt();
+       listener = null;
+       stream = null;
+       resetBlockListners();
+  }  
+    
     
   public void cancelBlockListenerByClass(Class removeClass) {
         synchronized (blockListeners) {

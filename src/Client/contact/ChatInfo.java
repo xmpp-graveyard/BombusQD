@@ -31,6 +31,7 @@ import Client.Msg;
 import javax.microedition.lcdui.Graphics;
 import java.util.Enumeration;
 import java.util.Vector;
+import Messages.MessageItem;
 
 /**
  *
@@ -71,22 +72,20 @@ public final class ChatInfo {
         return msgs.size();
     }
 
-//#ifdef LOGROTATE
-//#     public boolean deleteOldMessages(Vector mirror) {
-//#         int limit = Config.getInstance().msglistLimit;
-//#         if (getMessageCount() < limit) {
-//#             return false;
-//#         }
-//#         
-//#         int trash = getMessageCount() - limit;
-//#         for (int i = 0; i < trash; i++) {
-//#             msgs.removeElementAt(0);
-//#             mirror.removeElementAt(0);
-//#         }
-//#         
-//#         return true;
-//#     }
-//#endif
+    public boolean deleteOldMessages(Vector mirror) {
+        int trash = getMessageCount() - midlet.BombusQD.cf.msglistLimit;
+        Msg m;
+        MessageItem mi;
+        for (int i = 0; i <= trash; ++i) {
+            m = (Msg)msgs.elementAt(0); m.destroy();
+            mi = (MessageItem)mirror.elementAt(0); mi.destroy();
+            
+            msgs.removeElementAt(0);
+            mirror.removeElementAt(0);
+        }
+        return true;
+    }
+    
     public void markDelivered(String id) {
         if (id==null) return;
         int size = msgs.size();
@@ -192,11 +191,11 @@ public final class ChatInfo {
         int size = msgs.size();
         if(size==0) return;
         //System.out.println("    :::Contact->chatInfo->destroy vector msgs size -> " + size);
+        Msg m;
         for(int i = 0; i < size; i++){
-          Msg m = (Msg)msgs.elementAt(i);
+          m = (Msg)msgs.elementAt(i);
           //System.out.println("    :::  destroy->msg#"+i+": "+m.body+"/"+m.from+"-->NULL");
           m.destroy();
-          m = null;
         }
         msgs.removeAllElements();
     }

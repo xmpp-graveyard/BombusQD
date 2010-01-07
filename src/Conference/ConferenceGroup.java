@@ -160,7 +160,8 @@ public final class ConferenceGroup extends Group{
     }
     
     public MucContact getContact(String jid) {
-        MucContact c = findMucContact( new Jid(jid) );
+        Jid j = new Jid(jid);
+        MucContact c = findMucContact( j );
         if (null == c) {
             String nick = jid.substring(jid.indexOf('/') + 1);
             c = new MucContact(nick, jid);
@@ -170,6 +171,7 @@ public final class ConferenceGroup extends Group{
             nick = null;
         }
         c.setGroup(this);
+        j = null;
         return c;
     }
 }

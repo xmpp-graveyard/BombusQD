@@ -67,6 +67,7 @@ public class AccountSelect
     int activeAccount;
 
     Command cmdLogin;
+    Command cmdConfigurationMaster;
 
     Command cmdRegister;
         Command cmdServ1_reg=new Command("Jabber.ru", Command.SCREEN,18); 
@@ -96,6 +97,7 @@ public class AccountSelect
     public AccountSelect(Display display, Displayable pView, boolean enableQuit,int status) {
         super();
         
+        cmdConfigurationMaster =new Command(SR.get(SR.MS_CONFIGURATION_MASTER), Command.OK,1);
         cmdLogin=new Command(SR.get(SR.MS_SELLOGIN), Command.OK,1);
         cmdRegister=new Command(SR.get(SR.MS_REGISTERING),Command.ITEM,11);   
         cmdAdd=new Command(SR.get(SR.MS_NEW_ACCOUNT), Command.SCREEN,12);    
@@ -155,6 +157,7 @@ public class AccountSelect
         cmdsecondList.removeAllElements();
         cmdThirdList.removeAllElements();
 //#endif
+        addCommand(cmdConfigurationMaster); cmdConfigurationMaster.setImg(0x42);
         if (!accountList.isEmpty()) {
             addCommand(cmdLogin);  cmdLogin.setImg(0x50);
             addCommand(cmdEdit); cmdEdit.setImg(0x40);
@@ -257,6 +260,9 @@ public class AccountSelect
         }
 //#endif           
         //if (c==cmdConfig) new ConfigForm(display, this);
+        if (c==cmdConfigurationMaster) {
+            new ConfigurationMaster(display, this);
+        }
         if (c==cmdLogin) switchAccount(true);
         if (c==cmdEdit) new AccountForm(display, this, this, (Account)getFocusedObject(),-1,false,null);
         if(c==cmdChangePass){
@@ -279,7 +285,7 @@ public class AccountSelect
         if (c==cmdDel) {
           if(midlet.BombusQD.sd.roster!=null){ 
             if (cursor==midlet.BombusQD.cf.accountIndex && midlet.BombusQD.sd.roster.isLoggedIn()) return;
-            new AlertBox(SR.get(SR.MS_DELETE), getFocusedObject().toString(), display, this) {
+            new AlertBox(SR.get(SR.MS_DELETE), getFocusedObject().toString(), display, this, false) {
                 public void yes() {
                     delAccount();
                 }

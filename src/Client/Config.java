@@ -128,14 +128,14 @@ public class Config {
 //#endif
     public boolean showOfflineContacts=false;
     public boolean showTransports=true;
-    public boolean selfContact=true;
+    public boolean selfContact=false;
     public boolean ignore=false;
     public boolean eventComposing=true;//Уведомление о наборе текста
-    public boolean autoLogin=true;
+    public boolean autoLogin=false;
     public boolean autoFocus=false;
     public int loginstatus=0;//loginstatus
     public int gmtOffset;
-    public boolean popupFromMinimized=true;
+    public boolean popupFromMinimized=false;
     public boolean memMonitor=false;
     public int rosterFont=0;
     public int msgFont=0;
@@ -154,10 +154,10 @@ public class Config {
     public boolean lightState=false;
     public boolean autoScroll=true;
 //#ifdef POPUPS
-    public boolean popUps=true;
+    public boolean popUps=false;
 //#endif
     public boolean showResources=true;
-    public boolean enableVersionOs=true;
+    public boolean enableVersionOs=false;
     public boolean collapsedGroups=true;
     public int messageLimit=512;
     public boolean eventDelivery=true;
@@ -165,18 +165,18 @@ public class Config {
     public boolean transliterateFilenames=false;
     public boolean autoDeTranslit=false;
 
-    public boolean rosterStatus=true;
+    public boolean rosterStatus=false;
 //#ifdef PEP
-//#     public boolean sndrcvmood = true;
-//#     public boolean rcvtune = true;
-//#     public boolean rcvactivity = true;
+//#     public boolean sndrcvmood = false;
+//#     public boolean rcvtune = false;
+//#     public boolean rcvactivity = false;
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL;//enable all
     public boolean showBalloons = true;
-//#ifdef LOGROTATE
-//#     public int msglistLimit=500;
-//#endif
+
+    public int msglistLimit=50;
+
     public boolean useTabs=false;
     public boolean notifyBlink=true;
     public boolean notifySound=false;
@@ -226,10 +226,10 @@ public class Config {
     public boolean use_drawed_font=false;       
     public String drwd_fontname="no";  
     
-    public boolean savePos=false;  
+    public boolean savePos=true;  
     public boolean boldNicks=true;  
-    public int scrollWidth=4;
-    public boolean drawScrollBgnd = true;
+    public int scrollWidth=5;
+    public boolean drawScrollBgnd = false;
     public int[] cursorPos = {
                             1,  //RosterToolsMenu 0
                             1,  //RosterItemActions 1
@@ -293,7 +293,7 @@ public class Config {
     
     public int ANIsmilesHeight=-1;
     public static boolean ANIsmilesDetect = true;
-    public boolean showCollapsedPresences=true;
+    public boolean showCollapsedPresences=false;
     public boolean networkAnnotation=true;
     public boolean metaContacts=false;
     public boolean graphicsMenu=false;
@@ -615,7 +615,7 @@ public class Config {
             confMessageCount=inputStream.readInt();   
             autoAwayType=inputStream.readInt();
             messageLimit=inputStream.readInt();
-            //msglistLimit=inputStream.readInt();
+            msglistLimit=inputStream.readInt();
             autoSubscribe=inputStream.readInt();
             barFont=inputStream.readInt();
             baloonFont=inputStream.readInt();
@@ -842,7 +842,7 @@ public class Config {
             outputStream.writeInt(confMessageCount);   
             outputStream.writeInt(autoAwayType);
             outputStream.writeInt(messageLimit);
-            //outputStream.writeInt(msglistLimit);
+            outputStream.writeInt(msglistLimit);
             outputStream.writeInt(autoSubscribe);
             outputStream.writeInt(barFont);
             outputStream.writeInt(baloonFont);

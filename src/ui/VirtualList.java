@@ -1534,7 +1534,7 @@ public abstract class VirtualList
 //#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
 //#                    } else {
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
-//#                        if(c.chatInfo.getMessageCount()==0){
+//#                        if(c.getChatInfo().getMessageCount()==0){
 //#                           midlet.BombusQD.sd.roster.createMessageEdit(c, c.msgSuspended, this, true);
 //#                           return;
 //#                        }
@@ -2011,7 +2011,7 @@ public abstract class VirtualList
                               int cIndex = 0;
                               for (i = 0; i < sortVector.size(); ++i) {
                                  find = (Contact)sortVector.elementAt(i);
-                                 int msgNext = find.chatInfo.getNewMessageCount();
+                                 int msgNext = find.getChatInfo().getNewMessageCount();
                                  if(msgNext > nextCount){
                                     nextCount = msgNext;
                                     cIndex = sortVector.indexOf(find);

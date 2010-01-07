@@ -256,7 +256,7 @@ public class ServiceDiscovery
             
             XmppError xe=XmppError.findInStanza(data);
             
-            new AlertBox(data.getAttribute("from"), xe.toString(), display, this) {
+            new AlertBox(data.getAttribute("from"), xe.toString(), display, this, false) {
                 public void yes() { };
                 public void no() { };
             };
@@ -369,7 +369,7 @@ public class ServiceDiscovery
             if (text.equals(SR.get(SR.MS_DONE)) && id.endsWith("Search") ) {
                 new SearchResult(display, data);
             } else {
-                new AlertBox(mainbar, text, display, null) {
+                new AlertBox(mainbar, text, display, null, false) {
                     public void yes() { }
                     public void no() { }
                 };
