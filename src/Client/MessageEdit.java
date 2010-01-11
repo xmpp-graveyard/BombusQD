@@ -156,9 +156,10 @@ public final class MessageEdit
        this.parentView=pView;
        this.to = to;
        this.emptyChat = emptyChat;
+       boolean phoneSONYE = (midlet.BombusQD.cf.phoneManufacturer == Config.SONYE);
        switch(midlet.BombusQD.cf.msgEditType){
             case 0: 
-                t.setTitle( null == to ? "Multi-Message" : to.toString());
+                if(!phoneSONYE) t.setTitle( null == to ? "Multi-Message" : to.toString() );
                 t.setString(body);
                 if (midlet.BombusQD.cf.capsState) t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
 //#ifdef CLIPBOARD
@@ -175,7 +176,7 @@ public final class MessageEdit
                 display.setCurrent(t);
                 break;
             case 1:
-                form.setTitle(null == to ? "Multi-Message" : to.toString());
+                if(!phoneSONYE) form.setTitle(null == to ? "Multi-Message" : to.toString());
                 textField.setString(body);
 //#ifdef CLIPBOARD
 //#                 if (midlet.BombusQD.cf.useClipBoard && !midlet.BombusQD.clipboard.isEmpty())  form.addCommand(cmdPasteText);

@@ -107,7 +107,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     private CheckBox popUps;
 //#endif
 
-    private CheckBox graphicsMenu;
+   // private CheckBox graphicsMenu;
     private CheckBox showBaloons;
     private CheckBox animatedSmiles;
     private CheckBox eventDelivery;
@@ -255,7 +255,7 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#endif
           runningMessage = null;
           popUps = null;
-          graphicsMenu = null;
+          //graphicsMenu = null;
           showBaloons = null;
           animatedSmiles = null;
           eventDelivery = null;
@@ -324,6 +324,29 @@ public class PluginsConfig extends DefForm implements MenuListener
           debug = null;
           userAppLevel = null;
           
+          if ( subscr != null ) subscr = null;
+          if ( nil != null ) nil = null;
+          if ( msgEditType != null ) msgEditType = null;
+          if ( textWrap != null ) textWrap = null;
+          if ( langFiles != null ) langFiles = null;
+          if ( bgnd_image != null ) bgnd_image = null;    
+          if ( graphicsMenuPosition != null ) graphicsMenuPosition = null;
+    
+          if ( messageLimit != null ) messageLimit = null;
+          if ( msglistLimit != null ) msglistLimit = null;
+          if ( reconnectCount != null ) reconnectCount = null;
+          if ( reconnectTime != null ) reconnectTime = null;
+          if ( fieldGmt != null ) fieldGmt = null; 
+          if ( scrollWidth != null ) scrollWidth = null; 
+  
+//#ifdef AUTOSTATUS
+//#           if ( autoAwayType != null ) autoAwayType = null;
+//#           if ( fieldAwayDelay != null ) fieldAwayDelay = null; 
+//#endif
+          if ( panels != null ) panels = null;
+          if ( classic_chat_height != null ) classic_chat_height = null;     
+          if ( line_count != null ) line_count = null;          
+          
           Runtime.getRuntime().gc();
           midlet.BombusQD.debug.add("::destroy options..ok", 10);
     }
@@ -364,7 +387,7 @@ public class PluginsConfig extends DefForm implements MenuListener
           runningMessage = new CheckBox(SR.get(SR.MS_RUNNING_MESSAGE), cf.runningMessage);//ticker obj
           popUps = new CheckBox(SR.get(SR.MS_POPUPS), cf.popUps); 
 
-          graphicsMenu = new CheckBox(SR.get(SR.MS_GR_MENU), cf.graphicsMenu);
+          //graphicsMenu = new CheckBox(SR.get(SR.MS_GR_MENU), cf.graphicsMenu);
           showBaloons = new CheckBox(SR.get(SR.MS_SHOW_BALLONS), cf.showBalloons); 
           animatedSmiles = new CheckBox(SR.get(SR.MS_ANI_SMILES), cf.animatedSmiles); 
           eventDelivery = new CheckBox(SR.get(SR.MS_DELIVERY), cf.eventDelivery); 
@@ -734,7 +757,7 @@ public class PluginsConfig extends DefForm implements MenuListener
            itemsList.addElement(gradient_light2);
            itemsList.addElement(new SpacerItem(2));
            itemsList.addElement(gradientBarLight2);
-           itemsList.addElement(graphicsMenu);
+           //itemsList.addElement(graphicsMenu);
           
            graphicsMenuPosition=new DropChoiceBox(display, SR.get(SR.MS_GRAPHICSMENU_POS));
            graphicsMenuPosition.append(SR.get(SR.MS_GRMENU_CENTER)); //0
@@ -918,8 +941,8 @@ public class PluginsConfig extends DefForm implements MenuListener
            cf.gradientBarLight1=gradientBarLight1.getValue()*10;
            cf.gradientBarLight2=gradientBarLight2.getValue()*10;
            
-           boolean oldValue = cf.graphicsMenu;
-           cf.graphicsMenu=graphicsMenu.getValue();
+           //boolean oldValue = cf.graphicsMenu;
+           //cf.graphicsMenu=graphicsMenu.getValue();
            //System.out.println(oldValue + "/" +cf.graphicsMenu);
            
            cf.graphicsMenuPosition=graphicsMenuPosition.getSelectedIndex();
@@ -954,11 +977,13 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#             }
 //#            } catch (Exception e) { }
 //#endif   
+           /*
            if(oldValue != cf.graphicsMenu && oldValue == false) {
               midlet.BombusQD.sd.roster.pluginsConfig = null;
               cf.saveToStorage();
               midlet.BombusQD.sd.roster.clearMenu();
-           }           
+           }      
+            */     
          }
          else if(type==SR.get(SR.MS_appStr)){
             cf.autoLogin=autoLogin.getValue();

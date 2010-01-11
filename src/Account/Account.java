@@ -32,7 +32,9 @@ import Client.StaticData;
 import Info.Version;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Presence;
-import images.RosterIcons;
+import Fonts.FontCache;
+import javax.microedition.lcdui.Font;
+import images.MenuIcons;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -48,6 +50,7 @@ public class Account extends IconTextElement{
     private String email="";
     private String hostAddr="";
     private int port=5222;
+    private int accountType = 0;
     private boolean active;
     private boolean useSSL;
     private boolean compression=true;
@@ -55,7 +58,7 @@ public class Account extends IconTextElement{
     private boolean mucOnly=false;
     
     private String nick="";
-    private String resource=Version.NAME;
+    private String resource="";
     
     private boolean enableProxy;
     private String proxyHostAddr="";
@@ -68,7 +71,7 @@ public class Account extends IconTextElement{
     
 
     public Account() {
-        super(RosterIcons.getInstance());
+        super(MenuIcons.getInstance());
     }
     
     public static void loadAccount(boolean launch, int accountIndex,int status){
@@ -93,17 +96,18 @@ public class Account extends IconTextElement{
         }
     }
 
-    public String toString(){
-        StringBuffer s=new StringBuffer();
+    private StringBuffer sbuf = new StringBuffer(0);
+    public String toString() {
+        sbuf.setLength(0);
         if (nick.length()!=0)
-            s.append(nick);
+            sbuf.append(nick);
         else {
-            s.append(userName).append('@').append(server);
+            sbuf.append(userName).append('@').append(server);
         }
-        s.append('/').append(resource);
-        return s.toString();
+        if(resource.indexOf(Version.NAME) == -1) sbuf.append('/').append(resource);
+        return sbuf.toString();
     }
-    
+
     public String getJid(){
         return userName+'@'+server+'/'+resource;
     }
@@ -128,6 +132,14 @@ public class Account extends IconTextElement{
         return a;
     }
 
+    public void setIconElement(){
+        if(server.indexOf("ya.ru")>-1) accountType = 0x91;
+        else if(server.indexOf("gmail.com")>-1) accountType = 0x92;
+        else if(server.indexOf("livejournal.com")>-1) accountType = 0x93;
+        else if(server.indexOf("qip.ru")>-1) accountType = 0x94;
+        else accountType = 0x90;
+    }
+    
     public static Account createFromDataInputStream(DataInputStream inputStream){
         int version=0;
         Account a=new Account();
@@ -136,6 +148,7 @@ public class Account extends IconTextElement{
             a.userName = inputStream.readUTF();
             a.password = inputStream.readUTF();
             a.server   = inputStream.readUTF();
+            a.setIconElement();
             a.email   = inputStream.readUTF();            
             a.hostAddr = inputStream.readUTF();
             a.port     = inputStream.readInt();
@@ -202,7 +215,14 @@ public class Account extends IconTextElement{
         
     }
     
-    public int getImageIndex(){ return active?0:5; }
+    public Font getFont() {
+        if(active) return FontCache.getFont( true , Font.SIZE_LARGE);
+        return FontCache.getFont( getFontIndex(), FontCache.roster);
+    }    
+    
+    public int getImageIndex() { 
+        return accountType;
+    }
 
     public String getUserName() { return userName;  }
     public void setUserName(String userName) { this.userName = userName;  }

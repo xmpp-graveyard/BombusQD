@@ -547,16 +547,13 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                     break;
 //#ifdef CLIPBOARD
 //#                 case 892: //Copy JID
-//#ifndef WMUC
-//#                     if (!(c instanceof MucContact)) {
-//#endif
 //#                         try {
-//#                             if (c.bareJid!=null)
-//#                                 midlet.BombusQD.clipboard.setClipBoard(c.bareJid);
+//#                             if (c.bareJid!=null) {
+//#                                 Msg msg = new Msg(Constants.MESSAGE_TYPE_SYSTEM,"JID", null, c.bareJid);
+//#                                 midlet.BombusQD.clipboard.add(msg);
+//#                                 msg = null;
+//#                             }
 //#                         } catch (Exception e) {/*no messages*/}
-//#ifndef WMUC
-//#                     }
-//#endif
 //#                     break;
 //#endif
                 case 893: //ping

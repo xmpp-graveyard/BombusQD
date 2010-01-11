@@ -65,8 +65,8 @@ public class NvStorage {
     
     /** Creates DataOutputStream based on ByteOutputStream  */
     static public DataOutputStream CreateDataOutputStream(){
-        if (baos!=null) return null;
-        DataOutputStream ostream=new DataOutputStream( baos=new ByteArrayOutputStream());
+        //if (baos!=null) return null;
+        DataOutputStream ostream=new DataOutputStream( baos=new ByteArrayOutputStream() );
         return ostream;
     }
     
@@ -96,6 +96,9 @@ public class NvStorage {
             ostream.close();
             ostream=null;
             recordStore=null;
+            
+            baos.flush();
+            baos.reset();
             baos=null;
         } catch (Exception e) { 
             //e.printStackTrace(); 

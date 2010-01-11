@@ -85,4 +85,11 @@ public class MenuIcons extends ImageList{
     public static final byte ICON_DISCO      = 0x15;
     public static final byte ICON_IE         = 0x24;
     public static final byte ICON_INVERSE    = 0x25;
+    /*
+    public static final short ICON_JABBER_ACCOUNT = 0x90;
+    public static final short ICON_YANDEX_ACCOUNT = 0x91;
+    public static final short ICON_GTALK_ACCOUNT = 0x92;
+    public static final short ICON_LJ_ACCOUNT = 0x93;
+    public static final short ICON_QIP_ACCOUNT = 0x94;
+     */ 
 }

@@ -67,6 +67,11 @@ import Client.ContactMessageList;
 //#endif
 import History.*;
 
+import ui.controls.AlertBox;
+import io.NvStorage;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 /** Entry point class
  *
  * @author  Eugene Stahov
@@ -130,6 +135,41 @@ public class BombusQD extends MIDlet implements Runnable
     public int wimg_actions;
     public int himg_actions;    
 
+    private void rmsVersion(boolean save, Displayable parentView) {
+        String key = "key05628615";// без необходимости не изменять
+        if(save == false) {
+            try {
+               DataInputStream is=NvStorage.ReadFileRecord("appver", 0);
+               String ver = is.readUTF();
+               if(ver.indexOf(key) == -1 ) {
+                  //alerbox
+                  AlertBox alert = new AlertBox( "WARNING", SR.get(SR.MS_WARNING_MESSAGE_INSTALL) , display, parentView, true) {
+                      public void yes() { notifyDestroyed(); }
+                      public void no() {}
+                  };
+               }
+               is.close();
+               is=null;
+            } catch (Exception e) {
+               //записи нет == установка начисто || установка поверх версии где отсутствует рмс хранилище appver
+               /*
+                  AlertBox alert = new AlertBox( "Info", "..." , display, parentView, true) {
+                      public void yes() { }
+                      public void no() { }
+                   };
+               */
+               rmsVersion(true, null);
+            }
+            return;
+        }
+        DataOutputStream os=NvStorage.CreateDataOutputStream();
+        try {
+            os.writeUTF(key);
+            os.close();
+            os = null;
+        } catch (Exception e) { }
+        NvStorage.writeFileRecord(os, "appver", 0, true);
+    }
     
     public void run(){ 
 
@@ -148,9 +188,11 @@ public class BombusQD extends MIDlet implements Runnable
             //sd.roster=new Roster(display);
             Account.loadAccount(cf.autoLogin, cf.accountIndex,-1);
             display.setCurrent(sd.roster);
+            rmsVersion(false, sd.roster);
           }
           else {
             display.setCurrent(acc);
+            rmsVersion(false, acc);
         }
         
         //long s2 = System.currentTimeMillis();

@@ -334,8 +334,12 @@ public class AccountSelect
     
     public void rmsUpdate(){
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-        for (int i=0;i<accountList.size();i++) 
-            ((Account)accountList.elementAt(i)).saveToDataOutputStream(outputStream);
+        Account acc;
+        for (int i=0;i<accountList.size();i++) {
+            acc = (Account)accountList.elementAt(i);
+            acc.saveToDataOutputStream(outputStream);
+            acc.setIconElement();
+        }
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
 

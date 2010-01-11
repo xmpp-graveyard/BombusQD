@@ -69,7 +69,7 @@ Ignore-List	Ignore-List
 Roster request	Получение ростера
 Type	Тип
 Name	Имя
-Username	Логин
+User Profile	Учетная запись
 fullscreen	полноэкранный режим
 Add bookmark	Добав. закладку
 conferences only	только конференции
@@ -722,3 +722,4 @@ Confident	Уверенный
 Experienced	Опытный
 Was added:	Добавлено:
 Configuration Master	Мастер быстрой настройки
+Please reinstall the program to avoid possible future problems	Пожалуйста,во избежание возможных проблем в работе,переустановите приложение удалив предыдущую версию.

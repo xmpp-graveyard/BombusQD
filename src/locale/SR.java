@@ -102,7 +102,7 @@ public class SR {
      public final static short MS_ROSTER_REQUEST  = 67; //Roster request
      public final static short MS_PRIVACY_TYPE  = 68; //Type
      public final static short MS_NAME  = 69; //Name
-     public final static short MS_USERNAME  = 70; //Username
+     public final static short MS_USER_PROFILE  = 70; //User Profile
      public final static short MS_FULLSCREEN  = 71; //fullscreen
      public final static short MS_ADD_BOOKMARK  = 72; //Add bookmark
      public final static short MS_CONFERENCES_ONLY  = 73; //conferences only
@@ -769,7 +769,8 @@ public class SR {
      public final static short MS_USER_APP_LEVEL_1 =  732;
      public final static short MS_USER_APP_LEVEL_2 =  733;
      public final static short MS_WAS_ADDED =  734;  
-     public final static short MS_CONFIGURATION_MASTER =  735;       
+     public final static short MS_CONFIGURATION_MASTER =  735;
+     public final static short MS_WARNING_MESSAGE_INSTALL =  736;
      
     private static String[] localeItemsDefault = new String[0];
     private static String[] localeItems = {
@@ -843,7 +844,7 @@ public class SR {
         "Roster request",
         "Type",
         "Name",
-        "Username",
+        "User Profile",
         "fullscreen",
         "Add bookmark",
         "conferences only",
@@ -1510,7 +1511,8 @@ public class SR {
         "Confident",
         "Experienced",
         "Was added:",
-        "Configuration Master"
+        "Configuration Master",
+        "Please reinstall the program to avoid possible future problems"
     };  
 
 

@@ -296,7 +296,7 @@ public class Config {
     public boolean showCollapsedPresences=false;
     public boolean networkAnnotation=true;
     public boolean metaContacts=false;
-    public boolean graphicsMenu=false;
+    public boolean graphicsMenu=true;
     public int graphicsMenuPosition=1;
     
     public boolean createMessageByFive = false;
@@ -584,7 +584,7 @@ public class Config {
             showCollapsedPresences=inputStream.readBoolean();
             networkAnnotation=inputStream.readBoolean();
             metaContacts=inputStream.readBoolean();
-            graphicsMenu=inputStream.readBoolean();
+            //graphicsMenu=inputStream.readBoolean();
             
 	    inputStream.close();
             inputStream=null;
@@ -818,7 +818,7 @@ public class Config {
             outputStream.writeBoolean(showCollapsedPresences);
             outputStream.writeBoolean(networkAnnotation);
             outputStream.writeBoolean(metaContacts);
-            outputStream.writeBoolean(graphicsMenu);
+            //outputStream.writeBoolean(graphicsMenu);
             
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confBoolean_", 0, true);      

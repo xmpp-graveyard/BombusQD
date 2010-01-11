@@ -24,21 +24,18 @@
  * along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
+/*
 package util; 
 
 import java.util.Vector;
 
-/**
- *
- * @author evgs
- */
+//@author evgs
+
 public class StringFormat {
 
     private String format;
     private Vector args;
     
-    /** Creates a new instance of StrungFormat */
     public StringFormat(String format) {
         this.format=format;
         args=new Vector(0);
@@ -95,3 +92,4 @@ public class StringFormat {
         return this; 
     }
 }
+ */

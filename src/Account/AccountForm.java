@@ -54,12 +54,10 @@ public class AccountForm
 
     private final AccountSelect accountSelect;
 
-    private TextInput userbox;
+    private TextInput fulljid;
     private TextInput passbox;
-    private TextInput servbox;
     private TextInput ipbox;
     private NumberInput portbox;
-    private TextInput resourcebox;
     private TextInput nickbox;
     private CheckBox sslbox;
     private CheckBox plainPwdbox;
@@ -125,8 +123,6 @@ public class AccountForm
           getMainBarItem().setElementAt(mainbar, 0);
         }
 
-        userbox = new TextInput(display, SR.get(SR.MS_USERNAME), account.getUserName(), null, TextField.ANY);
-        itemsList.addElement(userbox);//1
         String server=register?serverReg:"";
         String password=account.getPassword();
         int port_box=5222;
@@ -157,17 +153,35 @@ public class AccountForm
         }else{
            password=generate(1);
         }
-        servbox = new TextInput(display, SR.get(SR.MS_SERVER), server, null, TextField.ANY);
-        itemsList.addElement(servbox);   
-        server=null;
         
-        if(!register){
-          link_genServer = new LinkString(SR.get(SR.MS_GENERATE)+" "+SR.get(SR.MS_SERVER)) { public void doAction() { 
-           servbox.setValue(generate(0));
-          } };
-          itemsList.addElement(link_genServer);
-          itemsList.addElement(new SpacerItem(5));
+        StringBuffer uid = new StringBuffer(0);
+        if(register == false){
+          String res = account.getResource();
+          String uname = account.getUserName();
+          if(uname.length() > 0){
+            uid.append(account.getUserName());
+          } 
+          /*else {
+            uid.append('.');
+          }*/
+          uid.append('@');
+          uid.append(server);
+          if(res.length() > 0){
+             if(res.indexOf(Info.Version.NAME) == -1)
+                 uid.append('/')
+                    .append(account.getResource());
+          }
+        } else {
+          uid//.append(generate(2))
+             .append('@')
+             .append(server);
         }
+        fulljid = new TextInput(display, SR.get(SR.MS_USER_PROFILE) + "(JID)", uid.toString() , null, TextField.ANY);
+        itemsList.addElement(fulljid);
+        
+        nickbox = new TextInput(display, SR.get(SR.MS_NICKNAME), account.getNick(), null, TextField.ANY);
+        itemsList.addElement(nickbox);        
+
         
         passbox = new TextInput(display, SR.get(SR.MS_PASSWORD), password,null,TextField.ANY);     
         itemsList.addElement(passbox);
@@ -177,9 +191,6 @@ public class AccountForm
         } };
         itemsList.addElement(link_genPass); 
         itemsList.addElement(new SpacerItem(5));
-        
-        resourcebox = new TextInput(display, SR.get(SR.MS_RESOURCE), account.getResource(), null, TextField.ANY);
-        itemsList.addElement(resourcebox);
         
         portbox = new NumberInput(display, SR.get(SR.MS_PORT), Integer.toString(port_box), 0, 65535);
         itemsList.addElement(portbox);
@@ -201,9 +212,6 @@ public class AccountForm
             }
         }
 
-        nickbox = new TextInput(display, SR.get(SR.MS_NICKNAME), account.getNick(), null, TextField.ANY);
-        itemsList.addElement(nickbox);
-        
         registerbox = new CheckBox(SR.get(SR.MS_REGISTER_ACCOUNT), register); 
         
         if (newaccount){
@@ -248,6 +256,15 @@ public class AccountForm
       }
       sb.append(pass);        
     }
+    else if(type==2) { //generate nickname
+      Random rand = new Random();
+      sb.append("nick");
+      int i = 0;
+      for (int k = 0; k<8; k++) {
+         i = Math.abs(rand.nextInt()) % 10;
+         sb.append(i);
+      }
+    }    
     return sb.toString();
   }     
     
@@ -363,24 +380,37 @@ public class AccountForm
     
     public void cmdOk() {
         midlet.BombusQD.debug.add("::saved",10);
-        String user = userbox.getValue().trim().toLowerCase();
-        String server = servbox.getValue().trim().toLowerCase();
+        String value = fulljid.getValue().trim();
         String pass = passbox.getValue();
-        int at = user.indexOf('@');
-        if (at>-1) {
-            server=user.substring(at+1);
-            user=user.substring(0, at);
+        
+        int indexPr = value.indexOf('@') + 1;
+        int indexRes = value.indexOf('/') + 1;
+        int indexRes_ = value.indexOf('\"') + 1;
+        if(indexPr <= 1 || pass.length()==0) return;
+        
+        String user = indexPr > 0 ? value.substring(0, indexPr - 1) : "test";
+        String server = "server";
+        String resource = "BombusQD";
+        
+        if(indexRes > 0) {
+           server = value.substring(indexPr, indexRes - 1);
+           resource = value.substring(indexRes);
+        } else if(indexRes_ > 0) {
+          server = value.substring(indexPr, indexRes_ - 1);
+          resource = value.substring(indexRes_);
+        } else {
+           server = value.substring(indexPr);
         }
-        if (server.length()==0 || user.length()==0 || pass.length()==0)
-            return;
         
         account.setUserName(user);
         account.setServer(server);
         account.setPort(Integer.parseInt(portbox.getValue()));
-        account.setEmail(emailbox.getValue().trim());        
+        if(midlet.BombusQD.cf.userAppLevel>=1) {
+          account.setEmail(emailbox.getValue().trim());
+        }
         account.setPassword(pass);
         account.setNick(nickbox.getValue());
-        account.setResource(resourcebox.getValue());
+        account.setResource(resource);
        
         
         boolean registerNew = false;

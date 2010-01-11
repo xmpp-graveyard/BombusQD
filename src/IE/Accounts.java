@@ -130,8 +130,10 @@ public class Accounts {
     
     public void rmsUpdate(){
         DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
-        for (int i=0; i<getItemCount(); i++)
+        for (int i=0; i<getItemCount(); i++){
             getAccount(i).saveToDataOutputStream(outputStream);
+            getAccount(i).setIconElement();
+        }
         NvStorage.writeFileRecord(outputStream, "accnt_db", 0, true); //Account.storage
     }
     

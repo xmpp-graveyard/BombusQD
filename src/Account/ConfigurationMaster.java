@@ -47,7 +47,7 @@ public class ConfigurationMaster {
        
        SR.get(SR.MS_CONFIRM_EXIT),
        
-       SR.get(SR.MS_GR_MENU),
+       //SR.get(SR.MS_GR_MENU),
        SR.get(SR.MS_historyStr),
        
        SR.get(SR.MS_SUCCESS)
@@ -67,8 +67,8 @@ public class ConfigurationMaster {
             case 9: /*System.out.println("MS_FILE_TRANSFERS->" + value);*/ cf.fileTransfer = value; break;
 
             case 10: /*System.out.println("MS_CONFIRM_EXIT->" + value);*/ cf.queryExit = value; break;
-            case 11: /*System.out.println("MS_GR_MENU->" + value);*/ cf.graphicsMenu = value; break;
-            case 12: /*System.out.println("MS_historyStr->" + value);*/ cf.module_history = value; break;
+            //case 11: /*System.out.println("MS_GR_MENU->" + value);*/ cf.graphicsMenu = value; break;
+            case 11: /*System.out.println("MS_historyStr->" + value);*/ cf.module_history = value; break;
         }
     }    
     

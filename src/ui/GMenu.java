@@ -106,10 +106,12 @@ public class GMenu extends Canvas {
    
    
    public GMenu(Display display, Displayable parentView, MenuListener menuListener, ImageList il, Vector menuCommands) {
+        /*
         if(midlet.BombusQD.cf.graphicsMenu == false){
             new MyMenu(display, parentView, menuListener, "Menu", il, menuCommands);
             return;
         }
+        */
         gm.ml=menuListener;
         this.parentView=parentView;
         this.display=display;
@@ -126,11 +128,13 @@ public class GMenu extends Canvas {
    
    public GMenu(Display display,Displayable parentView,MenuListener menuListener,ImageList il,Vector menuCommands,
            Vector cmdfirstList,Vector cmdsecondList,Vector cmdThirdList){//Количество вкладок
+        /*
         if(midlet.BombusQD.cf.graphicsMenu == false){
             if(il == null) il = MenuIcons.getInstance();
             new MyMenu(display, parentView, menuListener, "Menu", il, menuCommands);
             return;
         }
+         */
         gm.ml=menuListener;
         this.parentView=parentView;
         this.display=display;
