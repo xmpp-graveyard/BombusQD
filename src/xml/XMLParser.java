@@ -92,7 +92,9 @@ public class XMLParser {
                         
                         continue;
                     }
-                    sbuf.append(c); continue;
+                    sbuf.append(c); 
+                    //System.out.print(c);
+                    continue;
                 }
 
         case ATRNAME:

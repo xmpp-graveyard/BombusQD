@@ -96,7 +96,6 @@ public class Utf8IOStream {
 	    outStream.flush();
             bytes=null;
             bytes=new byte[0];
-            data.setLength(0);
             
             if(isZlib == false){
               addOutTraffic(avail);
@@ -138,14 +137,15 @@ public class Utf8IOStream {
     
     public void updateTraffic(boolean in, int value) {
         if(isZlib) {
-           if(in) addInTraffic(value); 
+           if(in)
+               addInTraffic(value);
            else 
                addOutTraffic(value);
            midlet.BombusQD.sd.traffic = bytesSent + bytesRecv;
         } else {
           midlet.BombusQD.sd.traffic = getBytes();
         }
-         midlet.BombusQD.sd.updateTrafficOut();
+        midlet.BombusQD.sd.updateTrafficOut();
      }
     
 

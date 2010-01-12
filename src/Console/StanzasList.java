@@ -41,7 +41,7 @@
 //#     
 //#     Vector stanzas=new Vector(0);
 //#     
-//#     boolean enabled = false;
+//#     public static boolean enabled = false;
 //#     
 //#     private static StanzasList instance;
 //#     

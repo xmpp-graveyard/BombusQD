@@ -63,28 +63,28 @@ public class Config {
     public final static int SUBSCR_DROP=2;
     public final static int SUBSCR_REJECT=3;
     
-    public final static int NOT_DETECTED=0;
-    public final static int NONE=-1;
-    public final static int SONYE=1;
-    public final static int NOKIA=2;
-    public final static int SIEMENS=3;
-    public final static int SIEMENS2=4;
-    public final static int MOTO=5;
-    public final static int MOTOEZX=6;
-    public final static int WINDOWS=7;
-    public final static int INTENT=8;
-    public final static int J2ME=9;
-    public final static int NOKIA_9XXX=10;
-    public final static int SONYE_M600=11;
+    public final static byte NOT_DETECTED=0;
+    public final static byte NONE=-1;
+    public final static byte SONYE=1;
+    public final static byte NOKIA=2;
+    public final static byte SIEMENS=3;
+    public final static byte SIEMENS2=4;
+    public final static byte MOTO=5;
+    public final static byte MOTOEZX=6;
+    public final static byte WINDOWS=7;
+    public final static byte INTENT=8;
+    public final static byte J2ME=9;
+    public final static byte NOKIA_9XXX=10;
+    public final static byte SONYE_M600=11;
 //#if !ZLIB
-//#     public final static int XENIUM99=12;
+//#     public final static byte XENIUM99=12;
 //#endif
-    public final static int SAMSUNG=14;
-    public final static int LG=15;
-    public final static int JBED=16;
-    public final static int WTK=50;
-    public final static int OTHER=99;
-    public final static int NOKIA_5800=44;
+    public final static byte SAMSUNG=14;
+    public final static byte LG=15;
+    public final static byte JBED=16;
+    public final static byte WTK=50;
+    public final static byte OTHER=99;
+    public final static byte NOKIA_5800=44;
 
     StaticData sd = StaticData.getInstance();
 
@@ -130,7 +130,7 @@ public class Config {
     public boolean showTransports=true;
     public boolean selfContact=false;
     public boolean ignore=false;
-    public boolean eventComposing=true;//Уведомление о наборе текста
+    public boolean eventComposing=true;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     public boolean autoLogin=false;
     public boolean autoFocus=false;
     public int loginstatus=0;//loginstatus
@@ -930,7 +930,7 @@ public class Config {
     }
 
     public static String platformName;
-    public int phoneManufacturer=NOT_DETECTED;
+    public byte phoneManufacturer=NOT_DETECTED;
     
     private final void getPhoneManufacturer() {
         if (phoneManufacturer==NOT_DETECTED) {

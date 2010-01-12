@@ -37,9 +37,10 @@ import javax.microedition.lcdui.Font;
 import Colors.ColorTheme;
 import java.util.*;
 import ui.*;
-import Client.Msg;
-import Client.Config;
+//import Client.Msg;
+//import Client.Config;
 import util.Strconv;
+import images.RosterIcons;
 
 public final class MessageParser // implements Runnable
 {
@@ -233,6 +234,12 @@ public final class MessageParser // implements Runnable
         s.setLength(0);
 
         int w=0;
+        if (!task.msg.MucChat) {
+            if (!midlet.BombusQD.cf.useLowMemory_iconmsgcollapsed)
+                w+=RosterIcons.getInstance().getWidth()+4;
+        }
+        else if (!task.msg.highlite && !isSubj)
+            w+=11;
         int wordWidth=0;
         int wordStartPos=0;
 //#ifdef SMILES

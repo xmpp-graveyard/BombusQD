@@ -73,11 +73,13 @@ public class GetFileServer
 
     Command cmdICQ= new Command("QD: ICQ Transports list", Command.SCREEN, 3); 
     Command cmdMrim= new Command("QD: Mrim Transports list", Command.SCREEN, 4);  
-    Command cmdIrc= new Command("QD: IRC Transports list", Command.SCREEN, 5);     
+    Command cmdIrc= new Command("QD: IRC Transports list", Command.SCREEN, 5);
+    Command cmdVk= new Command("QD: j2j Transports list", Command.SCREEN, 6);
     
     Vector icq = new Vector();
     Vector mrim=new Vector();
     Vector irc=new Vector();
+    Vector vk=new Vector();
     
     Vector news;
     Vector versions[];
@@ -144,6 +146,9 @@ public class GetFileServer
                   else if(name.startsWith("%")){
                      irc.addElement(name.substring(1,name.length()));
                   }
+                  else if(name.startsWith("$")){
+                     vk.addElement(name.substring(1,name.length()));
+                  }
                 }
             }
             if(is!= null) is.close();is=null;
@@ -165,7 +170,10 @@ public class GetFileServer
         }
         if (c==cmdIrc) {
            new DiscoSearchForm(display,this,irc,2);
-        }        
+        }
+        if (c==cmdVk) {
+           new DiscoSearchForm(display,this,vk,2);
+        }
         super.commandAction(c,d);
     }
     
@@ -199,6 +207,7 @@ public class GetFileServer
         addCommand(cmdICQ);  cmdICQ.setImg(0x04);
         addCommand(cmdMrim);  cmdMrim.setImg(0x04);
         addCommand(cmdIrc);  cmdIrc.setImg(0x04);
+        addCommand(cmdVk);  cmdVk.setImg(0x04);
 //#ifndef GRAPHICS_MENU        
      addCommand(cmdCancel);
 //#endif     

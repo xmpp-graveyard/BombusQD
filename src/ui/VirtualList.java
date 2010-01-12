@@ -1253,7 +1253,12 @@ public abstract class VirtualList
     }
     
     protected void pointerPressed(int x, int y) {
-        System.out.println("pointerPressed("+x+", "+y+")");
+        //System.out.println("pointerPressed("+x+", "+y+")");
+        if(gm.itemGrMenu>0){
+            GMenu.pointerPressed(x, y);
+            return;
+        }
+
 //#ifdef POPUPS
         popup.next();
 //#endif        
@@ -1510,7 +1515,7 @@ public abstract class VirtualList
     
     private void key(int keyCode) {
 //#ifdef GRAPHICS_MENU    
-//#      if(gm.itemGrMenu>0 && midlet.BombusQD.cf.graphicsMenu ){ //Активное меню
+//#      if(gm.itemGrMenu>0 && midlet.BombusQD.cf.graphicsMenu ){ //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 //#          GMenu.keyPressed(keyCode);
 //#          repaint();
 //#      }
@@ -1985,7 +1990,6 @@ public abstract class VirtualList
     }
 
     public int getListWidth() {
-        if(midlet.BombusQD.cf.useLowMemory_iconmsgcollapsed) return width - midlet.BombusQD.cf.scrollWidth - 25;
         return width - midlet.BombusQD.cf.scrollWidth - 2;
     }
 

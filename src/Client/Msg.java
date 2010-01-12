@@ -78,6 +78,7 @@ public class Msg {
         this.body=body;
         this.subject=subj;
         this.dateGmt=Time.utcTimeMillis();
+        this.id=null;
         if (messageType>=Constants.MESSAGE_TYPE_IN) unread=true;
         if (messageType==Constants.MESSAGE_TYPE_PRESENCE) itemCollapsed = midlet.BombusQD.cf.showCollapsedPresences;
         else if (messageType==Constants.MESSAGE_TYPE_HEADLINE) itemCollapsed=true;

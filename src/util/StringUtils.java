@@ -54,6 +54,7 @@ public class StringUtils {
  
     public static String replaceNickTags(String body){
          StringBuffer sb = new StringBuffer(0);
+         if (null==body) return null;
          body = body+" ";
          boolean parse = true;
          int f1,f2,len=0;
@@ -67,7 +68,8 @@ public class StringUtils {
               if(i==f2) i+=7;
               sb.append(body.charAt(i));
             }
-            body = sb.toString(); sb.setLength(0);
+            body = sb.toString();
+            sb.setLength(0);
           } else parse = false;
          }
          len = body.length();

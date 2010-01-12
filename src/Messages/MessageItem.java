@@ -28,10 +28,10 @@
 
 package Messages; 
 
-import Client.Config;
+//import Client.Config;
 import Client.Msg;
 import images.RosterIcons;
-import java.util.Enumeration;
+//import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
@@ -125,10 +125,10 @@ public class MessageItem
                  if(i==0 && !msg.isPresence() && !msg.MucChat){
                           if (msg.delivered) {
                              RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_DELIVERED_INDEX, 0,0);
-                             ofs+=23;
+                             ofs+=RosterIcons.getInstance().getWidth()+4;
                           }else{
                              RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, 0,0);
-                             ofs+=23;
+                             ofs+=RosterIcons.getInstance().getWidth()+4;
                           }
                           if (cols) RosterIcons.getInstance().drawImage(g, RosterIcons.ICON_MSGCOLLAPSED_INDEX, 0,0);
                  }

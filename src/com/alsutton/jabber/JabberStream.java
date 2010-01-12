@@ -25,8 +25,8 @@
  */
 
 package com.alsutton.jabber; 
-import Account.Account;
-import Client.Config;
+//import Account.Account;
+//import Client.Config;
 import Client.StaticData;
 //#ifdef CONSOLE
 //# import Console.StanzasList;
@@ -40,7 +40,7 @@ import locale.SR;
 import xmpp.XmppError;
 import xmpp.XmppParser;
 import xmpp.extensions.IqPing;
-import Client.Contact;
+//import Client.Contact;
 import Client.Config;
 
 public class JabberStream extends XmppParser implements Runnable {
@@ -271,10 +271,10 @@ public class JabberStream extends XmppParser implements Runnable {
         sendBuf(sendData);
         /*
  //#ifdef CONSOLE
- //#         if (data.equals("</iq") || data.equals(" "))
- //#             addLog("Ping myself", 1);
- //#         else
- //#             addLog(data, 1);
+//#         if (data.equals("</iq") || data.equals(" "))
+//#             addLog("Ping myself", 1);
+//#         else
+//#             addLog(data, 1);
  //#endif
          */
     }
@@ -286,7 +286,7 @@ public class JabberStream extends XmppParser implements Runnable {
         if (null == data) return;
         if (null != iostream) iostream.send(data);
 //#ifdef CONSOLE
-//#         addLog(data.toString(), 1);
+//#         if (Console.StanzasList.enabled) addLog(data.toString(), 1);
 //#endif
         data.setLength(0);//Tishka17
     }

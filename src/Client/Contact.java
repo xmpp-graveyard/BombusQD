@@ -540,17 +540,17 @@ public class Contact extends IconTextElement{
         int itemVHeight=0;
         if (getSecondString()!=null)
         {
-            itemVHeight += fontHeight*2 + 3;
+            itemVHeight += fontHeight+fontHeight;
             if(img_vcard!=null){
               if(img_vcard.getHeight()>=itemVHeight){
-                itemVHeight = avatar_height + 6;
+                itemVHeight = avatar_height + 4;
               }
             }
         } else {
           itemVHeight = (maxImgHeight>=fontHeight)?maxImgHeight:fontHeight;
           if(img_vcard!=null){
              if(img_vcard.getHeight()>=itemVHeight){
-               itemVHeight = avatar_height + 6;
+               itemVHeight = avatar_height + 4;
              }
           }             
         }
@@ -683,7 +683,7 @@ public class Contact extends IconTextElement{
             g.drawString(getFirstString(), thisOfs , y, Graphics.TOP|Graphics.LEFT);   
         }        
         else {
-            int y = (h - fontHeight*2)/2;
+            int y = (h - fontHeight-fontHeight)/2;
             g.drawString(getFirstString(), thisOfs , y , Graphics.TOP|Graphics.LEFT);
             thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));

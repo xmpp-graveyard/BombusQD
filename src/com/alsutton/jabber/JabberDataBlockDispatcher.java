@@ -111,6 +111,11 @@ public class JabberDataBlockDispatcher
     public void arriveDataBlock(JabberDataBlock dataBlock) {
         dispatcherActive = true;
             try {
+//#ifdef CONSOLE
+//#                 if (Console.StanzasList.enabled)
+//#                     stream.addLog(dataBlock.toString(), 10);
+//#                 midlet.BombusQD.cf.inStanz+=1;
+//#endif
                 int processResult=JabberBlockListener.BLOCK_REJECTED;
                 int block_size = blockListeners.size();
                 //System.out.println("  -----S:blockListeners>> " + blockListeners.toString());
@@ -144,12 +149,10 @@ public class JabberDataBlockDispatcher
                      }
                     //TODO: reject iq stansas where type =="get" | "set"
                 }
-//#ifdef CONSOLE
-//#                 stream.addLog(dataBlock.toString(), 10);
-//#                 midlet.BombusQD.cf.inStanz+=1;
-//#endif
                 dataBlock.destroy();
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
     
 

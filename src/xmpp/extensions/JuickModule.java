@@ -2,7 +2,7 @@
 //# /*
 //#  * JuickModule.java
 //#  *
-//#  * Created on 24 Сентябрь 2009 г., 22:10
+//#  * Created on 24 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2009 пїЅ., 22:10
 //#  *
 //#  * To change this template, choose Tools | Template Manager
 //#  * and open the template in the editor.
@@ -221,8 +221,8 @@
 //#                            */
 //#                         }
 //#                     }else {
-//#                        m = new Msg(Constants.MESSAGE_TYPE_JUICK, BOTNAME , null , "none messages." );
-//#                        storeMessage(m);                        
+//#                        //m = new Msg(Constants.MESSAGE_TYPE_JUICK, BOTNAME , null , "none messages." );
+//#                        //storeMessage(m);
 //#                     }
 //#                 }
 //#                 if ( type.equals( "error" ) ) {
@@ -232,7 +232,7 @@
 //#                return null;
 //#             }
 //#             
-//#         } else if( data instanceof Message ) {//Сообщения по подписке
+//#         } else if( data instanceof Message ) {//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 //#ifdef CONSOLE
 //#                  midlet.BombusQD.debug.add("MESSAGE::"+data.toString(),10);    
 //#endif
@@ -306,7 +306,7 @@
 //# ///////////////                        
 //#                         //if(mid!=null) m.from = "[j]"+mid;
 //#                         //created [j] temp contact
-//#                         //juickNs!=null,т.е. сообщение с juick namespace
+//#                         //juickNs!=null,пїЅ.пїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ juick namespace
 //# ///////////////                        
 //#                         sb.setLength(0);
 //#                         childBlocks.setSize(0);

@@ -46,14 +46,14 @@ import locale.*;
 import Client.Config;
 import Client.StaticData;
 import Client.Roster;
-import Info.Version;
-import ui.GMenu;
+//import Info.Version;
+//import ui.GMenu;
 import ui.SplashScreen;
-import java.util.Vector;
-import util.StringLoader;
+//import java.util.Vector;
+//import util.StringLoader;
 import Fonts.*;
-import util.Strconv;
-import Account.YesNoAlert;
+//import util.Strconv;
+//import Account.YesNoAlert;
 //#ifdef CONSOLE
 //# import Console.DebugList;
 //#endif
@@ -61,7 +61,7 @@ import Account.YesNoAlert;
 //# import util.ClipBoard;
 //#endif
 import Client.Contact;
-import Client.ContactMessageList;
+//import Client.ContactMessageList;
 //#ifdef LIGHT_CONTROL
 //# import LightControl.*;
 //#endif
@@ -136,7 +136,7 @@ public class BombusQD extends MIDlet implements Runnable
     public int himg_actions;    
 
     private void rmsVersion(boolean save, Displayable parentView) {
-        String key = "key05628615";// без необходимости не изменять
+        String key = "key05628615";// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if(save == false) {
             try {
                DataInputStream is=NvStorage.ReadFileRecord("appver", 0);
@@ -151,7 +151,7 @@ public class BombusQD extends MIDlet implements Runnable
                is.close();
                is=null;
             } catch (Exception e) {
-               //записи нет == установка начисто || установка поверх версии где отсутствует рмс хранилище appver
+               //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ == пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ || пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ appver
                /*
                   AlertBox alert = new AlertBox( "Info", "..." , display, parentView, true) {
                       public void yes() { }

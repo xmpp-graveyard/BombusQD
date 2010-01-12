@@ -107,8 +107,8 @@ import Conference.QueryConfigForm;
 //# import Mood.EventPublish;
 //#endif
 import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.Alert;
-import javax.microedition.lcdui.AlertType;
+//import javax.microedition.lcdui.Alert;
+//import javax.microedition.lcdui.AlertType;
 
 
 import io.file.FileIO;

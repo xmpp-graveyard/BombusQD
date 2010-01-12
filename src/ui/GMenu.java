@@ -102,7 +102,7 @@ public class GMenu extends Canvas {
    private int fh = font.getHeight();
    private int size;  
    private Vector menuCommands = new Vector(0);
-   
+   private static int x1,y1,x2,y2;
    
    
    public GMenu(Display display, Displayable parentView, MenuListener menuListener, ImageList il, Vector menuCommands) {
@@ -127,7 +127,7 @@ public class GMenu extends Canvas {
    
    
    public GMenu(Display display,Displayable parentView,MenuListener menuListener,ImageList il,Vector menuCommands,
-           Vector cmdfirstList,Vector cmdsecondList,Vector cmdThirdList){//Количество вкладок
+           Vector cmdfirstList,Vector cmdsecondList,Vector cmdThirdList){//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /*
         if(midlet.BombusQD.cf.graphicsMenu == false){
             if(il == null) il = MenuIcons.getInstance();
@@ -173,7 +173,7 @@ public class GMenu extends Canvas {
         if(inmenu){
           cmd = (Command)gm.menuCommandsIn.elementAt(gm.itemCursorIndexIn); 
           gm.ml.commandAction(cmd, parentView);
-          gm.inMenuSelected=false;//сбрасываем флаг
+          gm.inMenuSelected=false;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         }else{
           cmd = (Command)gm.menuCommands.elementAt(gm.itemCursorIndex);  
           gm.ml.commandAction(cmd, parentView);
@@ -303,6 +303,13 @@ public class GMenu extends Canvas {
                gm.ycoodr= g.getClipHeight() - hitem - 10;
                break;
        }
+       //for pointer pressed  function
+       {
+           x1=gm.xcoodr;
+           y1=gm.ycoodr;
+           x2=x1+w;
+           y2=y1+mHfh;
+       }
 
        int alpha_menu=ColorTheme.getARGB(true);
         if (alpha_menu!=-1){
@@ -422,6 +429,22 @@ public class GMenu extends Canvas {
 	}
      
    
+   protected void pointerPressed(int x, int y) {
+       if (x<x1 || y<y1 || x> x2 || y>y2) {
+           gm.itemGrMenu=-1;
+           gm.ml=null;
+           cursorY=0;
+           return;
+       }
+       if (eventMenu==true) {
+            gm.itemCursorIndexIn=(y-y1)/fh;
+            closeEvent();
+            return;
+       }
+       gm.itemCursorIndex=(y-y1)/fh;
+       eventOk();
+       return;
+   }
 
    public void keyPressed(int keyCode) {
      if (eventMenu==true) {
@@ -432,7 +455,7 @@ public class GMenu extends Canvas {
             eventOk(); 
             cursorY=0;
          }
-         else if (keyCode==Config.SOFT_RIGHT || keyCode==')' || keyCode == -11 || keyCode == -8) {//SE: 11-back,-8-стрелка
+         else if (keyCode==Config.SOFT_RIGHT || keyCode==')' || keyCode == -11 || keyCode == -8) {//SE: 11-back,-8-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             gm.itemGrMenu=-1;
             gm.ml=null;
             gm.itemCursorIndex=0;

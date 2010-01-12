@@ -27,7 +27,7 @@
 
 package Client; 
 
-import com.alsutton.jabber.datablocks.Presence;
+//import com.alsutton.jabber.datablocks.Presence;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.Enumeration;

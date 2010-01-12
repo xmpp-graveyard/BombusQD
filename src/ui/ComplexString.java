@@ -27,8 +27,8 @@
  */
 
 package ui;
-import Client.Config;
-import Client.StaticData;
+//import Client.Config;
+//import Client.StaticData;
 import Fonts.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
