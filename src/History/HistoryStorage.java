@@ -385,6 +385,7 @@ public final class HistoryStorage {
                     try{
                          if (dis != null) { das.close(); das = null; }
                          if (baos != null) { baos.close(); baos = null; }
+                         if (bais != null) { bais.close(); bais = null; }
                     } catch (Exception e) { }
                 }
             }

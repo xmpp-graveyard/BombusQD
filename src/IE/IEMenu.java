@@ -61,8 +61,8 @@
 //#ifdef PLUGINS
 //#         }
 //#endif
-//#         //addItem(SR.get(SR.MS_TEMPLATE)+": "+SR.get(SR.MS_LOAD_FROM_FILE), 4);
-//#         //addItem(SR.get(SR.MS_TEMPLATE)+": "+SR.get(SR.MS_SAVE_TO_FILE), 5);
+//#         addItem(SR.get(SR.MS_TEMPLATE)+": "+SR.get(SR.MS_LOAD_FROM_FILE), 4);
+//#         addItem(SR.get(SR.MS_TEMPLATE)+": "+SR.get(SR.MS_SAVE_TO_FILE), 5);
 //#         
 //#         addItem(SR.get(SR.MS_ACCOUNTS)+": "+SR.get(SR.MS_LOAD_FROM_FILE), 6);
 //#         addItem(SR.get(SR.MS_ACCOUNTS)+": "+SR.get(SR.MS_SAVE_TO_FILE), 7);
@@ -120,14 +120,12 @@
 //#             case 3: //save Archive
 //#                 new IE.ArchiveTemplates(1, 1, pathSelected);
 //#                 break;
-//#         /*        
 //#             case 4: //load Templates
 //#                 new IE.ArchiveTemplates(0, 0, pathSelected);
 //#                 break;
 //#             case 5: //save Templates
 //#                 new IE.ArchiveTemplates(1, 0, pathSelected);
 //#                 break;
-//#          */
 //#             case 6: //load Accounts
 //#                 new IE.Accounts(pathSelected, 0);
 //#                 break;

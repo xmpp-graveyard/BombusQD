@@ -48,9 +48,6 @@ public class archiveEdit
 
     private Command cmdCancel;
     private Command cmdOk;
-//#ifdef ARCHIVE
-    protected Command cmdPaste;    
-//#endif
     private Msg msg;
     
     MessageArchive archive;
@@ -71,10 +68,6 @@ public class archiveEdit
         
         cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK, 99);
         cmdOk=new Command(SR.get(SR.MS_OK), Command.OK /*Command.SCREEN*/, 1);
-//#ifdef ARCHIVE
-        cmdPaste=new Command(SR.get(SR.MS_ARCHIVE), Command.SCREEN, 6);    
-//#endif
-        
         archive=new MessageArchive(where);
         this.where=where;
         this.pos=pos;
@@ -88,14 +81,6 @@ public class archiveEdit
         t.setString(body);
         t.addCommand(cmdOk);
         t.addCommand(cmdCancel);
-
-//#ifdef ARCHIVE
-        t.removeCommand(cmdPaste);
-//#endif
-//#if TEMPLATES
-//#         super.removeCommand(cmdTemplate);
-//#endif
-        
         t.setCommandListener(this);
         display.setCurrent(t);
     }

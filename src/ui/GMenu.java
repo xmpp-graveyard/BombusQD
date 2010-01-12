@@ -353,7 +353,7 @@ public class GMenu extends Canvas {
              cmd=null;
            }            
             if(midlet.BombusQD.cf.executeByNum){
-                g.drawString(Integer.toString(index)+"-"+ commandslist[index], x_start,fh*index + 1, g.LEFT|g.TOP);
+                g.drawString( (index<=9 ? Integer.toString(index)+"-" : "") + commandslist[index], x_start,fh*index + 1, g.LEFT|g.TOP);
             }else{
                 g.drawString(commandslist[index], x_start, fh*index + 1, g.LEFT|g.TOP);                   
             }

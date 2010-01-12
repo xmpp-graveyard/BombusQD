@@ -348,6 +348,7 @@ public class StringLoader {
 
   public static final String enc = "UTF-8";
 
+  /*
   public String loadString(String filename){
     String loadedString = null;
     byte[] buf = loadFile(filename);
@@ -386,6 +387,7 @@ public class StringLoader {
     return buf;
 
   }       
+   */
     
     
     public Hashtable hashtableLoader(final InputStream in) {

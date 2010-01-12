@@ -121,7 +121,6 @@ public class ColorTheme {
 //#     public static String[] NAMES;
 //#     
 //#     public static void reInitNames(){
-//#         NAMES = new String[51];
 //#         String[] locale = {
 //#             SR.get(SR.MS_BALLOON_INK),
 //#             SR.get(SR.MS_BALLOON_BGND),
@@ -193,7 +192,9 @@ public class ColorTheme {
 //#             SR.get(SR.MS_GRAPHICS_MENU_BGNG_ARGB),
 //#             SR.get(SR.MS_GRAPHICS_MENU_FONT)
 //#         };
-//#         for(byte i = 0; i < 51; ++i) NAMES[i] = locale[i];
+//#         int len = locale.length;
+//#         NAMES = new String[len];
+//#         for(byte i = 0; i < len; ++i) NAMES[i] = locale[i];
 //#endif
     }
     

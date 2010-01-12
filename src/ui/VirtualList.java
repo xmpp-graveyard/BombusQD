@@ -1985,7 +1985,8 @@ public abstract class VirtualList
     }
 
     public int getListWidth() {
-        return width-scrollbar.getScrollWidth()-2;
+        if(midlet.BombusQD.cf.useLowMemory_iconmsgcollapsed) return width - midlet.BombusQD.cf.scrollWidth - 25;
+        return width - midlet.BombusQD.cf.scrollWidth - 2;
     }
 
     public final static void sort(Vector sortVector, int itemType ,int sortType){

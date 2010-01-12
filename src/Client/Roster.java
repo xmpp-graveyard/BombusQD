@@ -3917,37 +3917,26 @@ public class Roster
         }
         return pos;
      }
-    
-    public void searchActiveContact(int direction){
-        Vector activeContacts=new Vector(0);
-        int nowContact = -1, contacts=-1, currentContact=-1;
-        for (Enumeration r=contactList.contacts.elements(); r.hasMoreElements(); ){
-            Contact c=(Contact)r.nextElement();
-            if (c.active()) {
-                activeContacts.addElement(c);
-                contacts=contacts+1;
-                if (c==activeContact) {
-                    nowContact=contacts;
-                    currentContact=contacts;
-                }
-            }
+
+    private Vector aContacts = new Vector(0);
+    public void searchActiveContact(Contact first, boolean right) {
+        aContacts.setSize(0);
+        Vector search = contactList.contacts;
+        int size = search.size();
+        short activePos = 0;
+          Contact activeContact;
+          Contact showNext;
+          for(int i = 0; i < size; ++i) {
+             activeContact = (Contact)search.elementAt(i);
+             if(activeContact.active()) aContacts.addElement(activeContact);
+          }
+        int pos = aContacts.indexOf(first);
+        if (right) {
+           showNext = (aContacts.size() - 1 == pos) ? (Contact)aContacts.firstElement() : (Contact)aContacts.elementAt(pos + 1);
+        } else { 
+          showNext = (0 == pos) ? (Contact)aContacts.lastElement() : (Contact)aContacts.elementAt(pos - 1);
         }
-        
-        int size=activeContacts.size();
-        
-        if (size==0) return;
-        
-        try {
-            nowContact+=direction;
-            if (nowContact<0) nowContact=size-1;
-            if (nowContact>=size) nowContact=0;
-            
-            if (currentContact==nowContact) return;
-            
-            Contact c=(Contact)activeContacts.elementAt(nowContact);
-            display.setCurrent(c.getMessageList());
-            //c.getMessageList().show(sd.roster);
-        } catch (Exception e) { }
+        display.setCurrent(showNext.getMessageList());
     }
 
     public void deleteContact(Contact c) {

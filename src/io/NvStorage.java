@@ -40,6 +40,7 @@ public class NvStorage {
      * Opens RMS record from named store
      * and returns it as DataInputStream
      */
+    
     static public DataInputStream ReadFileRecord(String name, int index){
         DataInputStream istream=null;
         
@@ -49,8 +50,12 @@ public class NvStorage {
             recordStore = RecordStore.openRecordStore(name, false);
             byte[] b=recordStore.getRecord(index+1);
             
-            if (b.length!=0)         
-            istream=new DataInputStream( new ByteArrayInputStream(b) );
+            if (b.length!=0) {
+               ByteArrayInputStream bais = new ByteArrayInputStream(b);
+               istream=new DataInputStream( bais );
+               bais.close();
+               bais = null;
+            }
             
         } catch (Exception e) { }
         finally { 

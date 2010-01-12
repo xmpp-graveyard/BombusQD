@@ -45,7 +45,7 @@ public class MessageArchive {
 //#endif
     
     private final static String ARCHIVE="archive";
-    private final static String TEMPLATES="ad_templates";
+    private final static String TEMPLATES="templates";
 
     private int where;
     /** Creates a new instance of MessageArchive */
@@ -79,6 +79,8 @@ public class MessageArchive {
 	    Msg msg=new Msg(dis);
             msg.itemCollapsed=true; 
 	    dis.close();
+            bais.close();
+            bais = null;
             dis=null;
 	    return msg;
 	} catch (Exception e) {}
@@ -128,12 +130,17 @@ public class MessageArchive {
 	    ByteArrayOutputStream bout = new ByteArrayOutputStream();
 	    DataOutputStream dout = new DataOutputStream( bout );
 	    msg.serialize( dout );
-	    dout.close();
+	      dout.close();
+              dout = null;
+              
 	    byte b[]=bout.toByteArray();
+              bout.close();
+              bout = null;
 	    
 	    RecordStore rs=RecordStore.openRecordStore((where==1)?ARCHIVE:TEMPLATES, true);
 	    rs.addRecord(b, 0, b.length);
             rs.closeRecordStore();
+            rs = null;
 	} catch (Exception e) { e.printStackTrace(); }
     }
 }

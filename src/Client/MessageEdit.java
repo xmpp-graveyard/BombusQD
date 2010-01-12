@@ -95,7 +95,7 @@ public final class MessageEdit
 //#     Command cmdPasteText;
 //#endif  
 //#if TEMPLATES
-//# Command cmdTemplate;
+//#     Command cmdTemplate;
 //#endif   
     
     
@@ -245,6 +245,7 @@ public final class MessageEdit
 //#endif
         t.addCommand(cmdPaste);
 //#endif
+        t.addCommand(cmdTemplate);
 
         t.setCommandListener(this);
 //#ifdef RUNNING_MESSAGE
@@ -323,6 +324,7 @@ public final class MessageEdit
 //#endif
        form.addCommand(cmdPaste);
 //#endif
+       form.addCommand(cmdTemplate);
        form.setCommandListener(this);
     }
     
@@ -369,6 +371,18 @@ public final class MessageEdit
             }
             return;
         }
+//#if TEMPLATES
+//#         if (c==cmdTemplate) {
+//#             try {
+//#                 if(null != to) to.msgSuspended=body; 
+//#                 if(midlet.BombusQD.cf.msgEditType>0){
+//#                   new ArchiveList(display , textField.getCaretPosition(), 0, textField, null, to); return;                    
+//#                 }else{
+//#                   new ArchiveList(display , t.getCaretPosition(), 0, null, t, to); return;
+//#                 }
+//#             } catch (Exception e) {/*no messages*/}
+//#         }
+//#endif        
         if (c==cmdLastMessage) {
             if(null == to) return;
             if(midlet.BombusQD.cf.msgEditType>0){

@@ -92,6 +92,7 @@ public final class ActiveContacts
     
     private long lasttime = 0;
     private long current = 0;
+    private Contact opened;
     
     public void sort(){
         current = System.currentTimeMillis();
@@ -111,6 +112,7 @@ public final class ActiveContacts
     
     public void setActiveContacts(Displayable pView, Contact current){
         this.parentView=pView;
+        this.opened = current;
         
         commandState();
         activeContacts.setSize(0);
@@ -268,10 +270,11 @@ public final class ActiveContacts
        }
     }
     
-    public void destroyView(){
+    public void destroyView() {
         isActive = false;
         midlet.BombusQD.sd.roster.reEnumRoster();
-        display.setCurrent(parentView);
+        if(null == parentView || !activeContacts.contains(opened) ) midlet.BombusQD.sd.roster.showRoster();
+        else display.setCurrent(parentView);
     }
 //#ifdef MENU_LISTENER
     public String touchLeftCommand(){ return SR.get(SR.MS_SELECT); }

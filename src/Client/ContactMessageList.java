@@ -335,7 +335,9 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#if TEMPLATES
 //#         if (c==midlet.BombusQD.commands.cmdTemplate) {
 //#             try {
-//#                 MessageArchive.store(replaceNickTags(getMessage(cursor)),2);
+//#                 Msg msg = getMessage(cursor);
+//#                 msg.from = "";
+//#                 MessageArchive.store(replaceNickTags(msg),2);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
@@ -730,7 +732,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
           switch (keyCode) {
             case KEY_NUM4:
                 if (midlet.BombusQD.cf.useTabs)
-                    midlet.BombusQD.sd.roster.searchActiveContact(-1);
+                    midlet.BombusQD.sd.roster.searchActiveContact(contact, false);
                 else
                     super.pageLeft();
                 contact.setCursor(cursor);
@@ -754,7 +756,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
                   break;
             case KEY_NUM6:
                 if (midlet.BombusQD.cf.useTabs)
-                    midlet.BombusQD.sd.roster.searchActiveContact(1);
+                    midlet.BombusQD.sd.roster.searchActiveContact(contact, true);
                 else
                     super.pageRight();
                 contact.setCursor(cursor);

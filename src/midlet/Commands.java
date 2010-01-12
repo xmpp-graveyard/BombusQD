@@ -172,6 +172,8 @@ public class Commands {
         cmdHistoryRMS.setImg(0x64);
         cmdHistoryFS.setImg(0x64);
         cmdHistorySERVER.setImg(0x64);
+        
+        cmdTemplate.setImg(0x44);
     }
         
     private Commands() {

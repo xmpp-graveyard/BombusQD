@@ -495,6 +495,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                
                itemsList.addElement(userKeys);
                itemsList.addElement(classicchat);
+               itemsList.addElement(tasks);
 //#ifdef IMPORT_EXPORT         
 //#                itemsList.addElement(ie);
 //#endif
