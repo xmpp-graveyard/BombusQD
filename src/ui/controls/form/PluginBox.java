@@ -11,6 +11,7 @@ import Colors.ColorTheme;
 import Client.Config;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
+import ui.VirtualList;
 import images.RosterIcons;
 import Fonts.FontCache;
 import javax.microedition.lcdui.Font;
@@ -38,7 +39,7 @@ public class PluginBox extends IconTextElement {
     
     public String toString() { return text; }
 
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
        g.setFont(font);
        int offset= 4;
        if (il!=null) {
@@ -54,7 +55,7 @@ public class PluginBox extends IconTextElement {
     }
 
     
-    public void onSelect(){
+    public void onSelect(VirtualList view){
         if(edit>0) {
            state=!state;
            Config cf = midlet.BombusQD.cf;

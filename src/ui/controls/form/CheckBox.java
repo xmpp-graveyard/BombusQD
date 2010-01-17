@@ -35,6 +35,7 @@ import javax.microedition.lcdui.*;
 import java.util.Vector;
 import util.StringUtils;
 import ui.GMenuConfig;
+import ui.VirtualList;
 /**
  *
  * @author ad,aqent
@@ -91,7 +92,7 @@ public class CheckBox
     }
     
     public String toString() { return text; }
-    public void onSelect(){
+    public void onSelect(VirtualList view){
         state=!state;
     }
 
@@ -104,7 +105,7 @@ public class CheckBox
         return scroll?-1:width;
     }
     
-    public void drawItem(Graphics g, int ofs, boolean sel){
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel){
        Font f = getFont();
        g.setFont(f);
        int scrollW = midlet.BombusQD.cf.scrollWidth;

@@ -109,6 +109,9 @@ public class AppendNick
         super(display);
         this.caretPos=caretPos;
         
+        cmdOk=new Command(SR.get(SR.MS_APPEND), Command.OK, 1);
+        cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.BACK, 99);
+        
         if(midlet.BombusQD.cf.msgEditType>0){
            this.tf=tf;
         }else{

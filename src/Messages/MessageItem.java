@@ -48,16 +48,14 @@ public class MessageItem
     
     public Msg msg;
     Vector msgLines;
-    private VirtualList view;
     private boolean even;
     private boolean smiles;
     private boolean partialParse=false;
     private int itemHeight = -1;
     
     /** Creates a new instance of MessageItem */
-    public MessageItem(Msg msg, VirtualList view, boolean showSmiles) {
+    public MessageItem(Msg msg, boolean showSmiles) {
 	this.msg=msg;
-	this.view=view;
         this.smiles=showSmiles;
         partialParse = msg.itemCollapsed;
     }
@@ -101,10 +99,12 @@ public class MessageItem
         }
         msgLines.removeAllElements();
         msgLines = null;
+        msg.destroy();
+        msg = null;
         //System.out.println("    :::     messageItem-->destroyed:: size->" + size + " => " + msgLines);
     }
 
-    public void drawItem(Graphics g, int ofs, boolean selected) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean selected) {
         int xorg=g.getTranslateX();
         int yorg=g.getTranslateY();
         g.translate(2,0);
@@ -147,7 +147,7 @@ public class MessageItem
                              //ofs=8;
                    }                  
               }
-              ((ComplexString)msgLines.elementAt(i)).drawItem(g, ofs, selected);
+              ((ComplexString)msgLines.elementAt(i)).drawItem(view, g, ofs, selected);
             }
             g.translate(0, h);
             if (msg.itemCollapsed) break;            
@@ -163,7 +163,7 @@ public class MessageItem
         }  
     }
     
-    public void onSelect() {
+    public void onSelect(VirtualList view) {
         msg.itemCollapsed=!msg.itemCollapsed;
         if (partialParse) {
             partialParse=false;
@@ -221,7 +221,7 @@ public class MessageItem
         return msg.getTime();
     }
 //#ifdef SMILES
-    public void toggleSmiles() {
+    public void toggleSmiles(VirtualList view) {
         smiles=!smiles;
         if(!msg.itemCollapsed) parse(view);
         view.redraw();

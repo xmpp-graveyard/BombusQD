@@ -137,7 +137,7 @@ public abstract class VirtualList
     
     public void eventOk(){
      try {
-      ((VirtualElement)getFocusedObject()).onSelect();
+      ((VirtualElement)getFocusedObject()).onSelect(this);
        updateLayout();
        fitCursorByTop();
       } catch (Exception e) {} 
@@ -206,22 +206,44 @@ public abstract class VirtualList
     private int itemLayoutY[]=new int[1];
     private int listHeight;
 
-    
 //#ifdef MENU_LISTENER
     CommandsPointer ar=new CommandsPointer();
 //#endif
 
-    protected synchronized void updateLayout(){
+    private synchronized void updateLayout() {
         int size=getItemCount();
         if (size==0) {
             listHeight=0;
             return;
         }
-        int layout[]=new int[size+1];
+        
         int y=0;
-        for (int index=0; index<size; index++){
-            y+=getItemRef(index).getVHeight();
-            layout[index+1]=y;
+        int k=0;
+        boolean cr4 = (0 == size%4);
+        boolean cr2 = (0 == size%2);
+        int layout[] = new int[size+1];
+        
+        if (cr4) {
+             size = size>>2;
+             for (int index=0; index<size; ++index) {
+               y += getItemRef(k).getVHeight(); layout[ ++k ] = y;
+               y += getItemRef(k).getVHeight(); layout[ ++k ] = y;
+               y += getItemRef(k).getVHeight(); layout[ ++k ] = y;
+               y += getItemRef(k).getVHeight(); layout[ ++k ] = y;
+             }
+        }
+        else if(cr2) {
+          size = size>>1;
+          for (int index=0; index<size; ++index) {
+            y += getItemRef(k).getVHeight(); layout[ ++k ] = y;
+            y += getItemRef(k).getVHeight(); layout[ ++k ] = y;
+          }
+        }
+        else {
+          for (int index=0; index<size; ++index){
+            y+=getItemRef(k).getVHeight();
+            layout[++k]=y;
+          }
         }
         listHeight=y;
         itemLayoutY=layout;
@@ -233,7 +255,7 @@ public abstract class VirtualList
         if (end<0) return -1;
         int begin=0;
           while (end-begin>1) {
-            int index=(end+begin)/2;
+            int index=(end+begin)>>1;
             if(index==-1) index = 0;
             if (yPos<itemLayoutY[index]) end=index; else begin=index;
           }
@@ -566,7 +588,7 @@ public abstract class VirtualList
                 g.translate(0, drawYpos);
                 g.setColor(el.getColor());
                 g.clipRect(0, 0, itemMaxWidth, lh);
-                el.drawItem(g, (sel)?offset:0, sel);
+                el.drawItem(this, g, (sel)?offset:0, sel);
                 
                 ++itemIndex;
 		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;
@@ -985,7 +1007,7 @@ public abstract class VirtualList
 //#endif
         setAbsOrg(g, 0, y);
         g.setColor(getMainBarRGB());
-        mainbar.drawItem(g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
+        mainbar.drawItem(this, g,(phoneManufacturer==Config.NOKIA && !reverse)?17:0,false);
     }
 
     
@@ -1055,7 +1077,7 @@ public abstract class VirtualList
         }
         setAbsOrg(g, 0, y);
         g.setColor(getMainBarRGB());
-        infobar.drawItem(g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
+        infobar.drawItem(this, g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
     }
 //#endif
     
@@ -1642,10 +1664,10 @@ public abstract class VirtualList
 //#             mem.append("Time: ")
 //#                 .append(Time.getTimeWeekDay())
 //#                 .append("\nTraffic: ")
-//#                 .append(getTraffic())
-//#                 .append("\n");
-//#             if(midlet.BombusQD.cf.userAppLevel == 2) {            
-//#               mem.append(SR.get(SR.MS_MEMORY))
+//#                 .append(getTraffic());
+//#             if(midlet.BombusQD.cf.userAppLevel == 1) {    
+//#               mem.append("\n")
+//#                .append(SR.get(SR.MS_MEMORY))
 //#                .append("\n");
 //#                   long free = Runtime.getRuntime().freeMemory()>>10;
 //#                   long total = Runtime.getRuntime().totalMemory()>>10; 
@@ -1910,7 +1932,7 @@ public abstract class VirtualList
             if (remainder<=winHeight) {
                 return false;
             }
-            if (remainder<=2*winHeight) {
+            if (remainder <= winHeight<<1 ) {
                 win_top=remainder-winHeight+win_top+8;
                 return true;
             }

@@ -128,7 +128,7 @@ public class Config {
 //#endif
     public boolean showOfflineContacts=false;
     public boolean showTransports=true;
-    public boolean selfContact=false;
+    public boolean selfContact=true;
     public boolean ignore=false;
     public boolean eventComposing=true;//����������� � ������ ������
     public boolean autoLogin=false;
@@ -167,13 +167,13 @@ public class Config {
 
     public boolean rosterStatus=false;
 //#ifdef PEP
-//#     public boolean sndrcvmood = false;
-//#     public boolean rcvtune = false;
-//#     public boolean rcvactivity = false;
+//#     public boolean sndrcvmood = true;
+//#     public boolean rcvtune = true;
+//#     public boolean rcvactivity = true;
 //#endif
     public boolean queryExit = false;
     public int notInListDropLevel=NotInListFilter.ALLOW_ALL;//enable all
-    public boolean showBalloons = true;
+    public boolean showBalloons = false;
 
     public int msglistLimit=50;
 
@@ -218,8 +218,8 @@ public class Config {
     
     public int track=0;
     public boolean find_text=false;//fix
-    public int maxAvatarHeight=45;
-    public int maxAvatarWidth=45;
+    public int maxAvatarHeight=35;
+    public int maxAvatarWidth=35;
     public int bgnd_image=getIntFromManifest("bgnd_type",0);
     public boolean image_in_popUp=true;
     public String add_contact_name="@.";
@@ -299,14 +299,14 @@ public class Config {
     public boolean graphicsMenu=true;
     public int graphicsMenuPosition=1;
     
-    public boolean createMessageByFive = false;
+    public boolean createMessageByFive = true;
     public boolean gradientBarLigth = false;
-    public int gradientBarLight1=65;
-    public int gradientBarLight2=50;
+    public int gradientBarLight1=120;
+    public int gradientBarLight2=5;
     public boolean autoLoadTransports = true;
     
     public boolean simpleContacts = false;//fast contact draw
-    public int userAppLevel = 0;    
+    public int userAppLevel = 0; //0-simple, 1-advanced
     
     public static Config getInstance(){
 	if (instance==null) {

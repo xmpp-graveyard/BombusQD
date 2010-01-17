@@ -219,7 +219,6 @@ public class PluginsConfig extends DefForm implements MenuListener
     private SimpleString appLevelID;
     private SimpleString gradient_light1;
     private SimpleString gradient_light2;
-    private TrackItem userAppLevel;        
     private StringBuffer sb = new StringBuffer(0);
 
     private void destroyItems() {
@@ -322,7 +321,6 @@ public class PluginsConfig extends DefForm implements MenuListener
           tasks = null;
           classicchat = null;
           debug = null;
-          userAppLevel = null;
           
           if ( subscr != null ) subscr = null;
           if ( nil != null ) nil = null;
@@ -449,11 +447,8 @@ public class PluginsConfig extends DefForm implements MenuListener
           infobar.addElement(null); //3
           setInfoBarItem(infobar);
        
-       //System.out.println("reloadItems");
        itemsList.removeAllElements();
-       itemsList.addElement(appLevel);
-       itemsList.addElement(userAppLevel); //TrackItem
-       
+
        itemsList.addElement(contacts);
        itemsList.addElement(messages);
        itemsList.addElement(notify); 
@@ -467,47 +462,17 @@ public class PluginsConfig extends DefForm implements MenuListener
        itemsList.addElement(history); 
        itemsList.addElement(autostatus); 
        itemsList.addElement(avatars);
-       sb.setLength(0);
-        switch(midlet.BombusQD.cf.userAppLevel){
-           case 0:
-               sb.append(SR.get(SR.MS_USER_APP_LEVEL_0));
-               appLevelID = new SimpleString(sb.toString());
-               break;
-           case 1:
-               appLevelID = new SimpleString(SR.get(SR.MS_USER_APP_LEVEL_1));
-               sb.append(SR.get(SR.MS_WAS_ADDED) + '%');
-               sb.append('+' + SR.get(SR.MS_hotkeysStr) + '\n');
-               sb.append('+' + SR.get(SR.MS_clchatStr) + '\n');
-               sb.append('+' + SR.get(SR.MS_taskstr) + '\n');
-               sb.append('+' + SR.get(SR.MS_NEW_ACCOUNT) + " -> email");
-               
-               itemsList.addElement(userKeys);
-               itemsList.addElement(classicchat);
-               itemsList.addElement(tasks);
-               break;
-           case 2:
-               appLevelID = new SimpleString(SR.get(SR.MS_USER_APP_LEVEL_2));
-               sb.append(SR.get(SR.MS_WAS_ADDED) + '%');
-               sb.append('+' + SR.get(SR.MS_ieStr) + '\n');
-               sb.append('+' + SR.get(SR.MS_DEBUG_MENU) + '\n');
-               sb.append('+' + SR.get(SR.MS_XML_CONSOLE) + '\n');
-               sb.append('+' + SR.get(SR.MS_CONTACT) + " " +SR.get(SR.MS_COMMANDS));
-               
-               itemsList.addElement(userKeys);
+
+       itemsList.addElement(userKeys);
+       
+       if(midlet.BombusQD.cf.userAppLevel == 1) {        
                itemsList.addElement(classicchat);
                itemsList.addElement(tasks);
 //#ifdef IMPORT_EXPORT         
 //#                itemsList.addElement(ie);
 //#endif
                itemsList.addElement(debug);
-               break;
-        }
-        
-       itemsList.insertElementAt(appLevelID, 2);
-       if(midlet.BombusQD.cf.userAppLevel == 0) return;
-       
-       appLevelName = new CheckBox( sb.toString() , true, true, false);
-       itemsList.insertElementAt(appLevelName, 3);
+       }
     }
 
     public PluginsConfig(Display display, Displayable pView) {
@@ -533,7 +498,6 @@ public class PluginsConfig extends DefForm implements MenuListener
           tasks = new PluginBox(SR.get(SR.MS_taskstr), cf.module_tasks, 6);
           classicchat = new PluginBox(SR.get(SR.MS_clchatStr), cf.module_classicchat, 7);
           debug = new PluginBox(SR.get(SR.MS_DEBUG_MENU), cf.debug, 8);
-          userAppLevel = new TrackItem(midlet.BombusQD.cf.userAppLevel, 2, null, true);
 
         reloadItems();  
         
@@ -654,6 +618,7 @@ public class PluginsConfig extends DefForm implements MenuListener
           itemsList.addElement(nil);
           itemsList.addElement(new SpacerItem(2));
           
+          if(midlet.BombusQD.cf.userAppLevel == 1) {
              itemsList.addElement(simpleContacts);
              itemsList.addElement(showOfflineContacts);
              itemsList.addElement(selfContact);
@@ -663,8 +628,14 @@ public class PluginsConfig extends DefForm implements MenuListener
              itemsList.addElement(showClientIcon);
              itemsList.addElement(iconsLeft);
              itemsList.addElement(autoFocus);
-             itemsList.addElement(rosterStatus);
              itemsList.addElement(ignore);
+          } else {
+             itemsList.addElement(showOfflineContacts);
+             itemsList.addElement(showTransports);
+             itemsList.addElement(useBoldFont);
+             itemsList.addElement(autoFocus);
+             itemsList.addElement(rosterStatus);
+          }
          }
          else if(type==SR.get(SR.MS_msgStr)){//or chat
             msgEditType=new DropChoiceBox(display, SR.get(SR.MS_MSG_EDIT_TYPE));
@@ -683,40 +654,54 @@ public class PluginsConfig extends DefForm implements MenuListener
                   itemsList.addElement(textWrap);
                   itemsList.addElement(new SpacerItem(3));
                   messageLimit=new NumberInput(display, SR.get(SR.MS_MESSAGE_COLLAPSE_LIMIT), Integer.toString(cf.messageLimit), 200, 1000);
-                  itemsList.addElement(messageLimit);
+                  if(midlet.BombusQD.cf.userAppLevel == 1) {
+                     itemsList.addElement(messageLimit);
+                  }
                   
-                  msglistLimit=new NumberInput(display, SR.get(SR.MS_MESSAGE_COUNT_LIMIT), Integer.toString(cf.msglistLimit), 3, 1000);
+                  msglistLimit=new NumberInput(display, SR.get(SR.MS_MESSAGE_COUNT_LIMIT), Integer.toString(cf.msglistLimit), 30, 1000);
                   itemsList.addElement(msglistLimit);
                   
                   itemsList.addElement(new SpacerItem(3));
                 
-             itemsList.addElement(createMessageByFive);
-             itemsList.addElement(storeConfPresence);
-             itemsList.addElement(showCollapsedPresences);
-
-             itemsList.addElement(autoScroll);
-             itemsList.addElement(timePresence);
-             itemsList.addElement(autoDetranslit);
-             itemsList.addElement(showNickNames);
-             itemsList.addElement(savePos); 
-             itemsList.addElement(boldNicks);
-             itemsList.addElement(selectOutMessages);                         
-             itemsList.addElement(useLowMemory_iconmsgcollapsed);
-             itemsList.addElement(smiles);
-             if(cf.ANIsmilesDetect) itemsList.addElement(animatedSmiles);                                
-             itemsList.addElement(capsState);
-             itemsList.addElement(useTabs);
-             itemsList.addElement(useClipBoard);
+                  if(midlet.BombusQD.cf.userAppLevel == 1) {
+                     itemsList.addElement(createMessageByFive);
+                     itemsList.addElement(storeConfPresence);
+                     itemsList.addElement(showCollapsedPresences);
+                     itemsList.addElement(autoScroll);
+                     itemsList.addElement(timePresence);
+                     itemsList.addElement(autoDetranslit);
+                     itemsList.addElement(showNickNames);
+                     itemsList.addElement(savePos); 
+                     itemsList.addElement(boldNicks);
+                     itemsList.addElement(selectOutMessages);                         
+                     itemsList.addElement(useLowMemory_iconmsgcollapsed);
+                     itemsList.addElement(smiles);
+                     if(cf.ANIsmilesDetect) itemsList.addElement(animatedSmiles);                                
+                     itemsList.addElement(capsState);
+                     itemsList.addElement(useTabs);
+                     itemsList.addElement(useClipBoard);
+                  } else {
+                       itemsList.addElement(createMessageByFive);
+                       itemsList.addElement(autoScroll);
+                       itemsList.addElement(autoDetranslit);
+                       itemsList.addElement(selectOutMessages);
+                       itemsList.addElement(smiles);
+                       if(cf.ANIsmilesDetect) itemsList.addElement(animatedSmiles);
+                       itemsList.addElement(capsState);
+                       itemsList.addElement(useTabs);
+                  }
          }
          else if(type==SR.get(SR.MS_netStr)){//
-                   itemsList.addElement(autoLoadTransports);
 //#ifdef PEP        
-//#                    itemsList.addElement(new SimpleString(SR.get(SR.MS_PEP), true));
-//#                    itemsList.addElement(sndrcvmood);
-//#                    itemsList.addElement(rcvtune);
-//#                    itemsList.addElement(rcvactivity);
+//#                    if(midlet.BombusQD.cf.userAppLevel == 1) {
+//#                      itemsList.addElement(autoLoadTransports);
+//#                      itemsList.addElement(new SimpleString(SR.get(SR.MS_PEP), true));
+//#                      itemsList.addElement(sndrcvmood);
+//#                      itemsList.addElement(rcvtune);
+//#                      itemsList.addElement(rcvactivity);
+//#                      itemsList.addElement(new SpacerItem(10));
+//#                    }
 //#endif
-                   itemsList.addElement(new SpacerItem(10));
                    itemsList.addElement(new SimpleString(SR.get(SR.MS_MESSAGES), true));
                    itemsList.addElement(eventComposing);
                    itemsList.addElement(eventDelivery);
@@ -732,10 +717,13 @@ public class PluginsConfig extends DefForm implements MenuListener
                    reconnectTime=new NumberInput(display, SR.get(SR.MS_RECONNECT_WAIT), Integer.toString(cf.reconnectTime), 1, 60 ); 
                    itemsList.addElement(reconnectTime);
                    itemsList.addElement(nokiaReconnectHack);
+                   
+                   if(midlet.BombusQD.cf.userAppLevel == 1) {
 //#ifdef FILE_TRANSFER
-                   itemsList.addElement(fileTransfer);   
+                     itemsList.addElement(fileTransfer);
 //#endif                         
-                   itemsList.addElement(adhoc);
+                     itemsList.addElement(adhoc);
+                   }
 
          } 
          else if(type==SR.get(SR.MS_grStr)){
@@ -780,14 +768,20 @@ public class PluginsConfig extends DefForm implements MenuListener
 	   scrollWidth=new NumberInput(display, SR.get(SR.MS_SCROLL_WIDTH), Integer.toString(cf.scrollWidth), 3, 25); 
            itemsList.addElement(scrollWidth);   
            itemsList.addElement(new SpacerItem(3));      
-
-           itemsList.addElement(useLowMemory_userotator);
-           itemsList.addElement(gradient_cursor);
-           itemsList.addElement(memMon);
-           itemsList.addElement(drawScrollBgnd);  
-           itemsList.addElement(drawMenuCommand);
-           itemsList.addElement(popUps);
-           itemsList.addElement(showBaloons);
+           
+           if(midlet.BombusQD.cf.userAppLevel == 1) {
+             itemsList.addElement(useLowMemory_userotator);
+             itemsList.addElement(gradient_cursor);
+             itemsList.addElement(memMon);
+             itemsList.addElement(drawScrollBgnd);  
+             itemsList.addElement(drawMenuCommand);
+             itemsList.addElement(popUps);
+             itemsList.addElement(showBaloons);               
+           } else {
+               itemsList.addElement(gradient_cursor);
+               itemsList.addElement(drawMenuCommand);
+               itemsList.addElement(popUps);
+           }
            
          }
          else if(type==SR.get(SR.MS_appStr)){
@@ -795,11 +789,15 @@ public class PluginsConfig extends DefForm implements MenuListener
              itemsList.addElement(new SimpleString(SR.get(SR.MS_STARTUP_ACTIONS), true));
              itemsList.addElement(autoLogin);
              itemsList.addElement(autoJoinConferences); 
-             itemsList.addElement(collapsedGroups);
-             itemsList.addElement(fullscr);
-             itemsList.addElement(enableVersionOs);
-             itemsList.addElement(queryExit);
              
+             if(midlet.BombusQD.cf.userAppLevel == 1) {
+                itemsList.addElement(collapsedGroups);
+                itemsList.addElement(fullscr);
+                itemsList.addElement(enableVersionOs);
+                itemsList.addElement(queryExit);                 
+             } else {
+                 itemsList.addElement(fullscr);
+             }
                           if (phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE); 
                                if (cf.allowMinimize) {
                                    itemsList.addElement(popupFromMinimized);
@@ -864,102 +862,110 @@ public class PluginsConfig extends DefForm implements MenuListener
     
     public void cmdOk() {
          if(type==SR.get(SR.MS_contactStr)){
-            cf.simpleContacts=simpleContacts.getValue();
-            cf.showOfflineContacts=showOfflineContacts.getValue();
-            cf.selfContact=selfContact.getValue();
-            cf.showTransports=showTransports.getValue();
-            cf.showResources=showResources.getValue();
-            cf.useBoldFont=useBoldFont.getValue();
-            cf.showClientIcon=showClientIcon.getValue();
-            cf.iconsLeft=iconsLeft.getValue();
-            cf.autoFocus=autoFocus.getValue();
+             
+            if(null != simpleContacts) cf.simpleContacts=simpleContacts.getValue();
+            if(null != showOfflineContacts) cf.showOfflineContacts=showOfflineContacts.getValue();
+            if(null != selfContact) cf.selfContact=selfContact.getValue();
+            if(null != showTransports) cf.showTransports=showTransports.getValue();
+            if(null != showResources) cf.showResources=showResources.getValue();
+            if(null != useBoldFont) cf.useBoldFont=useBoldFont.getValue();
+            if(null != showClientIcon) cf.showClientIcon=showClientIcon.getValue();
+            if(null != iconsLeft) cf.iconsLeft=iconsLeft.getValue();
+            if(null != autoFocus) cf.autoFocus=autoFocus.getValue();
             
-            cf.autoSubscribe=subscr.getSelectedIndex();
-            cf.notInListDropLevel=nil.getSelectedIndex();
+            if(null != subscr) cf.autoSubscribe=subscr.getSelectedIndex();
+            if(null != nil) cf.notInListDropLevel=nil.getSelectedIndex();
             
-            cf.rosterStatus=rosterStatus.getValue(); 
-            cf.ignore=ignore.getValue();
+            if(null != rosterStatus) cf.rosterStatus=rosterStatus.getValue(); 
+            if(null != ignore) cf.ignore=ignore.getValue();
             
          }
          else if(type==SR.get(SR.MS_msgStr)){
-            cf.msgEditType=msgEditType.getSelectedIndex();
-            if(cf.runningMessage != runningMessage.getValue()){
+             
+            if(null != msgEditType) cf.msgEditType=msgEditType.getSelectedIndex();
+            if(null != runningMessage){
+              if(cf.runningMessage != runningMessage.getValue()){
                cf.runningMessage=!cf.runningMessage;
                midlet.BombusQD.sd.roster.createMessageEdit(true);
+              }
+              cf.runningMessage=runningMessage.getValue();
             }
-            cf.runningMessage=runningMessage.getValue();
-            cf.textWrap=textWrap.getSelectedIndex();                              
-            cf.messageLimit=Integer.parseInt(messageLimit.getValue());
-            cf.msglistLimit=Integer.parseInt(msglistLimit.getValue());
+            if(null != textWrap) cf.textWrap=textWrap.getSelectedIndex();                              
+            if(null != messageLimit) cf.messageLimit=Integer.parseInt(messageLimit.getValue());
+            if(null != msglistLimit) cf.msglistLimit=Integer.parseInt(msglistLimit.getValue());
       
-            cf.createMessageByFive=createMessageByFive.getValue();
-            cf.storeConfPresence=storeConfPresence.getValue();
-            cf.showCollapsedPresences=showCollapsedPresences.getValue();
-            cf.autoScroll=autoScroll.getValue();
-            cf.timePresence=timePresence.getValue();
-            cf.autoDeTranslit=autoDetranslit.getValue();
-            cf.showNickNames=showNickNames.getValue();
-            cf.savePos=savePos.getValue();
-            cf.boldNicks=boldNicks.getValue();
-            cf.selectOutMessages=selectOutMessages.getValue();
+            if(null != createMessageByFive) cf.createMessageByFive=createMessageByFive.getValue();
+            if(null != storeConfPresence) cf.storeConfPresence=storeConfPresence.getValue();
+            if(null != showCollapsedPresences) cf.showCollapsedPresences=showCollapsedPresences.getValue();
+            if(null != autoScroll) cf.autoScroll=autoScroll.getValue();
+            if(null != timePresence) cf.timePresence=timePresence.getValue();
+            if(null != autoDetranslit) cf.autoDeTranslit=autoDetranslit.getValue();
+            if(null != showNickNames) cf.showNickNames=showNickNames.getValue();
+            if(null != savePos) cf.savePos=savePos.getValue();
+            if(null != boldNicks) cf.boldNicks=boldNicks.getValue();
+            if(null != selectOutMessages) cf.selectOutMessages=selectOutMessages.getValue();
      
-            cf.useLowMemory_iconmsgcollapsed=useLowMemory_iconmsgcollapsed.getValue();
-            cf.smiles=smiles.getValue(); 
-            if(cf.ANIsmilesDetect) cf.animatedSmiles=animatedSmiles.getValue();
+            if(null != useLowMemory_iconmsgcollapsed) cf.useLowMemory_iconmsgcollapsed=useLowMemory_iconmsgcollapsed.getValue();
+            if(null != smiles) cf.smiles=smiles.getValue(); 
+            if(cf.ANIsmilesDetect) {
+                if(null != animatedSmiles) cf.animatedSmiles=animatedSmiles.getValue();
+            }
              boolean aniSmiles = Messages.MessageParser.animated;
              if( !aniSmiles && cf.animatedSmiles || aniSmiles && !cf.animatedSmiles ){
                  Messages.MessageParser.restart();
              }
-            cf.capsState=capsState.getValue(); 
-
-            cf.useTabs=useTabs.getValue();
-            cf.useClipBoard=useClipBoard.getValue();
+            if(null != capsState) cf.capsState=capsState.getValue(); 
+            if(null != useTabs) cf.useTabs=useTabs.getValue();
+            if(null != useClipBoard) cf.useClipBoard=useClipBoard.getValue();
+             
          }
          else if(type==SR.get(SR.MS_netStr)){
-            cf.autoLoadTransports=autoLoadTransports.getValue();
+             
+            if(null != autoLoadTransports) cf.autoLoadTransports=autoLoadTransports.getValue();
 //#ifdef PEP             
-//#             cf.sndrcvmood=sndrcvmood.getValue();
-//#             cf.rcvtune=rcvtune.getValue();
-//#             cf.rcvactivity=rcvactivity.getValue(); 
+//#             if(null != sndrcvmood) cf.sndrcvmood=sndrcvmood.getValue();
+//#             if(null != rcvtune) cf.rcvtune=rcvtune.getValue();
+//#             if(null != rcvactivity) cf.rcvactivity=rcvactivity.getValue(); 
 //#endif            
-            cf.eventComposing=eventComposing.getValue();
-            cf.eventDelivery=eventDelivery.getValue();
-            cf.networkAnnotation=networkAnnotation.getValue();
-            //cf.metaContacts=metaContacts.getValue();
-            //cf.sendMoodInMsg=sendMoodInMsg.getValue();
+            if(null != eventComposing) cf.eventComposing=eventComposing.getValue();
+            if(null != eventDelivery) cf.eventDelivery=eventDelivery.getValue();
+            if(null != networkAnnotation) cf.networkAnnotation=networkAnnotation.getValue();
+            //if(null != metaContacts) cf.metaContacts=metaContacts.getValue();
+            //if(null != sendMoodInMsg) cf.sendMoodInMsg=sendMoodInMsg.getValue();
             
-            cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
-            cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());
-            cf.nokiaReconnectHack=nokiaReconnectHack.getValue();  
+            if(null != reconnectCount) cf.reconnectCount=Integer.parseInt(reconnectCount.getValue());
+            if(null != reconnectTime) cf.reconnectTime=Integer.parseInt(reconnectTime.getValue());
+            if(null != nokiaReconnectHack) cf.nokiaReconnectHack=nokiaReconnectHack.getValue();  
 //#ifdef FILE_TRANSFER
-            cf.fileTransfer=fileTransfer.getValue();
+            if(null != fileTransfer) cf.fileTransfer=fileTransfer.getValue();
 //#endif
-            cf.adhoc=adhoc.getValue(); 
+            if(null != adhoc) cf.adhoc=adhoc.getValue(); 
+            
          } 
          else if(type==SR.get(SR.MS_grStr)){
-           cf.panelsState=panels.getSelectedIndex(); 
-           cf.gradientBarLigth=gradientBarLigth.getValue();
-           cf.gradientBarLight1=gradientBarLight1.getValue()*10;
-           cf.gradientBarLight2=gradientBarLight2.getValue()*10;
+             
+           if(null != panels) cf.panelsState=panels.getSelectedIndex(); 
+           if(null != gradientBarLigth) cf.gradientBarLigth=gradientBarLigth.getValue();
+           if(null != gradientBarLight1) cf.gradientBarLight1=gradientBarLight1.getValue()*10;
+           if(null != gradientBarLight2) cf.gradientBarLight2=gradientBarLight2.getValue()*10;
            
            //boolean oldValue = cf.graphicsMenu;
            //cf.graphicsMenu=graphicsMenu.getValue();
            //System.out.println(oldValue + "/" +cf.graphicsMenu);
            
-           cf.graphicsMenuPosition=graphicsMenuPosition.getSelectedIndex();
-           cf.bgnd_image=bgnd_image.getSelectedIndex();
-           cf.scrollWidth=Integer.parseInt(scrollWidth.getValue());
+           if(null != graphicsMenuPosition) cf.graphicsMenuPosition=graphicsMenuPosition.getSelectedIndex();
+           if(null != bgnd_image) cf.bgnd_image=bgnd_image.getSelectedIndex();
+           if(null != scrollWidth) cf.scrollWidth=Integer.parseInt(scrollWidth.getValue());
+           if(null != useLowMemory_userotator) cf.useLowMemory_userotator=useLowMemory_userotator.getValue();
+           if(null != gradient_cursor) cf.gradient_cursor=gradient_cursor.getValue();
+           if(null != memMon) ui.VirtualList.memMonitor=cf.memMonitor=memMon.getValue();
+           if(null != drawScrollBgnd) cf.drawScrollBgnd=drawScrollBgnd.getValue();      
            
-           cf.useLowMemory_userotator=useLowMemory_userotator.getValue();
-           cf.gradient_cursor=gradient_cursor.getValue();
-           ui.VirtualList.memMonitor=cf.memMonitor=memMon.getValue();
-           cf.drawScrollBgnd=drawScrollBgnd.getValue();      
            ui.VirtualList.changeOrient(cf.panelsState);   
-           ui.VirtualList.showTimeTraffic=cf.showTimeTraffic=drawMenuCommand.getValue();
-
            
-           cf.popUps=popUps.getValue();
-           cf.showBalloons=showBaloons.getValue();
+           if(null != drawMenuCommand) ui.VirtualList.showTimeTraffic=cf.showTimeTraffic=drawMenuCommand.getValue();
+           if(null != popUps) cf.popUps=popUps.getValue();
+           if(null != showBaloons) cf.showBalloons=showBaloons.getValue();
            
 //#ifdef BACK_IMAGE
 //#            try {
@@ -987,19 +993,24 @@ public class PluginsConfig extends DefForm implements MenuListener
             */     
          }
          else if(type==SR.get(SR.MS_appStr)){
-            cf.autoLogin=autoLogin.getValue();
-            cf.autoJoinConferences=autoJoinConferences.getValue();
-            cf.collapsedGroups=collapsedGroups.getValue();
+             
+            if(null != autoLogin) cf.autoLogin=autoLogin.getValue();
+            if(null != autoJoinConferences) cf.autoJoinConferences=autoJoinConferences.getValue();
+            if(null != collapsedGroups) cf.collapsedGroups=collapsedGroups.getValue();
             
-            ui.VirtualList.fullscreen=cf.fullscreen=fullscr.getValue();
-            cf.enableVersionOs=enableVersionOs.getValue();
-            cf.queryExit=queryExit.getValue();  
-            if (phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
-            if (cf.allowMinimize) cf.popupFromMinimized=popupFromMinimized.getValue();
-            cf.executeByNum=executeByNum.getValue();
-            cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());
+            if(null != fullscr) ui.VirtualList.fullscreen=cf.fullscreen=fullscr.getValue();
+            if(null != enableVersionOs) cf.enableVersionOs=enableVersionOs.getValue();
+            if(null != queryExit) cf.queryExit=queryExit.getValue();  
+            if(null != oldSE) {
+              if (phoneManufacturer==cf.SONYE) cf.oldSE=oldSE.getValue();
+            }
+            if(null != popupFromMinimized) {
+                if (cf.allowMinimize) cf.popupFromMinimized=popupFromMinimized.getValue();
+            }
+            if(null != executeByNum) cf.executeByNum=executeByNum.getValue();
+            if(null != fieldGmt) cf.gmtOffset=Integer.parseInt(fieldGmt.getValue());
             
-            if (langs[0].size()>1) {
+            if (langs[0].size()>1 && null != langFiles) {
               String lang_ = (String) langs[0].elementAt( langFiles.getSelectedIndex() );
               if(!cf.lang.equals(lang_)) {
                 cf.lang= lang_;
@@ -1018,15 +1029,15 @@ public class PluginsConfig extends DefForm implements MenuListener
  
          }
          else if(type==SR.get(SR.MS_astatusStr)){
-            cf.autoAwayType=autoAwayType.getSelectedIndex();
-            cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
-            cf.setAutoStatusMessage=awayStatus.getValue();
+            if(null != autoAwayType) cf.autoAwayType=autoAwayType.getSelectedIndex();
+            if(null != fieldAwayDelay) cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
+            if(null != awayStatus) cf.setAutoStatusMessage=awayStatus.getValue();
          } 
          else if(type==SR.get(SR.MS_clchatStr)){
             //cf.useClassicChat=useClassicChat.getValue();
-            cf.use_phone_theme=use_phone_theme.getValue();
-            cf.classic_chat_height=Integer.parseInt(classic_chat_height.getValue());
-            cf.line_count=Integer.parseInt(line_count.getValue()); 
+            if(null != use_phone_theme) cf.use_phone_theme=use_phone_theme.getValue();
+            if(null != classic_chat_height) cf.classic_chat_height=Integer.parseInt(classic_chat_height.getValue());
+            if(null != line_count) cf.line_count=Integer.parseInt(line_count.getValue()); 
          }          
       reloadItems();
       destroyView();

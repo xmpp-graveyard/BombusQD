@@ -111,7 +111,7 @@ public class Group extends IconTextElement {
         return collapsed ? imageCollapsedIndex : imageExpandedIndex;
     }
  
-    public final void drawItem(Graphics g, int ofs, boolean sel) {
+    public final void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
         int w=g.getClipWidth();
         int h=g.getClipHeight();
         int xo=g.getClipX();
@@ -155,7 +155,7 @@ public class Group extends IconTextElement {
         return toStringValue;
     }
 
-    public final void onSelect(){
+    public final void onSelect(VirtualList view){
         collapsed=!collapsed;
         midlet.BombusQD.sd.roster.setUpdateView();
         midlet.BombusQD.sd.roster.reEnumRoster();

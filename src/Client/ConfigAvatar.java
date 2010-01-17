@@ -101,14 +101,15 @@ public class ConfigAvatar
         
         auto_queryPhoto = new CheckBox(SR.get(SR.MS_AUTOLOAD_VCARD), cf.auto_queryPhoto);
         autoload_FSPhoto = new CheckBox(SR.get(SR.MS_AUTOLOAD_VCARD_FROMFS), cf.autoload_FSPhoto);          
-        //if(cf.difficulty_level>=1){
+        showAvatarRect = new CheckBox(SR.get(SR.AVATAR_DRAW_RECT), cf.showAvatarRect);
+        
+        if(midlet.BombusQD.cf.userAppLevel==1) {
           itemsList.addElement(auto_queryPhoto);
           itemsList.addElement(autoload_FSPhoto);
-        //}
-        showAvatarRect = new CheckBox(SR.get(SR.AVATAR_DRAW_RECT), cf.showAvatarRect);
-        itemsList.addElement(showAvatarRect);
-
-        itemsList.addElement(new SpacerItem(5));
+          itemsList.addElement(showAvatarRect);
+          itemsList.addElement(new SpacerItem(5));
+        }
+        
         maxAvatarHeight=new NumberInput(display, SR.get(SR.MS_MAX_AVATAR_HEIGHT), Integer.toString(cf.maxAvatarHeight), 25, 100);
         itemsList.addElement(maxAvatarHeight); 
         
@@ -116,14 +117,15 @@ public class ConfigAvatar
         maxAvatarWidth=new NumberInput(display, SR.get(SR.MS_MAX_AVATAR_WIDTH), Integer.toString(cf.maxAvatarWidth), 25, 100);
         itemsList.addElement(maxAvatarWidth);    
         
-     //  if(cf.difficulty_level>=1){
-        itemsList.addElement(new SpacerItem(10));        
-        autoSaveVcard = new CheckBox(SR.get(SR.AVATAR_AUTOSAVE_FS), cf.autoSaveVcard);
-        itemsList.addElement(autoSaveVcard);
-        avatarFolder = new TextInput(display, SR.get(SR.AVATAR_FOLDER), cf.msgAvatarPath, null, TextField.ANY); 
-        itemsList.addElement(avatarFolder);
+        if(midlet.BombusQD.cf.userAppLevel==1) {
+          itemsList.addElement(new SpacerItem(10));        
+          autoSaveVcard = new CheckBox(SR.get(SR.AVATAR_AUTOSAVE_FS), cf.autoSaveVcard);
+          avatarFolder = new TextInput(display, SR.get(SR.AVATAR_FOLDER), cf.msgAvatarPath, null, TextField.ANY); 
+           itemsList.addElement(autoSaveVcard);
+           itemsList.addElement(avatarFolder);
+        }
         
-
+        if(midlet.BombusQD.cf.userAppLevel==1) {
         itemsList.addElement(new SpacerItem(10));
         applyFromFS=new LinkString(SR.get(SR.AVATAR_ROSTER_LOADFS)) { public void doAction() { 
                     long s1=System.currentTimeMillis();
@@ -178,10 +180,10 @@ public class ConfigAvatar
                repaint();
           };
         }};
-        itemsList.addElement(applyFromFS);
-        itemsList.addElement(applyMucFromFS);   
-        itemsList.addElement(saveChanges);
-      // }
+         itemsList.addElement(applyFromFS);
+         itemsList.addElement(applyMucFromFS);   
+         itemsList.addElement(saveChanges);
+       }
         
         addCommand(cmdPath); cmdPath.setImg(0x34);
         addCommand(cmdOkey);  cmdOkey.setImg(0x43);
@@ -210,11 +212,12 @@ public class ConfigAvatar
 
     public void cmdOk() {
         //cf.drawCPhoto=drawCPhoto.getValue();
-        //if(cf.difficulty_level>=1){
-            cf.auto_queryPhoto=auto_queryPhoto.getValue();
-            cf.autoload_FSPhoto=autoload_FSPhoto.getValue();
-       // }
-        cf.showAvatarRect=showAvatarRect.getValue();
+        if(midlet.BombusQD.cf.userAppLevel==1) {
+          cf.auto_queryPhoto=auto_queryPhoto.getValue();
+          cf.autoload_FSPhoto=autoload_FSPhoto.getValue();
+          cf.showAvatarRect=showAvatarRect.getValue();
+        }
+        
         int maxAvHeight=Integer.parseInt(maxAvatarHeight.getValue());
         int maxAvWidth=Integer.parseInt(maxAvatarWidth.getValue());         
          
@@ -223,10 +226,10 @@ public class ConfigAvatar
            cf.maxAvatarWidth=maxAvWidth;   
            //UpdateAvatarsOnline();
         }   
-       // if(cf.difficulty_level>=1){
+        if(midlet.BombusQD.cf.userAppLevel==1) {
          cf.autoSaveVcard=autoSaveVcard.getValue();
          cf.msgAvatarPath=avatarFolder.getValue();
-       // }
+        }
 
         //cf.updateTime();
         //cf.saveToStorage();

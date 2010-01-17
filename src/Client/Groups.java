@@ -183,7 +183,11 @@ public class Groups implements JabberBlockListener{
     public final void update() {
         // self-contact group
         Group selfContactGroup = getGroup(TYPE_SELF);
-        selfContactGroup.visible = (midlet.BombusQD.cf.selfContact || selfContactGroup.getContacts().size() > 1);
+        if (midlet.BombusQD.cf.selfContact) {
+            selfContactGroup.visible = true;
+        } else {
+           selfContactGroup.visible = selfContactGroup.hasNewMsgs();
+        }
         //if (!selfContactGroup.visible) selfContactGroup.visible |= selfContactGroup.hasNewMsgs(); //?? Stupid code
         
         // hiddens

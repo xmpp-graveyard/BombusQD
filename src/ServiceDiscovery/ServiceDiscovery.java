@@ -486,7 +486,7 @@ public class ServiceDiscovery
         public int getColor(){ return ColorTheme.getInstance().getColor(ColorTheme.DISCO_CMD); }
         public int getImageIndex() { return icon; }
         public String toString(){ return name; }
-        public void onSelect(){
+        public void onSelect(VirtualList view){
             switch (icon) {
 //#ifndef WMUC
                 case RosterIcons.ICON_GCJOIN_INDEX: {

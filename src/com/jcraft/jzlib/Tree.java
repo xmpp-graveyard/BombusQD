@@ -43,7 +43,7 @@ final class Tree{
   static final private int LITERALS=256;
   static final private int LENGTH_CODES=29;
   static final private int L_CODES=(LITERALS+1+LENGTH_CODES);
-  static final private int HEAP_SIZE=(2*L_CODES+1);
+  static final private int HEAP_SIZE=(2*L_CODES+1); // 2*(286)
 
   // Bit length codes must not exceed MAX_BL_BITS bits
   static final int MAX_BL_BITS=7; 
@@ -174,6 +174,7 @@ final class Tree{
     int base = stat_desc.extra_base;
     int max_length = stat_desc.max_length;
     int h;              // heap index
+    int k;
     int n, m;           // iterate over the tree elements
     int bits;           // bit length
     int xbits;          // extra bits
@@ -188,19 +189,20 @@ final class Tree{
 
     for(h=s.heap_max+1; h<HEAP_SIZE; h++){
       n = s.heap[h];
-      bits = tree[tree[n*2+1]*2+1] + 1;
+      k = n << 1;
+      bits = tree[tree[k+1]*2+1] + 1;
       if (bits > max_length){ bits = max_length; overflow++; }
-      tree[n*2+1] = (short)bits;
-      // We overwrite tree[n*2+1] which is no longer needed
+      tree[k+1] = (short)bits;
+      // We overwrite tree[k+1] which is no longer needed
 
       if (n > max_code) continue;  // not a leaf node
 
       s.bl_count[bits]++;
       xbits = 0;
       if (n >= base) xbits = extra[n-base];
-      f = tree[n*2];
+      f = tree[k];
       s.opt_len += f * (bits + xbits);
-      if (stree!=null) s.static_len += f * (stree[n*2+1] + xbits);
+      if (stree!=null) s.static_len += f * (stree[++k] + xbits);
     }
     if (overflow == 0) return;
 
@@ -218,14 +220,16 @@ final class Tree{
     }
     while (overflow > 0);
 
+    k = 0;
     for (bits = max_length; bits != 0; bits--) {
       n = s.bl_count[bits];
       while (n != 0) {
 	m = s.heap[--h];
 	if (m > max_code) continue;
-	if (tree[m*2+1] != bits) {
-	  s.opt_len += ((long)bits - (long)tree[m*2+1])*(long)tree[m*2];
-	  tree[m*2+1] = (short)bits;
+        k = m<<1;
+	if (tree[++k] != bits) {
+	  s.opt_len += ((long)bits - (long)tree[++k])*(long)tree[k];
+	  tree[++k] = (short)bits;
 	}
 	n--;
       }
@@ -242,6 +246,7 @@ final class Tree{
     short[] tree=dyn_tree;
     short[] stree=stat_desc.static_tree;
     int elems=stat_desc.elems;
+    int k;
     int n, m;          // iterate over heap elements
     int max_code=-1;   // largest code with non zero frequency
     int node;          // new node being created
@@ -253,12 +258,13 @@ final class Tree{
     s.heap_max = HEAP_SIZE;
 
     for(n=0; n<elems; n++) {
-      if(tree[n*2] != 0) {
+      k = n<<1;
+      if(tree[k] != 0) {
 	s.heap[++s.heap_len] = max_code = n;
 	s.depth[n] = 0;
       }
       else{
-	tree[n*2+1] = 0;
+	tree[++k] = 0;
       }
     }
 
@@ -268,9 +274,10 @@ final class Tree{
     // two codes of non zero frequency.
     while (s.heap_len < 2) {
       node = s.heap[++s.heap_len] = (max_code < 2 ? ++max_code : 0);
-      tree[node*2] = 1;
+      k = node<<1;      
+      tree[k] = 1;
       s.depth[node] = 0;
-      s.opt_len--; if (stree!=null) s.static_len -= stree[node*2+1];
+      s.opt_len--; if (stree!=null) s.static_len -= stree[++k];
       // node is 0 or 1 so it does not have extra bits
     }
     this.max_code = max_code;
@@ -296,9 +303,9 @@ final class Tree{
       s.heap[--s.heap_max] = m;
 
       // Create a new node father of n and m
-      tree[node*2] = (short)(tree[n*2] + tree[m*2]);
+      tree[node<<1] = (short)(tree[n<<1] + tree[m<<1]);
       s.depth[node] = (byte)(Math.max(s.depth[n],s.depth[m])+1);
-      tree[n*2+1] = tree[m*2+1] = (short)node;
+      tree[(n<<1)+1] = tree[(m<<1)+1] = (short)node;
 
       // and insert the new node in the heap
       s.heap[1] = node++;
@@ -345,10 +352,10 @@ final class Tree{
     //Tracev((stderr,"\ngen_codes: max_code %d ", max_code));
 
     for (n = 0;  n <= max_code; n++) {
-      int len = tree[n*2+1];
+      int len = tree[ (n<<1) + 1 ];
       if (len == 0) continue;
       // Now reverse the bits
-      tree[n*2] = (short)(bi_reverse(next_code[len]++, len));
+      tree[n<<1] = (short)(bi_reverse(next_code[len]++, len));
     }
   }
 

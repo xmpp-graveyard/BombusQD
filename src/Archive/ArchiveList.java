@@ -79,7 +79,7 @@ public class ArchiveList
     
     public void eventOk(){
        MessageItem mi = (MessageItem)messages.elementAt(cursor);
-       mi.onSelect();
+       mi.onSelect(this);
     }
     
     /** Creates a new instance of ArchiveList */

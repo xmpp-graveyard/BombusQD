@@ -143,7 +143,7 @@ public final class Deflate{
   static final private int Z_ASCII=1;
   static final private int Z_UNKNOWN=2;
 
-  static final private int Buf_size=8*2;
+  static final private int Buf_size=8<<1;
 
   // repeat previous bit length 3-6 times (2 bits of repeat count)
   static final private int REP_3_6=16; 
@@ -164,7 +164,7 @@ public final class Deflate{
   static final private int LENGTH_CODES=29;
   static final private int LITERALS=256;
   static final private int L_CODES=(LITERALS+1+LENGTH_CODES);
-  static final private int HEAP_SIZE=(2*L_CODES+1);
+  static final private int HEAP_SIZE=(L_CODES<<1+1);
 
   static final private int END_BLOCK=256;
 
@@ -264,7 +264,7 @@ public final class Deflate{
   short[] bl_count=new short[MAX_BITS+1];
 
   // heap used to build the Huffman trees
-  int[] heap=new int[2*L_CODES+1];
+  int[] heap=new int[L_CODES<<1+1];
 
   int heap_len;               // number of elements in the heap
   int heap_max;               // element of largest frequency
@@ -272,7 +272,7 @@ public final class Deflate{
   // The same heap array is used to build all trees.
 
   // Depth of each subtree used as tie breaker for trees of equal frequency
-  byte[] depth=new byte[2*L_CODES+1];
+  byte[] depth=new byte[L_CODES<<1+1];
 
   int l_buf;               // index for literals or lengths */
 
@@ -317,13 +317,13 @@ public final class Deflate{
   int bi_valid;
 
   Deflate(){
-    dyn_ltree=new short[HEAP_SIZE*2];
-    dyn_dtree=new short[(2*D_CODES+1)*2]; // distance tree
-    bl_tree=new short[(2*BL_CODES+1)*2];  // Huffman tree for bit lengths
+    dyn_ltree=new short[HEAP_SIZE<<1];
+    dyn_dtree=new short[(D_CODES<<1+1)<<1]; // distance tree
+    bl_tree=new short[(BL_CODES<<1+1)<<1];  // Huffman tree for bit lengths
   }
 
   void lm_init() {
-    window_size=2*w_size;
+    window_size=w_size<<1;
 
     head[hash_size-1]=0;
     for(int i=0; i<hash_size-1; i++){
@@ -366,11 +366,11 @@ public final class Deflate{
 
   void init_block(){
     // Initialize the trees.
-    for(int i = 0; i < L_CODES; i++) dyn_ltree[i*2] = 0;
-    for(int i= 0; i < D_CODES; i++) dyn_dtree[i*2] = 0;
-    for(int i= 0; i < BL_CODES; i++) bl_tree[i*2] = 0;
+    for(int i = 0; i < L_CODES; i++) dyn_ltree[i<<1] = 0;
+    for(int i= 0; i < D_CODES; i++) dyn_dtree[i<<1] = 0;
+    for(int i= 0; i < BL_CODES; i++) bl_tree[i<<1] = 0;
 
-    dyn_ltree[END_BLOCK*2] = 1;
+    dyn_ltree[END_BLOCK<<1] = 1;
     opt_len = static_len = 0;
     last_lit = matches = 0;
   }
@@ -402,8 +402,8 @@ public final class Deflate{
   }
 
   static boolean smaller(short[] tree, int n, int m, byte[] depth){
-    short tn2=tree[n*2];
-    short tm2=tree[m*2];
+    short tn2=tree[n<<1];
+    short tm2=tree[m<<1];
     return (tn2<tm2 ||
 	    (tn2==tm2 && depth[n] <= depth[m]));
   }
@@ -430,17 +430,17 @@ public final class Deflate{
 	continue;
       }
       else if(count < min_count) {
-	bl_tree[curlen*2] += count;
+	bl_tree[curlen<<1] += count;
       }
       else if(curlen != 0) {
-	if(curlen != prevlen) bl_tree[curlen*2]++;
-	bl_tree[REP_3_6*2]++;
+	if(curlen != prevlen) bl_tree[curlen<<1]++;
+	bl_tree[REP_3_6<<1]++;
       }
       else if(count <= 10) {
-	bl_tree[REPZ_3_10*2]++;
+	bl_tree[REPZ_3_10<<1]++;
       }
       else{
-	bl_tree[REPZ_11_138*2]++;
+	bl_tree[REPZ_11_138<<1]++;
       }
       count = 0; prevlen = curlen;
       if(nextlen == 0) {
@@ -569,7 +569,7 @@ public final class Deflate{
   }   
 
   final void send_code(int c, short[] tree){
-    int c2=c*2;
+    int c2=c<<1;
     send_bits((tree[c2]&0xffff), (tree[c2+1]&0xffff));
   }
 
@@ -623,14 +623,14 @@ public final class Deflate{
 		     int lc // match length-MIN_MATCH or unmatched char (if dist==0)
 		     ){
 
-    pending_buf[d_buf+last_lit*2] = (byte)(dist>>>8);
-    pending_buf[d_buf+last_lit*2+1] = (byte)dist;
+    pending_buf[d_buf + (last_lit<<1)] = (byte)(dist>>>8);
+    pending_buf[d_buf + (last_lit<<1)+1] = (byte)dist;
 
     pending_buf[l_buf+last_lit] = (byte)lc; last_lit++;
 
     if (dist == 0) {
       // lc is the unmatched char
-      dyn_ltree[lc*2]++;
+      dyn_ltree[lc<<1]++;
     } 
     else {
       matches++;
@@ -642,11 +642,11 @@ public final class Deflate{
 
     if ((last_lit & 0x1fff) == 0 && level > 2) {
       // Compute an upper bound for the compressed length
-      int out_length = last_lit*8;
+      int out_length = last_lit<<3;
       int in_length = strstart - block_start;
       int dcode;
       for (dcode = 0; dcode < D_CODES; dcode++) {
-	out_length += (int)dyn_dtree[dcode*2] *
+	out_length += (int)dyn_dtree[dcode<<1] *
 	  (5L+Tree.extra_dbits[dcode]);
       }
       out_length >>>= 3;
@@ -714,9 +714,9 @@ public final class Deflate{
     int n = 0;
     int  ascii_freq = 0;
     int  bin_freq = 0;
-    while(n<7){ bin_freq += dyn_ltree[n*2]; n++;}
-    while(n<128){ ascii_freq += dyn_ltree[n*2]; n++;}
-    while(n<LITERALS){ bin_freq += dyn_ltree[n*2]; n++;}
+    while(n<7){ bin_freq += dyn_ltree[n<<1]; n++;}
+    while(n<128){ ascii_freq += dyn_ltree[n<<1]; n++;}
+    while(n<LITERALS){ bin_freq += dyn_ltree[n<<1]; n++;}
     data_type=(byte)(bin_freq > (ascii_freq >>> 2) ? Z_BINARY : Z_ASCII);
   }
 
@@ -1359,7 +1359,7 @@ public final class Deflate{
     hash_mask = hash_size - 1;
     hash_shift = ((hash_bits+MIN_MATCH-1)/MIN_MATCH);
 
-    window = new byte[w_size*2];
+    window = new byte[w_size<<1];
     prev = new short[w_size];
     head = new short[hash_size];
 
@@ -1367,8 +1367,8 @@ public final class Deflate{
 
     // We overlay pending_buf and d_buf+l_buf. This works since the average
     // output size for (length,distance) codes is <= 24 bits.
-    pending_buf = new byte[lit_bufsize*4];
-    pending_buf_size = lit_bufsize*4;
+    pending_buf = new byte[lit_bufsize<<2];
+    pending_buf_size = lit_bufsize<<2;
 
     d_buf = lit_bufsize/2;
     l_buf = (1+2)*lit_bufsize;

@@ -97,7 +97,7 @@ public class Strconv {
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         
         int len=source.length();
-        char[] out = new char[((len+2)/3)*4];
+        char[] out = new char[((len+2)/3)<<2];
         for (int i=0, index=0; i<len; i+=3, index +=4) {
             boolean trip=false;
             boolean quad=false;
@@ -127,7 +127,7 @@ public class Strconv {
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
         
         if (len<0) len=source.length;
-        char[] out = new char[((len+2)/3)*4];
+        char[] out = new char[((len+2)/3)<<2];
         for (int i=0, index=0; i<len; i+=3, index +=4) {
             boolean trip=false;
             boolean quad=false;

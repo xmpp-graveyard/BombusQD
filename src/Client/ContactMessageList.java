@@ -62,7 +62,7 @@ import Colors.ColorTheme;
 import javax.microedition.rms.RecordStore;
 import History.HistoryStorage;
 
-public final class ContactMessageList extends MessageList implements MenuListener,MIDPTextBox.TextBoxNotify {
+public final class ContactMessageList extends VirtualList implements MenuListener,MIDPTextBox.TextBoxNotify {
     
     Contact contact;
     private boolean composing=true;
@@ -71,6 +71,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     
     protected final Vector messages = new Vector(0);
     private Vector msgs;
+    protected boolean smiles;
     
     public void destroy() {
         super.destroy();
@@ -134,6 +135,12 @@ public final class ContactMessageList extends MessageList implements MenuListene
         this.contact=contact;
         midlet.BombusQD.sd.roster.activeContact=contact;
         
+//#ifdef SMILES
+        smiles=midlet.BombusQD.cf.smiles;
+//#else
+//#         smiles=false;
+//#endif
+        
         //MainBar mainbar=new MainBar(contact);
         msgs = contact.getChatInfo().getMsgs();
         updateMainBar(contact);
@@ -143,6 +150,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#ifdef FILE_TRANSFER        
         contact.fileQuery=false;
 //#endif        
+        enableListWrapping(false);
 
       resetMessages();
     }
@@ -328,7 +336,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#ifdef ARCHIVE
         if (c==midlet.BombusQD.commands.cmdArch) {
             try {
-                MessageArchive.store(replaceNickTags(getMessage(cursor)),1);
+                MessageArchive.store(util.StringUtils.replaceNickTags(getMessage(cursor)),1);
             } catch (Exception e) {/*no messages*/}
         }
 //#endif
@@ -337,7 +345,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#             try {
 //#                 Msg msg = getMessage(cursor);
 //#                 msg.from = "";
-//#                 MessageArchive.store(replaceNickTags(msg),2);
+//#                 MessageArchive.store(util.StringUtils.replaceNickTags(msg),2);
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
@@ -351,13 +359,13 @@ public final class ContactMessageList extends MessageList implements MenuListene
 //#         if (c == midlet.BombusQD.commands.cmdCopy)
 //#         {
 //#             try {
-//#                 midlet.BombusQD.clipboard.add(  replaceNickTags( ((MessageItem)getFocusedObject()).msg )  );
+//#                 midlet.BombusQD.clipboard.add(  util.StringUtils.replaceNickTags( ((MessageItem)getFocusedObject()).msg )  );
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#         
 //#         if (c==midlet.BombusQD.commands.cmdCopyPlus) {
 //#             try {
-//#                 midlet.BombusQD.clipboard.append( replaceNickTags(  ((MessageItem)getFocusedObject()).msg  ) );
+//#                 midlet.BombusQD.clipboard.append( util.StringUtils.replaceNickTags(  ((MessageItem)getFocusedObject()).msg  ) );
 //#             } catch (Exception e) {/*no messages*/}
 //#         }
 //#endif
@@ -609,12 +617,12 @@ public final class ContactMessageList extends MessageList implements MenuListene
         
         try {
             Msg msg = getMessage(cursor);
-            if(msg != null) msg=replaceNickTags(msg);
+            if(msg != null) msg=util.StringUtils.replaceNickTags(msg);
             if (msg==null ||
                 msg.messageType == Constants.MESSAGE_TYPE_OUT ||
                 msg.messageType == Constants.MESSAGE_TYPE_SUBJ)
                 keyGreen();
-            else{
+            else {
 //#ifdef RUNNING_MESSAGE
 //#                String messg = msg.from+": "; 
 //#ifdef JUICK.COM                
@@ -658,6 +666,14 @@ public final class ContactMessageList extends MessageList implements MenuListene
            return;
         }
       }
+//#ifdef SMILES
+      if (keyCode=='*') {
+            try {
+                ((MessageItem)getFocusedObject()).toggleSmiles(this);
+            } catch (Exception e){}
+            return;
+      }
+//#endif
       super.keyPressed(keyCode);
    }
     
@@ -665,7 +681,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     public void eventOk(){
           if(midlet.BombusQD.cf.createMessageByFive) answer();
           else {
-              ((MessageItem)getFocusedObject()).onSelect();
+              ((MessageItem)getFocusedObject()).onSelect(this);
               moveCursorTo(cursor);
           }
     }
@@ -793,7 +809,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
         try {
             String msg=new StringBuffer(0)
                 .append((char)0xab) //
-                .append( util.StringUtils.quoteString( replaceNickTags(getMessage(cursor)) ) )
+                .append( util.StringUtils.quoteString( util.StringUtils.replaceNickTags(getMessage(cursor)) ) )
                 .append((char)0xbb)
                 .append("\n")
                 .toString();
@@ -813,7 +829,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
         MessageItem mi;
         for (int i = messages.size(); i < msgs.size(); ++i) {
             msg = (Msg)msgs.elementAt(i);
-            mi = new MessageItem(msg, this, smiles);
+            mi = new MessageItem(msg, smiles);
             mi.setEven((messages.size() & 1) == 0);
             mi.parse(this);
             //mi.getColor();
@@ -824,7 +840,7 @@ public final class ContactMessageList extends MessageList implements MenuListene
     
     public void addMessage(Msg msg) {
         if(contact.getChatInfo().opened) contact.getChatInfo().reEnumCounts();
-        MessageItem mi = new MessageItem(msg, this, smiles);
+        MessageItem mi = new MessageItem(msg, smiles);
         mi.setEven((messages.size() & 1) == 0);
         mi.parse(this);
         messages.addElement(mi);

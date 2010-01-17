@@ -33,6 +33,7 @@ import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 import java.util.Vector;
 import Client.Config;
+import ui.VirtualList;
 /**
  *
  * @author ad,aqent
@@ -69,7 +70,7 @@ public class TrackItem
     }    
     
 
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
         int height=g.getClipHeight();
         int color = g.getColor();
@@ -105,12 +106,12 @@ public class TrackItem
     }
     
     private void changeLevelApp(int value){
-        midlet.BombusQD.cf.userAppLevel = value;
+        //midlet.BombusQD.cf.userAppLevel = value;
         midlet.BombusQD.sd.roster.pluginsConfig.reloadItems();
     }    
     
     
-    public void onSelect(){ 
+    public void onSelect(VirtualList view){ 
         value=(value+1)%steps;
         if(items!=null && isUserLevel == false)
             loadSkin();

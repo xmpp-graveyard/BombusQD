@@ -34,6 +34,7 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 import util.StringUtils;
+import ui.VirtualList;
 
 /**
  *
@@ -105,7 +106,7 @@ public class MultiLine extends IconTextElement {
         return itemHeight;
     }
     
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
         if (!parsed) return;
         
         int y=0;

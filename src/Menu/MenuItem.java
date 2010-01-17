@@ -64,13 +64,13 @@ public class MenuItem
     public String toString(){ return name; }
     
 //#ifdef MENU_LISTENER
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
           if (pos<10 && Config.getInstance().executeByNum) {
               int w=g.getClipWidth();
               g.setFont(font);
               g.drawString(Integer.toString((pos<9)?pos+1:0), w, 0, Graphics.TOP|Graphics.RIGHT);
           }
-        super.drawItem(g, ofs, sel, inCommand); 
+        super.drawItem(view, g, ofs, sel, inCommand); 
     }
 //#endif
 }

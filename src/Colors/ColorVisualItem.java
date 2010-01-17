@@ -31,6 +31,7 @@ package Colors;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Font;
 import ui.IconTextElement;
+import ui.VirtualList;
 
 /**
  *
@@ -56,11 +57,11 @@ public class ColorVisualItem
     public void setColor(int color) { this.color=color; }
     public String toString() { return (locale==null)?name:locale; }
     
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
        g.setFont(getFont());
        int width = g.getClipWidth();
        int fh = getFont().getHeight();
-       itemHeight = fh*2;
+       itemHeight = fh<<1;
        g.clipRect(4, 0, g.getClipWidth(), itemHeight);
        if (null != toString()) {
            int yPos = (itemHeight-fh)/2;
@@ -71,14 +72,14 @@ public class ColorVisualItem
     }
     
     public int getVHeight() {
-       return getFont().getHeight()*2;
+       return getFont().getHeight()<<1;
     }
     
     public int getVWidth(){ 
         return getFont().stringWidth(toString()) + 4 + itemHeight;
     }
     
-    public void onSelect(){
+    public void onSelect(VirtualList view) {
         //state=!state;
     }
     

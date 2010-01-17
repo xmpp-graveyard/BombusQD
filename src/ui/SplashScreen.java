@@ -146,7 +146,7 @@ public class SplashScreen extends GameCanvas implements CommandListener {
         //todo: fix memory leak in getTimeWeekDay
         if (pos==-1) { 
             g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
-            status.drawItem(g, 0, false);
+            status.drawItem(null, g, 0, false);
 
             g.setFont(clockFont);
             int h=clockFont.getHeight()+1;

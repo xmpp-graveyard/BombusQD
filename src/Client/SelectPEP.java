@@ -202,7 +202,7 @@ public final class SelectPEP extends VirtualList implements
     public int getColor(){ return ColorTheme.getColor(ColorTheme.LIST_INK); }
     public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND); }
     public String getTipString() { return (String) pep.elementAt(cursor*xCnt+xCursor); }
-    public void onSelect(){  select();  }
+    public void onSelect(VirtualList view){  select();  }
     
     
     public void select() {
@@ -318,7 +318,7 @@ public final class SelectPEP extends VirtualList implements
     
         
     
-    public void drawItem(Graphics g, int ofs, boolean selected){
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean selected){
         int max=(lineIndex==lines-1)? xLastCnt:xCnt;
         int index = 0;
         int x = 0;

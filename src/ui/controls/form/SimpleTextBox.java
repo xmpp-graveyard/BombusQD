@@ -35,6 +35,7 @@ import javax.microedition.lcdui.*;
 import java.util.Vector;
 import util.StringUtils;
 import ui.GMenuConfig;
+import ui.VirtualList;
 /**
  *
  * @author ad,aqent
@@ -79,7 +80,7 @@ public class SimpleTextBox
     }
     
     public String toString() { return text; }
-    public void onSelect(){
+    public void onSelect(VirtualList view) {
         state=!state;
     }
 
@@ -87,7 +88,7 @@ public class SimpleTextBox
     
     int fontHeight=getFont().getHeight();
     
-    public void drawItem(Graphics g, int ofs, boolean sel){
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel){
        g.setFont(getFont());
        int offset=4;
 

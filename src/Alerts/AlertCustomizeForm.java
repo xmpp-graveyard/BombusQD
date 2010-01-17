@@ -173,7 +173,9 @@ public class AlertCustomizeForm
         }
         
         itemsList.addElement(new SpacerItem(10));
-        IQNotify=new CheckBox(SR.get(SR.MS_SHOW_IQ_REQUESTS), midlet.BombusQD.cf.IQNotify); itemsList.addElement(IQNotify);
+        if(midlet.BombusQD.cf.userAppLevel==1) {
+          IQNotify=new CheckBox(SR.get(SR.MS_SHOW_IQ_REQUESTS), midlet.BombusQD.cf.IQNotify); itemsList.addElement(IQNotify);
+        }
 
         itemsList.addElement(new SpacerItem(5));
         linkLight = new LinkString(SR.get(SR.L_CONFIG)) { public void doAction() { 
@@ -222,8 +224,9 @@ public class AlertCustomizeForm
         midlet.BombusQD.cf.notifyPicture=statusBox.getValue();
         midlet.BombusQD.cf.notifyBlink=blinkBox.getValue();
         //cf.notifySound=soundBox.getValue();
-        
-        midlet.BombusQD.cf.IQNotify=IQNotify.getValue();
+        if(midlet.BombusQD.cf.userAppLevel==1) {
+          midlet.BombusQD.cf.IQNotify=IQNotify.getValue();
+        }
 
         //cf.saveToStorage();
 

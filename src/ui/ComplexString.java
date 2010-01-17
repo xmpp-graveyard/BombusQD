@@ -97,12 +97,12 @@ public class ComplexString implements VirtualElement {
         this.color=color;
     }
     
-    public void onSelect(){};
+    public void onSelect(VirtualList view){};
     
     Font bold;
     char c1,c2;
     
-    public void drawItem(Graphics g, int offset, boolean selected){
+    public void drawItem(VirtualList view, Graphics g, int offset, boolean selected){
         boolean ralign=false;
 	boolean underline=false;
 //#if NICK_COLORS
@@ -214,7 +214,7 @@ public class ComplexString implements VirtualElement {
                 } else if (elementData.elementAt(index) instanceof VirtualElement) { 
                     int clipw=g.getClipWidth(); 
                     int cliph=g.getClipHeight();
-                    ((VirtualElement)elementData.elementAt(index)).drawItem(g,0,false);
+                    ((VirtualElement)elementData.elementAt(index)).drawItem(view, g, 0, false);
                     g.setClip(g.getTranslateX(), g.getTranslateY(), clipw, cliph);
                     
                 }

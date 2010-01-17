@@ -496,7 +496,7 @@ public class Roster
 //#               addInCommand(3,cmdFM); cmdFM.setImg(MenuIcons.ICON_FILEMAN);        
 //#               addInCommand(3,cmdReconnect); cmdReconnect.setImg(MenuIcons.ICON_RECONNECT);
 //#ifdef CONSOLE
-//#               if(midlet.BombusQD.cf.userAppLevel>1) {
+//#               if(midlet.BombusQD.cf.userAppLevel==1) {
 //#                 addInCommand(3,cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);
 //#                 addInCommand(3,cmdDebugConsole); cmdDebugConsole.setImg(MenuIcons.ICON_CONCOLE);
 //#               }

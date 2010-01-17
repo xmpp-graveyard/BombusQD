@@ -37,11 +37,11 @@ public interface VirtualElement {
 
     public int getColor(); 
 
-    public void drawItem(Graphics g, int ofs, boolean selected);
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean selected);
 
     public String getTipString();
     
-    public void onSelect();
+    public void onSelect(VirtualList view);
     
     public boolean isSelectable();
     

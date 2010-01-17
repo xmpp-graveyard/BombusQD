@@ -99,7 +99,7 @@
 //#     
 //#     public void eventOk(){
 //#        MessageItem mi = (MessageItem)messages.elementAt(cursor);
-//#        mi.onSelect();
+//#        mi.onSelect(this);
 //#     }
 //#     
 //#     protected Msg getMessage(int index) {

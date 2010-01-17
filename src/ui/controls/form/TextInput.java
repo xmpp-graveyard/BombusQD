@@ -37,6 +37,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
+import ui.VirtualList;
 
 /**
  *
@@ -79,7 +80,7 @@ public class TextInput
         colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
         colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
         
-        font=FontCache.getFont(true, FontCache.roster);
+        font=FontCache.getFont(false, FontCache.roster);
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
         
@@ -117,7 +118,7 @@ public class TextInput
     //public String toString() { return (getCaptionLength()>getTextLength())?caption:getValue(); }
     public String toString() { return (0==getTextLength())?caption:getValue(); }//Tishka17
     
-    public void onSelect(){ 
+    public void onSelect(VirtualList view) { 
         new EditBox(display, caption, text, this, boxType);
     }
     
@@ -136,7 +137,7 @@ public class TextInput
         return getValue();
     }
 
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
         int height=fontHeight;
 
@@ -152,12 +153,15 @@ public class TextInput
             y=captionFontHeight;
         }
 
-        g.setColor(colorBGnd);
-        g.fillRect(0, y, width-1, height-1);
+        if(text.length() == 0) {
+          width = width - midlet.BombusQD.cf.scrollWidth - 5;
+          g.setColor(colorBGnd);
+          g.fillRect(5, y, width, height-3);
 
-        g.setColor((sel)?colorBorder:colorItem);
-        //g.drawRect(0, y, width-1, height-1);
-        g.drawRoundRect(0, y, width-1, height-1,7,7);//Tishka17
+          g.setColor((sel)?colorBorder:colorItem);
+          //g.drawRect(0, y, width-1, height-1);
+          g.drawRoundRect(5, y, width, height-3,8,8);//Tishka17
+        }
 
         g.setColor(oldColor);
         

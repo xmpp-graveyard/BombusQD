@@ -54,7 +54,7 @@ abstract public class IconTextElement implements VirtualElement {
         return FontCache.getFont(getFontIndex(),FontCache.roster);
     }
 
-    public void drawItem(Graphics g, int ofs, boolean sel, boolean inCommand){
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel, boolean inCommand){
        g.setFont(getFont());
        String str = toString();
        int offset = 4 + (inCommand?ilImageSize:0);
@@ -66,7 +66,7 @@ abstract public class IconTextElement implements VirtualElement {
        if (null != str) g.drawString(str, offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
     }
     
-    public void drawItem(Graphics g, int ofs, boolean sel){
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel){
        g.setFont(getFont());
        String str = toString();
        int offset=4;
@@ -97,7 +97,7 @@ abstract public class IconTextElement implements VirtualElement {
     
     public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND);}
     public int getColor(){ return ColorTheme.getColor(ColorTheme.LIST_INK);}
-    public void onSelect(){ };
+    public void onSelect(VirtualList view){ };
     public String getTipString() { return null; }
     public int compare(IconTextElement right) { return 0; }
 }

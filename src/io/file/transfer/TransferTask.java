@@ -44,6 +44,7 @@ import Colors.ColorTheme;
 import ui.IconTextElement;
 import util.Strconv;
 import xmpp.XmppError;
+import ui.VirtualList;
 
 /**
  *
@@ -144,7 +145,7 @@ public class TransferTask
 
     public int getColor() { return (sending)? ColorTheme.getColor(ColorTheme.MESSAGE_OUT) : ColorTheme.getColor(ColorTheme.MESSAGE_IN); }
 
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
         int xpgs=(g.getClipWidth()/3)*2;
         int pgsz=g.getClipWidth()-xpgs-4;
         int filled=(fileSize==0)? 0 : (pgsz*filePos)/fileSize; 
@@ -158,7 +159,7 @@ public class TransferTask
         g.fillRect(xpgs, 3, filled, getVHeight()-6);
         g.setColor(oldColor);
         
-        super.drawItem(g, ofs, sel);
+        super.drawItem(view, g, ofs, sel);
         showEvent=false;
     }
     

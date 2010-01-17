@@ -29,7 +29,7 @@ package ui.controls.form;
 
 import Colors.ColorTheme;
 import javax.microedition.lcdui.Graphics;
-
+import ui.VirtualList;
 /**
  *
  * @author ad
@@ -48,7 +48,7 @@ public abstract class LinkString
     public int getVWidth(){ 
         return -1;
     }
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();
         int height=super.getVHeight();
 
@@ -61,12 +61,12 @@ public abstract class LinkString
 
         g.setColor(oldColor);
 
-        super.drawItem(g, ofs, sel);
+        super.drawItem(view, g, ofs, sel);
     }
     
     public boolean isSelectable() { return true; }
     
-    public void onSelect(){
+    public void onSelect(VirtualList view) {
         doAction();
     }
     

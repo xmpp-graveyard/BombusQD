@@ -117,8 +117,8 @@ public class SmilePicker
         
         realWidth=getWidth()-scrollbar.getScrollWidth();
         
-        imgWidth=il.getWidth()+(CURSOR_HOFFSET*2);
-        lineHeight = il.getHeight()+(CURSOR_VOFFSET*2);
+        imgWidth=il.getWidth()+(CURSOR_HOFFSET<<1);
+        lineHeight = il.getHeight()+(CURSOR_VOFFSET<<1);
 
         xCnt= realWidth / imgWidth;
         
@@ -151,7 +151,7 @@ public class SmilePicker
     public int getVHeight() { return lineHeight; }
     public int getColor(){ return ColorTheme.getColor(ColorTheme.LIST_INK); }
     public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND); }
-    public void onSelect(){
+    public void onSelect(VirtualList view){
         try {
 //#ifdef RUNNING_MESSAGE
 //#            if(midlet.BombusQD.cf.msgEditType>0){
@@ -167,7 +167,7 @@ public class SmilePicker
     }
         
     
-    public void drawItem(Graphics g, int ofs, boolean selected){
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean selected){
         int max=(lineIndex==lines-1)? xLastCnt:xCnt;
         for (int i=0;i<max;i++) {
             int index = lineIndex*xCnt + i;

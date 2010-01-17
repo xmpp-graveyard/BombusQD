@@ -30,6 +30,7 @@ package ui.controls.form;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
 import ui.IconTextElement;
+import ui.VirtualList;
 
 /**
  *
@@ -55,7 +56,7 @@ public class ImageItem
         this.altText=altText;
     }
     
-    public void onSelect() {
+    public void onSelect(VirtualList view) {
         collapsed=!collapsed;
     }
     
@@ -85,13 +86,13 @@ public class ImageItem
         return -1;
     }    
 
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
         screenWidth=g.getClipWidth();
 
         if (!collapsed && img!=null) {
             g.drawImage(img, screenWidth/2, 0, Graphics.TOP|Graphics.HCENTER);
         }
-        super.drawItem(g, ofs, sel);
+        super.drawItem(view, g, ofs, sel);
     }
 
     public boolean isSelectable() { return selectable; }

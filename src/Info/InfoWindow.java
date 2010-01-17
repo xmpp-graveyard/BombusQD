@@ -55,6 +55,8 @@ import util.StringLoader;
 //# import ui.GMenu;
 //# import ui.GMenuConfig;
 //#endif   
+import ui.controls.AlertBox;
+
 /**
  *
  * @author ad
@@ -75,6 +77,33 @@ public class InfoWindow
     /**
      * Creates a new instance of InfoWindow
      */
+
+    int auth = 0;
+    public void keyPressed(int keyCode){
+      switch(auth){
+          /*1*/ case 0: if(keyCode == KEY_NUM5) auth++; break;
+          /*2*/ case 1: if(keyCode == KEY_NUM1) auth++; else auth = 0; break;
+          /*3*/ case 2: if(keyCode == KEY_NUM2) auth++; else auth = 0; break;
+      }
+      if( auth == 3 ) {
+          String authMsg = "";
+          if(midlet.BombusQD.cf.userAppLevel == 0){
+              midlet.BombusQD.cf.userAppLevel = 1;
+              authMsg = "Advanced Mode now ON";
+          } else {
+            midlet.BombusQD.cf.userAppLevel = 0;
+            authMsg = "Advanced Mode now OFF!";
+          }
+          AlertBox alert = new AlertBox( "Info", authMsg , display, parentView, false) {
+             public void yes() {}
+             public void no() {}
+          };
+          alert = null;
+          auth = 0;
+      }
+      super.keyPressed(keyCode);
+    }
+    
     
     public InfoWindow(Display display, Displayable pView) {
         super(display, pView, SR.get(SR.MS_ABOUT));
@@ -95,7 +124,10 @@ public class InfoWindow
         ((MultiLine)name).selectable=true;
         itemsList.addElement(name);
         
-
+        name=new MultiLine("Easter Egg:", "Press 5-1-2 keys to lock/unlock new options", super.superWidth);
+        ((MultiLine)name).selectable=false;
+        itemsList.addElement(name);
+        
         name=new MultiLine("Copyright (c) 2005-2010", 
                 "Eugene Stahov (evgs,Bombus);\nDaniel Apatin (ad,BombusMod);\nAlexej Kotov(aqent,BombusQD);\n" +
                 "Andrey Tikhonov(Tishka17,BombusQD)\n" +
@@ -159,6 +191,7 @@ public class InfoWindow
 //#endif
 //#endif
         attachDisplay(display);
+        enableListWrapping(false);
         this.parentView=pView;
     }
 

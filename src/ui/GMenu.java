@@ -118,10 +118,10 @@ public class GMenu extends Canvas {
         if(null == menuCommands) return;
         int size = menuCommands.size();
         gm.commandslist = new String[size];//3
+        gm.menuCommands=menuCommands;
         for (int index=0; index<size; index++) {
             Command c=(Command)menuCommands.elementAt(index);
             gm.commandslist[index]=c.getName();
-            gm.menuCommands=menuCommands;     
         }
    }
    
@@ -144,10 +144,10 @@ public class GMenu extends Canvas {
         }
         int size = menuCommands.size();
         gm.commandslist = new String[size];//3
+        gm.menuCommands=menuCommands;
         for (int index=0; index<size; index++) {
             Command c=(Command)menuCommands.elementAt(index);
             gm.commandslist[index]=c.getName();
-            gm.menuCommands=menuCommands;
         }
         gm.cmdfirstList=cmdfirstList;
         gm.cmdsecondList=cmdsecondList;
@@ -215,7 +215,7 @@ public class GMenu extends Canvas {
         long s2 = System.currentTimeMillis();
         int ws = g.getFont().stringWidth(Long.toString(s2-s1)+"msec") + 5;
         int fh = g.getFont().getHeight();
-        int xpos = width/2-ws/2;
+        int xpos = width >> 1 -ws >> 1 ;
         g.setColor(255,255,0);
         g.fillRect(xpos,1,ws,fh);
         g.setColor(0,0,0);
@@ -291,8 +291,8 @@ public class GMenu extends Canvas {
         
        switch(midlet.BombusQD.cf.graphicsMenuPosition){
            case 0:
-               gm.xcoodr = (g.getClipWidth() - w)/2;
-               gm.ycoodr = (g.getClipHeight()- mHfh)/2;
+               gm.xcoodr = (g.getClipWidth() - w) >> 1 ;
+               gm.ycoodr = (g.getClipHeight()- mHfh) >> 1 ;
                break;
            case 1:
                gm.xcoodr=7;

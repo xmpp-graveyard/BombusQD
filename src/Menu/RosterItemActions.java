@@ -181,7 +181,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
             if(!originGroupchat) addItem(SR.get(SR.MS_CLIENT_INFO),0, menuIcons.ICON_VERSION);
 
 //#ifdef SERVICE_DISCOVERY
-	    if(!originGroupchat && midlet.BombusQD.cf.userAppLevel>1) addItem(SR.get(SR.MS_COMMANDS),30, menuIcons.ICON_COMMAND);
+	    if(!originGroupchat && midlet.BombusQD.cf.userAppLevel==1) addItem(SR.get(SR.MS_COMMANDS),30, menuIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
 //#             if (midlet.BombusQD.cf.useClipBoard) {

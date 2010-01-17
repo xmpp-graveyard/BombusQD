@@ -288,6 +288,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#ifdef CONSOLE
 //#         if (Console.StanzasList.enabled) addLog(data.toString(), 1);
 //#endif
+        midlet.BombusQD.cf.outStanz+=1;                                                                                                                    
         data.setLength(0);//Tishka17
     }
 
@@ -331,7 +332,6 @@ public class JabberStream extends XmppParser implements Runnable {
 //#         }
 //#endif
 //#         StanzasList.getInstance().add(data, type);
-//#         midlet.BombusQD.cf.outStanz+=1;
 //#    }
 //#endif
 

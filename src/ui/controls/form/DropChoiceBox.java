@@ -35,6 +35,7 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
+import ui.VirtualList;
 
 /**
  *
@@ -77,7 +78,7 @@ public class DropChoiceBox
         this.display=display;
         this.caption=(caption==null)?"":caption;
         
-        font=FontCache.getFont(true,FontCache.roster);
+        font=FontCache.getFont(false,FontCache.roster);
         fontHeight=font.getHeight();
         itemHeight=fontHeight;
         
@@ -109,7 +110,7 @@ public class DropChoiceBox
         return (getCaptionLength()>getTextLength())?caption:getTextValue();
     }
 
-    public void onSelect(){
+    public void onSelect(VirtualList view){
         if (items.size()>1)
             new DropListBox(display, items, this);
     }
@@ -130,7 +131,7 @@ public class DropChoiceBox
     
     public int getSelectedIndex() { return index; }
     
-    public void drawItem(Graphics g, int ofs, boolean sel) {
+    public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
         colorItem=ColorTheme.getInstance().getColor(ColorTheme.CONTROL_ITEM);
         colorBorder=ColorTheme.getInstance().getColor(ColorTheme.CURSOR_OUTLINE);
         colorBGnd=ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND);
@@ -150,11 +151,13 @@ public class DropChoiceBox
             y=captionFontHeight;
         }
 
+        /*
         g.setColor(colorBGnd);
         g.fillRect(0, y, width-1, height-1);
 
         g.setColor((sel)?colorBorder:colorItem);
         g.drawRect(0, y, width-1, height-1);
+         */
 
         g.setColor(oldColor);
         
@@ -165,7 +168,7 @@ public class DropChoiceBox
         }
         
         if (size()>1)
-            il.drawImage(g, 0x24, (width-il.getHeight())-1, ((y)+height/2)-il.getHeight()/2);
+            il.drawImage(g, 0x24, (width-il.getHeight())-1 , ( y + (height>>1)  ) - (il.getHeight()>>1) );
     }
     
     public int getVHeight(){
@@ -177,7 +180,7 @@ public class DropChoiceBox
         
          switch (keyCode) {
              case 5:
-                onSelect();
+                onSelect(null);
                 return true;
          }
         return false;

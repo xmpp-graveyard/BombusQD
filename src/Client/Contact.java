@@ -52,6 +52,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.Image;
 import util.StringUtils; 
+import ui.VirtualList;
 
 public class Contact extends IconTextElement{
 
@@ -540,7 +541,7 @@ public class Contact extends IconTextElement{
         int itemVHeight=0;
         if (getSecondString()!=null)
         {
-            itemVHeight += fontHeight+fontHeight;
+            itemVHeight += fontHeight<<1;
             if(img_vcard!=null){
               if(img_vcard.getHeight()>=itemVHeight){
                 itemVHeight = avatar_height + 4;
@@ -565,7 +566,7 @@ public class Contact extends IconTextElement{
     public int avatar_height=0;    
 
 
-    public final void drawItem(Graphics g, int ofs, boolean sel) {
+    public final void drawItem(VirtualList view, Graphics g, int ofs, boolean sel) {
         int imageIndex = getImageIndex();
         int w=g.getClipWidth();
         if(midlet.BombusQD.cf.simpleContacts) {
@@ -574,7 +575,7 @@ public class Contact extends IconTextElement{
                w -= il.getWidth();
                il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w, 0);
             }
-            super.drawItem(g, ofs, sel);
+            super.drawItem(view, g, ofs, sel);
             return;
         }
         
@@ -590,7 +591,7 @@ public class Contact extends IconTextElement{
         g.translate(pos,0);
         w -= pos;
         
-        int imgH=(h-ilHeight)/2;
+        int imgH=(h-ilHeight) >> 1 ;
         
         if(midlet.BombusQD.cf.module_avatars==false){
           img_vcard=null;  
@@ -600,7 +601,7 @@ public class Contact extends IconTextElement{
             il.drawImage(g, imageIndex, 2, imgH);
         }
         if(img_vcard!=null){
-           int yy = (h - avatar_height)/2;
+           int yy = (h - avatar_height) >> 1 ;
            int def = g.getColor();
            if(avatar_width==avatar_height){
              w = w-avatar_width - 4;
@@ -629,7 +630,7 @@ public class Contact extends IconTextElement{
              }
              ClientsIcons.getInstance().drawImage(g, client, midlet.BombusQD.cf.iconsLeft?ilHeight+2
                      :w 
-                     , (h-clientImgSize)/2);
+                     , (h-clientImgSize) >> 1 );
              //client==index
              if (maxImgHeight<clientImgSize) maxImgHeight=clientImgSize;               
         }
@@ -638,7 +639,7 @@ public class Contact extends IconTextElement{
 //#         if (hasMood()) {
 //#             int moodImgSize=MoodIcons.getInstance().getWidth();
 //#             w-=moodImgSize;
-//#             MoodIcons.getInstance().drawImage(g, pepMood, w, (h-moodImgSize)/2);
+//#             MoodIcons.getInstance().drawImage(g, pepMood, w, (h-moodImgSize) >> 1 );
 //#             if (maxImgHeight<moodImgSize) maxImgHeight=moodImgSize;
 //#         }
 //#ifdef PEP
@@ -649,7 +650,7 @@ public class Contact extends IconTextElement{
 //#         if (hasActivity()) {
 //#             int activitySize=ActivityIcons.getInstance().getWidth();
 //#             w-=activitySize;
-//#             ActivityIcons.getInstance().drawImage(g, activ, w, (h-activitySize)/2);
+//#             ActivityIcons.getInstance().drawImage(g, activ, w, (h-activitySize) >> 1 );
 //#             if (maxImgHeight<activitySize) maxImgHeight=activitySize;
 //#         }
 //#endif
@@ -679,15 +680,15 @@ public class Contact extends IconTextElement{
         
         
         if (getSecondString()==null) {
-            int y = (h - fontHeight)/2;
+            int y = (h - fontHeight) >> 1 ;
             g.drawString(getFirstString(), thisOfs , y, Graphics.TOP|Graphics.LEFT);   
         }        
         else {
-            int y = (h - fontHeight-fontHeight)/2;
+            int y = (h - (fontHeight<<1)) >> 1 ;
             g.drawString(getFirstString(), thisOfs , y , Graphics.TOP|Graphics.LEFT);
             thisOfs=(getSecondLength()>w)?-ofs+offset:offset;
             g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
-            g.drawString(getSecondString(),thisOfs , y + fontHeight - 3 , Graphics.TOP|Graphics.LEFT);
+            g.drawString(getSecondString(),thisOfs , y + fontHeight , Graphics.TOP|Graphics.LEFT);
         }
         g.setClip(xo, yo, w, h);
     }

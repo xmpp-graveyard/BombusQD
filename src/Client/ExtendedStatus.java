@@ -52,7 +52,7 @@ public class ExtendedStatus extends IconTextElement{
         this.screenName=showName;
     }
     
-    //public void onSelect(){}
+    //public void onSelect(VirtualList view){}
     public String toString(){ 
         StringBuffer s=new StringBuffer(screenName).append(" (").append(priority).append(") ");
         if (status!=null)

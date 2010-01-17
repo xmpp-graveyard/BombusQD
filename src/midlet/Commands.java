@@ -182,7 +182,7 @@ public class Commands {
     public static Commands get(){
         if (commands==null) {
             commands=new Commands();
-            //initCommands();
+            initCommands();
         }
         return commands;
     }    

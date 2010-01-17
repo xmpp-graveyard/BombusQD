@@ -196,7 +196,7 @@ public class AccountForm
         itemsList.addElement(portbox);
         
     	emailbox = new TextInput(display,"E-mail:",account.getEmail(),null, TextField.EMAILADDR);
-        if(midlet.BombusQD.cf.userAppLevel>=1) {
+        if(midlet.BombusQD.cf.userAppLevel==1) {
           itemsList.addElement(emailbox);
         }
 
@@ -405,7 +405,7 @@ public class AccountForm
         account.setUserName(user);
         account.setServer(server);
         account.setPort(Integer.parseInt(portbox.getValue()));
-        if(midlet.BombusQD.cf.userAppLevel>=1) {
+        if(midlet.BombusQD.cf.userAppLevel==1) {
           account.setEmail(emailbox.getValue().trim());
         }
         account.setPassword(pass);

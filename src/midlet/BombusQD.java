@@ -136,7 +136,7 @@ public class BombusQD extends MIDlet implements Runnable
     public int himg_actions;    
 
     private void rmsVersion(boolean save, Displayable parentView) {
-        String key = "key05628615";// ��� ������������� �� ��������
+        String key = "key15628615";
         if(save == false) {
             try {
                DataInputStream is=NvStorage.ReadFileRecord("appver", 0);
@@ -151,7 +151,6 @@ public class BombusQD extends MIDlet implements Runnable
                is.close();
                is=null;
             } catch (Exception e) {
-               //������ ��� == ��������� ������� || ��������� ������ ������ ��� ����������� ��� ��������� appver
                /*
                   AlertBox alert = new AlertBox( "Info", "..." , display, parentView, true) {
                       public void yes() { }

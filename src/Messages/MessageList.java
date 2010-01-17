@@ -101,7 +101,7 @@ public abstract class MessageList extends VirtualList
         if (messages.size()<getItemCount()) messages.setSize(getItemCount());
         MessageItem mi = (MessageItem)messages.elementAt(index);
         if (mi==null) {
-            mi = new MessageItem(getMessage(index), this, smiles);
+            mi = new MessageItem(getMessage(index), smiles);
             mi.setEven( (index & 1) == 0);
             mi.parse(this);
             messages.setElementAt(mi, index);
@@ -132,7 +132,7 @@ public abstract class MessageList extends VirtualList
         if (messages.size()<getItemCount()) {
             messages.setSize(getItemCount());//?
         }
-        MessageItem mi = new MessageItem(msg,this,  smiles);
+        MessageItem mi = new MessageItem(msg, smiles);
         mi.setEven( (index & 1) == 0);
         mi.parse(this);
         //mi.getColor();
@@ -218,7 +218,7 @@ public abstract class MessageList extends VirtualList
 //#ifdef SMILES
         if (keyCode=='*') {
             try {
-                ((MessageItem)getFocusedObject()).toggleSmiles();
+                ((MessageItem)getFocusedObject()).toggleSmiles(this);
             } catch (Exception e){}
             return;
         }
