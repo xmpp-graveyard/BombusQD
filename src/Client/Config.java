@@ -157,7 +157,7 @@ public class Config {
     public boolean popUps=false;
 //#endif
     public boolean showResources=true;
-    public boolean enableVersionOs=false;
+    public boolean enableVersionOs=true;
     public boolean collapsedGroups=true;
     public int messageLimit=512;
     public boolean eventDelivery=true;
@@ -297,7 +297,7 @@ public class Config {
     public boolean networkAnnotation=true;
     public boolean metaContacts=false;
     public boolean graphicsMenu=true;
-    public int graphicsMenuPosition=1;
+    public int graphicsMenuPosition=0;//0-center
     
     public boolean createMessageByFive = true;
     public boolean gradientBarLigth = false;

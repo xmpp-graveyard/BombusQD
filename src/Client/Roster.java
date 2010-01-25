@@ -229,8 +229,8 @@ public class Roster
     }
     
     public void createActiveContacts(Displayable pView, Contact current){
-        activeContacts.setActiveContacts(pView, current);
-        display.setCurrent(activeContacts);
+        if(activeContacts.setActiveContacts(pView, current))
+            display.setCurrent(activeContacts);
     }
 
     public void createMessageEdit(boolean reCreate){
@@ -2081,7 +2081,7 @@ public class Roster
                     
                   
                     if(id.equals("destroyroom"))   {
-                         VirtualList.setWobble(1,null,from + " deleted!");
+                         setWobble(1,null,from + " deleted!");
                          redraw();          
                     }      
                   
@@ -2850,9 +2850,9 @@ public class Roster
          return null;
      }
      
-     public final static void testMeOffline(MucContact mc, ConferenceGroup grp, boolean isKick) {
+     public void testMeOffline(MucContact mc, ConferenceGroup grp, boolean isKick) {
           if ( grp.selfContact == mc ) {
-             if(isKick) midlet.BombusQD.sd.roster.showRoster();
+             if(isKick) display.setCurrent(midlet.BombusQD.sd.roster);
              midlet.BombusQD.sd.roster.roomOffline(grp, true);
           }
      }    
@@ -2935,7 +2935,7 @@ public class Roster
            JabberDataBlock destroy = xmuc.getChildBlock("destroy");
            if(null != destroy){
                if(null != destroy.getChildBlockText("reason")) {
-                    VirtualList.setWobble(1,null,"Groupchat " +  destroy.getAttribute("jid") +
+                    setWobble(1,null,"Groupchat " +  destroy.getAttribute("jid") +
                       " was destroyed!(reason: " + destroy.getChildBlockText("reason") + ")"); 
                }
            }
@@ -2985,6 +2985,11 @@ public class Roster
                          mucContactBuf.append(" (").append(tempRealJid).append(')');
                      mucContactBuf.append(SR.get(SR.MS_HAS_LEFT_CHANNEL));
                      
+                     mc.affiliation = "none";
+                     mc.role = "none";
+                     mc.roleCode = 0;
+                     mc.affiliationCode = 0; 
+         
                      if (statusText.length()>0)
                          mucContactBuf.append(" (").append(statusText).append(')');
                      testMeOffline(mc, (ConferenceGroup)mc.group, false);

@@ -382,7 +382,7 @@ Delete All	Очистить архив
 History options	История
 Filenames transliterate	Имена файлов транслитом
 Save chat	Сохранить сообщения
-show statuses	включить доп.строку у контакта
+show statuses	доп.строка у контакта
 shared platform info	показывать информацию о платформе телефона
 delivery events	уведомление о доставке сообщения
 drop all	отбрасывать все
@@ -638,7 +638,7 @@ Advanced Options	Дополнительные настройки
 Contacts	Контакты
 Chat	Окно чата и сообщений
 Network	Настройки сети
-Graphics	Графика
+Interface	Внешний вид
 Application	Приложение
 Hotkeys	Горячие клавиши
 Autostatus	Автостатус

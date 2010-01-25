@@ -465,12 +465,12 @@ public class PluginsConfig extends DefForm implements MenuListener
 
        itemsList.addElement(userKeys);
        
+//#ifdef IMPORT_EXPORT         
+//#        itemsList.addElement(ie);
+//#endif
        if(midlet.BombusQD.cf.userAppLevel == 1) {        
                itemsList.addElement(classicchat);
                itemsList.addElement(tasks);
-//#ifdef IMPORT_EXPORT         
-//#                itemsList.addElement(ie);
-//#endif
                itemsList.addElement(debug);
        }
     }
@@ -629,6 +629,7 @@ public class PluginsConfig extends DefForm implements MenuListener
              itemsList.addElement(iconsLeft);
              itemsList.addElement(autoFocus);
              itemsList.addElement(ignore);
+             itemsList.addElement(rosterStatus);
           } else {
              itemsList.addElement(showOfflineContacts);
              itemsList.addElement(showTransports);

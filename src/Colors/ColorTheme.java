@@ -57,6 +57,7 @@ public class ColorTheme {
 	if (instance==null) {
 	    instance=new ColorTheme();
             init();
+            loadFromStorage();
             reInitNames();
 	}
 	return instance;
@@ -199,7 +200,7 @@ public class ColorTheme {
     }
     
     
-    private static void init() {
+    public static void init() {
         colorsContainer.setSize(0);
         int size = defColors.length;
         colorsArray = null;
@@ -211,7 +212,6 @@ public class ColorTheme {
             colorsContainer.addElement( add );
           }     
         add = null;
-        loadFromStorage();
     }
     
     public static void setColor(int id, int color) { colorsArray[id] = color; }

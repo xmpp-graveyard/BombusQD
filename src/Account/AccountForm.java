@@ -93,12 +93,12 @@ public class AccountForm
     boolean register=false;
     String serverReg="";
     
-    private static final  int JABBER_PROFILE=1;    
-    private static final  int YARU_PROFILE=2;    
-    private static final  int GTALK_SSL_PROFILE=3;    
-    private static final  int LJ_PROFILE=4;    
-    private static final  int QIP_PROFILE=5;
-    private static final  int GTALK_HTTPS_PROFILE=6;        
+    private static final byte JABBER_PROFILE=1;    
+    private static final byte YARU_PROFILE=2;    
+    private static final byte GTALK_SSL_PROFILE=3;    
+    private static final byte LJ_PROFILE=4;    
+    private static final byte QIP_PROFILE=5;
+    private static final byte GTALK_HTTPS_PROFILE=6;        
     
     /** Creates a new instance of AccountForm */
 
@@ -126,6 +126,7 @@ public class AccountForm
         String server=register?serverReg:"";
         String password=account.getPassword();
         int port_box=5222;
+        boolean generatePaswForm = register;
         if(!register){
           switch(type_profile){
             case -1:   
@@ -185,12 +186,13 @@ public class AccountForm
         
         passbox = new TextInput(display, SR.get(SR.MS_PASSWORD), password,null,TextField.ANY);     
         itemsList.addElement(passbox);
-        
-        link_genPass = new LinkString(SR.get(SR.MS_GENERATE)+" "+SR.get(SR.MS_PASSWORD)) { public void doAction() { 
-         passbox.setValue(generate(1));
-        } };
-        itemsList.addElement(link_genPass); 
-        itemsList.addElement(new SpacerItem(5));
+        if(generatePaswForm) {
+          link_genPass = new LinkString(SR.get(SR.MS_GENERATE)+" "+SR.get(SR.MS_PASSWORD)) { public void doAction() { 
+           passbox.setValue(generate(1));
+          } };
+          itemsList.addElement(link_genPass); 
+          itemsList.addElement(new SpacerItem(5));
+        }
         
         portbox = new NumberInput(display, SR.get(SR.MS_PORT), Integer.toString(port_box), 0, 65535);
         itemsList.addElement(portbox);
@@ -214,7 +216,7 @@ public class AccountForm
 
         registerbox = new CheckBox(SR.get(SR.MS_REGISTER_ACCOUNT), register); 
         
-        if (newaccount){
+        if (newaccount && register) {
             itemsList.addElement(registerbox);            
         }
 
@@ -271,9 +273,7 @@ public class AccountForm
 
   public void showExtended() {
         showExtended=true;
-        if (!newaccount){
-            itemsList.addElement(registerbox);   
-        }
+
         boolean portbox_=false;
         boolean sslbox_=false;
         boolean plainPwdbox_=false;

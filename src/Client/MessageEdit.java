@@ -385,6 +385,7 @@ public final class MessageEdit
 //#endif        
         if (c==cmdLastMessage) {
             if(null == to) return;
+            if(null == to.lastSendedMessage) return;
             if(midlet.BombusQD.cf.msgEditType>0){
               textField.insert(to.lastSendedMessage,textField.getCaretPosition());
             }else{

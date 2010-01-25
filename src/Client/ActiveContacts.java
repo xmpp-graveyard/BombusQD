@@ -110,7 +110,7 @@ public final class ActiveContacts
         lasttime = current;
     }
     
-    public void setActiveContacts(Displayable pView, Contact current){
+    public boolean setActiveContacts(Displayable pView, Contact current){
         this.parentView=pView;
         this.opened = current;
         
@@ -124,7 +124,7 @@ public final class ActiveContacts
            c=(Contact)hContacts.elementAt(i);
            if (c.active()) activeContacts.addElement(c);
         }
-        if (getItemCount()==0) return;
+        if (getItemCount()==0) return false;
         //System.out.println(activeContacts.toString());
 
         isActive = true;
@@ -134,6 +134,7 @@ public final class ActiveContacts
            focusToContact(current);
            hContacts = null;
         } catch (Exception e) { }
+        return true;
     }
     
     

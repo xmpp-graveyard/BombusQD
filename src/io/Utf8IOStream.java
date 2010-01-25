@@ -189,13 +189,8 @@ public class Utf8IOStream {
     public String getStreamStatsBar() { //for info panel
         stats.setLength(0);
         try {
-            long sent=bytesSent;
-            long recv=bytesRecv;
             if (isZlib) {
                 ZInputStream z = (ZInputStream) inpStream;
-                recv+=z.getTotalIn()-z.getTotalOut();
-                ZOutputStream zo = (ZOutputStream) outStream;
-                sent+=zo.getTotalOut()-zo.getTotalIn();
                 String ratio=Long.toString((10*z.getTotalOut())/z.getTotalIn());
                 int dotpos=ratio.length()-1;  
                 
@@ -214,8 +209,7 @@ public class Utf8IOStream {
                return "";
             }
         } catch (Exception e) {
-            stats=null;
-            return null;
+            return "";
         }
         return stats.toString();       
     }
@@ -223,23 +217,18 @@ public class Utf8IOStream {
     public String getStreamStats() { //for stats window
         stats.setLength(0);
         try {
-            long sent=bytesSent;
-            long recv=bytesRecv;
             if (isZlib) {
                 ZInputStream z = (ZInputStream) inpStream;
-                recv+=z.getTotalIn()-z.getTotalOut();
                 ZOutputStream zo = (ZOutputStream) outStream;
-                sent+=zo.getTotalOut()-zo.getTotalIn();
                 stats.append("ZLib:\nin: "); appendZlibStats(stats, z.getTotalIn(), z.getTotalOut(), true);
                 stats.append("\nout: "); appendZlibStats(stats, zo.getTotalOut(), zo.getTotalIn(), false);
             } else {
               stats.append("\nin: ")
-                  .append(recv)
+                  .append(bytesRecv)
                   .append("\nout: ")
-                  .append(sent);
+                  .append(bytesSent);
             }
         } catch (Exception e) {
-            stats=null;
             return "";
         }
         return stats.toString();
@@ -279,16 +268,7 @@ public class Utf8IOStream {
     }
 
     public long getBytes() {
-        long startBytes=bytesSent+bytesRecv;
-        try {
-            if (isZlib) {
-                ZOutputStream zo = (ZOutputStream) outStream;
-                ZInputStream z = (ZInputStream) inpStream;
-                return (long)zo.getTotalOut()+(long)z.getTotalIn();
-            }
-            return startBytes;
-        } catch (Exception e) { }
-        return 0;
+        return bytesSent+bytesRecv;
     }
 //#else
 //#      private StringBuffer stats = new StringBuffer(0);

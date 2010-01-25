@@ -85,7 +85,7 @@
 //#         
 //#         item=new MultiLine(SR.get(SR.MS_CURRENT), StringUtils.getSizeString(st.getCurrentTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#         
-//#         if (midlet.BombusQD.sd.roster.isLoggedIn()) {
+//#         if (midlet.BombusQD.sd.roster.isLoggedIn() && midlet.BombusQD.cf.userAppLevel == 1) {
 //#             item=new MultiLine(SR.get(SR.MS_COMPRESSION), midlet.BombusQD.sd.roster.theStream.getStreamStats(), super.superWidth); item.selectable=true; itemsList.addElement(item);
 //#         }
 //# 

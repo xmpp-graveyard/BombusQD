@@ -75,7 +75,7 @@ public class AccountSelect
         Command cmdServ3_reg=new Command("Jabbus.org", Command.SCREEN,20); 
         Command cmdServ4_reg=new Command("Mytlt.ru", Command.SCREEN,21); 
         Command cmdServ5_reg=new Command("Jabbim.com", Command.SCREEN,22);  
-        Command cmdServ6_reg=new Command("Gajim.org", Command.SCREEN,23);
+        Command cmdServ6_reg=new Command("Other", Command.SCREEN,23);
     Command cmdAdd;
         Command cmdJabber=new Command("Jabber", Command.SCREEN,13);    
         Command cmdYaru=new Command("Yandex.ru", Command.SCREEN,14);    
@@ -174,8 +174,8 @@ public class AccountSelect
 //#ifdef GRAPHICS_MENU
 //#         addCommand(cmdRegister); cmdRegister.setImg(0x42);
 //#            addInCommand(2,cmdServ1_reg); cmdServ1_reg.setImg(0x86);
-//#            addInCommand(2,cmdServ2_reg); cmdServ2_reg.setImg(0x85);
-//#            addInCommand(2,cmdServ3_reg); cmdServ3_reg.setImg(0x86);
+//#            //addInCommand(2,cmdServ2_reg); cmdServ2_reg.setImg(0x85);
+//#            //addInCommand(2,cmdServ3_reg); cmdServ3_reg.setImg(0x86);
 //#            addInCommand(2,cmdServ4_reg); cmdServ4_reg.setImg(0x86);
 //#            addInCommand(2,cmdServ5_reg); cmdServ5_reg.setImg(0x85);           
 //#            addInCommand(2,cmdServ6_reg); cmdServ6_reg.setImg(0x72);
@@ -229,7 +229,7 @@ public class AccountSelect
 //#           new AccountForm(display, this, this, null,1,true,"jabbim.com");            
 //#         }
 //#         if(c==cmdServ6_reg){
-//#           new AccountForm(display, this, this, null,1,true,"gajim.org");   
+//#           new AccountForm(display, this, this, null,1,true,"");   
 //#         }
 //# 
 //#         if (c==cmdJabber) {

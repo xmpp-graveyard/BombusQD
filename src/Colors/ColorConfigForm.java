@@ -44,6 +44,7 @@ import ui.controls.form.SpacerItem;
 import ui.controls.form.SimpleString;
 import util.StringLoader;
 import Client.Config;
+import ui.controls.AlertBox;
 
 /**
  *
@@ -60,7 +61,6 @@ public class ColorConfigForm
 
 //#ifdef COLOR_TUNE
 //#     private LinkString configureColors;
-//#     private LinkString extended;    
 //#endif
     private LinkString invertColors;
 //#if FILE_IO
@@ -142,20 +142,23 @@ public class ColorConfigForm
         
         reset=new LinkString(SR.get(SR.MS_CLEAR)) { 
           public void doAction() {
-            ColorTheme.loadSkin("/themes/default.txt", 1, true);
-            //ColorTheme.init(); 
-            //ColorTheme.saveToStorage(); 
+             AlertBox alert = new AlertBox( "Query", "Load lime theme?" , display, parentView, true) {
+             public void yes() { ColorTheme.loadSkin("/themes/default.txt", 1, true); }
+             public void no() {
+               ColorTheme.init(); 
+               ColorTheme.saveToStorage();
+             }
+             };
+             alert = null;
           } 
         };
         
             itemsList.addElement(invertColors);
             itemsList.addElement(loadFromFile);            
             itemsList.addElement(saveToFile);
-            itemsList.addElement(new SpacerItem(10)); 
             itemsList.addElement(reset);
-            itemsList.removeElement(extended);
         
-        moveCursorTo(getNextSelectableRef(-1));
+        //moveCursorTo(getNextSelectableRef(-1));
         attachDisplay(display);
         this.parentView=pView;
     }
@@ -165,7 +168,6 @@ public class ColorConfigForm
        midlet.BombusQD.cf.gmenu_bgnd = gmenu_bgnd.getValue()*10;
        midlet.BombusQD.cf.popup_bgnd = popup_bgnd.getValue()*10;
        midlet.BombusQD.cf.cursor_bgnd = cursor_bgnd.getValue()*10;
-       //cf.saveToStorage();
        destroyView();
     }
     

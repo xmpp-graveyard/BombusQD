@@ -168,6 +168,7 @@ public class GMenu extends Canvas {
    
    
    public void select(boolean inmenu){
+      try {  
        Command cmd;
        gm.itemGrMenu=-1;
         if(inmenu){
@@ -179,6 +180,9 @@ public class GMenu extends Canvas {
           gm.ml.commandAction(cmd, parentView);
         }
        gm.ml=null;
+      } catch (Exception e) { /* IndexOutOfBounds */
+        midlet.BombusQD.debug.add("GMenu::select IndexOutOfBounds->" + e.getMessage(), 10);
+      }
     }
 
 
@@ -231,47 +235,56 @@ public class GMenu extends Canvas {
    Gradient fon;
    
    private void eventOk(){
-    cursorY=0;       
-     if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_NEW_ACCOUNT))>-1 ||
+    try {
+      cursorY=0;       
+      if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_NEW_ACCOUNT))>-1 ||
         gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_MY_JABBER))>-1 ||
         gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SORT_TYPE))>-1){
           GMenuIn(gm.cmdfirstList); eventMenu=true; return;
-     } 
-     else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_REGISTERING))>-1
+      } 
+      else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_REGISTERING))>-1
           || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_HISTORY_OPTIONS))>-1 ) {
           GMenuIn(gm.cmdsecondList); eventMenu=true; return;   
-     } 
-     else if (gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SERVICE))>-1){            
+      } 
+      else if (gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SERVICE))>-1){            
           GMenuIn(gm.cmdThirdList); eventMenu=true; return;
-     } else{
+      } else{
           gm.itemGrMenu=-1;
-     }
+      }
+    } catch (Exception e) {
+        /* IndexOutOfBounds */
+        midlet.BombusQD.debug.add("GMenu::eventOk Exception->" + e.getMessage(), 10);
+    }
    }
    
 
-   
-   void drawAllItems(Graphics g,Vector menuCommands,String[] commandslist,int itemCursorIndex){
+   int pointerX = 0;
+   int maxwidth = 0;
+   int[] pointerY = null;
+           
+   void drawAllItems(Graphics g,Vector menuCommands,String[] drawCommands,int itemCursorIndex){
 
         fh = bm.himg_menu>fh?bm.himg_menu:fh;
-        if(commandslist == null || menuCommands == null) return;
-        size = commandslist.length-1;
+        if(drawCommands == null || menuCommands == null) return;
+        //boolean hasPointerEvents = true;//hasPointerEvents();
+        size = drawCommands.length-1;
         int hitem = 0;        
-        int maxHeight=commandslist.length;
+        int maxHeight=drawCommands.length;
 
-        int maxwidth=0;
+        maxwidth=0;
         int len_str=0;
         for (int index=size; index>=0; index--) {
              if(midlet.BombusQD.cf.executeByNum){
-                  len_str  = font.stringWidth(index+"-"+commandslist[index]);
+                  len_str  = font.stringWidth(index+"-"+drawCommands[index]);
              }else{
-                  len_str  = font.stringWidth(commandslist[index]);
+                  len_str  = font.stringWidth(drawCommands[index]);
              }
              if(len_str>maxwidth){
                maxwidth=len_str; 
              }
        }
         
-       int mHfh = maxHeight*fh;
+       int mHfh = maxHeight*fh + 1;
        gm.maxHeight=mHfh;
        int w = maxwidth + bm.wimg_menu + 10;
        gm.maxWidth=w;
@@ -310,7 +323,6 @@ public class GMenu extends Canvas {
            x2=x1+w;
            y2=y1+mHfh;
        }
-
        int alpha_menu=ColorTheme.getARGB(true);
         if (alpha_menu!=-1){
           int[] pixelArray = new int[w * mHfh];  
@@ -327,13 +339,15 @@ public class GMenu extends Canvas {
           //g.fillRoundRect(1 , 1 , w - 1, mHfh - 1,10,10);
           g.fillRoundRect(gm.xcoodr+1 , gm.ycoodr+1, w - 1, mHfh - 1,10,10);//Tishka17
         }
-       
-         g.translate(gm.xcoodr,gm.ycoodr);
-         g.setClip(0,0,w+1,mHfh+40);//?
-        
-          g.setColor(0x000000);
-          g.drawRoundRect(0,0 , w, mHfh,10,10);
 
+         g.setColor(0x000000);
+         g.drawRoundRect(gm.xcoodr,gm.ycoodr , w, mHfh,10,10);
+         g.drawRoundRect(gm.xcoodr - 2, gm.ycoodr - 2, w + 4, mHfh + 4, 10,10);
+         g.setColor(0xffffff);
+         g.drawRoundRect(gm.xcoodr - 1, gm.ycoodr - 1, w + 2, mHfh + 2, 10,10);
+         
+         g.translate(gm.xcoodr, gm.ycoodr);
+         g.setClip(0,0,w+1,mHfh+40);//?
 
         if(midlet.BombusQD.cf.gradient_cursor){ //Tishka17
             int yc = 1 + (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh);
@@ -360,14 +374,66 @@ public class GMenu extends Canvas {
              cmd=null;
            }            
             if(midlet.BombusQD.cf.executeByNum){
-                g.drawString( (index<=9 ? Integer.toString(index)+"-" : "") + commandslist[index], x_start,fh*index + 1, g.LEFT|g.TOP);
-            }else{
-                g.drawString(commandslist[index], x_start, fh*index + 1, g.LEFT|g.TOP);                   
-            }
+                g.drawString( (index<=9 ? Integer.toString(index)+"-" : "") + drawCommands[index], x_start, fh*index + 1, g.LEFT|g.TOP);
+           } else {
+                g.drawString(drawCommands[index], x_start, fh*index + 1, g.LEFT|g.TOP);
+           }
         }
+
+        /*
+        if(hasPointerEvents) {
+             pointerX = x_start;
+             if(null == pointerY) {
+               System.out.println("SET pointerX = " + pointerX);
+               pointerY = new int[drawCommands.length];
+               System.out.println("SET pointerY = new int["+drawCommands.length+"]:");
+               for (int index=0; index<=size; index++) {
+                  pointerY[index] =  fh*index;
+                  System.out.println("SET=> " + index + " [" + pointerX + "," + pointerY[index] + "]\t" + drawCommands[index]);
+               }
+             }
+        }
+         */
    }
    
       
+   protected void pointerPressed(int x, int y) {
+       System.out.println("gmenu pointerPressed("+x+", "+y+")" );
+       /*
+       if (eventMenu==true) {
+         try{
+          if( y > pointerY[0] && y < (pointerY[0]+fh) )  {  pointerY = null;  gm.itemCursorIndexIn = 0;  }
+          //...
+         }catch (Exception e) { System.out.println(e.getMessage()); }
+         closeEvent();
+         cursorY=0;
+         return;
+       }
+       
+       try {
+         if( y > pointerY[0] && y < (pointerY[0]+fh) )  {  pointerY = null;  gm.itemCursorIndex = 0;  eventOk(); }
+         //...
+        } catch (Exception e) { System.out.println(e.getMessage()); }
+        */
+       
+       /*
+       if (x<x1 || y<y1 || x> x2 || y>y2) {
+           gm.itemGrMenu=-1;
+           gm.ml=null;
+           cursorY=0;
+           return;
+       }
+       if (eventMenu==true) {
+            gm.itemCursorIndexIn=(y-y1)/fh;
+            closeEvent();
+            return;
+       }
+       gm.itemCursorIndex=(y-y1)/fh;
+       eventOk();
+        */
+       return;
+   }   
+   
     
    private Timer timer;
    int cursorY=0;
@@ -428,23 +494,6 @@ public class GMenu extends Canvas {
   		}
 	}
      
-   
-   protected void pointerPressed(int x, int y) {
-       if (x<x1 || y<y1 || x> x2 || y>y2) {
-           gm.itemGrMenu=-1;
-           gm.ml=null;
-           cursorY=0;
-           return;
-       }
-       if (eventMenu==true) {
-            gm.itemCursorIndexIn=(y-y1)/fh;
-            closeEvent();
-            return;
-       }
-       gm.itemCursorIndex=(y-y1)/fh;
-       eventOk();
-       return;
-   }
 
    public void keyPressed(int keyCode) {
      if (eventMenu==true) {

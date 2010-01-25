@@ -110,6 +110,7 @@ public class JabberDataBlockDispatcher
 
     public void arriveDataBlock(JabberDataBlock dataBlock) {
         dispatcherActive = true;
+        if (null == dataBlock) return;
             try {
 //#ifdef CONSOLE
 //#                 if (Console.StanzasList.enabled)

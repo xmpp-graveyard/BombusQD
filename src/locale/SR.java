@@ -1413,7 +1413,7 @@ public class SR {
         "Contacts",
         "Chat",
         "Network",
-        "Graphics",
+        "Interface",
         "Application",
         "Application",
         "Hotkeys",

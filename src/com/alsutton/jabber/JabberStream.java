@@ -369,24 +369,29 @@ public class JabberStream extends XmppParser implements Runnable {
     }
     
     public String getPocketsStats() {
+        if(null == iostream) return "";
         return iostream.getPocketsStats();
     }    
 //#endif
 
     public String getStreamStats() {
+        if(null == iostream) return "";
         return iostream.getStreamStats();
     }
     public String getStreamStatsBar() {
+        if(null == iostream) return "";
         return iostream.getStreamStatsBar();
     }    
     
     
     
     public String getConnectionData() {
+        if(null == iostream) return "";
         return iostream.getConnectionData();
     }
 
     public long getBytes() {
+        if(null == iostream) return 0;
         return iostream.getBytes();
     }
     
