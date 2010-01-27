@@ -185,7 +185,6 @@ public class ConfigAvatar
          itemsList.addElement(saveChanges);
        }
         
-        addCommand(cmdPath); cmdPath.setImg(0x34);
         addCommand(cmdOkey);  cmdOkey.setImg(0x43);
         commandState();
         moveCursorTo(0);
@@ -246,7 +245,10 @@ public class ConfigAvatar
     super.commandState(); 
 //#endif
         removeCommand(cmdCancel);
-        addCommand(cmdPath);
+        if(midlet.BombusQD.cf.userAppLevel == 1) {
+            addCommand(cmdPath);
+            cmdPath.setImg(0x34);
+        }
         addCommand(cmdOkey);
 //#ifndef GRAPHICS_MENU        
      addCommand(cmdCancel);

@@ -102,6 +102,7 @@ public class AccountForm
     
     /** Creates a new instance of AccountForm */
 
+    private StringBuffer uid = new StringBuffer(0);
     public AccountForm(Display display, Displayable pView, AccountSelect accountSelect, Account account,int type_profile,
             boolean register,String serverReg) {
        super(display, pView, null);
@@ -155,7 +156,7 @@ public class AccountForm
            password=generate(1);
         }
         
-        StringBuffer uid = new StringBuffer(0);
+        uid.setLength(0);
         if(register == false){
           String res = account.getResource();
           String uname = account.getUserName();
@@ -178,10 +179,9 @@ public class AccountForm
              .append(server);
         }
         fulljid = new TextInput(display, SR.get(SR.MS_USER_PROFILE) + "(JID)", uid.toString() , null, TextField.ANY);
-        itemsList.addElement(fulljid);
-        
         nickbox = new TextInput(display, SR.get(SR.MS_NICKNAME), account.getNick(), null, TextField.ANY);
-        itemsList.addElement(nickbox);        
+        itemsList.addElement(nickbox);
+        itemsList.addElement(fulljid);
 
         
         passbox = new TextInput(display, SR.get(SR.MS_PASSWORD), password,null,TextField.ANY);     
@@ -228,7 +228,17 @@ public class AccountForm
         this.parentView=pView;
     }
     
-
+    protected void beginPaint() {
+       if(!register || 0 == serverReg.length()) return;
+       if(null != nickbox) {
+           String value = nickbox.getValue();
+           if(0 != value.length()) {
+              String replace = uid.toString();
+              if(replace.indexOf(value) == -1) fulljid.setValue(value.concat(replace));
+           }
+       }
+    }
+    
    public String generate(int type) {
     StringBuffer sb = new StringBuffer(0);      
     if(type==0){   

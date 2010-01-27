@@ -54,6 +54,8 @@ import ui.VirtualList;
 //# import ui.GMenu;
 //# import ui.GMenuConfig;
 //#endif
+import ui.controls.AlertBox;
+
 /**
  *
  * @author evgs
@@ -191,7 +193,12 @@ public class Browser
         }
         
         if (command==cmdDelete) {
-            fileDelete();
+            AlertBox alert = new AlertBox( "Alert", SR.get(SR.MS_DELETE) + '?' , display, this, false) {
+               public void yes() { fileDelete(); }
+               public void no() {}
+            };
+            alert = null;
+            return;
         }
 
         if (command==cmdView) {
@@ -266,7 +273,7 @@ public class Browser
     public void showFile() {
         FileItem fi=(FileItem)getFocusedObject();
         if (fi.getType()<4 && fi.getType()>0){
-         new ShowFile(display, path+fi.name, fi.getType(),fi.name);            
+         new ShowFile(display, path+fi.name, fi.getType(),fi.name, width, height);            
         }
     }
     

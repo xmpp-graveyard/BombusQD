@@ -164,7 +164,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                 addItem(SR.get(SR.MS_DELETE_ALL_AVATAR_VCARD),91, menuIcons.ICON_VCARD, true);
               }
             
-            addItem(SR.get(SR.MS_FEATURES),250,menuIcons.ICON_INFO);
+            if(midlet.BombusQD.cf.userAppLevel==1) addItem(SR.get(SR.MS_FEATURES),250,menuIcons.ICON_INFO);
 
 //#ifdef POPUPS
             addItem(SR.get(SR.MS_INFO),86, menuIcons.ICON_INFO);
@@ -181,7 +181,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
             if(!originGroupchat) addItem(SR.get(SR.MS_CLIENT_INFO),0, menuIcons.ICON_VERSION);
 
 //#ifdef SERVICE_DISCOVERY
-	    if(!originGroupchat && midlet.BombusQD.cf.userAppLevel==1) addItem(SR.get(SR.MS_COMMANDS),30, menuIcons.ICON_COMMAND);
+	    if(!originGroupchat) addItem(SR.get(SR.MS_COMMANDS),30, menuIcons.ICON_COMMAND);
 //#endif
 //#ifdef CLIPBOARD
 //#             if (midlet.BombusQD.cf.useClipBoard) {

@@ -64,7 +64,7 @@ public class Account extends IconTextElement{
     private String proxyHostAddr="";
     private int proxyPort;
 	
-    private int keepAlivePeriod=200;
+    private int keepAlivePeriod=120;
     private int keepAliveType=1;
     
     private boolean dnsResolver=false;

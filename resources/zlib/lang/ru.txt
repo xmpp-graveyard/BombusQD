@@ -58,7 +58,7 @@ Done	Выполнено
 Error: 	Ошибка: 
 Browse	Обзор
 Save list	Сохранить список
-Keep-Alive period	Период Keep-Alive
+Keep-Alive period	Таймаут пинга
 <New Group>	<Новая группа>
 Send	Отправить
 Priority	Приоритет
@@ -353,7 +353,7 @@ Root	Корень диска
 Decline	Отклонить
 Authorize new contacts	Автоматическая авторизация
 [auto-subscribe]	[автоподписка]
-Keep-Alive	Тип Keep-Alive
+Keep-Alive	Тип пинга
  has been unaffiliated and kicked from members-only room	 выгнали, так комната закрыта для гостей
 Rename	Переименовать
 Move	Переместить

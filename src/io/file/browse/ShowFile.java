@@ -42,7 +42,9 @@ import Client.Config;
 //import Mood.EventPublish;
 import ui.controls.AlertBox;
 import ui.VirtualList;
+import ui.controls.AlertBox;
 import ui.ImageList;
+
 /**
  *
  * @author User 
@@ -65,10 +67,13 @@ public class ShowFile implements CommandListener{
     private Config cf;
     private long length=0;
     boolean play=false;
-    Image img;
     
-    public ShowFile(Display display, String fileName, int type,String trackname) {
+    int width;
+    int height;
+    public ShowFile(Display display, final String fileName, int type,String trackname, int width, int height) {
         this.display=display;
+        this.width=width;
+        this.height=height;
         
         back = new Command(SR.get(SR.MS_BACK), Command.BACK, 2);
         stop = new Command(SR.get(SR.MS_STOP), Command.BACK, 3);
@@ -76,21 +81,18 @@ public class ShowFile implements CommandListener{
         parentView=display.getCurrent();
         cf=Config.getInstance();
   
-        if (type==1) {
-         /*VirtualList.setWobble(1, null, "file:///"+fileName);
-          try {
-            midlet.BombusMod.getInstance().platformRequest("file:///"+fileName);
-            EventPublish ev = new EventPublish();
-            Config.getInstance().track++;
-            ev.publishMusic(trackname,Config.getInstance().track);
-           } catch (ConnectionNotFoundException ex) {
-          } 
-        } else {
-          */
-          load(fileName);
+        load(fileName);
+        if (type==1) { //sounds
+          play(fileName, "", true);
         }
-        if (type==2) view(fileName);
-        if (type==3) read(fileName);
+        if (type==2) view(fileName); //images
+        if (type==3) {
+            AlertBox alert = new AlertBox( "Info", "Windows cp1251?" , display, parentView, false) {
+               public void yes() { cf.cp1251 = true; read(fileName);  }
+               public void no() { cf.cp1251 = false; read(fileName);  }
+            };
+            alert = null;
+        }
     }
 
     private ChoiceGroup resType;
@@ -105,40 +107,43 @@ public class ShowFile implements CommandListener{
             f.close();
         } catch (Exception e) {}
     }
-        
+         
+    
     private void view(String file) {
-        this.img = Image.createImage(b, 0, len);
-        Form form = new Form(file);
-        /*
-        if(loadRes){
-            form.addCommand(appliedRES);  
-            form.append("SELECT TYPE OF RESOURCE:\n");
-            resType=new ChoiceGroup("Type", ChoiceGroup.POPUP);
-            replyIndex = resType.append("skin.png", null);
-            //resType.append("menu.png", null);
-            //resType.append("actions.png", null);
-            resType.setSelectedIndex(replyIndex, true);
-
-            form.append(resType);            
-        } 
-         */       
-        form.append(new ImageItem(null, img, ImageItem.LAYOUT_CENTER | ImageItem.LAYOUT_NEWLINE_BEFORE, "[image]"));
+          ImageList il = new ImageList();
+          Image photoImg = null;
+              try {
+                photoImg = Image.createImage(b, 0, len);
+                if(photoImg.getWidth() > width) {
+                   int newW = photoImg.getWidth();
+                   int newH = photoImg.getHeight();
+                   while(newW > width) {
+                       newW-=(newW*10)/100;
+                       newH-=(newH*10)/100;
+                   }
+                   photoImg = il.resize(photoImg, newW, newH);
+                }
+              }  catch(OutOfMemoryError eom) {
+              }  catch (Exception e) {
+              }
+        if (null == photoImg) return;
+        Form form = new Form(file);      
+        form.append(new ImageItem(null, photoImg, ImageItem.LAYOUT_CENTER | ImageItem.LAYOUT_NEWLINE_BEFORE, "[image]"));
         form.addCommand(back);
         form.setCommandListener(this);
         display.setCurrent(form);
     }
     
     private void read(String file) {
-       TextBox tb = new TextBox(file+"("+len+" bytes)", null, len, TextField.ANY | TextField.UNEDITABLE);
-
-       tb.addCommand(back);
-       tb.setCommandListener(this);
-
-
+       Form form = new Form("");
+       TextField tf = new TextField(file+" ("+len+" bytes)", null, len, TextField.ANY);
+       form.append(tf);
+       form.addCommand(back);
+       form.setCommandListener(this);
         if (len > 0) {
            String s=new String();
             try {
-                int maxSize=tb.getMaxSize();
+                int maxSize=tf.getMaxSize();
 
                 if (maxSize>len){
                     s=new String(b, 0, len);
@@ -146,20 +151,16 @@ public class ShowFile implements CommandListener{
                     s=new String(b, 0, maxSize);
                 }
             } catch (Exception e) {}
-
-               if (cf.cp1251) {
-                    tb.setString(Strconv.convCp1251ToUnicode(s));
-               } else {
-                    tb.setString(s);
-               }
+           
+            if (cf.cp1251) tf.setString(Strconv.convCp1251ToUnicode(s));
+            else {
+               tf.setString(s);
+            }
         }
-
-       tb.setCommandListener(this);
-       display.setCurrent(tb);
+       display.setCurrent(form);
     }
     
     private void play(String file,String trackname,boolean play) {
-    /*    
         try {
             pl = Manager.createPlayer("file://" + file);
             pl.realize();
@@ -175,26 +176,10 @@ public class ShowFile implements CommandListener{
         a.addCommand(back);
         a.setCommandListener(this);
         display.setCurrent(a);
-     */
     }
     
     public void commandAction(Command c, Displayable d) {
         if (c==back) display.setCurrent(parentView);
-        /*
-        if (c==appliedRES){
-            String res = resType.getString(resType.getSelectedIndex());
-            if(res.indexOf("skin")>-1){
-               midlet.BombusMod.getInstance().imageArr[0]=img;  
-            }
-            if(res.indexOf("menu")>-1){
-               midlet.BombusMod.getInstance().imageArr[6]=img;                  
-            }
-            if(res.indexOf("actions")>-1){
-               midlet.BombusMod.getInstance().imageArr[1]=img;                  
-            }            
-            display.setCurrent(parentView);
-        }
-         */
         if (c==stop) {
             try {
                 pl.stop();

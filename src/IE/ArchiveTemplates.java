@@ -35,6 +35,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 import ui.Time;
 import util.Strconv;
+import ui.controls.AlertBox;
 
 /**
  *
@@ -85,6 +86,13 @@ public class ArchiveTemplates {
         }
     }
 
+    private void createAlert() {
+       AlertBox alert = new AlertBox( "Info", "Windows cp1251?" , midlet.BombusQD.getInstance().display, midlet.BombusQD.sd.roster, false) {
+               public void yes() { cf.cp1251 = true; }
+               public void no() { cf.cp1251 = false; }
+       };
+    }
+    
     public Vector importData(String arhPath) {
         Vector vector=new Vector();
         byte[] bodyMessage;
@@ -94,6 +102,7 @@ public class ArchiveTemplates {
         bodyMessage = f.fileRead();
 
         if (bodyMessage!=null) {
+            createAlert();
             if (cf.cp1251) {
                 archive=Strconv.convCp1251ToUnicode(new String(bodyMessage, 0, bodyMessage.length));
             } else {
@@ -176,6 +185,7 @@ public class ArchiveTemplates {
             .append("\r\n\r\n");
         }
 
+        createAlert();
         if (cf.cp1251) {
             bodyMessage=Strconv.convUnicodeToCp1251(body.toString()).getBytes();
         } else {
