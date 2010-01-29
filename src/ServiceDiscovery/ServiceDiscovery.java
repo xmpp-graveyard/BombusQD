@@ -79,8 +79,8 @@ public class ServiceDiscovery
     private final static String NS_MUC="http://jabber.org/protocol/muc";
     private final static String NODE_CMDS="http://jabber.org/protocol/commands";
 
-    private final static String strCmds="Execute";
-    private final int AD_HOC_INDEX=17;
+    //private final static String strCmds="Execute";
+    //private final int AD_HOC_INDEX=17;
     
     //private Command cmdAdd=new Command(SR.get(SR.MS_ADD_TO_ROSTER), Command.SCREEN, 11); //FS#464 => this string is commented in SR.get(SR.java'
     private Command cmdOk;
@@ -320,7 +320,8 @@ public class ServiceDiscovery
                     String category=identity.getAttribute("category");
                     String type=identity.getTypeAttribute();
                     if (category.equals("automation") && type.equals("command-node"))  {
-                        cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
+                        //cmds.addElement(new DiscoCommand(RosterIcons.ICON_AD_HOC, strCmds));
+                        requestCommand(NODE_CMDS, "discocmd");
                     }
                     if (category.equals("conference")) {
                         cmds.addElement(new DiscoCommand(RosterIcons.ICON_GCJOIN_INDEX, SR.get(SR.MS_JOIN_CONFERENCE)));

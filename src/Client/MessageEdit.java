@@ -167,7 +167,9 @@ public final class MessageEdit
 //#endif   
                 if(null != to){
                   if (to.origin>=4) t.addCommand(cmdInsNick);//Contact.ORIGIN_GROUPCHAT==4
+                  else t.removeCommand(cmdInsNick);
                   if (to.origin==4) t.addCommand(cmdSubj);
+                  else t.removeCommand(cmdSubj);
                   if (to.lastSendedMessage!=null) t.addCommand(cmdLastMessage);
                 } else {
                     if(t.equals(cmdInsNick)) t.removeCommand(cmdInsNick);
@@ -183,7 +185,9 @@ public final class MessageEdit
 //#endif  
                 if(null != to){
                   if (to.origin>=4) form.addCommand(cmdInsNick);
+                  else form.removeCommand(cmdInsNick);
                   if (to.origin==4) form.addCommand(cmdSubj);
+                  else form.removeCommand(cmdSubj);
                   if (to.lastSendedMessage!=null) form.addCommand(cmdLastMessage);
                 } else {
                     if(form.equals(cmdInsNick)) form.removeCommand(cmdInsNick);

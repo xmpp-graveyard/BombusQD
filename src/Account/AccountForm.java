@@ -216,9 +216,9 @@ public class AccountForm
 
         registerbox = new CheckBox(SR.get(SR.MS_REGISTER_ACCOUNT), register); 
         
-        if (newaccount && register) {
-            itemsList.addElement(registerbox);            
-        }
+        /*if (newaccount && register) {
+            itemsList.addElement(registerbox);
+        }*/
 
         if(!register){
           showExtended(); 
@@ -392,13 +392,15 @@ public class AccountForm
         midlet.BombusQD.debug.add("::saved",10);
         String value = fulljid.getValue().trim();
         String pass = passbox.getValue();
+        String nick = nickbox.getValue();
         
         int indexPr = value.indexOf('@') + 1;
         int indexRes = value.indexOf('/') + 1;
         int indexRes_ = value.indexOf('\"') + 1;
-        if(indexPr <= 1 || pass.length()==0) return;
+        if(indexPr < 1 || pass.length()==0) return;
+        if (indexPr==1 && (nick==null || nick.length()==0)) return;
         
-        String user = indexPr > 0 ? value.substring(0, indexPr - 1) : "test";
+        String user = indexPr > 1 ? value.substring(0, indexPr - 1) : nick;
         String server = "server";
         String resource = "BombusQD";
         
@@ -419,7 +421,7 @@ public class AccountForm
           account.setEmail(emailbox.getValue().trim());
         }
         account.setPassword(pass);
-        account.setNick(nickbox.getValue());
+        account.setNick(nick);
         account.setResource(resource);
        
         

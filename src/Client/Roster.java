@@ -167,7 +167,9 @@ public class Roster
 {
 
     private GMenuConfig gm=GMenuConfig.getInstance();
+    //#ifdef JUICK.COM
     private JuickModule juick = JuickModule.jm();
+    //#endif
     
     
     public Contact activeContact = null;
@@ -3116,7 +3118,11 @@ public class Roster
             autorespond = true;
             
         }else {
+	    //#ifdef JUICK.COM
             boolean incomingMsg = (message.messageType==Constants.MESSAGE_TYPE_IN || message.messageType==Constants.MESSAGE_TYPE_JUICK);
+	    //#else
+            boolean incomingMsg = (message.messageType==Constants.MESSAGE_TYPE_IN);
+	    //#endif
             boolean groupchat = (c.origin==Constants.ORIGIN_GROUPCHAT);
             if(!incomingMsg) return;
             

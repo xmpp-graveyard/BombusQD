@@ -90,7 +90,7 @@ public class SplashScreen extends GameCanvas implements CommandListener {
         try {
             if (img==null) {
                 img=Image.createImage("/images/splash.png");
-                this.img=img;
+                //this.img=img;
             }
         } catch (Exception e) {
            System.out.println("splash NOT created ");

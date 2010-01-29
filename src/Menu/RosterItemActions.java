@@ -446,7 +446,18 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                             new VCardView(display, midlet.BombusQD.sd.roster, c);
                         return;
                     }
-                    VCard.request(c.bareJid, c.getJid());
+                    if (c instanceof MucContact) {
+                        MucContact mucContact=(MucContact)c;
+                        String realjid=mucContact.realJid;
+                        mucContact=null;
+                        if (realjid==null)
+                            VCard.request(c.bareJid, c.getJid());
+                        else
+                            VCard.request(realjid.substring(0,realjid.indexOf("/",realjid.indexOf("@"))), c.getJid());
+                        realjid=null;
+                    } else {
+                        VCard.request(c.bareJid, c.getJid());
+                    }
                     break;
                 case 88:
                     c.clearVCard();

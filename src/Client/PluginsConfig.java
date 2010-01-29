@@ -394,7 +394,9 @@ public class PluginsConfig extends DefForm implements MenuListener
           executeByNum = new CheckBox(SR.get(SR.MS_EXECUTE_MENU_BY_NUMKEY), cf.executeByNum); 
           //sendMoodInMsg = new CheckBox(SR.get(SR.MS_MOOD_IN_MSG, cf.sendMoodInMsg);
           savePos = new CheckBox(SR.get(SR.MS_SAVE_CURSOR), cf.savePos);
-          boldNicks = new CheckBox(SR.get(SR.MS_BOLD_AND_COLORS_NICKS), cf.boldNicks); 
+//	  //#ifdef COLOR_TUNE
+           boldNicks = new CheckBox(SR.get(SR.MS_BOLD_AND_COLORS_NICKS), cf.boldNicks); 
+//	  //#endif
           selectOutMessages = new CheckBox(SR.get(SR.MS_SELECT_OUT_MESSAGES), cf.selectOutMessages);
           useClipBoard = new CheckBox(SR.get(SR.MS_CLIPBOARD), cf.useClipBoard); 
 
@@ -576,7 +578,10 @@ public class PluginsConfig extends DefForm implements MenuListener
           else {
            new ConfigModule(display, this, type);
           }          
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
         
     }
     
@@ -711,7 +716,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                    //itemsList.addElement(sendMoodInMsg);
                           
                    itemsList.addElement(new SpacerItem(10));
-                   itemsList.addElement(new SimpleString(SR.get(SR.MS_RECONNECT), true));//сеть
+                   itemsList.addElement(new SimpleString(SR.get(SR.MS_RECONNECT), true));//пїЅпїЅпїЅпїЅ
         
 	           reconnectCount=new NumberInput(display, SR.get(SR.MS_RECONNECT_COUNT_RETRY), Integer.toString(cf.reconnectCount), 0, 100);
                    itemsList.addElement(reconnectCount);
@@ -1019,7 +1024,9 @@ public class PluginsConfig extends DefForm implements MenuListener
                 midlet.BombusQD.commands.initCommands(); //other Commands
                 midlet.BombusQD.sd.roster.initCommands(); //roster Commands
                 midlet.BombusQD.sd.roster.showRoster();
-                ColorTheme.reInitNames();
+		//#ifdef COLOR_TUNE
+//#                 ColorTheme.reInitNames();
+		//#endif
                 midlet.BombusQD.cf.saveUTF();
                 return;
               }

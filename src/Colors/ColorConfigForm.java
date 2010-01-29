@@ -61,8 +61,9 @@ public class ColorConfigForm
 
 //#ifdef COLOR_TUNE
 //#     private LinkString configureColors;
-//#endif
-    private LinkString invertColors;
+//# 
+//#     private LinkString invertColors;
+    //#endif
 //#if FILE_IO
     private LinkString loadFromFile;
     private LinkString saveToFile;
@@ -152,8 +153,10 @@ public class ColorConfigForm
              alert = null;
           } 
         };
-        
-            itemsList.addElement(invertColors);
+
+            //#ifdef COLOR_TUNE
+//#             itemsList.addElement(invertColors);
+            //#endif
             itemsList.addElement(loadFromFile);            
             itemsList.addElement(saveToFile);
             itemsList.addElement(reset);

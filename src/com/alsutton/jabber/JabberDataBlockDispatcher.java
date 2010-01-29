@@ -152,7 +152,7 @@ public class JabberDataBlockDispatcher
                 }
                 dataBlock.destroy();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
     }
     

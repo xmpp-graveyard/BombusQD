@@ -659,11 +659,6 @@ public abstract class VirtualList
 //#endif           
         }else{
             
-//#ifdef POPUPS
-        if(popUpshow || midlet.BombusQD.cf.popUps){
-            drawPopUp(g);
-        }
-//#endif
         
           if (showBalloon) {
             if (midlet.BombusQD.cf.showBalloons) {
@@ -674,7 +669,12 @@ public abstract class VirtualList
                 if (text!=null)
                     drawBalloon(g, baloon, text);
             }
-          }            
+          }
+//#ifdef POPUPS
+          if(popUpshow || midlet.BombusQD.cf.popUps){
+            drawPopUp(g);
+          }
+//#endif
         }
 
         /*
@@ -734,8 +734,9 @@ public abstract class VirtualList
 //#endif
     
     
-//#ifdef POPUPS]
+//#ifdef POPUPS
     protected void drawPopUp(final Graphics g) {
+        setAbsOrg(g, 0, 0);
         popup.paintCustom(g);
     }
 //#endif   

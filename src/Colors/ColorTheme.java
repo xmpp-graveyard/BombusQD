@@ -58,7 +58,9 @@ public class ColorTheme {
 	    instance=new ColorTheme();
             init();
             loadFromStorage();
+	    //#ifdef COLOR_TUNE
             reInitNames();
+	    //#endif
 	}
 	return instance;
     }
@@ -196,8 +198,8 @@ public class ColorTheme {
 //#         int len = locale.length;
 //#         NAMES = new String[len];
 //#         for(byte i = 0; i < len; ++i) NAMES[i] = locale[i];
-//#endif
     }
+//#endif
     
     
     public static void init() {

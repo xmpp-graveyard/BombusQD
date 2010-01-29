@@ -318,6 +318,12 @@ public class PopUp {
             this.message=message;
         }
 
+        public void destroy() {
+            this.message.setSize(0);
+            this.message=null;
+            this.from=null;
+        }
+
         public int getType() { return type; }
         public Vector getMessage() { return message; }
         public String getContact() { return from; }
