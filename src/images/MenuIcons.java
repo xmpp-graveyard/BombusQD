@@ -60,7 +60,6 @@ public class MenuIcons extends ImageList{
     public static final byte ICON_CONCOLE    = 0x07;
 
     public static final byte ICON_FILEMAN    = 0x10;
-    public static final byte ICON_MOOD       = 0x11;
     public static final byte ICON_ARCHIVE    = 0x12;
     public static final byte ICON_PRIVACY    = 0x13;
     public static final byte ICON_RECONNECT  = 0x15;
@@ -85,6 +84,10 @@ public class MenuIcons extends ImageList{
     public static final byte ICON_DISCO      = 0x15;
     public static final byte ICON_IE         = 0x24;
     public static final byte ICON_INVERSE    = 0x25;
+    
+    public static final byte ICON_USER_SEARCH    = 0x42;   
+    public static final byte ICON_MOOD       = 0x11;
+    public static final byte ICON_USER_ACTIVITY    = 0x67;    
     /*
     public static final short ICON_JABBER_ACCOUNT = 0x90;
     public static final short ICON_YANDEX_ACCOUNT = 0x91;

@@ -69,13 +69,17 @@ abstract public class IconTextElement implements VirtualElement {
     public void drawItem(VirtualList view, Graphics g, int ofs, boolean sel){
        g.setFont(getFont());
        String str = toString();
-       int offset=4;
+       int offset = getOffset();
        if (null != il) {
            il.drawImage(g, getImageIndex(), offset , imageYOfs);
            if (getImageIndex()!=-1) offset+=ilImageSize;
        }
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
        if (null != str) g.drawString(str, offset-ofs, fontYOfs, Graphics.TOP|Graphics.LEFT);
+    }
+    
+    public int getOffset() {
+        return 4;
     }
 
     public int getVWidth(){ 

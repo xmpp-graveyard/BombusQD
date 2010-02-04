@@ -609,7 +609,7 @@ Transparency bgnd(argb)	Прозрачность фона(ARGB)
 Graphics menu bgnd(argb)	Графическое меню: фон(ARGB)
 Graphics menu font	Графическое меню: шрифт
 Service>	Сервис>
-My Jabber>	Мой Jabber>
+My Jabber	Мой Jabber
 (HIGH TRAFFIC!)	(!трафик)
 Draw Rect Avatar	рамка аватара
 AutoSave In FS	автосохранение аватара

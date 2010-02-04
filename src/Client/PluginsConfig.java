@@ -29,6 +29,7 @@ package Client;
 import Colors.ColorSelector;
 import Colors.ColorTheme;
 import javax.microedition.midlet.MIDlet;
+import ui.VirtualList;
 import ui.controls.form.PluginBox;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
@@ -138,7 +139,9 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#endif
     
     private CheckBox fullscr;
-    private CheckBox memMon;
+//#ifdef MEMORY_MONITOR
+//#     private CheckBox memMon;
+//#endif
     private CheckBox enableVersionOs;
     private CheckBox queryExit;
     private CheckBox popupFromMinimized;
@@ -279,7 +282,9 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#           adhoc = null;
 //#endif
           fullscr = null;
-          memMon = null;
+//#ifdef MEMORY_MONITOR
+//#           memMon = null;
+//#endif
           enableVersionOs = null;
           queryExit = null;
           popupFromMinimized = null;
@@ -413,7 +418,9 @@ public class PluginsConfig extends DefForm implements MenuListener
 //#           adhoc = new CheckBox(SR.get(SR.MS_ADHOC), cf.adhoc); 
 //#endif
           fullscr = new CheckBox(SR.get(SR.MS_FULLSCREEN), cf.fullscreen); 
-          memMon = new CheckBox(SR.get(SR.MS_HEAP_MONITOR), cf.memMonitor);
+//#ifdef MEMORY_MONITOR
+//#           memMon = new CheckBox(SR.get(SR.MS_HEAP_MONITOR), cf.memMonitor);
+//#endif
           enableVersionOs = new CheckBox(SR.get(SR.MS_SHOW_HARDWARE), cf.enableVersionOs);
           queryExit = new CheckBox(SR.get(SR.MS_CONFIRM_EXIT), cf.queryExit); 
           popupFromMinimized = new CheckBox(SR.get(SR.MS_ENABLE_POPUP), cf.popupFromMinimized);
@@ -778,7 +785,9 @@ public class PluginsConfig extends DefForm implements MenuListener
            if(midlet.BombusQD.cf.userAppLevel == 1) {
              itemsList.addElement(useLowMemory_userotator);
              itemsList.addElement(gradient_cursor);
-             itemsList.addElement(memMon);
+//#ifdef MEMORY_MONITOR
+//#              itemsList.addElement(memMon);
+//#endif
              itemsList.addElement(drawScrollBgnd);  
              itemsList.addElement(drawMenuCommand);
              itemsList.addElement(popUps);
@@ -964,7 +973,9 @@ public class PluginsConfig extends DefForm implements MenuListener
            if(null != scrollWidth) cf.scrollWidth=Integer.parseInt(scrollWidth.getValue());
            if(null != useLowMemory_userotator) cf.useLowMemory_userotator=useLowMemory_userotator.getValue();
            if(null != gradient_cursor) cf.gradient_cursor=gradient_cursor.getValue();
-           if(null != memMon) ui.VirtualList.memMonitor=cf.memMonitor=memMon.getValue();
+//#ifdef MEMORY_MONITOR
+//#            if(null != memMon) ui.VirtualList.memMonitor=cf.memMonitor=memMon.getValue();
+//#endif
            if(null != drawScrollBgnd) cf.drawScrollBgnd=drawScrollBgnd.getValue();      
            
            ui.VirtualList.changeOrient(cf.panelsState);   
@@ -974,21 +985,7 @@ public class PluginsConfig extends DefForm implements MenuListener
            if(null != showBaloons) cf.showBalloons=showBaloons.getValue();
            
 //#ifdef BACK_IMAGE
-//#            try {
-//#             if (/*img==null && */ cf.bgnd_image==1 /*|| cf.bgnd_image==2*/ ){
-//#                 Image img=Image.createImage("/images/back.png");
-//#                     gm.imgWidth = img.getWidth();
-//#                     gm.imgHeight = img.getHeight();  
-//#                     gm.img=img;
-//#             }else if (cf.bgnd_image==3) {
-//#                 Image bgnd=Image.createImage("/images/bgnd.png");
-//#                 //ImageList il = new ImageList();
-//#                 gm.bgnd=bgnd;
-//#             }else if(cf.bgnd_image==0){
-//#                 gm.img=null;
-//#                 gm.bgnd=null;
-//#             }
-//#            } catch (Exception e) { }
+//#            VirtualList.createImage(false);
 //#endif   
            /*
            if(oldValue != cf.graphicsMenu && oldValue == false) {

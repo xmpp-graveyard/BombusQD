@@ -70,7 +70,7 @@ public abstract class VirtualList
     protected int getMainBarBGndBottom() { return ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);}
     
     private static StaticData sd=StaticData.getInstance();
-    public GMenuConfig gm = GMenuConfig.getInstance();
+    public static GMenuConfig gm = GMenuConfig.getInstance();
 
     private int stringHeight;
     
@@ -185,7 +185,9 @@ public abstract class VirtualList
     public static short greenKeyCode=SIEMENS_GREEN;
     
     public static boolean fullscreen=true;
-    public static boolean memMonitor;
+//#ifdef MEMORY_MONITOR
+//#     public static boolean memMonitor;
+//#endif
     public static boolean showBalloons;
     public static boolean showTimeTraffic = true;
     
@@ -318,7 +320,34 @@ public abstract class VirtualList
     int imgWidth;
     int imgHeight;  
     
-
+//#ifdef BACK_IMAGE
+//#     public static Image getImage(int type) {
+//#         System.out.println("getImage: " + type);
+//#         if(type == 1) return bgndJimmImage;
+//#         if(type == 3) return bgndImage;
+//#         return null;
+//#     }
+//#     
+//#     private static Image bgndJimmImage = null; 
+//#     private static Image bgndImage = null;
+//#     
+//#     public static void createImage(boolean create) {
+//#            Config cf = midlet.BombusQD.cf;
+//#            //System.out.println(create + " [" + bgndImage + "/" + bgndJimmImage + "]");
+//#            if(create) {
+//#                if(bgndImage != null || bgndJimmImage != null) return;
+//#            }
+//#            try {
+//#                switch(cf.bgnd_image) {
+//#                    case 0: bgndJimmImage = bgndImage = null; break;
+//#                    case 1: bgndJimmImage = Image.createImage("/images/back.png"); break;
+//#                    case 2: bgndJimmImage = bgndImage = null; break;
+//#                    case 3: bgndImage = Image.createImage("/images/bgnd.png"); break;
+//#                }
+//#            } catch (Exception e) { }
+//#     }
+//#endif
+    
     public void redrawAni(int x,int y,int width,int height){
         Displayable d=display.getCurrent();
         if (d instanceof Canvas) {
@@ -342,18 +371,7 @@ public abstract class VirtualList
 
         
 //#ifdef BACK_IMAGE
-//#         try {
-//#             if (/*img==null && */ midlet.BombusQD.cf.bgnd_image==1 /*|| midlet.BombusQD.cf.bgnd_image==2*/ ){//img!=null
-//#                 Image img=Image.createImage("/images/back.png");
-//#                     gm.imgWidth = img.getWidth();
-//#                     gm.imgHeight = img.getHeight();  
-//#                     gm.img=img;
-//#             }else if (midlet.BombusQD.cf.bgnd_image==3) {
-//#                 Image bgnd=Image.createImage("/images/bgnd.png");
-//#                 ImageList il = new ImageList();
-//#                 gm.bgnd=bgnd;
-//#             }
-//#         } catch (Exception e) { }
+//#         createImage(true);
 //#endif         
         
         
@@ -484,23 +502,21 @@ public abstract class VirtualList
         
 //#ifdef BACK_IMAGE
 //#         if(midlet.BombusQD.cf.bgnd_image==1){
-//#          if (gm.img!=null) {
-//#                         int imgW = gm.imgWidth;
-//#                         int imgH = gm.imgHeight;
+//#           if (null != bgndJimmImage) {
+//#                         int imgW = bgndJimmImage.getWidth();
+//#                         int imgH = bgndJimmImage.getHeight();
 //# 			for (int xx = 0; xx < width; xx += imgW){
-//# 			   for (int yy = 0; yy < height; yy += imgH) g.drawImage(gm.img, xx, yy, Graphics.LEFT|Graphics.TOP);   
+//# 			   for (int yy = 0; yy < height; yy += imgH) g.drawImage(bgndJimmImage, xx, yy, Graphics.LEFT|Graphics.TOP);   
 //#                         }
 //#           }
 //#         }
-//#         else if(midlet.BombusQD.cf.bgnd_image==2){
+//#         else if(midlet.BombusQD.cf.bgnd_image==2) {
 //#           fon=new Gradient(0, 0, width, height, ColorTheme.getColor(ColorTheme.GRADIENT_BGND_LEFT),
 //#                   ColorTheme.getColor(ColorTheme.GRADIENT_BGND_RIGHT), true);
 //#           fon.paint(g);
 //#         }
-//#         else if(midlet.BombusQD.cf.bgnd_image==3){
-//#           if(gm.bgnd!=null){
-//#             g.drawImage(gm.bgnd, 0, 0, Graphics.LEFT|Graphics.TOP);
-//#           }
+//#         else if(midlet.BombusQD.cf.bgnd_image==3) {
+//#           if(null != bgndImage) g.drawImage(bgndImage, 0, 0, Graphics.LEFT|Graphics.TOP);
 //#         }
 //#endif
         
@@ -582,7 +598,7 @@ public abstract class VirtualList
                     baloon=drawYpos;
                 } else {
 //#ifdef BACK_IMAGE
-//#                     if (gm.img==null && gm.bgnd==null && midlet.BombusQD.cf.bgnd_image!=2) g.fillRect(0, drawYpos, itemMaxWidth, lh);
+//#                     if (bgndJimmImage==null && bgndImage==null && midlet.BombusQD.cf.bgnd_image!=2) g.fillRect(0, drawYpos, itemMaxWidth, lh);
 //#endif
                 }
                 g.translate(0, drawYpos);
@@ -602,7 +618,7 @@ public abstract class VirtualList
 
         if ( clrH>0
 //#ifdef BACK_IMAGE
-//#                 && (gm.img==null && gm.bgnd==null && midlet.BombusQD.cf.bgnd_image!=2)
+//#                 && (bgndJimmImage==null && bgndImage==null && midlet.BombusQD.cf.bgnd_image!=2)
 //#endif
                 ) {
             setAbsOrg(g, 0,displayedBottom);
@@ -612,7 +628,10 @@ public abstract class VirtualList
         }
 
         if (scroll) {
-            int correct=(memMonitor)?1:0;
+            int correct = 0;
+//#ifdef MEMORY_MONITOR
+//#             correct = (memMonitor)?1:0;
+//#endif            
             setAbsOrg(g, 0, itemBorder[0]+correct);
             g.setClip(0, 0, width, winHeight);
 
@@ -625,8 +644,10 @@ public abstract class VirtualList
 
         setAbsClip(g, width, height);
         
-        if (memMonitor) drawHeapMonitor(g, itemBorder[0]); //heap monitor
-
+//#ifdef MEMORY_MONITOR
+//#         if (memMonitor) drawHeapMonitor(g, itemBorder[0]); //heap monitor
+//#endif
+        
         if (paintBottom) {
             if (reverse) {
                 if (mainbar!=null) {
@@ -987,7 +1008,7 @@ public abstract class VirtualList
     }
     
     private void drawMainPanel (final Graphics g, int y) {    
-        int h=mainbar.getVHeight()+1;
+        int h=mainbar.getVHeight();
         //g.setClip(0,y, width, h);
 //#ifdef GRADIENT
 //#          if (getMainBarBGnd()!=getMainBarBGndBottom()) {
@@ -1535,7 +1556,7 @@ public abstract class VirtualList
     private boolean popUpshow=false;
     private static StringBuffer mem = new StringBuffer(0);
     
-    
+    int memCleanCount = 0;
     private void key(int keyCode) {
 //#ifdef GRAPHICS_MENU    
 //#      if(gm.itemGrMenu>0 && midlet.BombusQD.cf.graphicsMenu ){ //�������� ����
@@ -1659,7 +1680,7 @@ public abstract class VirtualList
 //#             break; 
 //#         case KEY_STAR:
 //#             popUpshow=true;
-//#             midlet.BombusQD.sd.roster.systemGC();
+//#             memCleanCount++;
 //#ifdef POPUPS
 //#             mem.setLength(0);
 //#             mem.append("Time: ")
@@ -1667,8 +1688,14 @@ public abstract class VirtualList
 //#                 .append("\nTraffic: ")
 //#                 .append(getTraffic());
 //#             if(midlet.BombusQD.cf.userAppLevel == 1) {    
-//#               mem.append("\n")
-//#                .append(SR.get(SR.MS_MEMORY))
+//#               mem.append("\n");
+//#               if( 0 == memCleanCount%3 ) {
+//#                 midlet.BombusQD.sd.roster.systemGC();
+//#                 mem.append("Memory clean..");
+//#                 mem.append("\n");
+//#                 memCleanCount = 0;
+//#               }
+//#               mem.append(SR.get(SR.MS_MEMORY))
 //#                .append("\n");
 //#                   long free = Runtime.getRuntime().freeMemory()>>10;
 //#                   long total = Runtime.getRuntime().totalMemory()>>10; 

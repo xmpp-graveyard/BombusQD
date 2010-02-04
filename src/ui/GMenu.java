@@ -205,7 +205,7 @@ public class GMenu extends Canvas {
           if(eventMenu){
            if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_NEW_ACCOUNT))>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_REGISTERING))>-1
-              || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_MY_JABBER))>-1
+              //|| gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_MY_JABBER))>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SERVICE))>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SORT_TYPE))>-1
               || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_HISTORY_OPTIONS))>-1
@@ -238,7 +238,7 @@ public class GMenu extends Canvas {
     try {
       cursorY=0;       
       if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_NEW_ACCOUNT))>-1 ||
-        gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_MY_JABBER))>-1 ||
+        //gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_MY_JABBER))>-1 ||
         gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SORT_TYPE))>-1){
           GMenuIn(gm.cmdfirstList); eventMenu=true; return;
       } 
@@ -297,7 +297,7 @@ public class GMenu extends Canvas {
             pixelArray[i] = bgnd_menu;
           }
           g.drawRGB(pixelArray, 0, width, 0 , 0 , width, height, true);
-          g.drawRect(-1,-1,width+1,height+1);
+          g.drawRoundRect(-1,-1,width+1,height+1,10,10);
           pixelArray = null;
           pixelArray = new int[0];
         }

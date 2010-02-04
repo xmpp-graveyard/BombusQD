@@ -1383,7 +1383,7 @@ public class SR {
         "Graphics menu bgnd(argb)",
         "Graphics menu font",
         "Service>",
-        "My Jabber>",
+        "My Jabber",
         "(HIGH TRAFFIC!)",
         "Draw Rect Avatar",
         "AutoSave In FS",

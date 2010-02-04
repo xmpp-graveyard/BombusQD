@@ -94,6 +94,7 @@ public class InfoWindow
             midlet.BombusQD.cf.userAppLevel = 0;
             authMsg = "Advanced Mode now OFF!";
           }
+          midlet.BombusQD.cf.saveInt();
           AlertBox alert = new AlertBox( "Info", authMsg , display, parentView, false) {
              public void yes() {}
              public void no() {}
@@ -123,6 +124,40 @@ public class InfoWindow
 
         ((MultiLine)name).selectable=true;
         itemsList.addElement(name);
+        
+        /*
+        itemsList.addElement(new LinkString("Create NullPointer") { 
+           public void doAction() {
+               //try{
+                 String text = null;
+                 int pos = text.indexOf("text");
+               //} catch (Exception e) { e.printStackTrace(); }
+           }}
+        );   
+        itemsList.addElement(new LinkString("Create ArrayIndexOutOfBounds") { 
+           public void doAction() {
+               //try{
+                 int[] arr = new int[2];
+                 for(int i = 0; i <= 3; ++i) arr[i] = i;
+               //} catch (Exception e) { e.printStackTrace(); }
+           }}
+        ); 
+        itemsList.addElement(new LinkString("Create OutOfMemory") { 
+           public void doAction() {
+               //try{
+               Vector array = new Vector();
+               for (int i = 0; i < 30; ++i) {
+                  for (int k = 0; k < 20; ++k) {
+                      for (int m = 0; m < 10; ++m) {
+                          Object add = array.toString();
+                          array.addElement(add);
+                      }
+                  }
+               }
+               //} catch (Exception e) { e.printStackTrace(); }
+           }}
+        ); 
+         */
         
         name=new MultiLine("Easter Egg:", "Press 5-1-2 keys to lock/unlock new options", super.superWidth);
         ((MultiLine)name).selectable=false;

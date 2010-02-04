@@ -135,7 +135,7 @@ public class JabberDataBlock
   public void addChild( Object newData ) {
       if( childBlocks == null ) {
           childBlocks=null;
-	      childBlocks = new Vector(0);
+          childBlocks = new Vector(0);
       }
       if (childBlocks.size()<MAX_CHILDS) childBlocks.addElement( newData );
   }
@@ -278,9 +278,8 @@ public class JabberDataBlock
    * @param Vector holding all the children
    */
 
-  public Vector getChildBlocks()
-  {
-    return (Vector) childBlocks;
+  public Vector getChildBlocks(){
+    return childBlocks;
   }
 
   /**

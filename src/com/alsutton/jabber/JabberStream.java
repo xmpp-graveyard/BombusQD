@@ -184,7 +184,7 @@ public class JabberStream extends XmppParser implements Runnable {
     
     public void run() {
         XMLParser parser = new XMLParser( this );
-        byte cbuf[]=new byte[512];
+        byte cbuf[]=new byte[1024];
         
         try {
             int length=-1;

@@ -50,6 +50,7 @@ public class XMLParser {
     private XMLEventListener eventListener;
     
     private StringBuffer sbuf=new StringBuffer(0);
+    private StringBuffer temp = new StringBuffer(0);
     private StringBuffer tagName=new StringBuffer(0);
     private StringBuffer xmlChar=new StringBuffer(0);
     
@@ -70,10 +71,11 @@ public class XMLParser {
         
     }
  
-    public void parse(byte indata[], int size) throws XMLException,IOException {
-        int dptr=0;
-        char c;
-        while (size>0) {
+    public void parse(byte indata[], int size) {
+      int dptr=0;
+      char c;
+      try {
+          while (size>0) {
             size--;
             c=(char)(indata[dptr++] &0xff);
             switch (state) {
@@ -85,6 +87,7 @@ public class XMLParser {
                         if (sbuf.length()>0) eventListener.plainTextEncountered( parsePlainText(sbuf) ); 
                         
                         sbuf.setLength(0);
+                        temp.setLength(0);
                         tagName.setLength(0);
                         
                         attr=null;
@@ -181,6 +184,7 @@ public class XMLParser {
                     attr.addElement(atrName);
                     attr.addElement(parsePlainText(sbuf)); 
                     sbuf.setLength(0); 
+                    temp.setLength(0);
                     continue; 
                 }
                 sbuf.append(c);
@@ -193,6 +197,7 @@ public class XMLParser {
                     attr.addElement(atrName);
                     attr.addElement(parsePlainText(sbuf)); 
                     sbuf.setLength(0); 
+                    temp.setLength(0);
                     continue; 
                 }
                 sbuf.append(c);
@@ -244,9 +249,11 @@ public class XMLParser {
                 
                 continue;
             }
+         }
         }
-    }
-        
+      } catch (Exception xml) {
+          midlet.BombusQD.debug.add("XMLParser.XMLException ", 10);
+      }
     };
     
     private String parsePlainText(StringBuffer sb) throws XMLException { //StringBuffer..
@@ -255,6 +262,26 @@ public class XMLParser {
         int ipos=0;
         int opos=0;
         int lenn = sb.length();
+        char k;
+        
+        temp.setLength(0);
+        try{
+          int i = 0;
+          while(i<lenn){
+            k = sb.charAt(i);
+            if(k==' ') {
+              int pos = i + 1;
+              if(sb.charAt(pos)!=' ') temp.append(' ');
+            } else {
+              temp.append(k);
+            }
+            i++;
+          }
+        } catch (Exception e) {}
+        
+        sb = temp;
+        lenn = sb.length();
+        //System.out.println("BUF("+lenn+"):" + sb);
         char c;
         xmlChar.setLength(6);
         while (ipos<lenn) {
@@ -322,6 +349,7 @@ public class XMLParser {
                 eventListener.plainTextEncountered( parsePlainText(sbuf) );
             
             sbuf.setLength(0);
+            temp.setLength(0);
         }
     }
 

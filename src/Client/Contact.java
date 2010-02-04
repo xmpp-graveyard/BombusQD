@@ -544,14 +544,14 @@ public class Contact extends IconTextElement{
             itemVHeight += fontHeight<<1;
             if(img_vcard!=null){
               if(img_vcard.getHeight()>=itemVHeight){
-                itemVHeight = avatar_height + 4;
+                itemVHeight = avatar_height + 5;
               }
             }
         } else {
           itemVHeight = (maxImgHeight>=fontHeight)?maxImgHeight:fontHeight;
           if(img_vcard!=null){
              if(img_vcard.getHeight()>=itemVHeight){
-               itemVHeight = avatar_height + 4;
+               itemVHeight = avatar_height + 5;
              }
           }             
         }

@@ -32,6 +32,7 @@ import Colors.ColorTheme;
 import Fonts.*;
 import ui.ImageList;
 import ui.GMenuConfig;
+import ui.VirtualList;
 
 public class ClassicChat extends CustomItem implements ItemCommandListener
 {
@@ -122,16 +123,21 @@ public class ClassicChat extends CustomItem implements ItemCommandListener
 
        g.setColor(0,0,0);
        g.drawRect(0, 0, w-1, h-1);
-    
-        if(Config.getInstance().bgnd_image==1 && gm.img!=null){
-			for (int xx = 0; xx < width; xx += gm.imgWidth){
-				for (int yy = 0; yy < height; yy += gm.imgHeight){
-					g.drawImage(gm.img, xx, yy, Graphics.LEFT|Graphics.TOP);
-                                }
-                        }
+        Image imgJimm = null;
+        Image imgBgnd = null;
+//#ifdef BACK_IMAGE
+//#         imgJimm = VirtualList.getImage(1);
+//#         imgBgnd = VirtualList.getImage(3);
+//#endif
+        if(midlet.BombusQD.cf.bgnd_image==1 && imgJimm!=null) {
+                int imgWidth = imgJimm.getWidth();
+                int imgHeight = imgJimm.getHeight();
+		for (int xx = 0; xx < width; xx += imgWidth){
+		     for (int yy = 0; yy < height; yy += imgHeight) g.drawImage(imgJimm, xx, yy, Graphics.LEFT|Graphics.TOP);
+                }
         }
-        else if(Config.getInstance().bgnd_image==2){ 
-                if(!Config.getInstance().use_phone_theme){
+        else if(midlet.BombusQD.cf.bgnd_image==2){ 
+                if(!Config.getInstance().use_phone_theme) {
                   fon=new Gradient(1, 1, w - 1, h - 1,
                         ColorTheme.getColor(ColorTheme.GRADIENT_BGND_LEFT),ColorTheme.getColor(ColorTheme.GRADIENT_BGND_RIGHT), true);
                   fon.paint(g);
@@ -139,12 +145,14 @@ public class ClassicChat extends CustomItem implements ItemCommandListener
                   g.setClip(0,0,w,h);  
                 }
         }
-        else if(Config.getInstance().bgnd_image==3 && gm.bgnd!=null){ 
+        else if(midlet.BombusQD.cf.bgnd_image==3 && imgBgnd!=null) { 
                 ImageList il = new ImageList();
-                if(width<=gm.bgnd.getWidth()&&height<gm.bgnd.getHeight()) {
-                   gm.bgnd = il.resize(gm.bgnd,width,height);
+                int imgWidth = imgBgnd.getWidth();
+                int imgHeight = imgBgnd.getHeight();
+                if(width <= imgWidth && height<imgHeight) {
+                   imgBgnd = il.resize(imgBgnd, width, height);
                 }  
-                g.drawImage(gm.bgnd, 0, 0, Graphics.LEFT|Graphics.TOP);
+                g.drawImage(imgBgnd, 0, 0, Graphics.LEFT|Graphics.TOP);
         } else{
             g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
             g.fillRect(0, 0, width, height);        

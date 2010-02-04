@@ -19,7 +19,7 @@ import javax.microedition.lcdui.Display;
  *
  * @author root
  */
-public class Captcha implements JabberBlockListener, XDataForm.NotifyListener{
+public class Captcha implements JabberBlockListener{
 
     private Display display;
     
@@ -43,7 +43,7 @@ public class Captcha implements JabberBlockListener, XDataForm.NotifyListener{
             from=data.getAttribute("from");
             id=data.getAttribute("id");
 
-            new XDataForm(display, xdata, this).fetchMediaElements(data.getChildBlocks());
+            new XDataForm(display, data, id, from);
 
             return BLOCK_PROCESSED;
         }
@@ -58,12 +58,4 @@ public class Captcha implements JabberBlockListener, XDataForm.NotifyListener{
         
         return BLOCK_REJECTED;
     }
-
-    public void XDataFormSubmit(JabberDataBlock form) {
-        JabberDataBlock reply=new Iq(from, Iq.TYPE_SET, id);
-        reply.addChildNs("captcha", "urn:xmpp:captcha").addChild(form);
-        
-        StaticData.getInstance().roster.theStream.send(reply);
-    }
-    
 }

@@ -31,6 +31,7 @@
 //#     private final static String BOTNAME = "juick@juick.com/Juick";
 //#     private final static String NS_MESSAGES = "http://juick.com/query#messages";
 //#     private final static String NS_MESSAGE = "http://juick.com/message";
+//#     private final static String TAG_RECOMMENDATION = "Recommended by ";
 //# 
 //#     private static StringBuffer buf = new StringBuffer(0);
 //#     private static StringBuffer message_id = new StringBuffer(0);    
@@ -118,6 +119,15 @@
 //#       //speed 10 messages - 14 msec
 //#     }
 //#     
+//#     
+//#     private String parseRecomendation(String body) {
+//#        if(body.startsWith(TAG_RECOMMENDATION)) {
+//#            int len = TAG_RECOMMENDATION.length();
+//#            int pos = body.indexOf(":");
+//#            return body.substring(len,pos);
+//#        }
+//#        return ""; 
+//#     }
 //#     
 //#     public Msg getMsg(Msg m,JabberDataBlock data) {
 //#         if( data instanceof Iq ) {
@@ -254,6 +264,18 @@
 //#                        boolean photo = (juickNs.getAttribute("photo")==null)?false:true;                    
 //#                         JabberDataBlock child = null; 
 //#                         
+//#                          String body = message.getBody().trim();
+//#                          if(body.length() > 0) {
+//#                             String recomendation = parseRecomendation(body);
+//#                             if(recomendation.length() > 0) {
+//#                                 sb.append(recomendation)
+//#                                   .append(' ')
+//#                                   .append("recommends you:")
+//#                                   .append('\n');
+//#                                 recomendation = null;
+//#                             }
+//#                          }
+//#                         
 //#                          sb.append("<nick>@")
 //#                            .append(juickNs.getAttribute("uname"))
 //#                            .append(":</nick>");
@@ -312,7 +334,7 @@
 //#                         childBlocks.setSize(0);
 //#                         childBlocks=null;
 //#                         sb=null;
-//#                         bodyAnsw=null;
+//#                         body=bodyAnsw=null;
 //#                         mid=null;
 //#                         rid=null;
 //#                  return m;

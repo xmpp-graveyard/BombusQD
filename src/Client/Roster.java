@@ -337,6 +337,7 @@ public class Roster
 //#             cmdOptions=new Command(SR.get(SR.MS_OPTIONS), Command.SCREEN, 16);
 //#       
 //#           cmdMyJabber=new Command(SR.get(SR.MS_MY_JABBER), Command.SCREEN, 22); //1
+//#           /*
 //#             cmdVcard=new Command(SR.get(SR.MS_VCARD), Command.SCREEN, 23);
 //#             cmdConference=new Command(SR.get(SR.MS_CONFERENCE), Command.SCREEN, 24);
 //#             cmdAdd=new Command(SR.get(SR.MS_ADD_CONTACT), Command.SCREEN, 25);
@@ -351,9 +352,10 @@ public class Roster
 //#             cmdTransfers=new Command(SR.get(SR.MS_FILE_TRANSFERS), Command.SCREEN, 28);
 //#endif
 //#ifdef PEP        
-//#         cmdMood=new Command(SR.get(SR.MS_USERMOOD), Command.SCREEN, 29);
+//#             cmdMood=new Command(SR.get(SR.MS_USERMOOD), Command.SCREEN, 29);
 //#             cmdActivity=new Command(SR.get(SR.MS_ACTIVITY), Command.SCREEN, 30);
-//#endif                  
+//#endif    
+//#            */              
 //#       
 //#           cmdMyService=new Command(SR.get(SR.MS_SERVICE), Command.SCREEN, 31);   //3       
 //#             cmdAlert=new Command(SR.get(SR.MS_ALERT_PROFILE_CMD), Command.SCREEN, 32);
@@ -390,6 +392,7 @@ public class Roster
 //#     private static Command cmdOptions;
 //#       
 //#     private static Command cmdMyJabber;
+//#      /*
 //#       private static Command cmdVcard;
 //#       private static Command cmdConference;
 //#       private static Command cmdAdd;
@@ -404,9 +407,10 @@ public class Roster
 //#       private static Command cmdTransfers;
 //#endif
 //#ifdef PEP        
-//#   private static Command cmdMood;
+//#       private static Command cmdMood;
 //#       private static Command cmdActivity;
-//#endif                  
+//#endif   
+//#       */               
 //#       
 //#     private static Command cmdMyService;
 //#       private static Command cmdAlert;
@@ -457,13 +461,14 @@ public class Roster
 //#         addCommand(cmdActiveContacts); cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
 //#         if (isLoggedIn()){
 //#          addCommand(cmdMyJabber); cmdMyJabber.setImg(0x90);
+//#ifdef SERVICE_DISCOVERY
+//#          //addCommand(cmdSrvDisco); cmdSrvDisco.setImg(MenuIcons.ICON_DISCO);
+//#endif
+//#          /*
 //#               addInCommand(1,cmdVcard); cmdVcard.setImg(MenuIcons.ICON_VCARD);    
 //#               addInCommand(1,cmdConference); cmdConference.setImg(MenuIcons.ICON_CONFERENCE);
 //#               addInCommand(1,cmdAdd); cmdAdd.setImg(MenuIcons.ICON_ADD_CONTACT);
-//#               addInCommand(1,cmdSearchUsers); cmdSearchUsers.setImg(MenuIcons.ICON_VCARD);
-//#ifdef SERVICE_DISCOVERY               
-//#               addInCommand(1,cmdSrvDisco); cmdSrvDisco.setImg(MenuIcons.ICON_DISCO);
-//#endif              
+//#               addInCommand(1,cmdSearchUsers); cmdSearchUsers.setImg(MenuIcons.ICON_USER_SEARCH);
 //#ifdef PRIVACY              
 //#               addInCommand(1,cmdPrivacy); cmdPrivacy.setImg(MenuIcons.ICON_PRIVACY);
 //#endif             
@@ -473,9 +478,9 @@ public class Roster
 //#endif
 //#ifdef PEP                                      
 //#               addInCommand(1,cmdMood); cmdMood.setImg(MenuIcons.ICON_MOOD);
-//#               addInCommand(1,cmdActivity); cmdActivity.setImg(MenuIcons.ICON_MOOD);
+//#               addInCommand(1,cmdActivity); cmdActivity.setImg(MenuIcons.ICON_USER_ACTIVITY);
 //#endif   
-//#               
+//#           */
 //#if SASL_XGOOGLETOKEN                
 //#              if(isLoggedIn()){
 //#                if (midlet.BombusQD.sd.account.isGmail()) {
@@ -591,6 +596,7 @@ public class Roster
 //#               pluginsConfig = new PluginsConfig(display, this);
 //#               display.setCurrent(pluginsConfig);
 //#            }
+//#         /*
 //#            else if(c==cmdVcard){ 
 //#                 Contact cs=midlet.BombusQD.sd.roster.selfContact();
 //#                 if (cs.vcard!=null) {
@@ -599,9 +605,11 @@ public class Roster
 //#                 }
 //#                 VCard.request(cs.bareJid, cs.getJid());           
 //#            }
+//#          */
 //#ifdef SERVICE_DISCOVERY         
-//#            else if(c==cmdSrvDisco){ new ServiceDiscovery(display, null, null, false);  }
-//#endif                    
+//#            else if(c==cmdMyJabber){ new ServiceDiscovery(display, null, null, false);  }
+//#endif       
+//#         /*
 //#ifdef PRIVACY         
 //#            else if(c==cmdPrivacy){ new PrivacySelect(display, this);  }
 //#endif   
@@ -611,7 +619,8 @@ public class Roster
 //#ifdef PEP                
 //#            else if(c==cmdMood){  selectPEP.show(this, true);  }
 //#            else if(c==cmdActivity){ selectPEP.show(this, false); }
-//#endif           
+//#endif      
+//#          */     
 //# 
 //#ifdef STATS        
 //#            else if(c==cmdStats){  new StatsWindow(display);  }
@@ -641,9 +650,9 @@ public class Roster
 //#          else if (c==cmdLatestNews){
 //#             new GetFileServer(display, this);
 //#          }
-//#          else if(c==cmdSearchUsers){
-//#             new DiscoSearchForm(display, this , null , -1);
-//#          }
+//#          //else if(c==cmdSearchUsers){
+//#          //   new DiscoSearchForm(display, this , null , -1);
+//#          //}
 //#          else if (c==cmdActiveContacts) { cmdActiveContacts(); }
 //#          else if (c==cmdAccount){ cmdAccount(); }
 //#          else if (c==cmdStatus) { cmdStatus(); }
@@ -654,10 +663,10 @@ public class Roster
 //#          else if (c==cmdInfo) { cmdInfo(); }
 //#          else if (c==cmdClrAllChats) { cmdCleanAllMessages(); }     
 //#ifndef WMUC
-//#          else if (c==cmdConference) { cmdConference(); }
+//#          //else if (c==cmdConference) { cmdConference(); }
 //#endif
 //#          else if (c==cmdQuit) { cmdQuit(); }
-//#          else if (c==cmdAdd) { cmdAdd(); }  
+//#          //else if (c==cmdAdd) { cmdAdd(); }  
 //#else
         if (c==cmdActions) { cmdActions(); }
         else if (c==cmdMinimize) { cmdMinimize();  }
@@ -2554,7 +2563,6 @@ public class Roster
                     }
                     c=null;
                 }
-            //System.out.println("DATA PRESENCE:"+data.toString());
 //#ifndef WMUC
             JabberDataBlock xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc#user");
                 if (xmuc==null) xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc"); //join errors

@@ -136,7 +136,9 @@ public class Config {
     public int loginstatus=0;//loginstatus
     public int gmtOffset;
     public boolean popupFromMinimized=false;
-    public boolean memMonitor=false;
+//#ifdef MEMORY_MONITOR
+//#     public boolean memMonitor=false;
+//#endif
     public int rosterFont=0;
     public int msgFont=0;
     public int barFont=0;
@@ -404,7 +406,9 @@ public class Config {
         if (lastProfile==AlertProfile.VIBRA) lastProfile=0;
 	updateTime();
 	VirtualList.fullscreen=fullscreen;
-	VirtualList.memMonitor=memMonitor;
+//#ifdef MEMORY_MONITOR
+//# 	VirtualList.memMonitor=memMonitor;
+//#endif
         VirtualList.showBalloons=showBalloons;
         VirtualList.panelsState=panelsState;
         VirtualList.showTimeTraffic=showTimeTraffic;
@@ -474,7 +478,9 @@ public class Config {
 	    autoJoinConferences=inputStream.readBoolean();
             popupFromMinimized=inputStream.readBoolean();
 	    notifyBlink=inputStream.readBoolean();
-	    memMonitor=inputStream.readBoolean();
+//#ifdef MEMORY_MONITOR
+//# 	    memMonitor=inputStream.readBoolean();
+//#endif
             autoFocus=inputStream.readBoolean();
             storeConfPresence=inputStream.readBoolean(); 
             capsState=inputStream.readBoolean();    
@@ -715,7 +721,9 @@ public class Config {
 	    outputStream.writeBoolean(autoJoinConferences);
             outputStream.writeBoolean(popupFromMinimized);
 	    outputStream.writeBoolean(notifyBlink);
-	    outputStream.writeBoolean(memMonitor);
+//#ifdef MEMORY_MONITOR
+//# 	    outputStream.writeBoolean(memMonitor);
+//#endif
             outputStream.writeBoolean(autoFocus);
             outputStream.writeBoolean(storeConfPresence); 
             outputStream.writeBoolean(capsState);    

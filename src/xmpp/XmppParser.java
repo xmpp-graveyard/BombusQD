@@ -37,15 +37,10 @@ public abstract class XmppParser implements XMLEventListener {
      */
     
     public void tagEnd(String name) throws XMLException {
-        
-        //Vector childs=currentBlock.getChildBlocks();
-        //if (childs!=null) childs.trimToSize();
-
         JabberDataBlock parent = currentBlock.getParent();
         if (parent == null) {
             //System.out.println("currentBlock: ["+currentBlock.toString()+"]");
             dispatchXmppStanza(currentBlock);
-            //dispatcher.broadcastJabberDataBlock( currentBlock );
         }  else {
             parent.addChild( currentBlock );
         }
@@ -68,28 +63,19 @@ public abstract class XmppParser implements XMLEventListener {
         midlet.BombusQD.sd.updateTrafficIn();//???
         
         if (currentBlock != null){
-            
             currentBlock = new JabberDataBlock(name, currentBlock, attributes);
             // TODO: remove stub
             // M55 STUB
 //#if !(MIDP1)
             // photo reading
-            if ( name.equals("BINVAL") ){
-                return true;
-            }            
+            if ( name.equals("BINVAL") ) return true;
 //#endif
-                        
-        //                if (rosterNotify)                if (name.equals("item"))                    dispatcher.rosterNotify();
-            
-        } else  if (name.equals( "message" ) )
-            currentBlock = new Message(currentBlock, attributes);
-        else    if (name.equals("iq") ) 
-            currentBlock = new Iq(currentBlock, attributes); 
-        else    if (name.equals("presence") ) 
-            currentBlock = new Presence(currentBlock, attributes); 
-        else    if (name.equals("xml") )
-            return false; 
-        else    currentBlock = new JabberDataBlock(name, null, attributes);
+        } 
+        else if (name.equals("message")) currentBlock = new Message(currentBlock, attributes);
+        else if (name.equals("iq"))  currentBlock = new Iq(currentBlock, attributes); 
+        else if (name.equals("presence"))  currentBlock = new Presence(currentBlock, attributes); 
+        else if (name.equals("xml")) return false; 
+        else currentBlock = new JabberDataBlock(name, null, attributes);
         
         return false;
     }

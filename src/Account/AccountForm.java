@@ -178,7 +178,7 @@ public class AccountForm
              .append('@')
              .append(server);
         }
-        fulljid = new TextInput(display, SR.get(SR.MS_USER_PROFILE) + "(JID)", uid.toString() , null, TextField.ANY);
+        fulljid = new TextInput(display, SR.get(SR.MS_USER_PROFILE) + "(JID)", uid.toString() , null, TextField.EMAILADDR);
         nickbox = new TextInput(display, SR.get(SR.MS_NICKNAME), account.getNick(), null, TextField.ANY);
         itemsList.addElement(nickbox);
         itemsList.addElement(fulljid);

@@ -31,11 +31,6 @@ import Client.Config;
 import javax.microedition.lcdui.Image;
 
 public class GMenuConfig {
-    
-   public int imgWidth = 0;
-   public int imgHeight = 0;    
-   public Image img=null;
-   public Image bgnd=null;
   /**
      * Creates a new instance of GMenuConfig
      */
