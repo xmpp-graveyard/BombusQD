@@ -193,8 +193,8 @@ public class ServiceDiscovery
                 add = new DiscoCommand(MenuIcons.ICON_FT , SR.get(SR.MS_FILE_TRANSFERS), true);  items.addElement(add);//6
             }
             
-            add = new DiscoCommand(MenuIcons.ICON_MOOD , SR.get(SR.MS_USERMOOD), true);  items.addElement(add);//7
-            add = new DiscoCommand(MenuIcons.ICON_USER_ACTIVITY , SR.get(SR.MS_ACTIVITY), true);  items.addElement(add);//8
+            //add = new DiscoCommand(MenuIcons.ICON_MOOD , SR.get(SR.MS_USERMOOD), true);  items.addElement(add);//7
+            //add = new DiscoCommand(MenuIcons.ICON_USER_ACTIVITY , SR.get(SR.MS_ACTIVITY), true);  items.addElement(add);//8
             if (midlet.BombusQD.sd.account.isGmail()) {
                 add = new DiscoCommand(MenuIcons.ICON_GMAIL , SR.get(SR.MS_CHECK_GOOGLE_MAIL), true);  items.addElement(add);//9
             }
@@ -415,8 +415,10 @@ public class ServiceDiscovery
             childs = null;
             childs = new Vector(0);
             sortElements(nextElements);
-            setElements();
-            //showResults(items);
+            if(0 == nextElements.size()) showResults(items); 
+            else {
+              setElements();
+            }
             
         }  else if (id.equals(discoId("disco"))) {
             Vector cmds=new Vector(0);
@@ -754,12 +756,13 @@ public class ServiceDiscovery
                     case MenuIcons.ICON_FT:
                         new io.file.transfer.TransferManager(display);
                         break;
-                    case MenuIcons.ICON_MOOD:
+                    /*case MenuIcons.ICON_MOOD:
                         midlet.BombusQD.sd.roster.selectPEP.show(parentView, true);
                         break;
                     case MenuIcons.ICON_USER_ACTIVITY:
                         midlet.BombusQD.sd.roster.selectPEP.show(parentView, false);
                         break; 
+                     */
                     case MenuIcons.ICON_GMAIL:
                         midlet.BombusQD.sd.roster.theStream.send(xmpp.extensions.IqGmail.query());
                         break;
@@ -822,7 +825,7 @@ public class ServiceDiscovery
 //#ifdef GRAPHICS_MENU        
 //#     public int showGraphicsMenu() {
 //#         //commandState();
-//#         new GMenu(display, parentView, this, null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.SERVICE_DISCOVERY; 
 //#         redraw();
 //#         return GMenu.SERVICE_DISCOVERY;

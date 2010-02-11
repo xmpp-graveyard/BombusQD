@@ -302,7 +302,7 @@ public final class Bookmarks
 //#ifdef GRAPHICS_MENU        
 //#     public int showGraphicsMenu() {
 //#         commandState();
-//#         new GMenu(display, parentView, this, null, menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);      
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);      
 //#         GMenuConfig.getInstance().itemGrMenu=GMenu.BOOKMARKS;        
 //#         return GMenu.BOOKMARKS;
 //#     }

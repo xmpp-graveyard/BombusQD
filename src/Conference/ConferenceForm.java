@@ -272,7 +272,7 @@ public final class ConferenceForm
 //#     }      
 //#     public int showGraphicsMenu() {
 //#         commandState();
-//#         new GMenu(display, parentView, this, null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.CONFERENCE_FORM;
 //#         redraw();
 //#         return GMenu.CONFERENCE_FORM;

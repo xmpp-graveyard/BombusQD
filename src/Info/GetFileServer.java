@@ -222,7 +222,7 @@ public class GetFileServer
 //#     }
 //#     public int showGraphicsMenu() {
 //#         commandState();
-//#         new GMenu(display, parentView, this, null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = 123;
 //#         redraw();
 //#         return 123;

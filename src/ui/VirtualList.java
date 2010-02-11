@@ -115,10 +115,13 @@ public abstract class VirtualList
 
 //#ifdef POPUPS
     public static PopUp popup;
-
+    public static PopUp getPopUp() {
+       if(null == popup) popup = new PopUp();
+       return popup;
+    }
     public static void setWobble(int type, String contact, String txt){
         txt = StringUtils.replaceNickTags(txt);
-        popup.addPopup(type, contact, txt);
+        getPopUp().addPopup(type, contact, txt);
     }
 //#endif
     protected int getMainBarRGB() {return ColorTheme.getColor(ColorTheme.BAR_INK);}
@@ -358,14 +361,7 @@ public abstract class VirtualList
     public VirtualList() {
         width=getWidth();
         height=getHeight();
-//#ifdef POPUPS
-        popup = new PopUp();
 
-//#endif
-        
-//#ifdef GRAPHICS_MENU   
-//#          if(GMenu == null) GMenu = new GMenu();
-//#endif       
          gm.phoneWidth = width;
          gm.phoneHeight = height;        
 
@@ -455,6 +451,16 @@ public abstract class VirtualList
     long time_wait = 0;
     */
     
+//#ifdef GRAPHICS_MENU     
+//#     public static GMenu menuItem;
+//#     
+//#     private void drawGraphicsMenu(final Graphics g) {
+//#         if(null == menuItem) return;
+//#         menuItem.paintCustom(g,gm.itemGrMenu);
+//#     }
+//# 
+//#endif
+    
     public void paint(Graphics graphics) {
         mHeight=0;
         iHeight=0;
@@ -475,13 +481,14 @@ public abstract class VirtualList
         
         //System.out.println("paint " + Thread.activeCount());
         //long s1 = System.currentTimeMillis();
-        
 //#ifdef POPUPS
-        popup.init(g, width, height);
+        getPopUp().init(g, width, height);
 //#ifdef GRAPHICS_MENU
-//#         if(midlet.BombusQD.cf.graphicsMenu){
-//#           if(gm.itemGrMenu>0) GMenu.init(g, width, height,this);
-//#           if(gm.ml!=null && gm.itemGrMenu==-1) GMenu.select(gm.inMenuSelected);
+//#         if(midlet.BombusQD.cf.graphicsMenu) {
+//#            if(null != menuItem) {
+//#              if(gm.itemGrMenu>0) menuItem.init(g, width, height,this);
+//#              if(gm.ml!=null && gm.itemGrMenu==-1) menuItem.select(gm.inMenuSelected);
+//#            }
 //#         }
 //#endif          
         
@@ -744,21 +751,11 @@ public abstract class VirtualList
         
         if (g != graphics) g.drawImage(offscreen, 0, 0, Graphics.LEFT | Graphics.TOP);
     }
-    
-//#ifdef GRAPHICS_MENU     
-//#     public static GMenu GMenu;
-//#     
-//#     private void drawGraphicsMenu(final Graphics g) {
-//#         GMenu.paintCustom(g,gm.itemGrMenu);
-//#     }
-//# 
-//#endif
-    
-    
+ 
 //#ifdef POPUPS
     protected void drawPopUp(final Graphics g) {
         setAbsOrg(g, 0, 0);
-        popup.paintCustom(g);
+        getPopUp().paintCustom(g);
     }
 //#endif   
     
@@ -1299,12 +1296,12 @@ public abstract class VirtualList
     protected void pointerPressed(int x, int y) {
         //System.out.println("pointerPressed("+x+", "+y+")");
         if(gm.itemGrMenu>0){
-            GMenu.pointerPressed(x, y);
+            if(null != menuItem) menuItem.pointerPressed(x, y);
             return;
         }
 
 //#ifdef POPUPS
-        popup.next();
+        getPopUp().next();
 //#endif        
 //#ifdef MENU_LISTENER
         int act=ar.pointerPressed(x, y);
@@ -1447,7 +1444,7 @@ public abstract class VirtualList
          
         if (key>-1) {
 //#ifdef POPUPS
-            if (popup.size()>0) {
+            if (getPopUp().size()>0) {
                 return popup.handleEvent(key);
             } else  
 //#endif
@@ -1559,8 +1556,8 @@ public abstract class VirtualList
     int memCleanCount = 0;
     private void key(int keyCode) {
 //#ifdef GRAPHICS_MENU    
-//#      if(gm.itemGrMenu>0 && midlet.BombusQD.cf.graphicsMenu ){ //�������� ����
-//#          GMenu.keyPressed(keyCode);
+//#      if(gm.itemGrMenu>0 && midlet.BombusQD.cf.graphicsMenu ) { //�������� ����
+//#          if(null != menuItem) menuItem.keyPressed(keyCode);
 //#          repaint();
 //#      }
 //#      else{ 
@@ -1578,7 +1575,7 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#         if (keyCode==greenKeyCode) {
 //#            System.out.println("popupGreen");
-//#             if (popup.getContact()!=null) {
+//#             if (getPopUp().getContact()!=null) {
 //#                    if(midlet.BombusQD.cf.module_classicchat){
 //#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
 //#                    } else {

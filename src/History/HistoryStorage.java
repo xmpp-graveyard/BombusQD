@@ -51,12 +51,10 @@ import Client.ContactMessageList;
  *
  * @author aqent
  */
-public final class HistoryStorage {
+public class HistoryStorage {
     
     /** Creates a new instance of HistoryStorage */
-    public HistoryStorage() {
-      if(cmd==null) cmd = new CommandForm(midlet.BombusQD.getInstance().display, midlet.BombusQD.sd.roster, 6 , "" , null, null);
-    }
+    public HistoryStorage() { }
     private final static Contact c = null;
     private final static String store = "store_";//link this with selfjid
     private static CommandForm cmd = null;
@@ -84,10 +82,11 @@ public final class HistoryStorage {
    }
     
    public static void loadData(Contact c, RecordStore recordStore) {
+        midlet.BombusQD.debug.add("loadRMSData " + c + "/" + recordStore,10);
         if (midlet.BombusQD.cf.module_history==false) return;
         switch(HistoryConfig.getInstance().historyTypeIndex) {
             case 0:
-                startTimer(recordStore, c, 20);
+                startTimer(recordStore, c, 50);
                 //System.out.println("get->RMS");
                 break;
             case 1:
@@ -235,20 +234,6 @@ public final class HistoryStorage {
         }
     }
 
-    public static RecordStore openRecordStore(Contact c, RecordStore recordStore) {
-      try {
-        if (recordStore != null) {
-          recordStore.closeRecordStore();
-          recordStore = null;
-          System.gc();
-        }
-        String rName = getRSName(c.bareJid);
-        if(rName.length()>30) rName = rName.substring(0,30);
-         recordStore = RecordStore.openRecordStore(rName, true);
-        rName = null;
-        return recordStore;
-      } catch (Exception e) { return null; }
-    }
     
     public static RecordStore closeStore(RecordStore recordStore) {	
        try {
@@ -278,18 +263,25 @@ public final class HistoryStorage {
        } catch (Exception e) {  return -1; }
     }
     
-    private static String getRSName(String bareJid) {
+    public static String getRSName(String bareJid) {
        return store + bareJid;
     }
     
 
     
     private static Timer timer;
+    private static LoadMessages load;
     private static void startTimer(RecordStore rs, Contact c, int repeatTime) {
+       cmd = null;
+       cmd = new CommandForm(midlet.BombusQD.getInstance().display, midlet.BombusQD.sd.roster, 6 , "" , null, null);
+       if (timer != null) {
+           timer.cancel();
+           timer = null;
+       }
        if ( timer == null) {
            timer = new Timer();
-             LoadMessages load = new LoadMessages();
-             load.set(rs, c);
+           load = new LoadMessages();
+           load.set(rs, c);
            timer.schedule( load, 0, repeatTime );
        }
     }
@@ -298,13 +290,14 @@ public final class HistoryStorage {
       if ( timer != null ) {
           timer.cancel();
           timer = null;
+          load = null;
       }
     }
   
     private static ByteArrayInputStream bais = null;
     private static DataInputStream dis = null;
     private static StringBuffer sb = new StringBuffer(0);
-    private final static class LoadMessages extends TimerTask {
+    private static class LoadMessages extends TimerTask {
       int posRecord;
       RecordStore recordStore;
       CheckBox addCheckBox;
@@ -348,7 +341,7 @@ public final class HistoryStorage {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if(posRecord == size){
+                if(posRecord == size) {
                    timeE = System.currentTimeMillis();
                    stopTimer();
                    try{

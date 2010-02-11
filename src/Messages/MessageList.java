@@ -235,7 +235,7 @@ public abstract class MessageList extends VirtualList
 //#          try {
 //#              capt=getMainBarItem().elementAt(0).toString();
 //#          } catch (Exception ex){ }
-//#         new GMenu(display, parentView, this,  null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this,  null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.MESSAGE_LIST;        
 //#         return GMenu.MESSAGE_LIST;
 //#     }

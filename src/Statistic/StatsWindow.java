@@ -167,7 +167,7 @@
 //#     }
 //#     public int showGraphicsMenu() {
 //#         commandState();
-//#         new GMenu(display, parentView, this, null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.STATS_WINDOW;
 //#         redraw();
 //#         return GMenu.STATS_WINDOW;

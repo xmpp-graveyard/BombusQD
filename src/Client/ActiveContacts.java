@@ -166,7 +166,7 @@ public final class ActiveContacts
     
 //#ifdef GRAPHICS_MENU        
 //#     public int showGraphicsMenu() {
-//#         new GMenu(display, parentView, this, null, menuCommands, cmdfirstList, null, null);  
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands, cmdfirstList, null, null);  
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.ACTIVE_CONTACTS;        
 //#         return GMenu.ACTIVE_CONTACTS;
 //#     }

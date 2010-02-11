@@ -317,7 +317,7 @@ public class AlertCustomizeForm
 //#     
 //#     public int showGraphicsMenu() {
 //#         commandState();
-//#         new GMenu(display, parentView, this,null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this,null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.ALERT_CUSTOMIZE_FORM;
 //#         redraw();
 //#         return GMenu.ALERT_CUSTOMIZE_FORM;

@@ -337,7 +337,7 @@ public class VCardView
 //#     }
 //#     public int showGraphicsMenu() {
 //#         commandState();
-//#         new GMenu(display, parentView, this, null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.VCARD_VIEW;
 //#         redraw();
 //#         return GMenu.VCARD_VIEW;

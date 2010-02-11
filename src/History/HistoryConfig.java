@@ -199,7 +199,7 @@ public class HistoryConfig extends DefForm implements BrowserListener {
              cmdOk();
              return -1;
          }
-         new GMenu(display, parentView, this, null, menuCommands);
+         menuItem = new GMenu(display, parentView, this, null, menuCommands);
          GMenuConfig.getInstance().itemGrMenu = GMenu.HISTORY_CONFIG; 
          redraw();
          return GMenu.HISTORY_CONFIG;

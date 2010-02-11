@@ -34,6 +34,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 import locale.SR;
 import io.NvStorage;
+import ui.controls.form.SimpleString;
 
 /**
  *
@@ -47,13 +48,16 @@ public class StatusList {
 	if (instance==null) instance=new StatusList();
 	return instance;
     }
+    
+    public void reinit() {
+       instance = null; 
+    }
 
     public Vector statusList;
 
     /** Creates a new instance of StatusList */
     private StatusList() {
-        statusList=new Vector(7);
-        
+        statusList = new Vector(0);
         try {
 	    DataInputStream inputStream=NvStorage.ReadFileRecord("status", 0);
 	    
@@ -70,7 +74,12 @@ public class StatusList {
         } catch (Exception e) { 
             //e.printStackTrace(); 
         }
-
+//#ifdef PEP
+//#         Object add;
+//#         add = new SimpleString(SR.get(SR.MS_PEP),true); statusList.addElement(add);
+//#         add = new ExtendedStatus(0x13, "pep", SR.get(SR.MS_USERMOOD), true); statusList.addElement(add);
+//#         add = new ExtendedStatus(0x24, "pep", SR.get(SR.MS_ACTIVITY), false); statusList.addElement(add);
+//#endif
     }
     
     private void createFromStream(int presenceIndex, String presenceName, DataInputStream dataInputStream) {
@@ -89,7 +98,7 @@ public class StatusList {
         try {
             DataOutputStream outputStream=NvStorage.CreateDataOutputStream();
             
-            for (int i=0;i<statusList.size();i++) {
+            for (int i=0;i<7;i++) {
                 ExtendedStatus e=(ExtendedStatus)statusList.elementAt(i);
                 outputStream.writeInt(e.getPriority());
                 outputStream.writeUTF(e.getMessage());

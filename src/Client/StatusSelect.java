@@ -107,9 +107,12 @@ public class StatusSelect
 //#ifdef MENU_LISTENER
         menuCommands.removeAllElements();
 //#endif
+        ExtendedStatus ex = (ExtendedStatus)getFocusedObject();
+        if(-1 == ex.getName().indexOf("pep")) {
+          addCommand(cmdEdit); cmdEdit.setImg(0x40);
+          addCommand(cmdDef);  cmdDef.setImg(0x24);
+        }
         addCommand(cmdOk); cmdOk.setImg(0x43);
-        addCommand(cmdEdit); cmdEdit.setImg(0x40);
-        addCommand(cmdDef);  cmdDef.setImg(0x24);
 //#ifndef GRAPHICS_MENU        
      addCommand(cmdCancel);
 //#endif     
@@ -120,6 +123,15 @@ public class StatusSelect
     }
 
     private ExtendedStatus getSel(){ return (ExtendedStatus)getFocusedObject();}
+    
+    private boolean selectAdvancedStatus() {
+       ExtendedStatus ex = (ExtendedStatus)getFocusedObject();
+       if(-1 != ex.getName().indexOf("pep")) {
+          midlet.BombusQD.sd.roster.selectPEP.show(this, ex.usermood);
+          return true;
+       }
+       return false;
+    }
     
     public void commandAction(Command c, Displayable d){
         if (c==cmdOk) eventOk(); 
@@ -136,10 +148,11 @@ public class StatusSelect
         if (c==cmdCancel) destroyView();
     }
     
-    public void eventOk(){
-        destroyView();
-        send();
-        //new Thread(this).start();
+    public void eventOk() {
+        if(!selectAdvancedStatus()) {
+          destroyView();
+          send();
+        }
     }
     
     public void send(){
@@ -172,7 +185,7 @@ public class StatusSelect
 //#ifdef GRAPHICS_MENU        
 //#     public int showGraphicsMenu() {
 //#         commandState();
-//#         new GMenu(display, parentView, this, null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.STATUS_SELECT;
 //#         return GMenu.STATUS_SELECT;
 //#     }

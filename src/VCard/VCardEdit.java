@@ -303,7 +303,7 @@ public class VCardEdit
 //#     }
 //#     public int showGraphicsMenu() {
 //#         commandState();
-//#         new GMenu(display, parentView, this, null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.VCARD_EDIT;
 //#         redraw();
 //#         return GMenu.VCARD_EDIT;

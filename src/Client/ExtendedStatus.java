@@ -28,6 +28,10 @@
 package Client;
 
 import images.RosterIcons;
+//#ifdef PEP
+//# import images.MoodIcons;
+//# import images.ActivityIcons;
+//#endif
 import ui.IconTextElement;
 
 /**
@@ -44,6 +48,7 @@ public class ExtendedStatus extends IconTextElement{
     private boolean autoRespond;
     private String autoRespondMessage = "";
     private StringBuffer state = new StringBuffer(0);
+    public boolean usermood;
     
     /** Creates a new instance of ExtendedStatus */
     public ExtendedStatus(int index, String name, String showName) {
@@ -52,15 +57,25 @@ public class ExtendedStatus extends IconTextElement{
         this.name=name;
         this.screenName=showName;
     }
-    
+//#ifdef PEP
+//#     public ExtendedStatus(int index, String name, String showName, boolean usermood) {
+//#         super(usermood ? MoodIcons.getInstance() : ActivityIcons.getInstance());
+//#         this.index=index;
+//#         this.name=name;
+//#         this.screenName=showName;
+//#         this.usermood=usermood;
+//#     }
+//#endif
     //public void onSelect(VirtualList view){}
     public String toString(){ 
         state.setLength(0);
         state.append(screenName);
         if(midlet.BombusQD.cf.userAppLevel == 1) {
-           state.append(" (");
-           state.append(priority);
-           state.append(") ");
+           if(-1 == name.indexOf("pep")) {
+            state.append(" (");
+            state.append(priority);
+            state.append(") ");
+           }
         }
         if (status!=null)
             if (status.length()>0) {

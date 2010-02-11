@@ -328,6 +328,7 @@ public class Roster
     
     public void initCommands() {
           createMessageEdit(true);
+          StatusList.getInstance().reinit();
           if(activeContacts != null) activeContacts.initCommands();
 
           cmdActions=new Command(SR.get(SR.MS_ITEM_ACTIONS), Command.SCREEN, 2);
@@ -708,7 +709,7 @@ public class Roster
 //#endif
     
 //#ifdef POPUPS
-    public void cmdClearPopups() { VirtualList.popup.clear(); }
+    public void cmdClearPopups() { VirtualList.getPopUp().clear(); }
 //#endif
 //#ifndef WMUC
    public void cmdConference() { if (isLoggedIn()) new Bookmarks(display, this, null); }
@@ -3734,7 +3735,7 @@ public class Roster
         Object focused = getFocusedObject();        
         if (focused==null) return;
         try {
-            VirtualList.popup.next();      
+            VirtualList.getPopUp().next();      
             if (focused instanceof Group) return; //|| focused instanceof ConferenceGroup // ???
             setWobbler(1, (Contact)focused, null, focused);
         } catch(OutOfMemoryError eom) { 
@@ -4063,14 +4064,14 @@ public class Roster
 //#      public void clearMenu(){
 //#           GMenuConfig.getInstance().itemGrMenu = GMenu.MAIN_MENU_ROSTER;
 //#           commandState();
-//#           new GMenu(display, parentView, this, MenuIcons.getInstance(), menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);
+//#           menuItem = new GMenu(display, parentView, this, MenuIcons.getInstance(), menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);
 //#           redraw();
 //#      }    
 //#     
 //#     public int showGraphicsMenu() {
 //#          GMenuConfig.getInstance().itemGrMenu = GMenu.MAIN_MENU_ROSTER;
 //#          commandState();
-//#          new GMenu(display, parentView, this, MenuIcons.getInstance(), menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);
+//#          menuItem = new GMenu(display, parentView, this, MenuIcons.getInstance(), menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);
 //#          redraw();
 //#         return GMenu.MAIN_MENU_ROSTER;
 //#     }

@@ -114,10 +114,17 @@ public final class ContactMessageList extends VirtualList implements MenuListene
               break;
           case 3: 
               //READ_ALL_DATA
-              if (recordStore == null){
-                  recordStore = HistoryStorage.openRecordStore(contact, recordStore);
-                  if(null == recordStore) return;
-              }
+              String rName = HistoryStorage.getRSName(contact.bareJid);
+              if(rName.length() > 30) rName = rName.substring(0,30);
+              try {
+                 if(recordStore != null) {
+                      recordStore.closeRecordStore();
+                      recordStore = null;
+                 }
+              } catch (Exception e) { midlet.BombusQD.debug.add("errclose rms",10); }
+              try {
+                 recordStore = RecordStore.openRecordStore(rName, true);
+              } catch (Exception e) { midlet.BombusQD.debug.add("erropen rms",10); }
               HistoryStorage.loadData(contact, recordStore);
               break;
       } 
@@ -934,7 +941,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
 //#     public int showGraphicsMenu() {
 //#          GMenuConfig.getInstance().itemGrMenu = GMenu.CONTACT_MSGS_LIST;
 //#          commandState();
-//#          new GMenu(midlet.BombusQD.getInstance().display , this, this, null, menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);
+//#          menuItem = new GMenu(midlet.BombusQD.getInstance().display , this, this, null, menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);
 //#          redraw();
 //#         return GMenu.CONTACT_MSGS_LIST;
 //#     }

@@ -120,7 +120,7 @@ public class PrivacyModifyList
 //#ifdef GRAPHICS_MENU        
 //#     public int showGraphicsMenu() {
 //#         commandState();
-//#         new GMenu(display, parentView, this,  null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this,  null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.PRIVACY_MODIFY_LIST;        
 //#         return GMenu.PRIVACY_MODIFY_LIST;
 //#     }

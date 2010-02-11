@@ -132,7 +132,7 @@ public class TextListBox
 //#          try {
 //#              capt=getMainBarItem().elementAt(0).toString();
 //#          } catch (Exception ex){ }        
-//#         new GMenu(display, parentView, this,null, menuCommands);
+//#         menuItem = new GMenu(display, parentView, this,null, menuCommands);
 //#         GMenuConfig.getInstance().itemGrMenu = GMenu.TEXTLISTBOX;         
 //#         return GMenu.TEXTLISTBOX;
 //#     }
