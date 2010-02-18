@@ -34,6 +34,13 @@ import images.RosterIcons;
  */
 public final class Constants {
 
+     public final static String NS_ITEMS="http://jabber.org/protocol/disco#items";
+     public final static String NS_INFO="http://jabber.org/protocol/disco#info";
+     public final static String NS_REGS="jabber:iq:register";
+     public final static String NS_SRCH="jabber:iq:search";
+     public final static String NS_GATE="jabber:iq:gateway";
+     public final static String NS_MUC="http://jabber.org/protocol/muc";
+     public final static String NODE_CMDS="http://jabber.org/protocol/commands";
      
      public final static String PRS_OFFLINE="unavailable";
      public final static String PRS_ERROR="error";

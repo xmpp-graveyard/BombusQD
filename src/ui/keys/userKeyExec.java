@@ -164,14 +164,17 @@
 //#                 sd.roster.cmdClearPopups();
 //#endif
 //#                 break;
+//#                 /*
 //#             case 12:
 //#                 cf.lightState=!cf.lightState;
 //#                 sd.roster.setLight(cf.lightState);
 //#                 cf.saveToStorage();
 //#                 break;
+//#                  
 //#             case 13:
 //#                 sd.roster.cmdInfo();
 //#                 break;
+//#                  */
 //#             case 14:
 //#                 if (cf.allowMinimize)
 //#                     BombusQD.getInstance().hideApp(true, null);
@@ -179,6 +182,7 @@
 //#             case 15:
 //#                 ColorTheme.invertSkin();
 //#                 break;
+//#                 /*
 //#             case 16:
 //#ifdef CONSOLE
 //#ifdef PLUGINS
@@ -191,6 +195,7 @@
 //#endif
 //#endif
 //#                 break;
+//#                  */
 //#             case 17:
 //#                 cf.fullscreen=!cf.fullscreen;
 //#                 cf.saveToStorage();

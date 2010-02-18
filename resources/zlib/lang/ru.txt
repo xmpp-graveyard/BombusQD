@@ -608,7 +608,7 @@ Alternating chat colors	Чередовать цвета чата
 Transparency bgnd(argb)	Прозрачность фона(ARGB)
 Graphics menu bgnd(argb)	Графическое меню: фон(ARGB)
 Graphics menu font	Графическое меню: шрифт
-Service>	Сервис>
+My Services	Мои Сервисы
 My Jabber	Мой Jabber
 (HIGH TRAFFIC!)	(!трафик)
 Draw Rect Avatar	рамка аватара
@@ -723,3 +723,6 @@ Experienced	Опытный
 Was added:	Добавлено:
 Configuration Master	Мастер быстрой настройки
 Please reinstall the program to avoid possible future problems	Пожалуйста,во избежание возможных проблем в работе,переустановите приложение удалив предыдущую версию.
+IM Networks	IM Сети
+Add server	Добавить сервер
+My servers	Мои серверы

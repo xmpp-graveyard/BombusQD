@@ -79,6 +79,7 @@ public final class ActiveContacts
         cmdSortDefault=new Command(SR.get(SR.MS_SORT_TYPE_DEF), Command.SCREEN, 5);
         cmdSortByStatus=new Command(SR.get(SR.MS_SORT_TYPE_STATUS), Command.SCREEN, 6);
         cmdSortByMsgsCount=new Command(SR.get(SR.MS_SORT_TYPE_MSGS), Command.SCREEN, 7);
+        cmdClearAllMessages=new Command(SR.get(SR.MS_CLEAN_ALL_MESSAGES), Command.SCREEN, 35);
     }
 
     private Command cmdCancel;
@@ -88,7 +89,7 @@ public final class ActiveContacts
     private Command cmdSortDefault;
     private Command cmdSortByStatus;
     private Command cmdSortByMsgsCount;
-
+    private Command cmdClearAllMessages;
     
     private long lasttime = 0;
     private long current = 0;
@@ -160,6 +161,7 @@ public final class ActiveContacts
           addInCommand(1,cmdSortDefault); cmdSortDefault.setImg(0x64);
           addInCommand(1,cmdSortByStatus); cmdSortByStatus.setImg(0x64);
           addInCommand(1,cmdSortByMsgsCount); cmdSortByMsgsCount.setImg(0x64);
+        addCommand(cmdClearAllMessages); cmdClearAllMessages.setImg(0x41);
     }
     
 //#ifdef MENU_LISTENER
@@ -199,6 +201,10 @@ public final class ActiveContacts
         if (c==cmdCreateMultiMessage) {
             isActive = false;
             midlet.BombusQD.sd.roster.createMultiMessage(this,activeContacts);
+        }
+        if (c==cmdClearAllMessages) {
+            midlet.BombusQD.sd.roster.cmdCleanAllMessages();
+            midlet.BombusQD.sd.roster.showRoster();
         }
         if (c==cmdSortDefault) {
            sortType = -1;

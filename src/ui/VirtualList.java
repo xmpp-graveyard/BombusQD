@@ -345,9 +345,11 @@ public abstract class VirtualList
 //#                    case 0: bgndJimmImage = bgndImage = null; break;
 //#                    case 1: bgndJimmImage = Image.createImage("/images/back.png"); break;
 //#                    case 2: bgndJimmImage = bgndImage = null; break;
-//#                    case 3: bgndImage = Image.createImage("/images/bgnd.png"); break;
+//#                    case 3: bgndImage = Image.createImage("/images/bgnd.jpg"); break;
 //#                }
-//#            } catch (Exception e) { }
+//#            } catch (Exception e) {
+//#               midlet.BombusQD.debug.add("VL -> createImage Exception: "+e.getMessage(),10);
+//#            }
 //#     }
 //#endif
     
@@ -383,7 +385,8 @@ public abstract class VirtualList
         itemBorder=new int[32];
 
         scrollbar=new ScrollBar();
-        scrollbar.setHasPointerEvents(hasPointerEvents());
+        midlet.BombusQD.cf.isTouchPhone = hasPointerEvents();
+        scrollbar.setHasPointerEvents(midlet.BombusQD.cf.isTouchPhone);
 
         MainBar secondBar=new MainBar("", true);
         secondBar.addElement(null); //1
@@ -662,7 +665,7 @@ public abstract class VirtualList
                     //setAbsOrg(g, 0, 0);
                     drawMainPanel(g,height-mHeight);
 //#ifdef MENU_LISTENER
-                    if (hasPointerEvents())
+                    if (midlet.BombusQD.cf.isTouchPhone)
                         ar.init(width, height, mHeight);
 //#endif
                 }
@@ -672,7 +675,7 @@ public abstract class VirtualList
                     g.translate( g.getTranslateX(), g.getTranslateY() );
                     drawInfoPanel(g,height-iHeight);
 //#ifdef MENU_LISTENER
-                    if (hasPointerEvents())
+                    if (midlet.BombusQD.cf.isTouchPhone)
                         ar.init(width, height, iHeight);
 //#endif
                 }

@@ -6,7 +6,7 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
+/*
 package ui;
 
 import javax.microedition.lcdui.game.GameCanvas;
@@ -17,10 +17,10 @@ import util.ArrayLoader;
 import java.util.*;
 import Colors.ColorTheme;
 
-/**
+**
  *
  * @author evgs,vinz@,aqent
- */
+ *
 public class Snow extends GameCanvas
 {
     Display display;
@@ -398,3 +398,5 @@ public class Snow extends GameCanvas
         g.drawRGB(lineSnow, 0, width, 0, height - MAX_LINES_SNOW , width, MAX_LINES_SNOW, true);   
     }
 }
+
+ */

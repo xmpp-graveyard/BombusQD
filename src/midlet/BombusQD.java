@@ -136,7 +136,7 @@ public class BombusQD extends MIDlet implements Runnable
     public int himg_actions;    
 
     private void rmsVersion(boolean save, Displayable parentView) {
-        String key = "key15628616";
+        String key = "key15628618";
         if(save == false) {
             try {
                DataInputStream is=NvStorage.ReadFileRecord("appver", 0);

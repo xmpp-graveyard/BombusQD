@@ -105,7 +105,7 @@ public class InfoWindow
       super.keyPressed(keyCode);
     }
     
-    
+    private Displayable infoWindow;
     public InfoWindow(Display display, Displayable pView) {
         super(display, pView, SR.get(SR.MS_ABOUT));
         
@@ -124,7 +124,35 @@ public class InfoWindow
 
         ((MultiLine)name).selectable=true;
         itemsList.addElement(name);
+      
+        infoWindow = this;
+        name = new LinkString("QD ".concat(SR.get(SR.MS_QD_NEWS))){ 
+             public void doAction() {
+               new GetFileServer(midlet.BombusQD.getInstance().display, infoWindow);
+             }
+        };
+        itemsList.addElement(name);
         
+        if(midlet.BombusQD.sd.roster.isLoggedIn()) {
+           name = new LinkString(SR.get(SR.MS_SUPPORT)){ 
+             public void doAction() { 
+                 new Conference.ConferenceForm(
+                         midlet.BombusQD.getInstance().display,
+                         midlet.BombusQD.sd.roster, 
+                         "BombusQD@",
+                         "qd@conference.jabber.ru", null, false);
+             }
+           };
+           itemsList.addElement(name);
+        }
+        
+        name = new LinkString(SR.get(SR.MS_STATS)){ 
+             public void doAction() { 
+                 new Statistic.StatsWindow(midlet.BombusQD.getInstance().display);
+             }
+        };
+        itemsList.addElement(name);
+
         /*
         itemsList.addElement(new LinkString("Create NullPointer") { 
            public void doAction() {
@@ -206,9 +234,9 @@ public class InfoWindow
         itemsList.addElement(name);
         memInfo=null;
         
-        name=new MultiLine("Abilities", getAbilities(), super.superWidth);
-        ((MultiLine)name).selectable=true;
-        itemsList.addElement(name);
+        //name=new MultiLine("Abilities", getAbilities(), super.superWidth);
+        //((MultiLine)name).selectable=true;
+        //itemsList.addElement(name);
         
         
 //#ifdef CLIPBOARD
@@ -239,7 +267,7 @@ public class InfoWindow
 //#                .append("\n")
 //#                .append(SR.get(SR.MS_TOTAL))
 //#                .append(Runtime.getRuntime().totalMemory()>>10);
-//#         clipboard.setClipBoard(memory.toString() + "\n" + getAbilities().toString());
+//#         //clipboard.setClipBoard(memory.toString() + "\n" + getAbilities().toString());
 //#         System.out.println(clipboard.getClipBoard());
 //#         destroyView();
 //# 
@@ -300,6 +328,7 @@ public class InfoWindow
         super.commandAction(command, displayable);
     }
     
+    /*
     private String getAbilities() {
         Vector abilitiesList=new Vector(0);
 //#ifdef ADHOC
@@ -483,4 +512,5 @@ public class InfoWindow
         abilitiesList=null;
         return ab.substring(0, ab.length()-2);
     }
+     */
 }

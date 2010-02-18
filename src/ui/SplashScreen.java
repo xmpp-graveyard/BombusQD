@@ -118,7 +118,7 @@ public class SplashScreen extends GameCanvas implements CommandListener {
         try { Thread.sleep(50); } catch (InterruptedException ex) { }
     }
 
-   
+   /*
     private Snow snow;
     private int speed = 3;
     public void createSnow(){
@@ -127,6 +127,7 @@ public class SplashScreen extends GameCanvas implements CommandListener {
             snow.changeSnowProcess(speed);
         }
     }
+    */
     
     long s1;
     long s2;
@@ -134,13 +135,16 @@ public class SplashScreen extends GameCanvas implements CommandListener {
     public void paint(Graphics g) {
         width=g.getClipWidth();
         height=g.getClipHeight();
+        /*
         if(snow != null) {
             //s1 = System.currentTimeMillis();
             snow.paint(g, width, height);
         } else {
+         */
            g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
            g.fillRect(0,0, width, height);
-        }
+        //}
+           
         if(img!=null) g.drawImage(img, width/2, height/2, Graphics.VCENTER|Graphics.HCENTER);  
         
         //todo: fix memory leak in getTimeWeekDay
@@ -150,7 +154,7 @@ public class SplashScreen extends GameCanvas implements CommandListener {
 
             g.setFont(clockFont);
             int h=clockFont.getHeight()+1;
-             String time = "Happy new year!"; //Time.getTimeWeekDay();
+             String time = /*"Happy new year!"; */ Time.getTimeWeekDay();
              int tw=clockFont.stringWidth(time);
              g.drawString(time, width/2, height - 5, Graphics.BOTTOM | Graphics.HCENTER);
              
@@ -228,6 +232,7 @@ public class SplashScreen extends GameCanvas implements CommandListener {
     }
 
     public void keyPressed(int keyCode) {
+        /*
         boolean keyCheck = false;
         switch (keyCode) {
             case KEY_NUM0: keyCheck = true; speed = 0; break;
@@ -245,7 +250,7 @@ public class SplashScreen extends GameCanvas implements CommandListener {
         if(keyCheck){
             snow.changeSnowProcess(speed);
         }
-        
+         */
         keypressed=keyCode;
         if (pos>=20)
             close();
@@ -261,10 +266,12 @@ public class SplashScreen extends GameCanvas implements CommandListener {
     private void destroyView(){
         status.setElementAt(null,6);
         if (display!=null) display.setCurrent(parentView);
+        /*
         if(snow != null){
            snow.destroyView();
            snow = null;
         }
+         */
         tc.stop();
 //#ifdef AUTOSTATUS
 //#         if (midlet.BombusQD.sd.roster.autoAway && midlet.BombusQD.cf.autoAwayType==Config.AWAY_LOCK) {

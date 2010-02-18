@@ -95,7 +95,10 @@ public class TextInput
                 DataInputStream is=NvStorage.ReadFileRecord(id, 0);
                 try { 
                     tempText=is.readUTF();
-                } catch (EOFException e) { is.close(); }
+                } catch (EOFException e) { 
+                    is.close(); 
+                    is = null;
+                }
             } catch (Exception e) {/* no history available */}
             this.text=(tempText==null)?"":tempText;
         } else {

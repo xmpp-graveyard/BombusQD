@@ -640,7 +640,7 @@ public class SR {
      public final static short MS_TRANSPARENCY_ARGB  = 605; //Transparency bgnd(argb)
      public final static short MS_GRAPHICS_MENU_BGNG_ARGB  = 606; //Graphics menu bgnd(argb)
      public final static short MS_GRAPHICS_MENU_FONT  = 607; //Graphics menu font
-     public final static short MS_SERVICE  = 608; //Service>
+     public final static short MS_SERVICE  = 608; //My Services
      public final static short MS_MY_JABBER  = 609; //My Jabber>
      public final static short AVATAR_HIGH_TRAFFIC  = 610; //(HIGH TRAFFIC!)
      public final static short AVATAR_DRAW_RECT  = 611; //Draw Rect Avatar
@@ -772,6 +772,10 @@ public class SR {
      public final static short MS_CONFIGURATION_MASTER =  735;
      public final static short MS_WARNING_MESSAGE_INSTALL =  736;
      
+     public final static short MS_IM_NETWORKS = 737;
+     public final static short MS_ADD_SERVER = 738;     
+     public final static short MS_MY_SERVERS = 739;
+
     private static String[] localeItemsDefault = new String[0];
     private static String[] localeItems = {
         "en",  "en",
@@ -1382,7 +1386,7 @@ public class SR {
         "Transparency bgnd(argb)",
         "Graphics menu bgnd(argb)",
         "Graphics menu font",
-        "Service>",
+        "My Services",
         "My Jabber",
         "(HIGH TRAFFIC!)",
         "Draw Rect Avatar",
@@ -1512,7 +1516,11 @@ public class SR {
         "Experienced",
         "Was added:",
         "Configuration Master",
-        "Please reinstall the program to avoid possible future problems"
+        "Please reinstall the program to avoid possible future problems",
+        
+        "IM Networks",
+        "Add server",
+        "My servers"
     };  
 
 

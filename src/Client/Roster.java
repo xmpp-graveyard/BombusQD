@@ -337,7 +337,7 @@ public class Roster
 //#ifdef GRAPHICS_MENU
 //#             cmdOptions=new Command(SR.get(SR.MS_OPTIONS), Command.SCREEN, 16);
 //#       
-//#           cmdMyJabber=new Command(SR.get(SR.MS_MY_JABBER), Command.SCREEN, 22); //1
+//#           cmdMyService=new Command(SR.get(SR.MS_SERVICE) + '>', Command.SCREEN, 22); //1
 //#           /*
 //#             cmdVcard=new Command(SR.get(SR.MS_VCARD), Command.SCREEN, 23);
 //#             cmdConference=new Command(SR.get(SR.MS_CONFERENCE), Command.SCREEN, 24);
@@ -357,32 +357,33 @@ public class Roster
 //#             cmdActivity=new Command(SR.get(SR.MS_ACTIVITY), Command.SCREEN, 30);
 //#endif    
 //#            */              
-//#       
-//#           cmdMyService=new Command(SR.get(SR.MS_SERVICE), Command.SCREEN, 31);   //3       
-//#             cmdAlert=new Command(SR.get(SR.MS_ALERT_PROFILE_CMD), Command.SCREEN, 32);
-//#             cmdArchive=new Command(SR.get(SR.MS_ARCHIVE), Command.SCREEN, 33);
+//#            cmdAlert=new Command(SR.get(SR.MS_ALERT_PROFILE_CMD), Command.SCREEN, 32);
+//#            cmdArchive=new Command(SR.get(SR.MS_ARCHIVE), Command.SCREEN, 33);
+//#           /*
+//#           cmdMyService=new Command(SR.get(SR.MS_SERVICE) + '>', Command.SCREEN, 31);   //3       
 //#ifdef STATS       
 //#             cmdStats=new Command(SR.get(SR.MS_STATS), Command.SCREEN, 34);  
 //#endif                  
 //#             cmdClrAllChats=new Command(SR.get(SR.MS_CLEAN_ALL_MESSAGES), Command.SCREEN, 35);
-//#             cmdReconnect=new Command(SR.get(SR.MS_BREAK_CONECTION), Command.SCREEN, 36);
-//#ifdef CONSOLE      
-//#             cmdXMLConsole=new Command(SR.get(SR.MS_XML_CONSOLE), Command.SCREEN, 37);
-//#             cmdDebugConsole=new Command(SR.get(SR.MS_DEBUG_MENU), Command.SCREEN, 39);      
-//#endif            
+//#             cmdReconnect=new Command(SR.get(SR.MS_BREAK_CONECTION), Command.SCREEN, 36);            
 //#             cmdQDHelp=new Command(SR.get(SR.MS_SUPPORT), Command.SCREEN, 38);
 //#if SASL_XGOOGLETOKEN      
 //#             cmdGmail=new Command(SR.get(SR.MS_CHECK_GOOGLE_MAIL), Command.SCREEN, 45);   //3       
 //#endif       
 //#             cmdFM=new Command(SR.get(SR.MS_FILE_MANAGER), Command.SCREEN, 46);   //3
+//#            */
 //#endif      
+//#ifdef CONSOLE      
+//#           cmdXMLConsole=new Command(SR.get(SR.MS_XML_CONSOLE), Command.SCREEN, 37);
+//#           cmdDebugConsole=new Command(SR.get(SR.MS_DEBUG_MENU), Command.SCREEN, 39);      
+//#endif
 
           cmdAccount=new Command(SR.get(SR.MS_ACCOUNT_), Command.SCREEN, 15);
           cmdInfo=new Command(SR.get(SR.MS_ABOUT), Command.SCREEN, 80);
           cmdMinimize=new Command(SR.get(SR.MS_APP_MINIMIZE), Command.SCREEN, 90);
           cmdQuit=new Command(SR.get(SR.MS_APP_QUIT), Command.SCREEN, 99);
-          cmdLatestNews=new Command("QD ".concat(SR.get(SR.MS_QD_NEWS)), Command.SCREEN, 82);
-          cmdCleanAllMessages=new Command(SR.get(SR.MS_CLEAN_ALL_MESSAGES), Command.SCREEN, 50);    
+          //cmdLatestNews=new Command("QD ".concat(SR.get(SR.MS_QD_NEWS)), Command.SCREEN, 82);
+          //cmdCleanAllMessages=new Command(SR.get(SR.MS_CLEAN_ALL_MESSAGES), Command.SCREEN, 50);    
     }
    
     
@@ -392,7 +393,7 @@ public class Roster
 //#ifdef GRAPHICS_MENU
 //#     private static Command cmdOptions;
 //#       
-//#     private static Command cmdMyJabber;
+//#     private static Command cmdMyService;
 //#      /*
 //#       private static Command cmdVcard;
 //#       private static Command cmdConference;
@@ -412,32 +413,35 @@ public class Roster
 //#       private static Command cmdActivity;
 //#endif   
 //#       */               
+//#      private static Command cmdAlert;
+//#ifdef CONSOLE      
+//#       private static Command cmdXMLConsole;
+//#       private static Command cmdDebugConsole; 
+//#endif  
 //#       
+//#     /*
 //#     private static Command cmdMyService;
-//#       private static Command cmdAlert;
-//#       private static Command cmdArchive;
 //#ifdef STATS       
 //#       private static Command cmdStats; 
 //#endif                  
 //#       private static Command cmdClrAllChats;
 //#       private static Command cmdReconnect;
-//#ifdef CONSOLE      
-//#       private static Command cmdXMLConsole;
-//#       private static Command cmdDebugConsole; 
-//#endif            
+//#           
 //#       private static Command cmdQDHelp;
 //#if SASL_XGOOGLETOKEN      
 //#       private static Command cmdGmail;     
 //#endif       
 //#       private static Command cmdFM;
+//#      */
 //#endif      
 
+    private static Command cmdArchive;      
     private static Command cmdAccount;
     private static Command cmdInfo;
     private static Command cmdMinimize;
     private static Command cmdQuit;
-    private static Command cmdLatestNews;
-    private static Command cmdCleanAllMessages;
+    //private static Command cmdLatestNews;
+    //private static Command cmdCleanAllMessages;
     
     
     
@@ -459,9 +463,12 @@ public class Roster
 //# 
 //# 
 //#         addCommand(cmdStatus); cmdStatus.setImg(MenuIcons.ICON_STATUS);
-//#         addCommand(cmdActiveContacts); cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
+//#         if(midlet.BombusQD.cf.isTouchPhone) {
+//#             addCommand(cmdActiveContacts); 
+//#             cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
+//#         }
 //#         if (isLoggedIn()){
-//#          addCommand(cmdMyJabber); cmdMyJabber.setImg(0x90);
+//#          addCommand(cmdMyService); cmdMyService.setImg(0x90);
 //#ifdef SERVICE_DISCOVERY
 //#          //addCommand(cmdSrvDisco); cmdSrvDisco.setImg(MenuIcons.ICON_DISCO);
 //#endif
@@ -481,7 +488,7 @@ public class Roster
 //#               addInCommand(1,cmdMood); cmdMood.setImg(MenuIcons.ICON_MOOD);
 //#               addInCommand(1,cmdActivity); cmdActivity.setImg(MenuIcons.ICON_USER_ACTIVITY);
 //#endif   
-//#           */
+//#           
 //#if SASL_XGOOGLETOKEN                
 //#              if(isLoggedIn()){
 //#                if (midlet.BombusQD.sd.account.isGmail()) {
@@ -489,11 +496,12 @@ public class Roster
 //#                }
 //#              }
 //#endif    
+//#           */
 //#         }
-//# 
+//#         addCommand(cmdAlert); cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
+//#         /*
 //#         addCommand(cmdMyService); cmdMyService.setImg(MenuIcons.ICON_ITEM_ACTIONS); 
 //#               addInCommand(3,cmdAlert); cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
-//#               addInCommand(3,cmdArchive); cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
 //#               if(isLoggedIn()) {
 //#                   addInCommand(3,cmdQDHelp); cmdQDHelp.setImg(0x05);
 //#               }              
@@ -503,17 +511,20 @@ public class Roster
 //#endif                    
 //#               addInCommand(3,cmdFM); cmdFM.setImg(MenuIcons.ICON_FILEMAN);        
 //#               addInCommand(3,cmdReconnect); cmdReconnect.setImg(MenuIcons.ICON_RECONNECT);
-//#ifdef CONSOLE
-//#               if(midlet.BombusQD.cf.userAppLevel==1) {
-//#                 addInCommand(3,cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);
-//#                 addInCommand(3,cmdDebugConsole); cmdDebugConsole.setImg(MenuIcons.ICON_CONCOLE);
-//#               }
-//#endif   
-//#         addCommand(cmdAccount); cmdAccount.setImg(MenuIcons.ICON_VCARD);              
+//#          */
+//#         addCommand(cmdAccount); cmdAccount.setImg(MenuIcons.ICON_VCARD);
+//#         addCommand(cmdArchive); cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
 //#         addCommand(cmdOptions);   cmdOptions.setImg(0x03);              
 //# 
+//#ifdef CONSOLE
+//#         if(midlet.BombusQD.cf.userAppLevel==1) {
+//#                 addCommand(cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);
+//#                 addCommand(cmdDebugConsole); cmdDebugConsole.setImg(MenuIcons.ICON_CONCOLE);
+//#         }
+//#endif   
+//#         
 //#         addCommand(cmdInfo); cmdInfo.setImg(MenuIcons.ICON_CHECK_UPD);
-//#         addCommand(cmdLatestNews); cmdLatestNews.setImg(MenuIcons.ICON_CHECK_UPD);
+//#         //addCommand(cmdLatestNews); cmdLatestNews.setImg(MenuIcons.ICON_CHECK_UPD);
 //# 
 //#         if (midlet.BombusQD.cf.allowMinimize) 
 //#             addCommand(cmdMinimize);
@@ -608,7 +619,7 @@ public class Roster
 //#            }
 //#          */
 //#ifdef SERVICE_DISCOVERY         
-//#            else if(c==cmdMyJabber){ new ServiceDiscovery(display, null, null, false);  }
+//#            else if(c==cmdMyService){ new ServiceDiscovery(display, null, null, false);  }
 //#endif       
 //#         /*
 //#ifdef PRIVACY         
@@ -623,6 +634,7 @@ public class Roster
 //#endif      
 //#          */     
 //# 
+//#         /*
 //#ifdef STATS        
 //#            else if(c==cmdStats){  new StatsWindow(display);  }
 //#endif                        
@@ -638,19 +650,20 @@ public class Roster
 //#endif                
 //#            else if(c==cmdFM){
 //#              new io.file.browse.Browser(null, display, this, null, false);
-//#            }
+//#            }       
+//#            else if(c==cmdQDHelp){ new ConferenceForm(display, this, "BombusQD@", "qd@conference.jabber.ru", null, false);  }  
+//#          */
 //#ifdef CONSOLE        
 //#            else if(c==cmdXMLConsole){
 //#              new XMLList(display,this);
 //#            }
 //#            else if(c==cmdDebugConsole){ new DebugXMLList(display, this);  }
-//#endif        
-//#            else if(c==cmdQDHelp){ new ConferenceForm(display, this, "BombusQD@", "qd@conference.jabber.ru", null, false);  }  
+//#endif 
 //# 
 //#          else if (c==cmdMinimize) { cmdMinimize();  }
-//#          else if (c==cmdLatestNews){
-//#             new GetFileServer(display, this);
-//#          }
+//#          //else if (c==cmdLatestNews){
+//#          //   new GetFileServer(display, this);
+//#          //}
 //#          //else if(c==cmdSearchUsers){
 //#          //   new DiscoSearchForm(display, this , null , -1);
 //#          //}
@@ -659,10 +672,10 @@ public class Roster
 //#          else if (c==cmdStatus) { cmdStatus(); }
 //#          else if (c==cmdAlert) { cmdAlert(); }
 //#ifdef ARCHIVE
-//#  	else if (c==cmdArchive) { cmdArchive(); }
+//#  	 else if (c==cmdArchive) { cmdArchive(); }
 //#endif
 //#          else if (c==cmdInfo) { cmdInfo(); }
-//#          else if (c==cmdClrAllChats) { cmdCleanAllMessages(); }     
+//#          //else if (c==cmdClrAllChats) { cmdCleanAllMessages(); }     
 //#ifndef WMUC
 //#          //else if (c==cmdConference) { cmdConference(); }
 //#endif
@@ -3651,7 +3664,7 @@ public class Roster
 //#             }
 //#endif
             midlet.BombusQD.getInstance().s = new SplashScreen(display, getMainBarItem(), midlet.BombusQD.cf.keyLock);
-            midlet.BombusQD.getInstance().s.createSnow();
+            //midlet.BombusQD.getInstance().s.createSnow();
             return;
         } else if (keyCode==midlet.BombusQD.cf.keyVibra || keyCode==MOTOE680_FMRADIO /* TODO: redefine keyVibra*/) {
             // swap profiles

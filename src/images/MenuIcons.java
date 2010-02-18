@@ -88,6 +88,9 @@ public class MenuIcons extends ImageList{
     public static final byte ICON_USER_SEARCH    = 0x42;   
     public static final byte ICON_MOOD       = 0x11;
     public static final byte ICON_USER_ACTIVITY    = 0x67;    
+    public static final byte ICON_DISCO_SERVICE    = 0x65;
+    public static final byte ICON_ADD_SERVER    = 0x55;
+    public static final byte ICON_REMOVE_ICON    = 0x51;
     /*
     public static final short ICON_JABBER_ACCOUNT = 0x90;
     public static final short ICON_YANDEX_ACCOUNT = 0x91;

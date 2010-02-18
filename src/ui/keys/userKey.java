@@ -112,11 +112,11 @@
 //#             SR.get(SR.MS_PRIVACY_LISTS),
 //#             SR.get(SR.MS_CUSTOM_KEYS),
 //#             SR.get(SR.MS_CLEAR_POPUPS),
-//#             SR.get(SR.MS_FLASHLIGHT),
-//#             SR.get(SR.MS_ABOUT),
+//#             //SR.get(SR.MS_FLASHLIGHT),
+//#             //SR.get(SR.MS_ABOUT),
 //#             SR.get(SR.MS_APP_MINIMIZE),
 //#             SR.get(SR.MS_INVERT),
-//#             SR.get(SR.MS_XML_CONSOLE), 
+//#             //SR.get(SR.MS_XML_CONSOLE), 
 //#             SR.get(SR.MS_FULLSCREEN)
 //#     };
 //#     

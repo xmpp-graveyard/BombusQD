@@ -85,6 +85,7 @@ public class Config {
     public final static byte WTK=50;
     public final static byte OTHER=99;
     public final static byte NOKIA_5800=44;
+    public boolean isTouchPhone;
 
     StaticData sd = StaticData.getInstance();
 
