@@ -88,9 +88,9 @@ public class AlertCustomizeForm
     
     private NumberInput vibraRepeatCount;
     private NumberInput vibraRepeatPause;
-    
-    LinkString linkLight;
-    
+    //#ifdef LIGHT_CONTROL
+//#     LinkString linkLight;
+    //#endif
     AlertCustomize ac;
     Vector files[];
     Vector fileNames;
@@ -178,12 +178,13 @@ public class AlertCustomizeForm
         }
 
         itemsList.addElement(new SpacerItem(5));
-        linkLight = new LinkString(SR.get(SR.L_CONFIG)) { public void doAction() { 
-            new LightConfigForm(midlet.BombusQD.getInstance().display, midlet.BombusQD.getInstance().display.getCurrent());
-        } };
-        itemsList.addElement(linkLight);  
-        itemsList.addElement(new SpacerItem(5));
-        
+        //#ifdef LIGHT_CONTROL
+//#         linkLight = new LinkString(SR.get(SR.L_CONFIG)) { public void doAction() { 
+//#             new LightConfigForm(midlet.BombusQD.getInstance().display, midlet.BombusQD.getInstance().display.getCurrent());
+//#         } };
+//#         itemsList.addElement(linkLight);  
+//#         itemsList.addElement(new SpacerItem(5));
+        //#endif
         commandState();
 
         attachDisplay(display);

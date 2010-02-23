@@ -245,9 +245,9 @@ public class GMenu extends Canvas {
       else if(gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_REGISTERING))>-1
           || gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_HISTORY_OPTIONS))>-1 ) {
           GMenuIn(gm.cmdsecondList); eventMenu=true; return;   
-      } 
-      else if (gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SERVICE))>-1){            
-          GMenuIn(gm.cmdThirdList); eventMenu=true; return;
+      //}
+      //else if (gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SERVICE))>-1){
+      //    GMenuIn(gm.cmdThirdList); eventMenu=true; return;
       } else{
           gm.itemGrMenu=-1;
       }
@@ -358,7 +358,10 @@ public class GMenu extends Canvas {
             //g.drawRect(1, 1 + (cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh - 1);
         }else {
             g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
-            g.fillRoundRect(1, 1 + (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh, 8, 8);
+            g.fillRoundRect(0, (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh, 8, 8);
+            g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE));
+            g.drawRoundRect(0, (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh, 8, 8);
+
         }  
           
         g.setFont(font);

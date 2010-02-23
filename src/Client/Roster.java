@@ -168,7 +168,7 @@ public class Roster
 
     private GMenuConfig gm=GMenuConfig.getInstance();
     //#ifdef JUICK.COM
-    private JuickModule juick = JuickModule.jm();
+//#     private JuickModule juick = JuickModule.jm();
     //#endif
     
     
@@ -359,8 +359,8 @@ public class Roster
 //#            */              
 //#            cmdAlert=new Command(SR.get(SR.MS_ALERT_PROFILE_CMD), Command.SCREEN, 32);
 //#            cmdArchive=new Command(SR.get(SR.MS_ARCHIVE), Command.SCREEN, 33);
-//#           /*
-//#           cmdMyService=new Command(SR.get(SR.MS_SERVICE) + '>', Command.SCREEN, 31);   //3       
+//#           
+//#           /*cmdMyService=new Command(SR.get(SR.MS_SERVICE) + '>', Command.SCREEN, 31);   //3
 //#ifdef STATS       
 //#             cmdStats=new Command(SR.get(SR.MS_STATS), Command.SCREEN, 34);  
 //#endif                  
@@ -3141,7 +3141,7 @@ public class Roster
             
         }else {
 	    //#ifdef JUICK.COM
-            boolean incomingMsg = (message.messageType==Constants.MESSAGE_TYPE_IN || message.messageType==Constants.MESSAGE_TYPE_JUICK);
+//#             boolean incomingMsg = (message.messageType==Constants.MESSAGE_TYPE_IN || message.messageType==Constants.MESSAGE_TYPE_JUICK);
 	    //#else
             boolean incomingMsg = (message.messageType==Constants.MESSAGE_TYPE_IN);
 	    //#endif

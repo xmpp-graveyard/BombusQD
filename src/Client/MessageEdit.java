@@ -150,7 +150,7 @@ public final class MessageEdit
     }
     
     public void setText(String body, Contact to, Displayable pView, boolean emptyChat){
-        
+
        if(display == null) this.display = midlet.BombusQD.getInstance().display;
        this.body = body; 
        this.parentView=pView;
@@ -196,6 +196,8 @@ public final class MessageEdit
                 display.setCurrent(form);
                 break;
        }
+       composing=true;
+       send(null,null);
     }
 
     
@@ -348,7 +350,7 @@ public final class MessageEdit
 //#ifdef ARCHIVE
 	if (c==cmdPaste) { 
             //System.out.println(to);
-                composing=false; 
+                //composing=false;
                 if(null != to) to.msgSuspended=body; 
                 if(midlet.BombusQD.cf.msgEditType>0){
                   new ArchiveList(display , textField.getCaretPosition(), 1, textField, null,  to); return;                    
@@ -421,6 +423,7 @@ public final class MessageEdit
 
         if (c==cmdCancel) {
             composing=false;
+            send(null,null);
             body=null;
             if(multiMessage) multiMessage = false;
             if(null != to && to.msgSuspended!=null) to.msgSuspended=null;
@@ -428,7 +431,8 @@ public final class MessageEdit
             return;
         }
         if (c==cmdSuspend) {
-                composing=false; 
+                composing=false;
+                send(null,null);
                 if(multiMessage) multiMessage = false;
                 if(null != to) to.msgSuspended=body; 
                 body=null;
@@ -540,7 +544,7 @@ public final class MessageEdit
         if (!midlet.BombusQD.cf.eventComposing) comp=null;
         try { //??
             if (body!=null || subj!=null || comp!=null) {
-               to.lastSendedMessage=body; //System.out.println("sendMessage=>" + body + " > " + subj + " >>> " + to);
+               if (body!=null) to.lastSendedMessage=body; //System.out.println("sendMessage=>" + body + " > " + subj + " >>> " + to);
                  if(evil)
                      midlet.BombusQD.sd.roster.sendMessage(to, id, body, subj, comp,true);
                  else midlet.BombusQD.sd.roster.sendMessage(to, id, body, subj, comp,false);
