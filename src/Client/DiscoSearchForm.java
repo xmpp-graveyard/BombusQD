@@ -129,6 +129,7 @@ public class DiscoSearchForm
               case 0: return new ListItem((String)list.elementAt(index),0x00,"icq");
               case 1: return new ListItem((String) list.elementAt(index),0x00,"mrim");
               case 2: return new ListItem((String) list.elementAt(index),0x00,"irc");
+              case 3: return new ListItem((String) list.elementAt(index),0x00,"j2j");
           }           
        }else {
           return new ListItem((String) servers.elementAt(index));
@@ -140,8 +141,9 @@ public class DiscoSearchForm
         String str="";
           switch(type){
               case 0: str = SR.get(SR.MS_TRANSPORTS).concat(" ICQ"); break;
-              case 1: str = SR.get(SR.MS_TRANSPORTS).concat(" Mrim"); break;
-              case 2: str = SR.get(SR.MS_TRANSPORTS).concat(" Irc"); break;
+              case 1: str = SR.get(SR.MS_TRANSPORTS).concat(" MRIM"); break;
+              case 2: str = SR.get(SR.MS_TRANSPORTS).concat(" IRC"); break;
+              case 3: str = SR.get(SR.MS_TRANSPORTS).concat(" J2J"); break;
           }
         setMainBarItem(new MainBar(2, null, ((list!=null)?str:SR.get(SR.MS_USERS_SEARCH))
                 +" ("+getItemCount()+") ", false));

@@ -172,7 +172,7 @@ public class GetFileServer
            new DiscoSearchForm(display,this,irc,2);
         }
         if (c==cmdVk) {
-           new DiscoSearchForm(display,this,vk,2);
+           new DiscoSearchForm(display,this,vk,3);
         }
         super.commandAction(c,d);
     }

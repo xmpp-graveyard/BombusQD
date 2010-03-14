@@ -323,7 +323,7 @@ public final class ConferenceForm
             status=Constants.PRESENCE_ONLINE;
         midlet.BombusQD.sd.roster.sendDirectPresence(status, jid, x);
         grp.inRoom=true;
-        midlet.BombusQD.sd.roster.reEnumRoster();
+        //midlet.BombusQD.sd.roster.reEnumRoster();
         x=null;
         grp=null;
         history=null;

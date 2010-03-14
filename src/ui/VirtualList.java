@@ -1700,14 +1700,15 @@ public abstract class VirtualList
 //#                   long free = Runtime.getRuntime().freeMemory()>>10;
 //#                   long total = Runtime.getRuntime().totalMemory()>>10; 
 //#                   long qd_use = total - free;
-//#                   
+//#               /* do we really need MathFP? //Tishka17
 //#                   long a = MathFP.toFP(qd_use);
 //#                   long b = MathFP.toFP(total);
 //#                   long res = MathFP.mul( MathFP.div(a,b) , MathFP.toFP(100) ); // (use/total)*100
-//#                   
+//#               */
 //#               mem.append("Current Threads: " + Integer.toString(Thread.activeCount()) + "\n")
 //#                .append( "QD use: " + qd_use + " kb\n")
-//#                .append( "Memory using: " + MathFP.toString(res,1) + "%\n" )        
+//#               // .append( "Memory using: " + MathFP.toString(res,1) + "%\n" )
+//#                 .append( "Memory using: " + (100*qd_use/total) + "%\n" )
 //#                .append( "Free/Total: " + free + "/" + total + " kb\n" )
 //#                .append("*Stanzas(in/out): "+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz));     
 //#             }

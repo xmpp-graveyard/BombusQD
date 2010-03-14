@@ -1670,13 +1670,15 @@ public class Roster
                   }
                 }//midlet.BombusQD.cf.useClassicChat
          }
+        if (body!=null || subject!=null)
+            playNotify(SOUND_OUTGOING);
         message=null;
         to=null; 
         body=null; 
         subject=null;
         
             lastMessageTime=Time.utcTimeMillis();
-            playNotify(SOUND_OUTGOING);
+            
         } 
         catch(OutOfMemoryError eom) { errorLog("error Roster::1"); }
         catch (Exception e) { e.printStackTrace(); }
@@ -2579,30 +2581,29 @@ public class Roster
                 }
 //#ifndef WMUC
             JabberDataBlock xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc#user");
-                if (xmuc==null) xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc"); //join errors
+            if (xmuc==null) xmuc=pr.findNamespace("x", "http://jabber.org/protocol/muc"); //join errors
 
-                int priority = pr.getPriority();
-                byte ti=pr.getTypeIndex();
-                
-                if (xmuc!=null) {//MUC only
+            int priority = pr.getPriority();
+            byte ti=pr.getTypeIndex();
+
+            if (xmuc!=null) {//MUC only
                     
-                     JabberDataBlock status=xmuc.getChildBlock("status");
-                      if(status!=null)
-                      {
+                    JabberDataBlock status=xmuc.getChildBlock("status");
+                    if(status!=null) {
                        int index = from.indexOf('/');
                        int statusCode=Integer.parseInt( status.getAttribute("code") );
-                        if(statusCode==201) {
-                         new QueryConfigForm(display,from.substring(0,index));                          
-                        }
+                       if(statusCode==201) {
+                           new QueryConfigForm(display,from.substring(0,index));
                        }
+                    }
                      
                     MucContact conferenceContact = null;
-                     Contact room = null;
+                    Contact room = null;
                      
                     int rp=from.indexOf('/');
                     if(rp!=-1) room = getContact(from.substring(0, rp), false);
                     
-                     try {
+                    try {
                         conferenceContact = mucContact(from);
                         ConferenceGroup cGroup = (ConferenceGroup)conferenceContact.group;
                         if(conferenceContact == cGroup.selfContact){
@@ -2663,6 +2664,13 @@ public class Roster
                            sb=null;
                         } else {                        
                            messageStore(conferenceContact, conferenceMessage);
+                        }
+                        if (ti==Constants.PRESENCE_OFFLINE)  {
+                            conferenceContact.setIncoming(Constants.INC_NONE);
+                            conferenceContact.showComposing=false;
+                            conferenceContact.client=-1;
+                            conferenceContact.clientName="-";
+                            conferenceContact.version="";
                         }
                         name=null;
                         lang=null;
@@ -2788,7 +2796,8 @@ public class Roster
 //#                         //c.activity="";
 //#endif                
                         c.client=-1;
-                        c.clientName="-";                        
+                        c.clientName="-";
+                        c.version="";
                     }
                     if (ti>=0) {
 //#ifdef RUNNING_MESSAGE
@@ -2801,14 +2810,14 @@ public class Roster
                                 || ti==Constants.PRESENCE_OFFLINE) && (c.getGroupType()!=Groups.TYPE_TRANSP) && (c.getGroupType()!=Groups.TYPE_IGNORE)) 
                             playNotify(ti);
                     }
-                   c=null;
+                    c=null;
 //#ifndef WMUC
                 }
 //#endif
-                 pr=null;
-                 from=null;
+                pr=null;
+                from=null;
                  //sortRoster(c);
-                 reEnumRoster();                 
+                reEnumRoster();                 
                 return JabberBlockListener.BLOCK_PROCESSED;  
             }
         } catch( Exception e ) {
@@ -3319,9 +3328,11 @@ public class Roster
         Group g = c.group;
          if (g.collapsed) {
             g.collapsed = false;
-             reEnumerator.queueEnum(c, force);
+            reEnumerator.queueEnum(c, force);
+            reEnumerator.update();
          }
-        int index = vContacts.indexOf(c);
+        paintVContacts = vContacts;
+        int index = paintVContacts.indexOf(c);
         if (index >= 0) moveCursorTo(index);
      }
      
@@ -3969,7 +3980,9 @@ public class Roster
         } else { 
           showNext = (0 == pos) ? (Contact)aContacts.lastElement() : (Contact)aContacts.elementAt(pos - 1);
         }
-        display.setCurrent(showNext.getMessageList());
+        try {
+            display.setCurrent(showNext.getMessageList());
+        } catch (Exception e) { }   
     }
 
     public void deleteContact(Contact c) {
