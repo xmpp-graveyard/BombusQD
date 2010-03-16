@@ -2397,7 +2397,7 @@ public class Roster
                 // /me
                 if (body!=null) {
                     if (body.startsWith("/me ")) start_me=3;
-                    if (start_me>=0) {
+                    if (start_me>=0 && groupchat) {
                         StringBuffer b=new StringBuffer(0);
 //#if NICK_COLORS
                         if(midlet.BombusQD.cf.module_classicchat==false) { 
@@ -2411,7 +2411,6 @@ public class Roster
                         if (start_me==0){
                             b.append(": ");
                         } else b.insert(0,'*');
-                        
                         b.append(body.substring(start_me));
                         body=b.toString();
                         b=null;
@@ -2458,10 +2457,12 @@ public class Roster
                 m.MucChat = groupchat;
                 
 //#ifdef JUICK.COM
-//#                 if(from.indexOf("juick@juick.com")>-1) {
+//#                 if(from.indexOf("juick@juick.com")>-1 || data.findNamespace("juick",juick.NS_MESSAGE)!=null) {
 //#                     m = juick.jm().getMsg(m,data);
 //#                     if(m==null) {
 //#                        m = new Msg(mType, from.trim(), subj, body.toString());
+//#                     } else {
+//#                        c = getContact(m.from, (midlet.BombusQD.cf.notInListDropLevel!=NotInListFilter.DROP_MESSAGES_PRESENCES));
 //#                     }
 //#                     /*
 //#                     if(m.from.startsWith("[j]")){

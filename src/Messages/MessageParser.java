@@ -218,6 +218,7 @@ public final class MessageParser // implements Runnable
     private static StringBuffer s = new StringBuffer(0);
 
     private void parseMessage(final MessageItem task, final int windowWidth, String txt, boolean isSubj) {//fixes by aspro
+      synchronized(this) {
 //long s1 = System.currentTimeMillis();          
         if (null == txt) return;
 
@@ -405,6 +406,7 @@ public final class MessageParser // implements Runnable
             lines.removeElementAt(lines.size()-1);
         smileRoot=null;
         lines=null;
+      }
 //long s2 = System.currentTimeMillis();  
 //System.out.println("parse "+(s2-s1)+" msec");
     }

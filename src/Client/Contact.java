@@ -312,7 +312,27 @@ public class Contact extends IconTextElement{
             else {
                 first_msgreplace = chatInfo.isFirstMessage();
                 StringBuffer temp = new StringBuffer(0);
-                if (midlet.BombusQD.cf.showNickNames) {
+
+                if (m.body.startsWith("/me ")) {
+                    temp.setLength(0);
+//#if NICK_COLORS
+                    temp.append("<nick>");
+//#endif
+                    temp.append((m.messageType==Constants.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
+                    if (midlet.BombusQD.cf.showNickNames) {
+                        temp.append(" (");
+                        temp.append(m.getTime());
+                        temp.append(')');
+                    }
+//#if NICK_COLORS
+                    temp.append("</nick>");
+//#endif
+                    temp.insert(0,'*');
+                    
+                    temp.append(m.body.substring(3));
+                    m.body=temp.toString().trim();
+                    temp.setLength(0);
+                } else if (midlet.BombusQD.cf.showNickNames) {
                     temp.setLength(0);
                     temp.append((m.messageType==Constants.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
                         temp.append(" (");
@@ -321,22 +341,8 @@ public class Contact extends IconTextElement{
                     if (m.subject!=null) temp.append(m.subject);
                     m.subject=temp.toString();
                     temp.setLength(0);
-                    temp = null;
                 }
-                if (m.body.startsWith("/me ")) {
-                    temp.setLength(0);
-//#if NICK_COLORS
-                    temp.append("<nick>");
-//#endif
-                    temp.append((m.messageType==Constants.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
-//#if NICK_COLORS
-                    temp.append("</nick>");
-//#endif
-                    temp.insert(0,'*');
-                    temp.append(m.body.substring(3));
-                    m.body=temp.toString().trim();
-                    temp.setLength(0);
-                }
+                temp = null;
             }
         } else {
             status = Constants.PRESENCE_ONLINE;

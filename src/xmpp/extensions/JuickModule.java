@@ -28,9 +28,9 @@
 //#     
 //#     public static JuickModule listener;
 //#     
-//#     private final static String BOTNAME = "juick@juick.com/Juick";
-//#     private final static String NS_MESSAGES = "http://juick.com/query#messages";
-//#     private final static String NS_MESSAGE = "http://juick.com/message";
+//#     public final static String BOTNAME = "juick@juick.com/Juick";
+//#     public final static String NS_MESSAGES = "http://juick.com/query#messages";
+//#     public final static String NS_MESSAGE = "http://juick.com/message";
 //#     private final static String TAG_RECOMMENDATION = "Recommended by ";
 //# 
 //#     private static StringBuffer buf = new StringBuffer(0);
@@ -252,8 +252,9 @@
 //#                  //if (juickUnameNs!=null) juickUnameNs.getText();
 //#                  
 //#                  JabberDataBlock juickNs = data.findNamespace("juick",NS_MESSAGE);
-//#                  m.messageType=Constants.MESSAGE_TYPE_JUICK;
-//#                  m.id=null;
+//#                  m.messageType = Constants.MESSAGE_TYPE_JUICK;
+//#                  m.id = null;
+//#                  m.from = BOTNAME;
 //#                  
 //#                  if(juickNs!=null){
 //#                        Vector childBlocks = new Vector(0);
