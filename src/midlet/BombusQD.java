@@ -173,8 +173,6 @@ public class BombusQD extends MIDlet implements Runnable
     public void run(){ 
 
         //long s1 = System.currentTimeMillis();
-        AccountSelect acc = new AccountSelect(display, null , true,-1);
-
         if(sd.roster==null) sd.roster=new Roster(display);
         //s.setProgress(18);
         
@@ -186,13 +184,10 @@ public class BombusQD extends MIDlet implements Runnable
           if (!selAccount && cf.autoLogin) {
             //sd.roster=new Roster(display);
             Account.loadAccount(cf.autoLogin, cf.accountIndex,-1);
-            display.setCurrent(sd.roster);
-            rmsVersion(false, sd.roster);
           }
-          else {
-            display.setCurrent(acc);
-            rmsVersion(false, acc);
-        }
+        
+        display.setCurrent(sd.roster);
+        rmsVersion(false, sd.roster);
         
         //long s2 = System.currentTimeMillis();
 //#ifdef CONSOLE        

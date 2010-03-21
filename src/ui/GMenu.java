@@ -105,7 +105,7 @@ public class GMenu extends Canvas {
    private static int x1,y1,x2,y2;
    
    
-   public final void updateFont() {
+   private void updateFont() {
        switch(midlet.BombusQD.cf.graphicsMenuFont){
            case 0: font = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_MEDIUM); break;
            case 1: font = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_SMALL);  break;
