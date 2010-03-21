@@ -214,6 +214,7 @@ public class ServiceDiscovery
         }
         serviceDisco = this;
         currentDisplay = this;
+        isServiceDiscoWindow = true;
     }
     
     private String discoId(String id) {
@@ -514,6 +515,7 @@ public class ServiceDiscovery
             stream.cancelBlockListener(this);
             if (display!=null && parentView!=null /*prevents potential app hiding*/ ) {
                 display.setCurrent(parentView);
+                isServiceDiscoWindow = false;
             }
         } else {
             State st=(State)stackItems.lastElement();
@@ -671,6 +673,7 @@ public class ServiceDiscovery
                     case MenuIcons.ICON_RECONNECT:
                         midlet.BombusQD.sd.roster.errorLog(SR.get(SR.MS_SIMULATED_BREAK));
                         midlet.BombusQD.sd.roster.doReconnect();
+                        midlet.BombusQD.sd.roster.showRoster();
                         break;
                     case MenuIcons.ICON_DISCO_SERVICE:
                         showIMmenu();

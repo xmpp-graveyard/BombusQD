@@ -519,7 +519,10 @@ public class Roster
 //#ifdef CONSOLE
 //#         if(midlet.BombusQD.cf.userAppLevel==1) {
 //#                 addCommand(cmdXMLConsole); cmdXMLConsole.setImg(MenuIcons.ICON_CONCOLE);
-//#                 addCommand(cmdDebugConsole); cmdDebugConsole.setImg(MenuIcons.ICON_CONCOLE);
+//#                 if(midlet.BombusQD.cf.debug) {
+//#                     addCommand(cmdDebugConsole); 
+//#                     cmdDebugConsole.setImg(MenuIcons.ICON_CONCOLE);
+//#                 }
 //#         }
 //#endif   
 //#         
@@ -4030,7 +4033,7 @@ public class Roster
     
 //#ifdef AUTOSTATUS
 //#     public void setAutoAway() {
-//#         if(!isLoggedIn()) return;
+//#         if(!isLoggedIn() || !midlet.BombusQD.cf.module_autostatus) return;
 //#         if (!autoAway) {
 //#             oldStatus=myStatus;
 //#             if (myStatus==0 || myStatus==1) {
@@ -4045,7 +4048,7 @@ public class Roster
 //#     }
 //# 
 //#     public void setAutoXa() {
-//#         if(!isLoggedIn()) return;
+//#         if(!isLoggedIn() || !midlet.BombusQD.cf.module_autostatus) return;
 //#         if (autoAway && !autoXa) {
 //#             autoXa=true;
 //#             if (!midlet.BombusQD.cf.setAutoStatusMessage) {

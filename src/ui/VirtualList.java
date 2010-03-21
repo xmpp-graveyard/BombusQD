@@ -91,6 +91,7 @@ public abstract class VirtualList
     private static boolean paintBottom=true;
 
     public static int phoneManufacturer;
+    public boolean isServiceDiscoWindow;
     
     public static void changeOrient(int newOrient) {
         panelsState=newOrient;
@@ -1556,7 +1557,6 @@ public abstract class VirtualList
     private boolean popUpshow=false;
     private static StringBuffer mem = new StringBuffer(0);
     
-    int memCleanCount = 0;
     private void key(int keyCode) {
 //#ifdef GRAPHICS_MENU    
 //#      if(gm.itemGrMenu>0 && midlet.BombusQD.cf.graphicsMenu ) { //�������� ����
@@ -1680,37 +1680,30 @@ public abstract class VirtualList
 //#             break; 
 //#         case KEY_STAR:
 //#             popUpshow=true;
-//#             memCleanCount++;
+//#             if(!isServiceDiscoWindow) midlet.BombusQD.sd.roster.systemGC();
 //#ifdef POPUPS
 //#             mem.setLength(0);
-//#             mem.append("Time: ")
-//#                 .append(Time.getTimeWeekDay())
+//#             mem.append(Time.getTimeWeekDay())
 //#                 .append("\nTraffic: ")
 //#                 .append(getTraffic());
 //#             if(midlet.BombusQD.cf.userAppLevel == 1) {    
-//#               mem.append("\n");
-//#               if( 0 == memCleanCount%3 ) {
-//#                 midlet.BombusQD.sd.roster.systemGC();
-//#                 mem.append("Memory clean..");
-//#                 mem.append("\n");
-//#                 memCleanCount = 0;
-//#               }
-//#               mem.append(SR.get(SR.MS_MEMORY))
-//#                .append("\n");
+//#               mem.append('\n');
 //#                   long free = Runtime.getRuntime().freeMemory()>>10;
 //#                   long total = Runtime.getRuntime().totalMemory()>>10; 
 //#                   long qd_use = total - free;
 //#               /* do we really need MathFP? //Tishka17
+//#                * hmmm,maybe in the future?
 //#                   long a = MathFP.toFP(qd_use);
 //#                   long b = MathFP.toFP(total);
 //#                   long res = MathFP.mul( MathFP.div(a,b) , MathFP.toFP(100) ); // (use/total)*100
 //#               */
-//#               mem.append("Current Threads: " + Integer.toString(Thread.activeCount()) + "\n")
-//#                .append( "QD use: " + qd_use + " kb\n")
+//#                mem.append( "QD use: " + qd_use + " kb ")
 //#               // .append( "Memory using: " + MathFP.toString(res,1) + "%\n" )
-//#                 .append( "Memory using: " + (100*qd_use/total) + "%\n" )
-//#                .append( "Free/Total: " + free + "/" + total + " kb\n" )
-//#                .append("*Stanzas(in/out): "+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz));     
+//#                 .append('(')
+//#                 .append((100*qd_use/total))
+//#                 .append("%)")
+//#                 .append('\n')
+//#                 .append("*Stanzas(in/out): "+Integer.toString(midlet.BombusQD.cf.inStanz)+"/"+Integer.toString(midlet.BombusQD.cf.outStanz));     
 //#             }
 //#             setWobble(1, null, mem.toString());
 //#endif

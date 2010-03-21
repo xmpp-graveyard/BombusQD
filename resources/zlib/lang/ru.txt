@@ -726,3 +726,4 @@ Please reinstall the program to avoid possible future problems	Пожалуйс�
 IM Networks	IM Сети
 Add server	Добавить сервер
 My servers	Мои серверы
+Menu font	Шрифт меню

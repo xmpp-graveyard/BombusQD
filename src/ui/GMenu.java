@@ -98,12 +98,21 @@ public class GMenu extends Canvas {
 
    private int width;
    private int height;
-   protected Font font = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_SMALL);
-   private int fh = font.getHeight();
+   private Font font;
+   private int fh;
    private int size;  
    private Vector menuCommands = new Vector(0);
    private static int x1,y1,x2,y2;
    
+   
+   public final void updateFont() {
+       switch(midlet.BombusQD.cf.graphicsMenuFont){
+           case 0: font = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_MEDIUM); break;
+           case 1: font = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_SMALL);  break;
+           case 2: font = Font.getFont(Font.FACE_PROPORTIONAL, Font.STYLE_PLAIN, Font.SIZE_LARGE);  break;   
+       }
+       fh = font.getHeight();
+   }
    
    public GMenu(Display display, Displayable parentView, MenuListener menuListener, ImageList il, Vector menuCommands) {
         /*
@@ -123,6 +132,7 @@ public class GMenu extends Canvas {
             Command c=(Command)menuCommands.elementAt(index);
             gm.commandslist[index]=c.getName();
         }
+        updateFont();
    }
    
    
@@ -152,6 +162,7 @@ public class GMenu extends Canvas {
         gm.cmdfirstList=cmdfirstList;
         gm.cmdsecondList=cmdsecondList;
         gm.cmdThirdList=cmdThirdList;
+        updateFont();
    }
    
    

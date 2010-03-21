@@ -144,6 +144,7 @@ public class Config {
     public int msgFont=0;
     public int barFont=0;
     public int baloonFont=0;
+    public int graphicsMenuFont=1;
     public String lang;
     public boolean capsState=false;
     public int textWrap=1;
@@ -646,6 +647,7 @@ public class Config {
             gradientBarLight1=inputStream.readInt();
             gradientBarLight2=inputStream.readInt();
             userAppLevel = inputStream.readInt();
+            graphicsMenuFont = inputStream.readInt();
 	    inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -875,6 +877,7 @@ public class Config {
             outputStream.writeInt(gradientBarLight1);
             outputStream.writeInt(gradientBarLight2);
             outputStream.writeInt(userAppLevel);
+            outputStream.writeInt(graphicsMenuFont);
 	} catch (Exception e) { }
 	return NvStorage.writeFileRecord(outputStream, "confInt", 0, true);        
     }

@@ -775,6 +775,7 @@ public class SR {
      public final static short MS_IM_NETWORKS = 737;
      public final static short MS_ADD_SERVER = 738;     
      public final static short MS_MY_SERVERS = 739;
+     public final static short MS_MENU_FONT = 740;
 
     private static String[] localeItemsDefault = new String[0];
     private static String[] localeItems = {
@@ -1520,7 +1521,8 @@ public class SR {
         
         "IM Networks",
         "Add server",
-        "My servers"
+        "My servers",
+        "Menu font"
     };  
 
 

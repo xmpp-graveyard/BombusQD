@@ -47,6 +47,7 @@ public class ConfigFonts
     private DropChoiceBox font2;
     private DropChoiceBox font3;
     private DropChoiceBox font4;
+    private DropChoiceBox font5;
     
     StaticData sd=StaticData.getInstance();
     
@@ -95,6 +96,13 @@ public class ConfigFonts
         font4.setSelectedIndex(cf.baloonFont/8);
         itemsList.addElement(font4);
         
+        font5=new DropChoiceBox(display, SR.get(SR.MS_MENU_FONT));
+        font5.append(SR.get(SR.MS_FONTSIZE_NORMAL));
+        font5.append(SR.get(SR.MS_FONTSIZE_SMALL));
+        font5.append(SR.get(SR.MS_FONTSIZE_LARGE));
+        font5.setSelectedIndex(cf.graphicsMenuFont);
+        itemsList.addElement(font5);
+        
         cursivUse = new CheckBox(SR.get(SR.MS_Italic), cf.cursivUse); itemsList.addElement(cursivUse); 
          /*
         item=new MultiLine(SR.get(SR.MS_DRAWED_FONT)+":", (cf.use_drawed_font)?cf.drwd_fontname:"<..>", super.superWidth); 
@@ -124,6 +132,7 @@ public class ConfigFonts
         FontCache.bar=cf.barFont=font3.getValue()*8; //bar
         FontCache.baloon=cf.baloonFont=font4.getValue()*8; //balloon
 
+        cf.graphicsMenuFont=font5.getValue();
         cf.cursivUse=cursivUse.getValue();
         /*
         try {
