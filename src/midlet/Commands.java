@@ -126,9 +126,9 @@ public class Commands {
   
     
               cmdHistory = new Command(SR.get(SR.MS_HISTORY_OPTIONS), Command.SCREEN, 101);
-              cmdHistoryRMS = new Command("Show RMS History", Command.SCREEN, 102);
-              cmdHistoryFS = new Command("Show FS History", Command.SCREEN, 103);
-              cmdHistorySERVER = new Command("Show Server History", Command.SCREEN, 104);
+              cmdHistoryRMS = new Command(SR.get(SR.MS_HISTORY_SHOW) + "(rms)", Command.SCREEN, 102);
+              cmdHistoryFS = new Command(SR.get(SR.MS_HISTORY_SHOW) + "(fs)", Command.SCREEN, 103);
+              cmdHistorySERVER = new Command(SR.get(SR.MS_HISTORY_SHOW) + "(server)", Command.SCREEN, 104);
 //#ifdef JUICK.COM   
 //#     /*
 //#               cmdJuickLastPopular = new Command("", Command.SCREEN, 101);//#

@@ -185,7 +185,7 @@ public final class CommandForm extends DefForm
     
     public void destroyView() {
         if(sb.length()>0) destroy();
-	if (display!=null) display.setCurrent(parentView);
+	if (display!=null) display.setCurrent(midlet.BombusQD.sd.roster);
     }
     
     public void cmdOk() {

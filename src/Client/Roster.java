@@ -1955,10 +1955,84 @@ public class Roster
 //#             file=null;
 //#         } catch (IOException ex) { }       
 //#     }
+//#     
+//#     private synchronized void loadAvatar(String from, boolean mucContactItem) {
+//#         /*
+//#          1.check avaliable image formats
+//#          2.resize loaded image
+//#          3.apply image to selected contact
+//#          */
+//#         Contact c = getContact(from, true);
+//#         if(c.hasPhoto) return;
+//#         
+//#         Image photoImg;
+//#         FileIO f;
+//#         String filename;
+//#         StringBuffer buffer;
+//#         byte[] b;
+//#         int len = -1;
+//#         
+//#         
+//#         buffer = new StringBuffer(0);
+//#         if (mucContactItem) {
+//#             buffer.append("muc_");
+//#             buffer.append(c.getNick());
+//#         } else {
+//#             buffer.append("roster_");
+//#             buffer.append(c.bareJid);
+//#         }
+//#         filename = StringUtils.replaceBadChars(buffer.toString());
+//#         try {   
+//#             f = FileIO.createConnection(midlet.BombusQD.cf.msgAvatarPath + filename + ".jpg");
+//#             b = f.fileRead();
+//#             len = b.length;
+//#             //errorLog("AVATAR " + filename + ".jpg MUC:" + mucContactItem); //send to self-contact
+//#         } catch (Exception ex) {
+//#             try {
+//#                  f = FileIO.createConnection(midlet.BombusQD.cf.msgAvatarPath + filename + ".png");
+//#                  b = f.fileRead();
+//#                  len = b.length;
+//#                  //errorLog("AVATAR " + filename + ".png MUC:" + mucContactItem);
+//#             } catch (Exception expng) { 
+//#                try {
+//#                  f = FileIO.createConnection(midlet.BombusQD.cf.msgAvatarPath + filename + ".gif");
+//#                  b = f.fileRead();
+//#                  len = b.length;
+//#                  //errorLog("AVATAR " + filename + ".gif MUC:" + mucContactItem);
+//#                } catch (Exception exgif) { f = null; }
+//#             }
+//#         }
+//#         
+//#         if(null == f) return;
+//#           try {
+//#               b = f.fileRead();
+//#               len = b.length;
+//#               photoImg=Image.createImage(b, 0, len);
+//#               int newW=photoImg.getWidth();
+//#               int newH=photoImg.getHeight();
+//#                 while(newW > midlet.BombusQD.cf.maxAvatarWidth || newH > midlet.BombusQD.cf.maxAvatarHeight){
+//#                   newW -= (newW*10)/100;
+//#                   newH -= (newH*10)/100;
+//#                 } 
+//#               c.img_vcard = resizeImage(photoImg,newW,newH);
+//#               c.avatar_width=newW;
+//#               c.avatar_height=newH;
+//#               //errorLog("AVATAR APPLY: " + photoImg + "(" + c.img_vcard + ")");
+//#               f.close();
+//#               f = null;
+//#           } catch(OutOfMemoryError eom) {
+//#               errorLog("AVATAR OutOfMemoryError " + filename);
+//#           } catch (Exception e) {
+//#               errorLog("AVATAR Exception " + filename);
+//#           }
+//#         
+//#         photoImg = null;
+//#         buffer.setLength(0);
+//#     }
 //#endif      
     
     
-    public void setImageAvatar(ImageList il,Contact c,Image photoImg){
+    public void setImageAvatar(Contact c,Image photoImg){
         int newW=photoImg.getWidth();
         int newH=photoImg.getHeight();
         while(newW>midlet.BombusQD.cf.maxAvatarWidth || newH>midlet.BombusQD.cf.maxAvatarHeight){
@@ -1967,7 +2041,7 @@ public class Roster
         }          
         c.avatar_width=newW;
         c.avatar_height=newH; 
-        c.img_vcard=il.resize(photoImg,newW,newH);
+        c.img_vcard=resizeImage(photoImg,newW,newH);
     } 
 
    public int blockArrived( JabberDataBlock data ) { //fix
@@ -2040,7 +2114,6 @@ public class Roster
                             if (length==1) {
                                 vc.setPhoto(null);
                             } else {
-                                ImageList il = new ImageList();
                                 Image photoImg=Image.createImage(vc.getPhoto(), 0, length);
                                 Contact c=null;
 //#if METACONTACTS
@@ -2052,7 +2125,7 @@ public class Roster
 //#                                 }
 //#endif  
                                 c.hasPhoto=true;
-                                setImageAvatar(il,c,photoImg);
+                                setImageAvatar(c,photoImg);
                                 vc.hasPhoto=true;
                                 c.vcard=vc;
                             }
@@ -2684,6 +2757,8 @@ public class Roster
                         conferenceMessage=null;
                         conferenceContact=null;
                         chatPres=null;
+                        
+                        if(midlet.BombusQD.cf.autoload_FSPhoto) loadAvatar(from, true );
                     }
                     catch(OutOfMemoryError eom){ errorLog("error Roster::3"); } catch (Exception e) { 
                         if(null != conferenceContact) {
@@ -2701,6 +2776,8 @@ public class Roster
                     //if(null != room) room = null;
                 } else {
 //#endif
+                    if(midlet.BombusQD.cf.autoload_FSPhoto) loadAvatar(from, false );
+                    
                     Contact c=null;
                     //System.out.println("FROM:"+from);
                     Msg m=new Msg( (ti==Constants.PRESENCE_AUTH ||

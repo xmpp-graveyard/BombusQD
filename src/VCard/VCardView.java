@@ -203,10 +203,9 @@ public class VCardView
                         photoItem.collapsed=true;
                     itemsList.insertElementAt(photoItem, 0);
                     if(Config.getInstance().module_avatars) {
-                        ImageList il = new ImageList();
                         int width = photoImg.getWidth();
                         int height = photoImg.getHeight();
-                        midlet.BombusQD.sd.roster.setImageAvatar(il,c,photoImg);
+                        midlet.BombusQD.sd.roster.setImageAvatar(c,photoImg);
                     }
                     photoImg = null;
                 }

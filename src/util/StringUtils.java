@@ -222,9 +222,8 @@ public class StringUtils {
     }
     
     public static String replaceBadChars (String src) {
-        for (int i=0; i<badChars.length;i++) {
-            src=stringReplace(src,badChars[i],"_");
-        }
+        int len = badChars.length;
+        for (int i=0; i<len;i++) src=stringReplace(src,badChars[i],"_");
         return src;
     }
     

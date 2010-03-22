@@ -176,6 +176,10 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                    addItem(SR.get(SR.MS_CREATE_ANNOTATION),888, menuIcons.ICON_VOICE);
                    if(contact.annotations!=null) addItem(SR.get(SR.MS_REMOVE_ANNOTATION),887, menuIcons.ICON_VOICE);
                }
+               //History
+               if (grType!=Groups.TYPE_TRANSP) {
+                     addItem(SR.get(SR.MS_HISTORY_SHOW), 1110, menuIcons.ICON_VERSION);
+               }
            }   
 
             if(!originGroupchat) addItem(SR.get(SR.MS_CLIENT_INFO),0, menuIcons.ICON_VERSION);
@@ -420,7 +424,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
         if (isContact) c=(Contact)item; else g=(Group) item;
         
         String to=null;
-        Config.getInstance().cursorPos[1]=cursor;
+        midlet.BombusQD.cf.cursorPos[1]=cursor;
         if (isContact) to=(index<3)? c.getJid() : c.bareJid;
             switch (index) {
                 case 0: // version
@@ -521,6 +525,19 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 //#endif
                 case 21:
                     midlet.BombusQD.sd.roster.cleanupSearch();
+                    break;
+                case 1110:
+                    switch(History.HistoryConfig.getInstance().historyTypeIndex) {
+                      case 0:
+                        c.getMessageList().getRmsData(3, null); //READ_ALL_DATA
+                        break;
+                      case 1:
+                        //
+                        break;
+                      case 2:
+                        //
+                        break;
+                    }
                     break;
 //#ifdef SERVICE_DISCOVERY
                 case 30:

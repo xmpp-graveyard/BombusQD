@@ -76,15 +76,10 @@ public class ConfigAvatar
     private CheckBox autoload_FSPhoto;
     private CheckBox autoSaveVcard;
     private CheckBox showAvatarRect;
-    
-    private LinkString applyFromFS;
-    private LinkString applyMucFromFS;
     private LinkString saveChanges;    
     
     
     Config cf;
-    StaticData sd=StaticData.getInstance();
-    ImageList il = new ImageList();     
 
     /** Creates a new instance of ConfigAvatar */
     public ConfigAvatar(Display display, Displayable pView) {
@@ -126,41 +121,8 @@ public class ConfigAvatar
         }
         
         if(midlet.BombusQD.cf.userAppLevel==1) {
-        itemsList.addElement(new SpacerItem(10));
-        applyFromFS=new LinkString(SR.get(SR.AVATAR_ROSTER_LOADFS)) { public void doAction() { 
-                    long s1=System.currentTimeMillis();
-                    long m1=Runtime.getRuntime().freeMemory()>>10;
-                    int loadingAvatars = applyAvatars(true);
-                    if(loadingAvatars>-1){
-                     long s2=System.currentTimeMillis();  
-                     long m2=Runtime.getRuntime().freeMemory()>>10;
-                     itemsList.addElement(new SpacerItem(10));
-                     itemsList.addElement(new SimpleString("Roster:Success!", true));
-                     itemsList.addElement(new SimpleString("Loaded images: " + loadingAvatars, true));    
-                     itemsList.addElement(new SimpleString("Time: " + Long.toString(s2-s1) + " msec", true));   
-                     itemsList.addElement(new SpacerItem(10));
-                     repaint();
-                  };
-        }};
-        itemsList.addElement(new SpacerItem(5));
         
-        applyMucFromFS=new LinkString(SR.get(SR.AVATAR_MUC_LOADFS)) { public void doAction() { 
-                    long s1=System.currentTimeMillis();
-                    long m1=Runtime.getRuntime().freeMemory()>>10;
-                    int loadingAvatars = applyAvatars(false);
-                    if(loadingAvatars>-1){
-                     long s2=System.currentTimeMillis();  
-                     long m2=Runtime.getRuntime().freeMemory()>>10;   
-                     itemsList.addElement(new SpacerItem(10));
-                     itemsList.addElement(new SimpleString("Muc:Success!", true));
-                     itemsList.addElement(new SimpleString("Loaded images: " + loadingAvatars, true));    
-                     itemsList.addElement(new SimpleString("Time: " + Long.toString(s2-s1) + " msec", true)); 
-                     itemsList.addElement(new SpacerItem(10));
-               repaint();
-          };
-        }}; 
-        
-        saveChanges = new LinkString("UPDATE!") { public void doAction() { 
+        saveChanges = new LinkString(SR.get(SR.MS_UPDATE)) { public void doAction() { 
                cf.maxAvatarHeight=Integer.parseInt(maxAvatarHeight.getValue());
                cf.maxAvatarWidth=Integer.parseInt(maxAvatarWidth.getValue());   
                     long s1=System.currentTimeMillis();
@@ -180,8 +142,6 @@ public class ConfigAvatar
                repaint();
           };
         }};
-         itemsList.addElement(applyFromFS);
-         itemsList.addElement(applyMucFromFS);   
          itemsList.addElement(saveChanges);
        }
         
@@ -324,7 +284,7 @@ public class ConfigAvatar
                             newW-=(newW*10)/100;
                             newH-=(newH*10)/100;
                         } 
-                    c.img_vcard=il.resize(photoImg,newW,newH);    
+                    c.img_vcard=resizeImage(photoImg,newW,newH);    
                     c.avatar_width=newW;
                     c.avatar_height=newH;
                  }  catch(OutOfMemoryError eom){
@@ -356,7 +316,7 @@ public class ConfigAvatar
                             newW-=(newW*10)/100;
                             newH-=(newH*10)/100;
                         } 
-                    c.img_vcard=il.resize(photoImg,newW,newH);    
+                    c.img_vcard=resizeImage(photoImg,newW,newH);    
                     c.avatar_width=newW;
                     c.avatar_height=newH;
                     countAv+=1;

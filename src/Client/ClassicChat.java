@@ -150,7 +150,7 @@ public class ClassicChat extends CustomItem implements ItemCommandListener
                 int imgWidth = imgBgnd.getWidth();
                 int imgHeight = imgBgnd.getHeight();
                 if(width <= imgWidth && height<imgHeight) {
-                   imgBgnd = il.resize(imgBgnd, width, height);
+                   imgBgnd = VirtualList.resizeImage(imgBgnd, width, height);
                 }  
                 g.drawImage(imgBgnd, 0, 0, Graphics.LEFT|Graphics.TOP);
         } else{

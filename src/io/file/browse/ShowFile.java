@@ -121,7 +121,7 @@ public class ShowFile implements CommandListener{
                        newW-=(newW*10)/100;
                        newH-=(newH*10)/100;
                    }
-                   photoImg = il.resize(photoImg, newW, newH);
+                   photoImg = VirtualList.resizeImage(photoImg, newW, newH);
                 }
               }  catch(OutOfMemoryError eom) {
               }  catch (Exception e) {
