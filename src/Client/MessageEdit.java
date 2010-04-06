@@ -196,8 +196,10 @@ public final class MessageEdit
                 display.setCurrent(form);
                 break;
        }
-       composing=true;
-       send(null,null);
+       if(!multiMessage) {
+         composing=true;
+         send(null,null);
+       }
     }
 
     
@@ -423,7 +425,7 @@ public final class MessageEdit
 
         if (c==cmdCancel) {
             composing=false;
-            send(null,null);
+            if(!multiMessage) send(null,null);
             body=null;
             if(multiMessage) multiMessage = false;
             if(null != to && to.msgSuspended!=null) to.msgSuspended=null;
@@ -432,7 +434,7 @@ public final class MessageEdit
         }
         if (c==cmdSuspend) {
                 composing=false;
-                send(null,null);
+                if(!multiMessage) send(null,null);
                 if(multiMessage) multiMessage = false;
                 if(null != to) to.msgSuspended=body; 
                 body=null;

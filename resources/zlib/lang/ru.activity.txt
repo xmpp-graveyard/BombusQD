@@ -1,24 +1,24 @@
 ﻿doing_chores	Занимаюсь хозяйством
 buying_groceries	Покупаю продукты
-cleaning	Делаю уборку
+cleaning	Уборка
 cooking	Готовлю
 doing_maintenance	Ремонт
 doing_the_dishes	Мою посуду
 doing_the_laundry	Стираю
 gardening	Работаю в саду
 running_an_errand	Ушел по поручению
-walking_the_dog	Гуляю с собакой
+walking_the_dog	Выгуливаю собаку
 drinking	Пью
 having_a_beer	Пью пиво
 having_coffee	Пью кофе
 having_tea	Пью чай
-eating	Ем
+eating	Еда
 having_a_snack	Перекусываю
 having_breakfast	Завтракаю
 having_dinner	Обедаю
 having_lunch	Ланч
 exercising	Упражнения
-cycling	Упражнения на велосипеде
+cycling	Велоспорт
 dancing	Танцы
 hiking	В походе
 jogging	Пробежка
@@ -30,13 +30,13 @@ working_out	Тренировка
 grooming	Уход за собой
 at_the_spa	В спа салоне
 brushing_teeth	Чищу зубы
-getting_a_haircut	Делаю прическу
+getting_a_haircut	В парикмахерской
 shaving	Бреюсь
 taking_a_bath	Принимаю ванну
 taking_a_shower	Принимаю душ
 having_appointment	Встреча
 inactive	Неактивен
-day_off	Выходной день
+day_off	Выходные
 hanging_out	Гуляю
 hiding	Скрываюсь
 on_vacation	В отпуске
@@ -45,9 +45,9 @@ scheduled_holiday	Запланированный отпуск
 sleeping	Сплю
 thinking	Думаю
 relaxing	Отдыхаю
-fishing	Рыбалка
+fishing	На рыбалке
 gaming	Игры
-going_out	Вышел
+going_out	Ушел
 partying	На вечеринке
 reading	Читаю
 rehearsing	Репетиция
@@ -56,7 +56,7 @@ smoking	Курю
 socializing	Общаюсь
 sunbathing	Загораю
 watching_tv	Смотрю ТВ
-watching_a_movie	Смотрю кино
+watching_a_movie	Киносеанс
 talking	Разговариваю
 in_real_life	В реальной жизни
 on_the_phone	Говорю по телефону
@@ -65,7 +65,7 @@ traveling	Путешествую
 commuting	Еду с работы/на работу
 cycling	На велосипеде
 driving	Вождение
-in_a_car	В машине
+in_a_car	За рулем
 on_a_bus	В автобусе
 on_a_train	В поезде
 on_a_plane	В самолете
@@ -73,7 +73,7 @@ on_a_trip	В поездке
 walking	Прогулка
 working	Работаю
 coding	Пишу программу
-in_a_meeting	На совещании
-studying	Учусь
+in_a_meeting	Совещание
+studying	Учеба
 writing	Пишу
 no activity	<нет действия>

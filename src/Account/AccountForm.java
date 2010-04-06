@@ -91,6 +91,7 @@ public class AccountForm
 
     private int type_profile = -1; 
     boolean register=false;
+    boolean createSimpleAddForm=false;
     String serverReg="";
     
     private static final byte JABBER_PROFILE=1;    
@@ -135,7 +136,8 @@ public class AccountForm
                 port_box = account.getPort();
                 break;            
             case JABBER_PROFILE:  
-                server=generate(0);
+                server = "";
+                //server=generate(0);
                 break;
             case YARU_PROFILE:   
                 server="ya.ru";
@@ -186,49 +188,54 @@ public class AccountForm
         
         passbox = new TextInput(display, SR.get(SR.MS_PASSWORD), password,null,TextField.ANY);     
         itemsList.addElement(passbox);
-        if(generatePaswForm) {
+        
+        createSimpleAddForm = (null == serverReg && newaccount);//true if add,false if edit
+         if(generatePaswForm) {
           link_genPass = new LinkString(SR.get(SR.MS_GENERATE)+" "+SR.get(SR.MS_PASSWORD)) { public void doAction() { 
            passbox.setValue(generate(1));
           } };
           itemsList.addElement(link_genPass); 
           itemsList.addElement(new SpacerItem(5));
-        }
+         }
         
-        portbox = new NumberInput(display, SR.get(SR.MS_PORT), Integer.toString(port_box), 0, 65535);
-        itemsList.addElement(portbox);
+         portbox = new NumberInput(display, SR.get(SR.MS_PORT), Integer.toString(port_box), 0, 65535);
+         if(!createSimpleAddForm) itemsList.addElement(portbox);
         
-    	emailbox = new TextInput(display,"E-mail:",account.getEmail(),null, TextField.EMAILADDR);
-        if(midlet.BombusQD.cf.userAppLevel==1) {
-          itemsList.addElement(emailbox);
-        }
+    	 emailbox = new TextInput(display,"E-mail:",account.getEmail(),null, TextField.EMAILADDR);
+         if(midlet.BombusQD.cf.userAppLevel==1) {
+          if(!createSimpleAddForm) itemsList.addElement(emailbox);
+         }
 
-        if(midlet.BombusQD.clipboard.getClipBoard()!=null){
+         if(midlet.BombusQD.clipboard.getClipBoard()!=null){
             if(midlet.BombusQD.clipboard.getClipBoard().startsWith("!")){
               insertpass = new LinkString(SR.get(SR.MS_INSERT_NEW_PASSWORD)) { public void doAction() { 
                 passbox.setValue(midlet.BombusQD.clipboard.getClipBoard().substring(1));
                 itemsList.removeElement(insertpass);
                 midlet.BombusQD.clipboard.setClipBoard("");
               } };
-              itemsList.addElement(new SpacerItem(3));              
-              itemsList.addElement(insertpass);
+               if(!createSimpleAddForm) {
+                itemsList.addElement(new SpacerItem(3));              
+                itemsList.addElement(insertpass);
+               }
             }
-        }
+         }
 
-        registerbox = new CheckBox(SR.get(SR.MS_REGISTER_ACCOUNT), register); 
+         registerbox = new CheckBox(SR.get(SR.MS_REGISTER_ACCOUNT), register); 
         
         /*if (newaccount && register) {
             itemsList.addElement(registerbox);
         }*/
 
-        if(!register){
+         if(!register){
           showExtended(); 
-        }
-
+         }
+         
         attachDisplay(display);
         this.parentView=pView;
     }
     
     protected void beginPaint() {
+       if(null == serverReg) return;
        if(!register || 0 == serverReg.length()) return;
        if(null != nickbox) {
            String value = nickbox.getValue();
@@ -344,15 +351,17 @@ public class AccountForm
 //#        pollingbox = new CheckBox("pollingbox", "HTTP Polling", false);
 //#endif
 
-        itemsList.addElement(sslbox);
-        itemsList.addElement(plainPwdbox);
-        itemsList.addElement(compressionBox);
-        itemsList.addElement(confOnlybox);
+        if(!createSimpleAddForm) {
+          itemsList.addElement(sslbox);
+          itemsList.addElement(plainPwdbox);
+          itemsList.addElement(compressionBox);
+          itemsList.addElement(confOnlybox);
 //#if HTTPCONNECT
 //#        itemsList.addElement(proxybox);
 //#elif HTTPPOLL        
 //#        itemsList.addElement(pollingbox);
 //#endif
+        }
 
         keepAliveType=new DropChoiceBox(display, SR.get(SR.MS_KEEPALIVE));
         keepAliveType.append("by socket");
@@ -361,11 +370,9 @@ public class AccountForm
         keepAliveType.append("ping");
         keepAliveType.setSelectedIndex(account.getKeepAliveType());
         keepAlive = new NumberInput(display, SR.get(SR.MS_KEEPALIVE_PERIOD), Integer.toString(account.getKeepAlivePeriod()), 10, 2048);
-        //if(Config.getInstance().difficulty_level>=1){
+        if(!createSimpleAddForm) {
              itemsList.addElement(keepAliveType);
-             itemsList.addElement(keepAlive);
-        //} 
-             
+             itemsList.addElement(keepAlive);  
 //#if HTTPCONNECT
 //# 	proxyHost = new TextInput(display, SR.get(SR.MS_PROXY_HOST), account.getProxyHostAddr(), null, TextField.URL);
 //# 
@@ -373,12 +380,9 @@ public class AccountForm
 //#elif HTTPPOLL        
 //# 	proxyHost = new TextInput(display, SR.get(SR.MS_PROXY_HOST), account.getProxyHostAddr(), null, TextField.URL);
 //#endif
-        //if(Config.getInstance().difficulty_level>=1){
-          itemsList.addElement(ipbox);
-        //}
+             itemsList.addElement(ipbox);
+        
 
-        //if(Config.getInstance().difficulty_level>=1){
-        //}
 
 //#if HTTPCONNECT
 //# 	itemsList.addElement(proxyHost);
@@ -386,6 +390,7 @@ public class AccountForm
 //#elif HTTPPOLL        
 //# 	itemsList.addElement(proxyHost);
 //#endif
+        }
     }
     
     public void cmdOk() {
