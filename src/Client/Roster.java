@@ -4049,21 +4049,21 @@ public class Roster
         Vector search = contactList.contacts;
         int size = search.size();
         short activePos = 0;
-          Contact activeContact;
-          Contact showNext;
-          for(int i = 0; i < size; ++i) {
+        Contact activeContact;
+        Contact showNext;
+        for(int i = 0; i < size; ++i) {
              activeContact = (Contact)search.elementAt(i);
              if(activeContact.active()) aContacts.addElement(activeContact);
-          }
+        }
+        if (aContacts.isEmpty()) return;
         int pos = aContacts.indexOf(first);
-        if (right) {
+        if (pos<0) showNext = (Contact)aContacts.firstElement();
+        else if (right) {
            showNext = (aContacts.size() - 1 == pos) ? (Contact)aContacts.firstElement() : (Contact)aContacts.elementAt(pos + 1);
-        } else { 
+        } else {
           showNext = (0 == pos) ? (Contact)aContacts.lastElement() : (Contact)aContacts.elementAt(pos - 1);
         }
-        try {
-            display.setCurrent(showNext.getMessageList());
-        } catch (Exception e) { }   
+        display.setCurrent(showNext.getMessageList());
     }
 
     public void deleteContact(Contact c) {
@@ -4191,8 +4191,15 @@ public class Roster
        commandState();
        new MyMenu(display, parentView, this, SR.get(SR.MS_MAIN_MENU), MenuIcons.getInstance(), menuCommands);        
      }   
-//#endif     
+//#endif
 
+    protected void touchMainMenuPressed(int x, int y) {
+        if (x< width-20) {
+                cmdActiveContacts();
+        } else {
+            cmdAlert();
+        }
+    }
 //#ifdef GRAPHICS_MENU        
 //#     public void touchRightPressed(){ if (midlet.BombusQD.cf.oldSE) showGraphicsMenu(); else cmdActions(); }
 //#     public void touchLeftPressed(){ if (midlet.BombusQD.cf.oldSE) cmdActions(); else showGraphicsMenu(); }

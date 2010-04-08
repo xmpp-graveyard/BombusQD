@@ -414,26 +414,7 @@ public class GMenu extends Canvas {
    }
    
       
-   protected void pointerPressed(int x, int y) {
-       System.out.println("gmenu pointerPressed("+x+", "+y+")" );
-       /*
-       if (eventMenu==true) {
-         try{
-          if( y > pointerY[0] && y < (pointerY[0]+fh) )  {  pointerY = null;  gm.itemCursorIndexIn = 0;  }
-          //...
-         }catch (Exception e) { System.out.println(e.getMessage()); }
-         closeEvent();
-         cursorY=0;
-         return;
-       }
-       
-       try {
-         if( y > pointerY[0] && y < (pointerY[0]+fh) )  {  pointerY = null;  gm.itemCursorIndex = 0;  eventOk(); }
-         //...
-        } catch (Exception e) { System.out.println(e.getMessage()); }
-        */
-       
-       /*
+   protected void pointerReleased(int x, int y) {
        if (x<x1 || y<y1 || x> x2 || y>y2) {
            gm.itemGrMenu=-1;
            gm.ml=null;
@@ -447,7 +428,6 @@ public class GMenu extends Canvas {
        }
        gm.itemCursorIndex=(y-y1)/fh;
        eventOk();
-        */
        return;
    }   
    

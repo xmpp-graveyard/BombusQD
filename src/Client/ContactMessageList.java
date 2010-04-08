@@ -280,7 +280,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
 
     public VirtualElement getItemRef(int index) {
         MessageItem mi=(MessageItem) messages.elementAt(index);
-        if (mi.msg.unread) {//непрочитанное сообщение
+        if (mi.msg.unread) {//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             getChatInfo().readMessage(mi.msg);
         }
         return mi;
@@ -320,6 +320,17 @@ public final class ContactMessageList extends VirtualList implements MenuListene
         markRead(index); 
     }
     
+    protected void touchMainMenuPressed(int x, int y) {
+        if (x>20 && x< width-20) {
+                contact.getChatInfo().opened = false;
+                midlet.BombusQD.sd.roster.createActiveContacts(this, contact);
+                contact.setCursor(cursor);
+        } else if (x<20){
+            midlet.BombusQD.sd.roster.searchActiveContact(contact, false);
+        } else {
+            midlet.BombusQD.sd.roster.searchActiveContact(contact, true);
+        }
+    }
 
     public void commandAction(Command c, Displayable d){
         //super.commandAction(c,d);

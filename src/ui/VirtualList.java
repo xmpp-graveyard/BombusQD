@@ -212,10 +212,10 @@ public abstract class VirtualList
     private int itemLayoutY[]=new int[1];
     private int listHeight;
 
-//#ifdef MENU_LISTENER
+/*//#ifdef MENU_LISTENER
     CommandsPointer ar=new CommandsPointer();
-//#endif
-
+///#endif
+*/
     private synchronized void updateLayout() {
         int size=getItemCount();
         if (size==0) {
@@ -325,8 +325,8 @@ public abstract class VirtualList
     int imgHeight;  
     
    public static Image resizeImage(Image image, int w, int h) {
-        int w0 = image.getWidth(); //Ширина 200
-        int h0 = image.getHeight();//Высота 150
+        int w0 = image.getWidth(); //пїЅпїЅпїЅпїЅпїЅпїЅ 200
+        int h0 = image.getHeight();//пїЅпїЅпїЅпїЅпїЅпїЅ 150
         int[] arrayOld = new int[w0*h0];
         int[] arrayNew = new int[w*h];
         image.getRGB(arrayOld, 0, w0, 0, 0, w0, h0);
@@ -684,20 +684,22 @@ public abstract class VirtualList
                     g.translate( g.getTranslateX(), g.getTranslateY() );
                     //setAbsOrg(g, 0, 0);
                     drawMainPanel(g,height-mHeight);
-//#ifdef MENU_LISTENER
+/*//#ifdef MENU_LISTENER
                     if (midlet.BombusQD.cf.isTouchPhone)
                         ar.init(width, height, mHeight);
-//#endif
+///#endif
+ */
                 }
             } else {
                 if (infobar!=null) {
                     //setAbsOrg(g, 0, 0);
                     g.translate( g.getTranslateX(), g.getTranslateY() );
                     drawInfoPanel(g,height-iHeight);
-//#ifdef MENU_LISTENER
+/*//#ifdef MENU_LISTENER
                     if (midlet.BombusQD.cf.isTouchPhone)
                         ar.init(width, height, iHeight);
-//#endif
+///#endif
+ */
                 }
             }
             setAbsClip(g, width, height);
@@ -1119,7 +1121,7 @@ public abstract class VirtualList
         }
         setAbsOrg(g, 0, y);
         g.setColor(getMainBarRGB());
-        infobar.drawItem(this, g,(phoneManufacturer==Config.NOKIA && reverse)?17:0,false);
+        infobar.drawItem(this, g,(phoneManufacturer==Config.NOKIA && reverse)?20:0,false);
     }
 //#endif
     
@@ -1317,16 +1319,21 @@ public abstract class VirtualList
     }
     
     protected void pointerPressed(int x, int y) {
-        //System.out.println("pointerPressed("+x+", "+y+")");
+
+	long clickTime=System.currentTimeMillis();
         if(gm.itemGrMenu>0){
-            if(null != menuItem) menuItem.pointerPressed(x, y);
+            lastClickTime=clickTime;
+            lastClickX=x;
+            lastClickY=y;
             return;
         }
 
 //#ifdef POPUPS
         getPopUp().next();
-//#endif        
-//#ifdef MENU_LISTENER
+//#endif
+        /*
+///#ifdef MENU_LISTENER
+
         int act=ar.pointerPressed(x, y);
         if (act==1) {
              touchLeftPressed();
@@ -1337,7 +1344,8 @@ public abstract class VirtualList
             stickyWindow=false;
             return;
         }
-//#endif
+///#endif
+         * */
         if (scrollbar.pointerPressed(x, y, this)) {
             stickyWindow=false;
             return;
@@ -1347,14 +1355,18 @@ public abstract class VirtualList
 	    if (y<itemBorder[i]) break;
 	    i++;
 	}
-	if (i==0 || i==32) return;
+	if (i==0 || i==32) {
+            lastClickTime=clickTime;
+            lastClickX=x;
+            lastClickY=y;
+            return;
+        }
 	//System.out.println(i);
 	if (cursor>=0) {
             moveCursorTo(getElementIndexAt(win_top)+i-1);
             setRotator();
         }
 	
-	long clickTime=System.currentTimeMillis();
 	if (cursor==lastClickItem) {
 	    if (lastClickY-y<5 && y-lastClickY<5) {
                 if (clickTime-lastClickTime<500){
@@ -1406,15 +1418,65 @@ public abstract class VirtualList
         repaint();           
       }
     }   
-    
+
+    protected void touchMainMenuPressed(int x, int y) {
+
+    }
     protected void pointerReleased(int x, int y) { 
         scrollbar.pointerReleased(x, y, this); 
         
 	long clickTime=System.currentTimeMillis();
         if (lastClickY-y<5 && y-lastClickY<5) {
             if (clickTime-lastClickTime>500) {
+                if(gm.itemGrMenu>0){
+                    return;
+                }
                 y=0;
                 eventLongOk();
+            } else {
+                if(gm.itemGrMenu>0){
+                    if(null != menuItem) {
+                        menuItem.pointerReleased(x, y);
+                        repaint();
+                    }
+                    return;
+                }
+                //soft buttons drown on top
+                if (reverse) {
+                    if (mainbar!=null && paintBottom) {
+                        if (height - y < mHeight) {
+                            touchMainMenuPressed(x, y);
+                            return;
+                        }
+                    }
+                    if (infobar!=null && paintTop) {
+                        if (y < iHeight) {
+                            if (x < width/2)
+                                touchLeftPressed();
+                            else
+                                touchRightPressed();
+                            return;
+                        }
+                    }
+                //soft buttons drown on bottom
+                } else {
+                    if (infobar!=null && paintBottom) {
+                        if (y > height-iHeight) {
+                            if (x < width/2)
+                                touchLeftPressed();
+                            else
+                                touchRightPressed();
+                            stickyWindow=false;
+                            return;
+                        }
+                    }
+                    if (mainbar!=null && paintTop) {
+                        if (y < mHeight) {
+                            touchMainMenuPressed(x, y);
+                            return;
+                        }
+                    }
+                }
             }
         }
     }
