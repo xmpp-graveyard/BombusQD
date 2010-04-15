@@ -3500,7 +3500,7 @@ public class Roster
 //#ifdef PLUGINS
 //#         if (midlet.BombusQD.sd.Stats)
 //#endif
-//#             Stats.getInstance().saveToStorage(false);
+//#             Stats.getInstance().saveToStorage(false,false);
 //#endif
       }
     

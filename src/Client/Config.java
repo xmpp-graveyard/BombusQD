@@ -45,6 +45,7 @@ import ui.Time;
 import ui.VirtualList;
 import io.NvStorage;
 import Menu.MenuListener;
+import Statistic.Stats;
 
 /**
  *
@@ -442,6 +443,29 @@ public class Config {
 //#endif
 //#endif
     }
+    
+    
+    public void initTouchOptions() {
+         if(isTouchPhone) {
+           VirtualList.fullscreen = false;
+           fullscreen = false;
+           VirtualList.setFullScreen();
+           graphicsMenuPosition = 1; //left
+           rosterFont = 16;
+           msgFont = 16;
+           barFont = 16;
+           baloonFont = 16;
+           FontCache.roster = rosterFont;
+           FontCache.msg = msgFont;
+           FontCache.bar = barFont;
+           FontCache.baloon = baloonFont;
+           graphicsMenuFont = 2; //Large
+           scrollWidth = 18;
+           midlet.BombusQD.sd.roster.updateBarsFont();
+           saveToStorage();
+         }
+    }
+    
     
     public String langFileName(){
         if (lang==null) {

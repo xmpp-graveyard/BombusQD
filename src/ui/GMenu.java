@@ -194,6 +194,9 @@ public class GMenu extends Canvas {
       } catch (Exception e) { /* IndexOutOfBounds */
         midlet.BombusQD.debug.add("GMenu::select IndexOutOfBounds->" + e.getMessage(), 10);
       }
+      gm.itemCursorIndexIn = 0;
+      gm.itemCursorIndex = 0;
+      cursorY = 0;
     }
 
 
@@ -413,8 +416,8 @@ public class GMenu extends Canvas {
          */
    }
    
-      
-   protected void pointerReleased(int x, int y) {
+   
+   private void touchCommand(int x, int y) {
        if (x<x1 || y<y1 || x> x2 || y>y2) {
            gm.itemGrMenu=-1;
            gm.ml=null;
@@ -427,6 +430,16 @@ public class GMenu extends Canvas {
             return;
        }
        gm.itemCursorIndex=(y-y1)/fh;
+   }
+   
+   
+   protected void pointerPressed(int x, int y) {
+       touchCommand(x,y);
+       return;
+   }  
+
+   protected void pointerReleased(int x, int y) {
+       touchCommand(x,y);
        eventOk();
        return;
    }   

@@ -45,6 +45,7 @@ public class ScrollBar {
     private static final int WIDTH_SCROLL_2      =10;
     
     private int yTranslate;
+    private boolean fingerScroll;
     
     private int size;
     private int windowSize;
@@ -103,37 +104,44 @@ public class ScrollBar {
         return midlet.BombusQD.cf.scrollWidth;
     }
 
-    public boolean pointerPressed(int x, int y, VirtualList v) {
+    public boolean pointerPressed(int x, int y, VirtualList list) {
 	if (size==0) return false;
-	if (x<scrollerX) return false; // not in area
-	y-=yTranslate;
-	if (y<scrollerPos) { 
+        fingerScroll = false;
+        if (x < scrollerX) {
+            fingerScroll = true;
+            point_y = y - scrollerPos;
+            return false;
+        }
+        y-=yTranslate;
+        if (y<scrollerPos) { 
             // page up
             int pos=position-windowSize;
             if (pos<0) pos=0;
-            v.win_top=pos;
-            v.repaint(); 
+            list.win_top=pos;
+            list.repaint(); 
             return true; 
         } 
-	if (y>scrollerPos+scrollerSize) { 
+        if (y>scrollerPos+scrollerSize) { 
             int pos=position+windowSize;
             int listEnd=size-windowSize;
-            v.win_top=(pos<listEnd)?pos:listEnd;
-            v.repaint(); 
+            list.win_top=(pos<listEnd)?pos:listEnd;
+            list.repaint(); 
             return true; 
         } // page down
-	point_y=y-scrollerPos;
-	return true;
+        point_y=y-scrollerPos;
+        return true;
     }
-    public boolean pointerDragged(int x, int y, VirtualList v) {
-	y-=yTranslate;
-	if (point_y<0) return false;
-	int new_top=y-point_y;
-	int new_pos=(new_top*size)/drawHeight;
-	if ((position-new_pos)==0) return true;
-	if (new_pos<0) new_pos=0;
-	if (new_pos+windowSize>size) new_pos=size-windowSize;
-	v.win_top=new_pos; v.repaint();
+    
+    public boolean pointerDragged(int x, int yPos, VirtualList list) {
+        yPos -= yTranslate;
+        if (point_y<0) return false; 
+        int new_top = yPos - point_y;
+        int new_pos = (new_top*size)/drawHeight;
+        if ((position-new_pos)==0) return true;
+        if (new_pos<=0) new_pos = 0;
+        if (new_pos+windowSize>size) new_pos = size - windowSize;
+        list.win_top = new_pos;
+        list.repaint();
 	return true;
     }
     public void pointerReleased(int x, int y, VirtualList v) { point_y=-1; }

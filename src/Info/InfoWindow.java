@@ -78,14 +78,7 @@ public class InfoWindow
      * Creates a new instance of InfoWindow
      */
 
-    int auth = 0;
-    public void keyPressed(int keyCode){
-      switch(auth){
-          /*1*/ case 0: if(keyCode == KEY_NUM5) auth++; break;
-          /*2*/ case 1: if(keyCode == KEY_NUM1) auth++; else auth = 0; break;
-          /*3*/ case 2: if(keyCode == KEY_NUM2) auth++; else auth = 0; break;
-      }
-      if( auth == 3 ) {
+    private void showMsg() {
           String authMsg = "";
           if(midlet.BombusQD.cf.userAppLevel == 0){
               midlet.BombusQD.cf.userAppLevel = 1;
@@ -100,6 +93,18 @@ public class InfoWindow
              public void no() {}
           };
           alert = null;
+    }
+    
+    
+    int auth = 0;
+    public void keyPressed(int keyCode){
+      switch(auth){
+          /*1*/ case 0: if(keyCode == KEY_NUM5) auth++; break;
+          /*2*/ case 1: if(keyCode == KEY_NUM1) auth++; else auth = 0; break;
+          /*3*/ case 2: if(keyCode == KEY_NUM2) auth++; else auth = 0; break;
+      }
+      if( auth == 3 ) {
+          showMsg();
           auth = 0;
       }
       super.keyPressed(keyCode);
@@ -186,10 +191,20 @@ public class InfoWindow
            }}
         ); 
          */
-        
-        name=new MultiLine("Easter Egg:", "Press 5-1-2 keys to lock/unlock new options", super.superWidth);
-        ((MultiLine)name).selectable=false;
-        itemsList.addElement(name);
+        if(midlet.BombusQD.cf.isTouchPhone) {
+          name=new MultiLine("Easter Egg", "Press link under this text", super.superWidth);
+          ((MultiLine)name).selectable=false;
+          itemsList.addElement(name);
+          name = new LinkString("Yes,give me egg"){ 
+              public void doAction() { showMsg(); }
+          };
+          itemsList.addElement(name);
+          itemsList.addElement(new SpacerItem(5));
+        } else {
+             name=new MultiLine("Easter Egg:", "Press 5-1-2 keys to lock/unlock new options", super.superWidth);
+             ((MultiLine)name).selectable=false;
+             itemsList.addElement(name);
+        }
         
         name=new MultiLine("Copyright (c) 2005-2010", 
                 "Eugene Stahov (evgs,Bombus);\nDaniel Apatin (ad,BombusMod);\nAlexej Kotov(aqent,BombusQD);\n" +

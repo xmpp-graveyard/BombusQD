@@ -66,37 +66,52 @@
 //#     public Command cmdClear;
 //#     public Command cmdSave;   
 //#     
-//#     MultiLine item=null;
-//#     
 //#     /**
 //#      * Creates a new instance of StatsWindow
 //#      */
 //#     public StatsWindow(Display display) {
 //#         super(display, midlet.BombusQD.sd.roster , SR.get(SR.MS_STATS));
-//#         
+//#         StringBuffer sb = new StringBuffer(0);
 //#         cmdClear = new Command(SR.get(SR.MS_CLEAR), Command.SCREEN, 2);
 //#         cmdSave = new Command(SR.get(SR.MS_SAVE), Command.OK, 3);  
 //#         
 //#         this.display=display;
 //# 
-//#         item=new MultiLine(SR.get(SR.MS_ALL), StringUtils.getSizeString(st.getAllTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
-//# 
-//#         item=new MultiLine(SR.get(SR.MS_PREVIOUS_), StringUtils.getSizeString(st.getLatest()), super.superWidth); item.selectable=true; itemsList.addElement(item);
-//#         
-//#         item=new MultiLine(SR.get(SR.MS_CURRENT), StringUtils.getSizeString(st.getCurrentTraffic()), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#         sb.append(SR.get(SR.MS_ALL))
+//#           .append(StringUtils.getSizeString(st.getAllTraffic()))
+//#           .append('\n');
+//#         sb.append(SR.get(SR.MS_PREVIOUS_))
+//#           .append(StringUtils.getSizeString(st.getLatest()))
+//#           .append('\n');
+//#         sb.append(SR.get(SR.MS_CURRENT))
+//#           .append(StringUtils.getSizeString(st.getCurrentTraffic()))
+//#           .append('\n');
 //#         
 //#         if (midlet.BombusQD.sd.roster.isLoggedIn() && midlet.BombusQD.cf.userAppLevel == 1) {
-//#             item=new MultiLine(SR.get(SR.MS_COMPRESSION), midlet.BombusQD.sd.roster.theStream.getStreamStats(), super.superWidth); item.selectable=true; itemsList.addElement(item);
-//#         }
-//# 
-//#         if (midlet.BombusQD.sd.roster.isLoggedIn()) {
-//#             item=new MultiLine(SR.get(SR.MS_CONNECTED), midlet.BombusQD.sd.roster.theStream.getConnectionData(), super.superWidth); item.selectable=true; itemsList.addElement(item);
+//#            sb.append(SR.get(SR.MS_COMPRESSION))
+//#              .append(midlet.BombusQD.sd.roster.theStream.getStreamStats())
+//#              .append('\n');
 //#         }
 //#         
-//#         item=new MultiLine(SR.get(SR.MS_CONN), Integer.toString(st.getSessionsCount()), super.superWidth); item.selectable=true; itemsList.addElement(item);
-//#                 
-//#         item=new MultiLine(SR.get(SR.MS_STARTED), midlet.BombusQD.sd.roster.startTime, super.superWidth); item.selectable=true; itemsList.addElement(item);
-//#  
+//#         if (midlet.BombusQD.sd.roster.isLoggedIn()) {
+//#             sb.append(SR.get(SR.MS_CONNECTED))
+//#               .append(midlet.BombusQD.sd.roster.theStream.getConnectionData())
+//#               .append('\n');
+//#         }
+//#         sb.append(SR.get(SR.MS_CONN))
+//#           .append(st.getSessionsCount())
+//#           .append('\n');
+//#         sb.append(SR.get(SR.MS_STARTED))
+//#           .append(midlet.BombusQD.sd.roster.startTime)
+//#           .append('\n');
+//#         sb.append(SR.get(SR.MS_APPRUN_COUNT))
+//#           .append(st.appRunCount);
+//# 
+//#         MultiLine item = new MultiLine( null, sb.toString(), super.superWidth);
+//#         item.selectable=true;
+//#         itemsList.addElement(item);
+//#         
+//#         sb.setLength(0);
 //#         commandState();
 //# 
 //#         attachDisplay(display);
@@ -123,10 +138,10 @@
 //# 	} else
 //#endif
 //#         if(command==cmdSave){
-//#             Stats.getInstance().saveToStorage(false);
+//#             Stats.getInstance().saveToStorage(false,false);
 //#         }
 //#         if (command==cmdClear) {
-//#             st.saveToStorage(true);
+//#             st.saveToStorage(true,false);
 //#             cmdCancel();
 //#         } else super.commandAction(command, displayable);
 //#     }

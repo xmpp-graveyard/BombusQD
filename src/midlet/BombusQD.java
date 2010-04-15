@@ -218,12 +218,13 @@ public class BombusQD extends MIDlet implements Runnable
         //if(sd.roster==null) sd.roster=new Roster(display);
         
         HistoryStorage hs = new HistoryStorage(); 
-//#ifdef STATS
-//#         Stats.getInstance().loadFromStorage();
-//#endif         
 //#ifdef PEP        
 //#         Activity.loaded();
-//#endif                
+//#endif   
+//#ifdef STATS
+//#         Stats.getInstance().loadFromStorage();
+//#         Stats.getInstance().updateRunValue();
+//#endif
 //#ifdef AUTOTASK
 //#         sd.autoTask=new AutoTask(display);
 //#endif        

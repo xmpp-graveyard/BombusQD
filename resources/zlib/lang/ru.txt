@@ -729,3 +729,4 @@ My servers	Мои серверы
 Menu font	Шрифт меню
 Show History	История сообщений
 Pubsub events	Расширенные статусы
+AppRun count: 	Кол-во запусков: 

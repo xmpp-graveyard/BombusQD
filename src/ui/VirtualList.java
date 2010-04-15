@@ -380,6 +380,13 @@ public abstract class VirtualList
         }
     }    
     
+    
+    public static void setFullScreen() {
+        Displayable d = midlet.BombusQD.getInstance().display.getCurrent();
+        if (d instanceof Canvas) ((Canvas)d).setFullScreenMode(fullscreen);
+    }
+    
+
     public VirtualList() {
         width=getWidth();
         height=getHeight();
@@ -399,13 +406,13 @@ public abstract class VirtualList
 
         changeOrient(midlet.BombusQD.cf.panelsState);
 
+        midlet.BombusQD.cf.isTouchPhone = hasPointerEvents();
         setFullScreenMode(fullscreen);
 
         itemBorder=null;
         itemBorder=new int[32];
 
         scrollbar=new ScrollBar();
-        midlet.BombusQD.cf.isTouchPhone = hasPointerEvents();
         scrollbar.setHasPointerEvents(midlet.BombusQD.cf.isTouchPhone);
 
         MainBar secondBar=new MainBar("", true);
@@ -1325,6 +1332,10 @@ public abstract class VirtualList
             lastClickTime=clickTime;
             lastClickX=x;
             lastClickY=y;
+            if(null != menuItem) {
+                menuItem.pointerPressed(x, y);
+                repaint();
+            }
             return;
         }
 

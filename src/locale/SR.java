@@ -778,6 +778,7 @@ public class SR {
      public final static short MS_MENU_FONT = 740;
      
      public final static short MS_HISTORY_SHOW = 741;
+     public final static short MS_APPRUN_COUNT = 742;
      
 
     private static String[] localeItemsDefault = new String[0];
@@ -1528,6 +1529,7 @@ public class SR {
         "Menu font",
         
         "Show History",
+        "AppRun count: "
     };  
 
 

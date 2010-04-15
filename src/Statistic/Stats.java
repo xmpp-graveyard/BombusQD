@@ -42,6 +42,7 @@
 //#     private long latestTraffic=0;
 //#     private long traffic=0;
 //#     private int sessions=0;
+//#     public int appRunCount = 0;
 //#     
 //#     // Singleton
 //#     private static Stats instance;
@@ -66,6 +67,14 @@
 //#         return sessions;
 //#     }
 //#     
+//#     public void updateRunValue() {
+//#         appRunCount++;
+//#         if(appRunCount == 1) {
+//#             midlet.BombusQD.cf.initTouchOptions();
+//#         }
+//#         saveToStorage(false,true);
+//#     }
+//#     
 //# 
 //#     public void loadFromStorage(){
 //#         DataInputStream inputStream=NvStorage.ReadFileRecord("stats", 0);
@@ -73,6 +82,7 @@
 //#             traffic=inputStream.readLong();
 //#             latestTraffic=inputStream.readLong();
 //#             sessions=inputStream.readInt();
+//#             appRunCount=inputStream.readInt();
 //#     
 //#             inputStream.close();
 //#             inputStream=null;
@@ -87,8 +97,8 @@
 //#         sessions++;//?
 //#     }
 //#     
-//#     public void saveToStorage(boolean reset){
-//#         loadFromStorage();
+//#     public void saveToStorage(boolean reset, boolean appRun){
+//#         if(!appRun) loadFromStorage();
 //# 
 //#         long sessionTraffic;
 //#         long allTraffic;
@@ -99,6 +109,7 @@
 //#             latestTraffic   =   0;
 //#             traffic         =   0;
 //#             sessions        =   0;
+//#             appRunCount     =   0;
 //#          
 //#         } else {
 //#             sessionTraffic=getCurrentTraffic();
@@ -111,6 +122,7 @@
 //#             outputStream.writeLong(allTraffic);
 //#             outputStream.writeLong(sessionTraffic);
 //#             outputStream.writeInt(sessions);
+//#             outputStream.writeInt(appRunCount);
 //#             
 //#             
 //#             NvStorage.writeFileRecord(outputStream, "stats", 0, true);

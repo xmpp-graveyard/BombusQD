@@ -25,8 +25,8 @@ public class PluginBox extends IconTextElement {
     private String text="";
     private int edit = 0;
     private int colorItem;
-    private Font font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD ,Font.SIZE_SMALL);
-    int fH = font.getHeight();
+    private Font font;
+    int fH;
 
 
     public PluginBox(String text, boolean state,int edit) {
@@ -35,6 +35,12 @@ public class PluginBox extends IconTextElement {
         this.state=state;
         this.edit=edit;
         colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
+        switch(midlet.BombusQD.cf.graphicsMenuFont) {
+            case 0: font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD,Font.SIZE_MEDIUM); break;
+            case 1: font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD,Font.SIZE_SMALL); break;
+            case 2: font = Font.getFont(Font.FACE_PROPORTIONAL,Font.STYLE_BOLD,Font.SIZE_LARGE); break;
+        }
+        fH = font.getHeight();
     }
     
     public String toString() { return text; }
