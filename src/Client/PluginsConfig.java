@@ -551,6 +551,9 @@ public class PluginsConfig extends DefForm implements MenuListener
     }
     
     
+    public void eventLongOk() {
+	    touchLeftPressed();
+    }
     public void cmdOk() {
         try {
           //String type = touchLeftCommand();

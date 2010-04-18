@@ -3507,11 +3507,7 @@ public class Roster
      
     public void eventLongOk(){
         super.eventLongOk();
-//#ifndef WMUC
-//#ifdef POPUPS
-        showInfo();
-//#endif
-//#endif
+	cmdActions();
     }
 
 
@@ -4056,6 +4052,7 @@ public class Roster
              if(activeContact.active()) aContacts.addElement(activeContact);
         }
         if (aContacts.isEmpty()) return;
+        first.getChatInfo().opened = false;
         int pos = aContacts.indexOf(first);
         if (pos<0) showNext = (Contact)aContacts.firstElement();
         else if (right) {
@@ -4193,9 +4190,9 @@ public class Roster
      }   
 //#endif
 
-    protected void touchMainMenuPressed(int x, int y) {
+    protected void touchMainPanelPressed(int x, int y) {
         if (x< width-20) {
-                cmdActiveContacts();
+                cmdStatus();
         } else {
             cmdAlert();
         }

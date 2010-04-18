@@ -306,7 +306,9 @@ public class Contact extends IconTextElement{
         boolean first_msgreplace=false;
         if(chatInfo == null) getChatInfo();
         int msgCount = getChatInfo().getMessageCount();
-        if (msgCount >= midlet.BombusQD.cf.msglistLimit) getML().deleteOldMessages();
+        if (msgCount >= midlet.BombusQD.cf.msglistLimit) {
+            getML().deleteOldMessages();
+        }
         if (origin!=Constants.ORIGIN_GROUPCHAT) {
             if (m.isPresence()) first_replace = chatInfo.isOnlyStatusMessage();
             else {

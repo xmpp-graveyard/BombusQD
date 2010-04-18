@@ -311,6 +311,8 @@ public final class ContactMessageList extends VirtualList implements MenuListene
     }
     
     public void deleteOldMessages() {
+       cursor -= getChatInfo().getMessageCount() - midlet.BombusQD.cf.msglistLimit+1;
+       if (cursor<0) cursor = 0;
        getChatInfo().deleteOldMessages(messages);
     }
     
@@ -320,7 +322,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
         markRead(index); 
     }
     
-    protected void touchMainMenuPressed(int x, int y) {
+    protected void touchMainPanelPressed(int x, int y) {
         if (x>20 && x< width-20) {
                 contact.getChatInfo().opened = false;
                 midlet.BombusQD.sd.roster.createActiveContacts(this, contact);
@@ -601,7 +603,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
              for(int i=0;i<size;i++){
               c=(Contact)midlet.BombusQD.sd.roster.contactList.contacts.elementAt(i);
               if (c instanceof MucContact){
-                if(c.getNick().indexOf(msg.from)>-1) found=(c.status!=5);
+                if(c.getNick().equals(msg.from)) found=(c.status!=5);
                }
              }
            }

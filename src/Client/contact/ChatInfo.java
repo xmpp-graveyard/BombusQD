@@ -153,7 +153,7 @@ public final class ChatInfo {
     public void readMessage(Msg msg) {
         if(!opened) return;
         if(newMsgCnt==0 && newHighLitedMsgCnt==0) return;
-        //if (msg.unread) { //непрочитанное
+        //if (msg.unread) { //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
            reEnumChat();
            msg.unread = false;
            //MESSAGE_TYPE_AUTH=14;

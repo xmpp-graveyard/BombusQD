@@ -474,6 +474,8 @@ public final class MessageEdit
         
 //#ifdef RUNNING_MESSAGE
 //#        if(null == to || multiMessage) {
+//# 
+//#             composing=false;
 //#             if(active_contacts != null) {
 //#               int size=active_contacts.size();
 //#                for(int i=0; i<size; ++i) {    
@@ -486,7 +488,11 @@ public final class MessageEdit
 //#             multiMessage = false;
 //#        } 
 //#        else {
-//#          if(to.msgSuspended==null) send();
+//#          if(to.msgSuspended==null) {
+//#             composing=false;
+//#             send(null,null);
+//#             send();
+//#          }
 //#          if(sendInTranslit) this.sendInTranslit = false;
 //#          if(sendInDeTranslit) this.sendInDeTranslit = false;
 //#        }

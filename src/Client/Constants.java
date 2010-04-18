@@ -132,4 +132,6 @@ public final class Constants {
     public final static byte GROUP_PARTICIPANT=2;
     public final static byte GROUP_MODERATOR=1;
 
+    public final static byte POINTER_NONE=0;
+    public final static byte POINTER_SECOND=1;
 }

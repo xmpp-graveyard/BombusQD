@@ -37,7 +37,6 @@ import Menu.Command;
 import images.MenuIcons;
 import Menu.MyMenu;
 import java.util.*;
-import ui.controls.CommandsPointer;
 
 public class GMenu extends Canvas {
        

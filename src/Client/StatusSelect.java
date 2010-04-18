@@ -148,6 +148,10 @@ public class StatusSelect
         if (c==cmdCancel) destroyView();
     }
     
+    public void eventLongOk() {
+        touchLeftPressed();
+    }
+
     public void eventOk() {
         if(!selectAdvancedStatus()) {
           destroyView();

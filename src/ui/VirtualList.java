@@ -28,6 +28,7 @@
  */
 
 package ui;
+import Client.Constants;
 import Colors.ColorTheme;
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
@@ -39,7 +40,6 @@ import ui.controls.PopUp;
 import ui.controls.Balloon;
 import ui.controls.Progress;
 import ui.controls.ScrollBar;
-import ui.controls.CommandsPointer;
 import util.StringUtils;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeyExec;
@@ -76,6 +76,8 @@ public abstract class VirtualList
     
     private int iHeight;
     private int mHeight;
+
+    public static int pointer_state = 0;
     
 //#ifdef GRADIENT
 //#     Gradient grIB;
@@ -1373,12 +1375,39 @@ public abstract class VirtualList
             return;
         }
 	//System.out.println(i);
-	if (cursor>=0) {
-            moveCursorTo(getElementIndexAt(win_top)+i-1);
+	int newcursor = getElementIndexAt(win_top)+i-1;
+	if (cursor>=0 && cursor != newcursor) {
+	    pointer_state = Client.Constants.POINTER_NONE;
+	    boolean on_panel = false;
+                if (reverse) {
+                    if (mainbar!=null && paintBottom) {
+                        if (height - y < mHeight) {
+                            on_panel = true;
+                        }
+                    }
+                    if (infobar!=null && paintTop) {
+                        if (y < iHeight) {
+                            on_panel = true;
+                        }
+                    }
+                //soft buttons drown on bottom
+                } else {
+                    if (infobar!=null && paintBottom) {
+                        if (y > height-iHeight) {
+                            on_panel = true;
+                        }
+                    }
+                    if (mainbar!=null && paintTop) {
+                        if (y < mHeight) {
+                            on_panel = true;
+                        }
+                    }
+                }
+            if (!on_panel) moveCursorTo(newcursor);
             setRotator();
-        }
+        }  else if (cursor>=0) pointer_state = Client.Constants.POINTER_SECOND;
 	
-	if (cursor==lastClickItem) {
+	/*if (cursor==lastClickItem) {
 	    if (lastClickY-y<5 && y-lastClickY<5) {
                 if (clickTime-lastClickTime<500){
                     //System.out.println("short");
@@ -1386,7 +1415,7 @@ public abstract class VirtualList
 		    eventOk();
                 }
             }
-        }
+        }*/
 	lastClickTime=clickTime;
         lastClickX=x;
 	lastClickY=y;
@@ -1430,9 +1459,9 @@ public abstract class VirtualList
       }
     }   
 
-    protected void touchMainMenuPressed(int x, int y) {
-
+    protected void touchMainPanelPressed(int x, int y) {
     }
+    
     protected void pointerReleased(int x, int y) { 
         scrollbar.pointerReleased(x, y, this); 
         
@@ -1456,7 +1485,7 @@ public abstract class VirtualList
                 if (reverse) {
                     if (mainbar!=null && paintBottom) {
                         if (height - y < mHeight) {
-                            touchMainMenuPressed(x, y);
+                            touchMainPanelPressed(x, y);
                             return;
                         }
                     }
@@ -1483,11 +1512,13 @@ public abstract class VirtualList
                     }
                     if (mainbar!=null && paintTop) {
                         if (y < mHeight) {
-                            touchMainMenuPressed(x, y);
+                            touchMainPanelPressed(x, y);
                             return;
                         }
                     }
                 }
+                if (pointer_state == Client.Constants.POINTER_SECOND) eventOk();
+                repaint();
             }
         }
     }

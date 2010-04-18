@@ -77,8 +77,6 @@ public abstract class AlertBox
     private String right=SR.get(SR.MS_CANCEL);
     
     boolean init;
-    CommandsPointer ar=new CommandsPointer();
-
     private String mainbar;
     private String text;
     
@@ -166,9 +164,6 @@ public abstract class AlertBox
             width=g.getClipWidth();
             height=g.getClipHeight();
 
-            if (!init && hasPointerEvents())
-                    ar.init(width, height, getBarFontHeight());
-            
             int oldColor=g.getColor();
             
             g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
@@ -284,15 +279,17 @@ public abstract class AlertBox
     }
     
     protected void pointerPressed(int x, int y) {
-        int act=ar.pointerPressed(x, y);
-        if (act==1) {
-            yes();
-            destroyView();
-            return;
-        } else if (act==2) {
-            no();
-            destroyView();
-            return;
+
+        if (height - y < getBarFontHeight()) {
+            if (x<width/2){
+                yes();
+                destroyView();
+                return;
+            } else {
+                no();
+                destroyView();
+                return;
+            }
         }
     }
     
