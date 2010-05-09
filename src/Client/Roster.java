@@ -3784,10 +3784,8 @@ public class Roster
             VirtualList.fullscreen=midlet.BombusQD.cf.fullscreen;
             midlet.BombusQD.sd.roster.setFullScreenMode(midlet.BombusQD.cf.fullscreen);
         }
-//#ifndef GRAPHICS_MENU                
         else if (keyCode==KEY_NUM7)
-            new RosterToolsMenu(display, this);
-//#endif        
+	    new ServiceDiscovery(display, null, null, false);
         else if (keyCode==KEY_NUM9) {
             if (midlet.BombusQD.cf.allowMinimize)
                 BombusQD.getInstance().hideApp(true,null);
@@ -4052,6 +4050,7 @@ public class Roster
              if(activeContact.active()) aContacts.addElement(activeContact);
         }
         if (aContacts.isEmpty()) return;
+        if (aContacts.size()<2 && first == aContacts.firstElement()) return;
         first.getChatInfo().opened = false;
         int pos = aContacts.indexOf(first);
         if (pos<0) showNext = (Contact)aContacts.firstElement();
@@ -4191,11 +4190,13 @@ public class Roster
 //#endif
 
     protected void touchMainPanelPressed(int x, int y) {
-        if (x< width-20) {
-                cmdStatus();
-        } else {
+        if (x> width-50) {
             cmdAlert();
-        }
+        } else if (x < 50){
+            cmdStatus();
+        } else {
+            createActiveContacts(this, null);
+	}
     }
 //#ifdef GRAPHICS_MENU        
 //#     public void touchRightPressed(){ if (midlet.BombusQD.cf.oldSE) showGraphicsMenu(); else cmdActions(); }

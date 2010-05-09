@@ -39,7 +39,6 @@ import java.util.*;
 //#else
 import Menu.MenuListener;
 import Menu.Command;
-import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -54,12 +53,11 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import ui.controls.AlertBox;
 import xmpp.XmppError;
-import util.Strconv;
 import VCard.*;
 
 /**
  *
- * @author Evg_S,aqent
+ * @author Evg_S,aqent,tishka17
  */
 public class ServiceDiscovery 
         extends VirtualList
@@ -79,7 +77,6 @@ public class ServiceDiscovery
     private Command cmdBack;
     private Command cmdCancel;
     private Command cmdShowStatistics;
-    private int window = 0;
 
     private Vector items;
     private Vector stackItems=new Vector(0);
@@ -459,15 +456,15 @@ public class ServiceDiscovery
         } catch (Exception e) { 
             //e.printStackTrace(); 
         };
-            Object obj;
-            for (Enumeration e=cmds.elements(); e.hasMoreElements();) {
-                obj = e.nextElement();
-                if (!items.contains(obj)) items.insertElementAt(obj,0);
-            }
-            this.items=items;
-            moveCursorHome();
-            discoIcon=0; 
-            mainbarUpdate(); 
+        Object obj;
+        for (Enumeration e=cmds.elements(); e.hasMoreElements();) {
+            obj = e.nextElement();
+            if (!items.contains(obj)) items.insertElementAt(obj,0);
+        }
+        this.items=items;
+        moveCursorHome();
+        discoIcon=0;
+        mainbarUpdate(); 
     }
     
     public void browse(String service, String node){
@@ -490,9 +487,6 @@ public class ServiceDiscovery
             requestQuery(Constants.NS_INFO,"disco");
     }
     
-    private void sortElements(Vector sort) {
-    }
-    
     public void commandAction(Command c, Displayable d){
 	if (c==cmdOk) eventOk();
         if (c==cmdBack) { exitDiscovery(false); }            
@@ -503,31 +497,32 @@ public class ServiceDiscovery
         if (c==cmdShowStatistics) {
             Object o=getFocusedObject();
             JabberDataBlock req=new Iq(o.toString(), Iq.TYPE_GET,"getst");
-            JabberDataBlock query = req.addChildNs("query","http://jabber.org/protocol/stats");
+            //JabberDataBlock query =
+            req.addChildNs("query","http://jabber.org/protocol/stats");
             StaticData.getInstance().roster.theStream.send(req);
             req=null;
-            query=null;
+            //query=null;
         }         
     }
-    
     private void exitDiscovery(boolean cancel){
         if (cancel || stackItems.isEmpty()) {
-            stream.cancelBlockListener(this);
+            if (stream!=null)
+                stream.cancelBlockListener(this);
             if (display!=null && parentView!=null /*prevents potential app hiding*/ ) {
                 display.setCurrent(parentView);
                 isServiceDiscoWindow = false;
             }
         } else {
-            State st=(State)stackItems.lastElement();
-            stackItems.removeElement(st);
-            
-            service=st.service;
-            items=st.items;
-            features=st.features;
+            if (stackItems!=null && stackItems.size()>0) {
+                State st=(State)stackItems.lastElement();
+                stackItems.removeElement(st);
+                service=st.service;
+                items=st.items;
+                features=st.features;
+                moveCursorTo(st.cursor);
+            }
             discoIcon=0;
-            
             mainbarUpdate();
-            moveCursorTo(st.cursor);
             redraw();
         }
     }
@@ -703,10 +698,10 @@ public class ServiceDiscovery
                 case RosterIcons.ICON_GCJOIN_INDEX: {
                     int rp=service.indexOf('@');
                     String room=null;
-                    String server=service;
+                    //String server=service;
                     if (rp>0) {
                         room=service.substring(0,rp);
-                        server=service.substring(rp+1);
+                        //server=service.substring(rp+1);
                     }
                     new ConferenceForm(display, parentView, room, service, null, false);
                     break;

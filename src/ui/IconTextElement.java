@@ -26,8 +26,6 @@
  */
  
 package ui;
-import Client.Config;
-import Fonts.FontCache;
 import javax.microedition.lcdui.*;
 import Colors.ColorTheme;
 import Fonts.*;

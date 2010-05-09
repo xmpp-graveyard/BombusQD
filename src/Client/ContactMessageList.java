@@ -31,11 +31,8 @@ package Client;
 import Conference.MucContact;
 import Client.contact.ChatInfo;
 //#endif
-import Menu.RosterItemActions;
-import Messages.MessageList;
 import Messages.MessageItem;
 import Messages.MessageUrl;
-import images.RosterIcons;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
@@ -323,11 +320,11 @@ public final class ContactMessageList extends VirtualList implements MenuListene
     }
     
     protected void touchMainPanelPressed(int x, int y) {
-        if (x>20 && x< width-20) {
+        if (x>50 && x< width-50) {
                 contact.getChatInfo().opened = false;
                 midlet.BombusQD.sd.roster.createActiveContacts(this, contact);
                 contact.setCursor(cursor);
-        } else if (x<20){
+        } else if (x<50){
             midlet.BombusQD.sd.roster.searchActiveContact(contact, false);
         } else {
             midlet.BombusQD.sd.roster.searchActiveContact(contact, true);

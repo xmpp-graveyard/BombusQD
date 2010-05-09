@@ -100,11 +100,14 @@ public class ImageItem
     public boolean handleEvent(int keyCode) {
          switch (keyCode) {
             case 0:
-                if (img.getWidth()>screenWidth) {
-                    int newHeight=(img.getHeight() * (screenWidth * 100 / img.getWidth()))/100;
-                    this.img=scale(img, screenWidth, newHeight);
-                    return true;
+                try {
+                    if (img.getWidth()>screenWidth) {
+                        int newHeight=(img.getHeight() * (screenWidth * 100 / img.getWidth()))/100;
+                        this.img=scale(img, screenWidth, newHeight);
+                    }
+                } catch (Exception e) {
                 }
+                return true;
                 //break;
          }
         return false;

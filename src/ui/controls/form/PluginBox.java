@@ -13,7 +13,6 @@ import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 import ui.VirtualList;
 import images.RosterIcons;
-import Fonts.FontCache;
 import javax.microedition.lcdui.Font;
 /**
  *
@@ -56,7 +55,7 @@ public class PluginBox extends IconTextElement {
        }       
        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
        if (text!=null){
-         g.drawString(text, offset-ofs, (ilImageSize-fH)/2, Graphics.TOP|Graphics.LEFT);
+         g.drawString(text, offset-ofs, (itemHeight-fH)/2, Graphics.TOP|Graphics.LEFT);
        }
     }
 

@@ -28,7 +28,6 @@
  */
 
 package ui;
-import Client.Constants;
 import Colors.ColorTheme;
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
@@ -50,11 +49,9 @@ import java.util.*;
 import Menu.Command;
 import Menu.MenuListener;
 //#endif
-import java.util.Timer;
 //#ifdef LIGHT_CONTROL
 //# import LightControl.CustomLight;
 //#endif
-import net.jscience.math.MathFP;
 
 
 public abstract class VirtualList         
@@ -949,7 +946,7 @@ public abstract class VirtualList
 //#ifdef DEBUG
 //# 	System.out.println("keyUp");
 //#endif
-        if (cursor==0) {
+        if (cursor<=0) {
             if (wrapping) {
                 if (getItemRef(getItemCount()-1).isSelectable())
                     moveCursorEnd();
@@ -1318,10 +1315,21 @@ public abstract class VirtualList
 
     protected int kHold;
     
-    protected void keyRepeated(int keyCode){ key(keyCode); }
-    protected void keyReleased(int keyCode) { kHold=0; }
+    protected void keyRepeated(int keyCode){
+
+         if (keyCode==Config.SOFT_RIGHT || keyCode==')' || keyCode==Config.SOFT_LEFT || keyCode=='(' )
+             return;
+        key(keyCode);
+//#ifdef LIGHT_CONTROL
+//#         CustomLight.keyPressed();
+//#endif
+    }
+    protected void keyReleased(int keyCode) {
+        kHold=0;
+    }
     protected void keyPressed(int keyCode) { 
-        kHold=0; key(keyCode);
+        kHold=0;
+        key(keyCode);
 //#ifdef LIGHT_CONTROL
 //#     CustomLight.keyPressed();
 //#endif    
@@ -2097,7 +2105,7 @@ public abstract class VirtualList
 
             if (!cursorInWindow()) { return false; }
             
-            if(cursor==-1) cursor = 0;
+            if(cursor<0) cursor = 0;
             int remainder=win_top-itemLayoutY[cursor];
             if (remainder<=0) return false;
             if (remainder<=winHeight) {

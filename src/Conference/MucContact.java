@@ -29,18 +29,7 @@
 package Conference;
  
 import Client.*;
-import Client.Roster;
-import Client.StaticData;
-import com.alsutton.jabber.JabberDataBlock;
-import images.RosterIcons;
 import Client.Constants;
-import locale.SR;
-import util.StringUtils;
-import xmpp.XmppError;
-import ui.VirtualList;
-import ui.IconTextElement;
-import VCard.VCard;
-import Colors.ColorTheme;
  
  /**
   *
@@ -77,5 +66,14 @@ import Colors.ColorTheme;
             default: return;
          }
          lastMessageTime=m.dateGmt;
+    }
+
+    public String getTipString() {
+        int nm=getNewMsgsCount();
+        if (nm!=0)
+            return String.valueOf(nm);
+        if (realJid!=null)
+            return realJid;
+        return getJid();
     }
 }

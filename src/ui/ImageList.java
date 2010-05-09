@@ -96,7 +96,7 @@ public class ImageList {
     
     public int getHeight(int smileIndex) {
         if(!midlet.BombusQD.cf.animatedSmiles) return height;
-        if(smileIndex<aniHeight.length) return aniHeight[smileIndex];
+        if(aniHeight!=null && smileIndex<aniHeight.length) return aniHeight[smileIndex];
         return height; 
     }
     

@@ -34,17 +34,13 @@ import com.alsutton.jabber.datablocks.*;
 import locale.SR;
 import Menu.MenuListener;
 import Menu.Command;
-import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
-import ui.controls.form.DropChoiceBox;
-import ui.controls.form.TextInput;
 import ui.controls.form.SimpleString;
 //#ifdef GRAPHICS_MENU        
 //# import ui.GMenu;
 //# import ui.GMenuConfig;
 //#endif 
 import Client.StaticData;
-import ui.controls.form.SimpleTextBox;
 /**
  *
  * @author Evg_S,aqent

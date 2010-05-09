@@ -32,13 +32,10 @@ package Client;
 import Conference.MucContact;
 import Client.contact.ChatInfo;
 //#endif
-import Fonts.FontCache;
 //#ifdef CLIENTS_ICONS
 import images.ClientsIcons;
 //#endif
-import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
-import ui.ImageList;
 //#ifdef PEP
 //# import images.MoodIcons;
 //# import images.ActivityIcons;
@@ -47,11 +44,7 @@ import images.RosterIcons;
 import Colors.ColorTheme;
 import VCard.VCard;
 import ui.IconTextElement;
-import com.alsutton.jabber.datablocks.Presence;
-import java.util.Enumeration;
-import java.util.Vector;
 import javax.microedition.lcdui.Image;
-import util.StringUtils; 
 import ui.VirtualList;
 
 public class Contact extends IconTextElement{

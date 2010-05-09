@@ -27,8 +27,6 @@
  */
 
 package ui;
-//import Client.Config;
-//import Client.StaticData;
 import Fonts.*;
 import java.util.*;
 import javax.microedition.lcdui.*;
@@ -49,6 +47,7 @@ public class ComplexString implements VirtualElement {
     public final static int NICK_OFF  = 0x05000000;
 //#endif
     public final static int BOLD = 0x06000000;
+    public final static int SMILE = 0x07000000;
     protected Font font=FontCache.getFont(false, FontCache.msg);
 
     private int font_height = font.getHeight();
@@ -185,12 +184,23 @@ public class ComplexString implements VirtualElement {
                 } else if ((elementData.elementAt(index) instanceof Integer)) { // image element or color
                     int i=((Integer)elementData.elementAt(index)).intValue();                           
                     switch (i&0xff000000) {
-                        case IMAGE:
-                            if (imageList==null) break;
-                              int iw = aniSmile ? imageList.getWidth(i) : imgWidth;
-                              if (ralign) w -= iw; 
-                              imageList.drawImage(g, i, w, imageYOfs);
-                              if (!ralign) w += iw;
+                        case IMAGE: {
+                                if (imageList==null) break;
+                                  int iw = aniSmile ? imageList.getWidth(i) : imgWidth;
+                                  if (ralign) w -= iw;
+                                  imageList.drawImage(g, i, w, imageYOfs);
+                                  if (!ralign) w += iw;
+                            }
+                            break;
+                        case SMILE: {
+                                if (imageList==null) break;
+                                i = i - SMILE;
+                                int iw = aniSmile ? imageList.getWidth(i) : imgWidth;
+                                imageYOfs=(getVHeight()-imageList.getHeight(i))>>1;
+                                if (ralign) w -= iw;
+                                imageList.drawImage(g, i, w, imageYOfs);
+                                if (!ralign) w += iw;
+                            }
                             break;
                         case COLOR:
                             g.setColor(0xFFFFFF&i);
@@ -271,10 +281,11 @@ public class ComplexString implements VirtualElement {
         for (int i=0; i<elementCount; ++i){
             obj = elementData.elementAt(i);
             if (obj==null) continue;
-            if (obj instanceof String) h=font.getHeight(); 
+            if (obj instanceof String || obj instanceof StringBuffer) h=font.getHeight();
             else if (obj instanceof Integer) {
                 int a=((Integer)obj).intValue();
                 if ((a&0xff000000) == 0) h=imageList.getHeight();
+                if ((a&0xff000000) == SMILE) h=imageList.getHeight(a - SMILE);
             }
             else if (obj instanceof VirtualElement) h=((VirtualElement)obj).getVHeight();
             if (h>height) height=h;
@@ -289,7 +300,12 @@ public class ComplexString implements VirtualElement {
         obj = null;
     }
 
-    public void addSmile(int imageIndex,int iw) {  addElement(new Integer(imageIndex));  aniSmile = true; }
+    public void addSmile(int imageIndex,int iw) {  
+        if ((imageIndex & 0xff000000) == 0)
+            imageIndex = imageIndex | SMILE;
+        addElement(new Integer(imageIndex));
+        aniSmile = true;
+    }
     public void addImage(int imageIndex){  addElement(new Integer(imageIndex));  aniSmile = false; }
     public void addColor(int colorRGB){ addElement(new Integer(COLOR | colorRGB)); }
     public void addRAlign(){ addElement(new Integer(RALIGN)); }

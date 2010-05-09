@@ -779,7 +779,8 @@ public class PluginsConfig extends DefForm implements MenuListener
            bgnd_image.append(SR.get(SR.MS_BGND_GRADIENT_));//2
            bgnd_image.append(SR.get(SR.MS_MY_BGND_IMAGE));//3
            bgnd_image.setSelectedIndex(cf.bgnd_image);
-           itemsList.addElement(bgnd_image);                     
+           itemsList.addElement(bgnd_image);
+           
            itemsList.addElement(new SpacerItem(3));                   
 	   scrollWidth=new NumberInput(display, SR.get(SR.MS_SCROLL_WIDTH), Integer.toString(cf.scrollWidth), 3, 25); 
            itemsList.addElement(scrollWidth);   
@@ -804,50 +805,50 @@ public class PluginsConfig extends DefForm implements MenuListener
          }
          else if(type==SR.get(SR.MS_appStr)){
             
-             itemsList.addElement(new SimpleString(SR.get(SR.MS_STARTUP_ACTIONS), true));
-             itemsList.addElement(autoLogin);
-             itemsList.addElement(autoJoinConferences); 
-             
-             if(midlet.BombusQD.cf.userAppLevel == 1) {
-                itemsList.addElement(collapsedGroups);
-                itemsList.addElement(fullscr);
-                itemsList.addElement(enableVersionOs);
-                itemsList.addElement(queryExit);                 
-             } else {
-                 itemsList.addElement(fullscr);
-             }
-                          if (phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE); 
-                               if (cf.allowMinimize) {
-                                   itemsList.addElement(popupFromMinimized);
-                               }
-                               itemsList.addElement(executeByNum);
+            itemsList.addElement(new SimpleString(SR.get(SR.MS_STARTUP_ACTIONS), true));
+            itemsList.addElement(autoLogin);
+            itemsList.addElement(autoJoinConferences);
+
+            if(midlet.BombusQD.cf.userAppLevel == 1) {
+            itemsList.addElement(collapsedGroups);
+            itemsList.addElement(fullscr);
+            itemsList.addElement(enableVersionOs);
+            itemsList.addElement(queryExit);
+            } else {
+             itemsList.addElement(fullscr);
+            }
+            if (phoneManufacturer==cf.SONYE) itemsList.addElement(oldSE);
+            if (cf.allowMinimize) {
+                               itemsList.addElement(popupFromMinimized);
+            }
+            itemsList.addElement(executeByNum);
                                
-                               itemsList.addElement(new SpacerItem(10));
-                               itemsList.addElement(new SimpleString(SR.get(SR.MS_TIME_SETTINGS), true));
-	                       fieldGmt=new NumberInput(display, SR.get(SR.MS_GMT_OFFSET), Integer.toString(cf.gmtOffset), -12, 12); 
-                               itemsList.addElement(fieldGmt);  
+            itemsList.addElement(new SpacerItem(10));
+            itemsList.addElement(new SimpleString(SR.get(SR.MS_TIME_SETTINGS), true));
+            fieldGmt=new NumberInput(display, SR.get(SR.MS_GMT_OFFSET), Integer.toString(cf.gmtOffset), -12, 12);
+            itemsList.addElement(fieldGmt);
 
-	                       langs=new StringLoader().stringLoader("/lang/res.txt",3);
-                               if (langs[0].size()>1) {
-                                   itemsList.addElement(new SpacerItem(10));
-                                   langFiles=new DropChoiceBox(display, "*"+SR.get(SR.MS_LANGUAGE));
-                                   String tempLang=cf.lang;
-                                   if (tempLang==null) { //not detected
-                                       String locale=System.getProperty("microedition.locale");  
-                                       if (locale!=null) {
-                                           tempLang=locale.substring(0, 2).toLowerCase();
-                                       }
-                                   }
+            langs=new StringLoader().stringLoader("/lang/res.txt",3);
+            if (langs[0].size()>1) {
+               itemsList.addElement(new SpacerItem(10));
+               langFiles=new DropChoiceBox(display, "*"+SR.get(SR.MS_LANGUAGE));
+               String tempLang=cf.lang;
+               if (tempLang==null) { //not detected
+                   String locale=System.getProperty("microedition.locale");
+                   if (locale!=null) {
+                       tempLang=locale.substring(0, 2).toLowerCase();
+                   }
+               }
 
-                                   for (int i=0; i<langs[0].size(); i++) {
-                                       String label=(String) langs[2].elementAt(i);
-                                       String langCode=(String) langs[0].elementAt(i);
-                                       langFiles.append(label);
-                                       if (tempLang.equals(langCode))
-                                           langFiles.setSelectedIndex(i);
-                                   }
-                                   itemsList.addElement(langFiles);
-                               }
+               for (int i=0; i<langs[0].size(); i++) {
+                   String label=(String) langs[2].elementAt(i);
+                   String langCode=(String) langs[0].elementAt(i);
+                   langFiles.append(label);
+                   if (tempLang.equals(langCode))
+                       langFiles.setSelectedIndex(i);
+               }
+               itemsList.addElement(langFiles);
+            }
          }
          else if(type==SR.get(SR.MS_astatusStr)){
            autoAwayType=new DropChoiceBox(display, SR.get(SR.MS_AWAY_TYPE));
@@ -857,20 +858,20 @@ public class PluginsConfig extends DefForm implements MenuListener
            autoAwayType.append(SR.get(SR.MS_IDLE));
            autoAwayType.setSelectedIndex(cf.autoAwayType);
            itemsList.addElement(autoAwayType);
-             fieldAwayDelay=new NumberInput(display, "*"+SR.get(SR.MS_AWAY_PERIOD), Integer.toString(cf.autoAwayDelay), 1, 60);
-             itemsList.addElement(fieldAwayDelay);
-             itemsList.addElement(awayStatus);            
+           fieldAwayDelay=new NumberInput(display, "*"+SR.get(SR.MS_AWAY_PERIOD), Integer.toString(cf.autoAwayDelay), 1, 60);
+           itemsList.addElement(fieldAwayDelay);
+           itemsList.addElement(awayStatus);            
 
          } 
          else if(type==SR.get(SR.MS_clchatStr)){
            itemsList.addElement(new SimpleString(SR.get(SR.MS_CLCHAT_ON), true));
-             //itemsList.addElement(useClassicChat);
-               itemsList.addElement(use_phone_theme);        
-                 classic_chat_height=new NumberInput(display,SR.get(SR.MS_CLCHAT_HEIGHT), Integer.toString(cf.classic_chat_height), 80, 320);
-                 itemsList.addElement(classic_chat_height);
-                   line_count=new NumberInput(display,SR.get(SR.MS_CLCHAT_MSGLIMIT), Integer.toString(cf.line_count), 1, 1000);
-                   itemsList.addElement(line_count);
-                   itemsList.addElement(new SpacerItem(10));            
+           //itemsList.addElement(useClassicChat);
+           itemsList.addElement(use_phone_theme);        
+           classic_chat_height=new NumberInput(display,SR.get(SR.MS_CLCHAT_HEIGHT), Integer.toString(cf.classic_chat_height), 80, 320);
+           itemsList.addElement(classic_chat_height);
+           line_count=new NumberInput(display,SR.get(SR.MS_CLCHAT_MSGLIMIT), Integer.toString(cf.line_count), 1, 1000);
+           itemsList.addElement(line_count);
+           itemsList.addElement(new SpacerItem(10));            
          } 
       setCommandListener(this);
       attachDisplay(display);    

@@ -29,6 +29,10 @@ package Colors;
 import javax.microedition.lcdui.*;
 import locale.SR;
 
+//#ifdef LIGHT_CONTROL
+//# import LightControl.CustomLight;
+//#endif
+
 public class ColorSelector extends Canvas implements Runnable, CommandListener {
 //#ifdef PLUGINS
 //#     public static String plugin = new String("PLUGIN_COLORS");
@@ -215,6 +219,9 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     }
 */
     protected void keyPressed(int key) {
+//#ifdef LIGHT_CONTROL
+//#     CustomLight.keyPressed();
+//#endif
         switch (key) {
             case KEY_NUM2:
                 timer = 7;
