@@ -35,7 +35,6 @@ import Conference.AppendNick;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
-import ui.VirtualList;
 //import ui.controls.ExTextBox;
 import io.TranslateSelect;
 //#ifdef STATS
@@ -114,16 +113,16 @@ public final class MessageEdit
           cmdSubj=new Command(SR.get(SR.MS_SET_SUBJECT), Command.SCREEN, 10);
           cmdSuspend=new Command(SR.get(SR.MS_SUSPEND), Command.BACK,90);
           cmdCancel=new Command(SR.get(SR.MS_CANCEL), Command.SCREEN,99);
-          cmdSendEvil=new Command(SR.get(SR.MS_SEND_EVIL_MSG), Command.SCREEN,229);    
+          cmdSendEvil=new Command(SR.get(SR.MS_SEND_EVIL_MSG), Command.SCREEN,229);
           cmdTranslate=new Command(SR.get(SR.MS_TRANSLATE), Command.SCREEN ,337);
 //#ifdef ARCHIVE
-          cmdPaste=new Command(SR.get(SR.MS_ARCHIVE), Command.SCREEN, 6);    
+          cmdPaste=new Command(SR.get(SR.MS_ARCHIVE), Command.SCREEN, 6);
 //#endif    
 //#ifdef CLIPBOARD
-//#           cmdPasteText=new Command(SR.get(SR.MS_PASTE), Command.SCREEN, 8);  
+//#           cmdPasteText=new Command(SR.get(SR.MS_PASTE), Command.SCREEN, 8);
 //#endif  
 //#if TEMPLATES
-//#       cmdTemplate=new Command(SR.get(SR.MS_TEMPLATE), Command.SCREEN, 7); 
+//#       cmdTemplate=new Command(SR.get(SR.MS_TEMPLATE), Command.SCREEN, 7);
 //#endif 
           //System.out.println("initCommands");
     }
@@ -150,13 +149,14 @@ public final class MessageEdit
     }
     
     public void setText(String body, Contact to, Displayable pView, boolean emptyChat){
-
        if(display == null) this.display = midlet.BombusQD.getInstance().display;
        this.body = body; 
        this.parentView=pView;
        this.to = to;
        this.emptyChat = emptyChat;
        boolean phoneSONYE = (midlet.BombusQD.cf.phoneManufacturer == Config.SONYE);
+       System.gc();
+       
        switch(midlet.BombusQD.cf.msgEditType){
             case 0: 
                 if(!phoneSONYE) t.setTitle( null == to ? "Multi-Message" : to.toString() );

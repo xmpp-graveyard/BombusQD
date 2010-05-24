@@ -31,10 +31,7 @@ import Client.StaticData;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
-import java.util.Enumeration;
 import java.util.Vector;
-import Client.Config;
-import com.alsutton.jabber.datablocks.Presence;
 import Client.Constants;
 import util.StringLoader;
 
@@ -92,7 +89,7 @@ public class BookmarkQuery implements JabberBlockListener{
                     loadDefaults(bookmarks);
 					
                 midlet.BombusQD.sd.roster.bookmarks=bookmarks;
-                midlet.BombusQD.sd.roster.redraw();
+                //midlet.BombusQD.sd.roster.redraw();
                 
                 return JabberBlockListener.NO_MORE_BLOCKS;
             }

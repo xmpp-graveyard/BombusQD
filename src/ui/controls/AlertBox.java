@@ -282,12 +282,12 @@ public abstract class AlertBox
 
         if (height - y < getBarFontHeight()) {
             if (x<width/2){
-                yes();
                 destroyView();
+                yes();
                 return;
             } else {
-                no();
                 destroyView();
+                no();
                 return;
             }
         }

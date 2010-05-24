@@ -56,8 +56,8 @@ public class Config {
     private static Config instance;
 
     public static int KEY_BACK = -11;
-    public static int SOFT_LEFT = -1000;
-    public static int SOFT_RIGHT = -1000;
+    public static int SOFT_LEFT = -6;
+    public static int SOFT_RIGHT = -7;
     
     public final static int SUBSCR_AUTO=0;
     public final static int SUBSCR_ASK=1;

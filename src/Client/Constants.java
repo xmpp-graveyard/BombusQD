@@ -78,7 +78,7 @@ public final class Constants {
              case MESSAGE_TYPE_EVIL: return 0xFF0000;
              case MESSAGE_TYPE_HISTORY: return ColorTheme.getColor(ColorTheme.MESSAGE_HISTORY);
  //#ifdef JUICK.COM    
- //#             case MESSAGE_TYPE_JUICK: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
+//#             case MESSAGE_TYPE_JUICK: return ColorTheme.getColor(ColorTheme.MESSAGE_IN);
  //#endif
          }
          return ColorTheme.getColor(ColorTheme.LIST_INK);
@@ -134,4 +134,10 @@ public final class Constants {
 
     public final static byte POINTER_NONE=0;
     public final static byte POINTER_SECOND=1;
+    public final static byte POINTER_SCROLLBAR=2;
+    public final static byte POINTER_DRAG=3;
+    public final static byte POINTER_DRAGLEFT=4;
+    public final static byte POINTER_DRAGRIGHT=5;
+    public final static byte POINTER_PANEL=6;
+
 }

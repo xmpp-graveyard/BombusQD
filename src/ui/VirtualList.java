@@ -493,7 +493,7 @@ public abstract class VirtualList
     public void paint(Graphics graphics) {
         mHeight=0;
         iHeight=0;
-        
+
         Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
         /*
         if((time_wait-time_start)>=1000) {
@@ -1327,16 +1327,21 @@ public abstract class VirtualList
     protected void keyReleased(int keyCode) {
         kHold=0;
     }
-    protected void keyPressed(int keyCode) { 
+    protected void keyPressed(int keyCode) {
+
         kHold=0;
         key(keyCode);
 //#ifdef LIGHT_CONTROL
 //#     CustomLight.keyPressed();
 //#endif    
     }
-    
+
+    int old_win_top;
+    private long lastPaint;
     protected void pointerPressed(int x, int y) {
 
+	pointer_state = Client.Constants.POINTER_NONE;
+        old_win_top = win_top;
 	long clickTime=System.currentTimeMillis();
         if(gm.itemGrMenu>0){
             lastClickTime=clickTime;
@@ -1345,6 +1350,7 @@ public abstract class VirtualList
             if(null != menuItem) {
                 menuItem.pointerPressed(x, y);
                 repaint();
+                lastPaint = clickTime;
             }
             return;
         }
@@ -1367,7 +1373,35 @@ public abstract class VirtualList
         }
 ///#endif
          * */
-        if (scrollbar.pointerPressed(x, y, this)) {
+        boolean on_panel = false;
+        if (reverse) {
+            if (mainbar!=null && paintBottom) {
+                if (height - y < mHeight) {
+                    on_panel = true;
+                }
+            }
+            if (infobar!=null && paintTop) {
+                if (y < iHeight) {
+                    on_panel = true;
+                }
+            }
+        //soft buttons drown on bottom
+        } else {
+            if (infobar!=null && paintBottom) {
+                if (y > height-iHeight) {
+                    on_panel = true;
+                }
+            }
+            if (mainbar!=null && paintTop) {
+                if (y < mHeight) {
+                    on_panel = true;
+                }
+            }
+        }
+        if (on_panel)
+            pointer_state = Client.Constants.POINTER_PANEL;
+        else if (scrollbar.pointerPressed(x, y, this)) {
+            pointer_state = Client.Constants.POINTER_SCROLLBAR;
             stickyWindow=false;
             return;
         }
@@ -1385,32 +1419,6 @@ public abstract class VirtualList
 	//System.out.println(i);
 	int newcursor = getElementIndexAt(win_top)+i-1;
 	if (cursor>=0 && cursor != newcursor) {
-	    pointer_state = Client.Constants.POINTER_NONE;
-	    boolean on_panel = false;
-                if (reverse) {
-                    if (mainbar!=null && paintBottom) {
-                        if (height - y < mHeight) {
-                            on_panel = true;
-                        }
-                    }
-                    if (infobar!=null && paintTop) {
-                        if (y < iHeight) {
-                            on_panel = true;
-                        }
-                    }
-                //soft buttons drown on bottom
-                } else {
-                    if (infobar!=null && paintBottom) {
-                        if (y > height-iHeight) {
-                            on_panel = true;
-                        }
-                    }
-                    if (mainbar!=null && paintTop) {
-                        if (y < mHeight) {
-                            on_panel = true;
-                        }
-                    }
-                }
             if (!on_panel) moveCursorTo(newcursor);
             setRotator();
         }  else if (cursor>=0) pointer_state = Client.Constants.POINTER_SECOND;
@@ -1435,96 +1443,111 @@ public abstract class VirtualList
         il=itemLayoutY[cursor];
         if (il<win_top) win_top=il;
       repaint();
+      lastPaint = clickTime;
     }
      
      int yPointerPos;
      
    protected void pointerDragged(int x, int y) {
-      if (phoneManufacturer!=Config.NOKIA_5800) {
-          if (scrollbar.pointerDragged(x, y, this)) stickyWindow=false;   
+
+       long clickTime=System.currentTimeMillis();
+       if(gm.itemGrMenu>0){
+            if(null != menuItem) {
+                menuItem.pointerPressed(x, y);
+                if (clickTime-lastPaint>100) {
+                    repaint();
+                    lastPaint = clickTime;
+                }
+            }
+            return;
       }
-      else{
-        if (scrollbar.pointerDragged(x, y, this)) {
+      if (pointer_state == Client.Constants.POINTER_SCROLLBAR) {
+            scrollbar.pointerDragged(x, y, this);
+            if (clickTime-lastPaint>100) {
+                    repaint();
+                    lastPaint = clickTime;
+            }
             stickyWindow=false;
             return;
-        } 
-        
-        int dy = y-yPointerPos;
-        
-        yPointerPos=y;
-        
-        win_top-=dy;
-        
-        if (win_top+winHeight>listHeight) win_top=listHeight-winHeight;
-        if (win_top<0) win_top=0;
-        
-        stickyWindow=false;
-	if (cursor>=0) {
-            cursor=getElementIndexAt(win_top+y-itemBorder[0]);
-            setRotator();
-        }
-        repaint();           
       }
+      win_top = old_win_top - y + lastClickY;
+      if (x - lastClickX > 5 || lastClickX-x >5
+              || y - lastClickY > 5 || lastClickY-y>5)
+          pointer_state = Client.Constants.POINTER_DRAG;
+
+      if (win_top+winHeight>listHeight) win_top=listHeight-winHeight;
+      if (win_top<0) win_top=0;
+      stickyWindow=false;
+      if (clickTime-lastPaint>100) {
+                    repaint();
+                    lastPaint = clickTime;
+      }
+      return;
     }   
 
     protected void touchMainPanelPressed(int x, int y) {
     }
     
-    protected void pointerReleased(int x, int y) { 
-        scrollbar.pointerReleased(x, y, this); 
-        
-	long clickTime=System.currentTimeMillis();
-        if (lastClickY-y<5 && y-lastClickY<5) {
-            if (clickTime-lastClickTime>500) {
-                if(gm.itemGrMenu>0){
+    protected void pointerReleased(int x, int y) {
+        long clickTime=System.currentTimeMillis();
+        if(gm.itemGrMenu>0){
+            if(null != menuItem && y>lastClickY-5 && y<lastClickY+5) {
+                menuItem.pointerReleased(x, y);
+                repaint();
+                lastPaint = clickTime;
+            }
+            lastClickTime=clickTime;
+            lastClickX=x;
+            lastClickY=y;
+            
+            return;
+        }
+        //soft buttons drown on top
+        if (reverse) {
+            if (mainbar!=null && paintBottom) {
+                if (height - y < mHeight) {
+                    if (pointer_state == Client.Constants.POINTER_PANEL) touchMainPanelPressed(x, y);
                     return;
                 }
+            }
+            if (infobar!=null && paintTop) {
+                if (y < iHeight) {
+                    if (x < width/2-40) {
+                        if (pointer_state == Client.Constants.POINTER_PANEL)touchLeftPressed();
+                    }else if (x>width/2+40){
+                        if (pointer_state == Client.Constants.POINTER_PANEL)touchRightPressed();
+                    } else if (pointer_state == Client.Constants.POINTER_PANEL)touchMiddlePressed();
+                    return;
+                }
+            }
+        //soft buttons drown on bottom
+        } else {
+            if (infobar!=null && paintBottom) {
+                if (y > height-iHeight) {
+                    if (x < width/2-40) {
+                        if (pointer_state == Client.Constants.POINTER_PANEL)touchLeftPressed();
+                    }else if (x>width/2+40){
+                        if (pointer_state == Client.Constants.POINTER_PANEL)touchRightPressed();
+                    } else if (pointer_state == Client.Constants.POINTER_PANEL)touchMiddlePressed();
+                    stickyWindow=false;
+                    return;
+                }
+            }
+            if (mainbar!=null && paintTop) {
+                if (y < mHeight) {
+                    if (pointer_state == Client.Constants.POINTER_PANEL)touchMainPanelPressed(x, y);
+                    return;
+                }
+            }
+        }
+        if (pointer_state==Client.Constants.POINTER_SCROLLBAR) scrollbar.pointerReleased(x, y, this);
+        
+	if (pointer_state == Client.Constants.POINTER_NONE || pointer_state==Client.Constants.POINTER_SECOND) {
+            if (clickTime-lastClickTime>500) {
                 y=0;
                 eventLongOk();
             } else {
-                if(gm.itemGrMenu>0){
-                    if(null != menuItem) {
-                        menuItem.pointerReleased(x, y);
-                        repaint();
-                    }
-                    return;
-                }
-                //soft buttons drown on top
-                if (reverse) {
-                    if (mainbar!=null && paintBottom) {
-                        if (height - y < mHeight) {
-                            touchMainPanelPressed(x, y);
-                            return;
-                        }
-                    }
-                    if (infobar!=null && paintTop) {
-                        if (y < iHeight) {
-                            if (x < width/2)
-                                touchLeftPressed();
-                            else
-                                touchRightPressed();
-                            return;
-                        }
-                    }
-                //soft buttons drown on bottom
-                } else {
-                    if (infobar!=null && paintBottom) {
-                        if (y > height-iHeight) {
-                            if (x < width/2)
-                                touchLeftPressed();
-                            else
-                                touchRightPressed();
-                            stickyWindow=false;
-                            return;
-                        }
-                    }
-                    if (mainbar!=null && paintTop) {
-                        if (y < mHeight) {
-                            touchMainPanelPressed(x, y);
-                            return;
-                        }
-                    }
-                }
+                
                 if (pointer_state == Client.Constants.POINTER_SECOND) eventOk();
                 repaint();
             }
@@ -1683,7 +1706,8 @@ public abstract class VirtualList
         destroyView();
     }
 //#endif    
-    
+    public void touchMiddlePressed(){
+    }
     
     private boolean popUpshow=false;
     private static StringBuffer mem = new StringBuffer(0);
@@ -1711,14 +1735,14 @@ public abstract class VirtualList
 //#            System.out.println("popupGreen");
 //#             if (getPopUp().getContact()!=null) {
 //#                    if(midlet.BombusQD.cf.module_classicchat){
-//#                       new SimpleItemChat(display,sd.roster,sd.roster.getContact(popup.getContact(), false));            
+//#                       new SimpleItemChat(midlet.BombusQD.getInstance().display,sd.roster,sd.roster.getContact(popup.getContact(), false));
 //#                    } else {
 //#                        Contact c = sd.roster.getContact(popup.getContact(), false);
-//#                        if(c.getChatInfo().getMessageCount()==0){
+//#                        if(c.getChatInfo().getMessageCount()<=0 ){
 //#                           midlet.BombusQD.sd.roster.createMessageEdit(c, c.msgSuspended, this, true);
 //#                           return;
 //#                        }
-//#                        display.setCurrent(c.getMessageList());
+//#                        midlet.BombusQD.getInstance().display.setCurrent(c.getMessageList());
 //#                    }                
 //#                 popup.next();
 //#                 return;

@@ -30,7 +30,6 @@ package Account;
 import Client.*;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
-import com.alsutton.jabber.datablocks.Presence;
 import locale.SR;
 import midlet.BombusQD;
 import ui.*;
@@ -42,16 +41,13 @@ import java.util.*;
 //#else
 import Menu.MenuListener;
 import Menu.Command;
-import Menu.MyMenu;
 //#endif
 import ui.MainBar;
 import io.NvStorage;
 import ui.controls.AlertBox;
-import util.Strconv;
 //#ifdef GRAPHICS_MENU        
 //# import ui.GMenu;
 //#endif
-import Colors.ColorTheme; 
 
 public class AccountSelect 
     extends VirtualList 

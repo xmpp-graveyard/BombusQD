@@ -28,14 +28,14 @@ package ui;
 import javax.microedition.lcdui.*;
 import Client.Config;
 import Colors.ColorTheme;
-import java.util.Vector;
-import Fonts.*;
+///import java.util.Vector;
+//import Fonts.*;
 import locale.SR;
 import midlet.BombusQD;
 import Menu.MenuListener;
 import Menu.Command;
-import images.MenuIcons;
-import Menu.MyMenu;
+//import images.MenuIcons;
+//import Menu.MyMenu;
 import java.util.*;
 
 public class GMenu extends Canvas {
@@ -249,7 +249,12 @@ public class GMenu extends Canvas {
    
    private void eventOk(){
     try {
-      cursorY=0;       
+      cursorY=0;
+      if (gm.itemCursorIndex>=gm.commandslist.length || gm.itemCursorIndex<0) {
+          gm.itemCursorIndex = 0;
+          return;
+      }
+
       if((gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_NEW_ACCOUNT))>-1 ||
         //gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_MY_JABBER))>-1 ||
         gm.commandslist[gm.itemCursorIndex].indexOf(SR.get(SR.MS_SORT_TYPE))>-1)  &&
@@ -416,7 +421,7 @@ public class GMenu extends Canvas {
    }
    
    
-   private void touchCommand(int x, int y) {
+   private void touchSelect(int x, int y) {
        if (x<x1 || y<y1 || x> x2 || y>y2) {
            gm.itemGrMenu=-1;
            gm.ml=null;
@@ -425,7 +430,6 @@ public class GMenu extends Canvas {
        }
        if (eventMenu==true) {
             gm.itemCursorIndexIn=(y-y1)/fh;
-            closeEvent();
             return;
        }
        gm.itemCursorIndex=(y-y1)/fh;
@@ -433,12 +437,16 @@ public class GMenu extends Canvas {
    
    
    protected void pointerPressed(int x, int y) {
-       touchCommand(x,y);
+       touchSelect(x,y);
        return;
    }  
 
    protected void pointerReleased(int x, int y) {
-       touchCommand(x,y);
+       touchSelect(x,y);
+       if (eventMenu==true) {
+           closeEvent();
+           return;
+       }
        eventOk();
        return;
    }   
@@ -526,15 +534,15 @@ public class GMenu extends Canvas {
               switch (keyCode) 
               {
                 case KEY_NUM0: gm.itemCursorIndex=0; eventOk(); break;                  
-                case KEY_NUM1: gm.itemCursorIndex=1; eventOk(); break;
-                case KEY_NUM2: gm.itemCursorIndex=2; eventOk(); break;
-                case KEY_NUM3: gm.itemCursorIndex=3; eventOk(); break;  
-                case KEY_NUM4: gm.itemCursorIndex=4; eventOk(); break;
-                case KEY_NUM5: gm.itemCursorIndex=5; eventOk(); break;  
-                case KEY_NUM6: gm.itemCursorIndex=6; eventOk(); break;
-                case KEY_NUM7: gm.itemCursorIndex=7; eventOk(); break;  
-                case KEY_NUM8: gm.itemCursorIndex=8; eventOk(); break; 
-                case KEY_NUM9: gm.itemCursorIndex=9; eventOk(); break; 
+                case KEY_NUM1: if(gm.commandslist.length>1) {gm.itemCursorIndex=1; eventOk();} break;
+                case KEY_NUM2: if(gm.commandslist.length>2) {gm.itemCursorIndex=2; eventOk();} break;
+                case KEY_NUM3: if(gm.commandslist.length>3) {gm.itemCursorIndex=3; eventOk();} break;
+                case KEY_NUM4: if(gm.commandslist.length>4) {gm.itemCursorIndex=4; eventOk();} break;
+                case KEY_NUM5: if(gm.commandslist.length>5) {gm.itemCursorIndex=5; eventOk();} break;
+                case KEY_NUM6: if(gm.commandslist.length>6) {gm.itemCursorIndex=6; eventOk();} break;
+                case KEY_NUM7: if(gm.commandslist.length>7) {gm.itemCursorIndex=7; eventOk();} break;
+                case KEY_NUM8: if(gm.commandslist.length>8) {gm.itemCursorIndex=8; eventOk();} break;
+                case KEY_NUM9: if(gm.commandslist.length>9) {gm.itemCursorIndex=9; eventOk();} break;
                 default:
                   try {
                     switch (getGameAction(keyCode)){
@@ -640,15 +648,15 @@ public class GMenu extends Canvas {
               switch (keyCode) 
               {
                 case KEY_NUM0: gm.itemCursorIndexIn=0; closeEvent(); return false;
-                case KEY_NUM1: gm.itemCursorIndexIn=1; closeEvent(); return false;
-                case KEY_NUM2: gm.itemCursorIndexIn=2; closeEvent(); return false;
-                case KEY_NUM3: gm.itemCursorIndexIn=3; closeEvent(); return false;
-                case KEY_NUM4: gm.itemCursorIndexIn=4; closeEvent(); return false;
-                case KEY_NUM5: gm.itemCursorIndexIn=5; closeEvent(); return false;
-                case KEY_NUM6: gm.itemCursorIndexIn=6; closeEvent(); return false;
-                case KEY_NUM7: gm.itemCursorIndexIn=7; closeEvent(); return false;
-                case KEY_NUM8: gm.itemCursorIndexIn=8; closeEvent(); return false;
-                case KEY_NUM9: gm.itemCursorIndexIn=9; closeEvent(); return false;
+                case KEY_NUM1: if(gm.commandslistIn.length>1) {gm.itemCursorIndexIn=1; closeEvent();} return false;
+                case KEY_NUM2: if(gm.commandslistIn.length>2) {gm.itemCursorIndexIn=2; closeEvent();} return false;
+                case KEY_NUM3: if(gm.commandslistIn.length>3) {gm.itemCursorIndexIn=3; closeEvent();} return false;
+                case KEY_NUM4: if(gm.commandslistIn.length>4) {gm.itemCursorIndexIn=4; closeEvent();} return false;
+                case KEY_NUM5: if(gm.commandslistIn.length>5) {gm.itemCursorIndexIn=5; closeEvent();} return false;
+                case KEY_NUM6: if(gm.commandslistIn.length>6) {gm.itemCursorIndexIn=6; closeEvent();} return false;
+                case KEY_NUM7: if(gm.commandslistIn.length>7) {gm.itemCursorIndexIn=7; closeEvent();} return false;
+                case KEY_NUM8: if(gm.commandslistIn.length>8) {gm.itemCursorIndexIn=8; closeEvent();} return false;
+                case KEY_NUM9: if(gm.commandslistIn.length>9) {gm.itemCursorIndexIn=9; closeEvent();} return false;
                 default:
                   try {
                     switch (getGameAction(keyCode)){

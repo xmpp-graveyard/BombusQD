@@ -197,27 +197,19 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
         }            
        }
     }
-/*
-    protected void pointerPressed(int x, int y) {
-        int r=checkPressed((w/3)-12, x, y);
-        int g=checkPressed(w/2-2, x, y);
-        int b=checkPressed(w-(w/3-8), x, y);
-        if (r>-1) red=r;
-        if (g>-1) green=g;
-        if (b>-1) blue=b;
 
+    protected void pointerPressed(int x, int y) {
+        if (y<py-ph-5)
+            return;
+        if (x>w/2-7 && x<(w/2+7))
+            red = (py-y)*255/ph;
+        if (x>(w/2+8) && x<(w/2+22))
+            green = (py-y)*255/ph;
+        if (x>(w/2+23) && x<(w/2+37))
+            blue = (py-y)*255/ph;
         repaint();
     }
 
-    private int checkPressed(int w, int x, int y) {
-        if (x>=w && x<(w+5))
-            if (y<=py && y>=py-ph) {
-                int val=py*(py-y)/255;
-                return val;
-            }
-        return -1;
-    }
-*/
     protected void keyPressed(int key) {
 //#ifdef LIGHT_CONTROL
 //#     CustomLight.keyPressed();

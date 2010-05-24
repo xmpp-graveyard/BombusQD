@@ -3784,7 +3784,7 @@ public class Roster
             VirtualList.fullscreen=midlet.BombusQD.cf.fullscreen;
             midlet.BombusQD.sd.roster.setFullScreenMode(midlet.BombusQD.cf.fullscreen);
         }
-        else if (keyCode==KEY_NUM7)
+        else if (keyCode==KEY_NUM7 && isLoggedIn())
 	    new ServiceDiscovery(display, null, null, false);
         else if (keyCode==KEY_NUM9) {
             if (midlet.BombusQD.cf.allowMinimize)

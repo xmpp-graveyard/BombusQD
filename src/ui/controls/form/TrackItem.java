@@ -32,7 +32,6 @@ import Colors.ColorTheme;
 import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 import java.util.Vector;
-import Client.Config;
 import ui.VirtualList;
 /**
  *

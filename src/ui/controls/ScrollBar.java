@@ -95,7 +95,7 @@ public class ScrollBar {
 
     public void setHasPointerEvents(boolean hasPointerEvents) {
         this.hasPointerEvents = hasPointerEvents;
-	midlet.BombusQD.cf.scrollWidth=//если значение поля ширины скролла Больше 4,то:
+	midlet.BombusQD.cf.scrollWidth=//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 4,пїЅпїЅ:
             (midlet.BombusQD.cf.scrollWidth>3)? midlet.BombusQD.cf.scrollWidth:
                 ( (hasPointerEvents)? WIDTH_SCROLL_2: 4 );
     }
@@ -141,7 +141,6 @@ public class ScrollBar {
         if (new_pos<=0) new_pos = 0;
         if (new_pos+windowSize>size) new_pos = size - windowSize;
         list.win_top = new_pos;
-        list.repaint();
 	return true;
     }
     public void pointerReleased(int x, int y, VirtualList v) { point_y=-1; }

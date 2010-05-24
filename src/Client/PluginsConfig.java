@@ -674,7 +674,7 @@ public class PluginsConfig extends DefForm implements MenuListener
                      itemsList.addElement(messageLimit);
                   }
                   
-                  msglistLimit=new NumberInput(display, SR.get(SR.MS_MESSAGE_COUNT_LIMIT), Integer.toString(cf.msglistLimit), 30, 1000);
+                  msglistLimit=new NumberInput(display, SR.get(SR.MS_MESSAGE_COUNT_LIMIT), Integer.toString(cf.msglistLimit), 10, 1000);
                   itemsList.addElement(msglistLimit);
                   
                   itemsList.addElement(new SpacerItem(3));

@@ -28,8 +28,6 @@
 package Client.contact;
 
 import Client.Msg;
-import javax.microedition.lcdui.Graphics;
-import java.util.Enumeration;
 import java.util.Vector;
 import Messages.MessageItem;
 

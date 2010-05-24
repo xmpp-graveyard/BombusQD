@@ -50,7 +50,6 @@ import Menu.MenuListener;
 //#ifdef ARCHIVE
 import Archive.MessageArchive;
 //#endif
-import io.TranslateSelect;
 //#ifdef GRAPHICS_MENU        
 //# import ui.GMenu;
 //# import ui.GMenuConfig;
@@ -626,6 +625,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
     }
 
     private void showMsgEdit(String msgText){
+      contact.msgSuspended = null;
       midlet.BombusQD.sd.roster.createMessageEdit(contact, msgText , this, false);  
     }
     
@@ -811,7 +811,10 @@ public final class ContactMessageList extends VirtualList implements MenuListene
 //#ifdef GRAPHICS_MENU        
 //#     public void touchRightPressed(){ 
 //#         if (midlet.BombusQD.cf.oldSE) showGraphicsMenu(); else destroyView();
-//#     }    
+//#     }
+//#     public void touchMiddlePressed(){
+//#         keyGreen();
+//#     }
 //#     public void touchLeftPressed(){ if (midlet.BombusQD.cf.oldSE) destroyView(); else showGraphicsMenu(); }
 //#else
     public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }    
