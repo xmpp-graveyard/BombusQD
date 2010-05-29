@@ -389,7 +389,6 @@ public class Roster
     
     private static Command cmdActions;
     private static Command cmdStatus;
-    private static Command cmdActiveContacts;
 //#ifdef GRAPHICS_MENU
 //#     private static Command cmdOptions;
 //#       
@@ -456,17 +455,12 @@ public class Roster
         if (phoneManufacturer==Config.NOKIA) activeType=Command.BACK;
         if (phoneManufacturer==Config.INTENT) activeType=Command.BACK;
         if (phoneManufacturer==Config.J2ME) activeType=Command.BACK;
-        cmdActiveContacts=new Command(SR.get(SR.MS_ACTIVE_CONTACTS), activeType, 3);
  
 //#ifdef GRAPHICS_MENU
 //#         cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
 //# 
 //# 
 //#         addCommand(cmdStatus); cmdStatus.setImg(MenuIcons.ICON_STATUS);
-//#         if(midlet.BombusQD.cf.isTouchPhone) {
-//#             addCommand(cmdActiveContacts); 
-//#             cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
-//#         }
 //#         if (isLoggedIn()){
 //#          addCommand(cmdMyService); cmdMyService.setImg(0x90);
 //#ifdef SERVICE_DISCOVERY
@@ -545,7 +539,6 @@ public class Roster
            
 
         addCommand(cmdStatus);
-        addCommand(cmdActiveContacts);
   //#ifndef WMUC
   //#ifdef MENU_LISTENER
         if (isLoggedIn())
@@ -578,7 +571,6 @@ public class Roster
         cmdActions.setImg(MenuIcons.ICON_ITEM_ACTIONS);
         cmdStatus.setImg(MenuIcons.ICON_STATUS);
         
-        cmdActiveContacts.setImg(MenuIcons.ICON_CONFERENCE);
         cmdAlert.setImg(MenuIcons.ICON_NOTIFY);
   //#ifndef WMUC
         cmdConference.setImg(MenuIcons.ICON_CONFERENCE);
@@ -670,7 +662,6 @@ public class Roster
 //#          //else if(c==cmdSearchUsers){
 //#          //   new DiscoSearchForm(display, this , null , -1);
 //#          //}
-//#          else if (c==cmdActiveContacts) { cmdActiveContacts(); }
 //#          else if (c==cmdAccount){ cmdAccount(); }
 //#          else if (c==cmdStatus) { cmdStatus(); }
 //#          else if (c==cmdAlert) { cmdAlert(); }
@@ -687,7 +678,6 @@ public class Roster
 //#else
         if (c==cmdActions) { cmdActions(); }
         else if (c==cmdMinimize) { cmdMinimize();  }
-        else if (c==cmdActiveContacts) { cmdActiveContacts(); }
         else if (c==cmdAccount){ cmdAccount(); }
         else if (c==cmdStatus) { cmdStatus(); }
         else if (c==cmdAlert) { cmdAlert(); }
@@ -709,9 +699,6 @@ public class Roster
 //menu actions    
 
     public void cmdMinimize() { BombusQD.getInstance().hideApp(true, null);  }
-    public void cmdActiveContacts() { 
-      createActiveContacts(this, null);
-    }
     public void cmdAccount(){ new AccountSelect(display, this, false,-1); }
     public void cmdStatus() { currentReconnect=0; new StatusSelect(display, this, null); }
     public void cmdAlert() { new AlertProfile(display, this); }
@@ -3218,7 +3205,7 @@ public class Roster
 	if (midlet.BombusQD.cf.popupFromMinimized && midlet.BombusQD.cf.getInstance().isMinimized==true)
 	    BombusQD.getInstance().hideApp(false,c);
         
-        if (midlet.BombusQD.cf.autoFocus) 
+        if (midlet.BombusQD.cf.autoFocus && message.messageType!=Constants.MESSAGE_TYPE_PRESENCE && message.messageType!=Constants.MESSAGE_TYPE_OUT) 
             focusToContact(c, false);
         
         if (message.highlite) {

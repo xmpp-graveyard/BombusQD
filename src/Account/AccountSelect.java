@@ -350,7 +350,7 @@ public class AccountSelect
 //#else
     public void showMenu() {
         commandState();
-        new MyMenu(display, parentView, this, SR.get(SR.MS_DISCO, null, menuCommands);
+        new MyMenu(display, parentView, this, SR.get(SR.MS_DISCO, null, menuCommands));
    }   
 //#endif
 

@@ -27,7 +27,6 @@
 //#ifdef IMPORT_EXPORT 
 //# package IE;
 //# 
-//# import Client.StaticData;
 //# import io.file.browse.Browser;
 //# import io.file.browse.BrowserListener;
 //# import javax.microedition.lcdui.Display;

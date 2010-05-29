@@ -1398,8 +1398,10 @@ public abstract class VirtualList
                 }
             }
         }
-        if (on_panel)
+        if (on_panel) {
             pointer_state = Client.Constants.POINTER_PANEL;
+            return;
+        }
         else if (scrollbar.pointerPressed(x, y, this)) {
             pointer_state = Client.Constants.POINTER_SCROLLBAR;
             stickyWindow=false;
@@ -1437,13 +1439,13 @@ public abstract class VirtualList
 	lastClickY=y;
 	lastClickItem=cursor;
 
-        int il=itemLayoutY[cursor+1]-winHeight;
-        if (il>win_top) win_top=il;
+        /*int il=itemLayoutY[cursor+1]-winHeight;
+        if (il>win_top) win_top=il;*/
         if(cursor==-1) cursor = 0;
-        il=itemLayoutY[cursor];
-        if (il<win_top) win_top=il;
-      repaint();
-      lastPaint = clickTime;
+        /*il=itemLayoutY[cursor];
+        if (il<win_top) win_top=il;*/
+        repaint();
+        lastPaint = clickTime;
     }
      
      int yPointerPos;
@@ -1454,7 +1456,7 @@ public abstract class VirtualList
        if(gm.itemGrMenu>0){
             if(null != menuItem) {
                 menuItem.pointerPressed(x, y);
-                if (clickTime-lastPaint>100) {
+                if (clickTime-lastPaint>80) {
                     repaint();
                     lastPaint = clickTime;
                 }
@@ -1463,7 +1465,7 @@ public abstract class VirtualList
       }
       if (pointer_state == Client.Constants.POINTER_SCROLLBAR) {
             scrollbar.pointerDragged(x, y, this);
-            if (clickTime-lastPaint>100) {
+            if (clickTime-lastPaint>80) {
                     repaint();
                     lastPaint = clickTime;
             }
@@ -1478,7 +1480,7 @@ public abstract class VirtualList
       if (win_top+winHeight>listHeight) win_top=listHeight-winHeight;
       if (win_top<0) win_top=0;
       stickyWindow=false;
-      if (clickTime-lastPaint>100) {
+      if (clickTime-lastPaint>80) {
                     repaint();
                     lastPaint = clickTime;
       }

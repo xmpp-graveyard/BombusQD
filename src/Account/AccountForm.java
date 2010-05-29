@@ -34,7 +34,6 @@ import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.TextField;
 import locale.SR;
 import ui.VirtualList;
-import ui.controls.AlertBox;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
@@ -42,12 +41,8 @@ import ui.controls.form.LinkString;
 import ui.controls.form.NumberInput;
 import ui.controls.form.PasswordInput;
 import ui.controls.form.TextInput;
-import util.StringLoader;
-import ui.controls.form.MultiLine;
-import util.StringUtils;
 import java.util.Random;
 import ui.controls.form.SpacerItem;
-import ui.controls.form.SimpleString;
 
 public class AccountForm 
         extends DefForm {
@@ -311,9 +306,9 @@ public class AccountForm
                 break;
             case YARU_PROFILE:
                 ip_box = "xmpp.yandex.ru";
-                sslbox_ = true;
+                sslbox_ = false;
                 plainPwdbox_ = true;
-                compressionBox_ = false;
+                compressionBox_ = true;
                 break;
             case GTALK_HTTPS_PROFILE:
                 ip_box = "talk.google.com";
@@ -330,7 +325,7 @@ public class AccountForm
             case LJ_PROFILE:     
                 ip_box = "xmpp.services.livejournal.com";
                 sslbox_ = false;
-                plainPwdbox_ = false;
+                plainPwdbox_ = true;
                 compressionBox_ = false;
                 break;
             case QIP_PROFILE:  
@@ -394,7 +389,7 @@ public class AccountForm
     }
     
     public void cmdOk() {
-        midlet.BombusQD.debug.add("::saved",10);
+        //midlet.BombusQD.debug.add("::saved",10);
         String value = fulljid.getValue().trim();
         String pass = passbox.getValue();
         String nick = nickbox.getValue();
@@ -470,13 +465,7 @@ public class AccountForm
     public void destroyView(){
         display.setCurrent(accountSelect);
     }
-    
-    private void startLogin(boolean login){
-        Config.getInstance().accountIndex=accountSelect.accountList.size()-1;
-        Account.loadAccount(login, Config.getInstance().accountIndex,-1);
-        midlet.BombusQD.getInstance().s.close();
-    }
-    
+
     
 //#ifdef MENU_LISTENER    
     public void userKeyPressed(int keyCode){

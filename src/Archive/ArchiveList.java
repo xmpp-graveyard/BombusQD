@@ -33,7 +33,6 @@ import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import ui.MainBar;
 import Messages.MessageList;
-import java.util.Vector;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.Command;
 //#else
@@ -43,9 +42,9 @@ import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import Client.Contact;
-import Client.MessageEdit;
 import ui.controls.AlertBox;
 import Messages.MessageItem;
+import IE.IEMenu;
 
 /**
  *
@@ -102,7 +101,7 @@ public class ArchiveList
        cmdDelete = new Command(SR.get(SR.MS_DELETE), Command.SCREEN, 9);
        cmdDeleteAll = new Command(SR.get(SR.MS_DELETE_ALL), Command.SCREEN, 10);
        //if(midlet.BombusQD.cf.module_ie){
-          cmdExport = new Command(SR.get(SR.MS_ieStr), Command.SCREEN, 11);           
+       cmdExport = new Command(SR.get(SR.MS_ieStr), Command.SCREEN, 11);           
        //}
         
         archive=new MessageArchive(where);
@@ -129,8 +128,8 @@ public class ArchiveList
         menuCommands.removeAllElements();
 //#endif
 
-        addCommand(cmdExport); cmdExport.setImg(0x60);
         if (getItemCount()>0) {
+            addCommand(cmdEdit); cmdEdit.setImg(0x40);
             if(midlet.BombusQD.cf.msgEditType>0){
              if (tf!=null) {
                 addCommand(cmdPaste); cmdPaste.setImg(0x60);
@@ -144,12 +143,13 @@ public class ArchiveList
                 addCommand(cmdSubj); cmdSubj.setImg(0x81);
               }
             };            
-            addCommand(cmdEdit); cmdEdit.setImg(0x40);
             
             addCommand(cmdDelete); cmdDelete.setImg(0x41);
             addCommand(cmdDeleteAll); cmdDeleteAll.setImg(0x41);
         }
         addCommand(cmdNew); cmdNew.setImg(0x47);
+        addCommand(cmdExport); cmdExport.setImg(0x60);
+        
 //#ifdef MENU_LISTENER
         super.addCommands();
 //#endif

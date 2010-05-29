@@ -505,7 +505,7 @@ public class ServiceDiscovery
         }         
     }
     private void exitDiscovery(boolean cancel){
-        if (cancel || stackItems.isEmpty()) {
+        if (cancel || stackItems==null || stackItems.isEmpty()) {
             if (stream!=null)
                 stream.cancelBlockListener(this);
             if (display!=null && parentView!=null /*prevents potential app hiding*/ ) {
@@ -757,12 +757,7 @@ public class ServiceDiscovery
 
 //#endif    
     
-    
-    private void exitDiscovery(){
-        stream.cancelBlockListener(this);
-        destroyView();
-    }
-
+ 
 //#ifdef MENU_LISTENER
 
     

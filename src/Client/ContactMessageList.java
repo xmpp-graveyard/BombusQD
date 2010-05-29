@@ -319,6 +319,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
     }
     
     protected void touchMainPanelPressed(int x, int y) {
+        contact.setCursor(cursor);
         if (x>50 && x< width-50) {
                 contact.getChatInfo().opened = false;
                 midlet.BombusQD.sd.roster.createActiveContacts(this, contact);
@@ -809,13 +810,22 @@ public final class ContactMessageList extends VirtualList implements MenuListene
 //#ifdef MENU_LISTENER
     
 //#ifdef GRAPHICS_MENU        
-//#     public void touchRightPressed(){ 
-//#         if (midlet.BombusQD.cf.oldSE) showGraphicsMenu(); else destroyView();
+//#     public void touchRightPressed(){
+//#         contact.setCursor(cursor);
+//#         if (midlet.BombusQD.cf.oldSE)
+//#             showGraphicsMenu();
+//#         else
+//#             destroyView();
 //#     }
 //#     public void touchMiddlePressed(){
 //#         keyGreen();
 //#     }
-//#     public void touchLeftPressed(){ if (midlet.BombusQD.cf.oldSE) destroyView(); else showGraphicsMenu(); }
+//#     public void touchLeftPressed(){
+//#         contact.setCursor(cursor);
+//#         if (midlet.BombusQD.cf.oldSE)
+//#             destroyView();
+//#         else showGraphicsMenu();
+//#     }
 //#else
     public void touchRightPressed(){ if (cf.oldSE) showMenu(); else destroyView(); }    
     public void touchLeftPressed(){ if (cf.oldSE) keyGreen(); else showMenu(); }

@@ -27,7 +27,6 @@
 
 package ui.controls.form;
 
-import Client.Config;
 import Colors.ColorTheme;
 import Fonts.FontCache;
 import io.NvStorage;

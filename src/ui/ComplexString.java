@@ -73,7 +73,6 @@ public class ComplexString implements VirtualElement {
     }
     
     public void destroy() {
-        int start = elementData.size();
         //System.out.println("    :::     complex-->elementData:: " + elementData.toString());
         imageList = null;
         elementData = null;
