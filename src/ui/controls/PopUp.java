@@ -168,12 +168,14 @@ public class PopUp {
         //if(MFont.isCheck()) MFont.setColor(255,getColorInk());
         
         int size=lines.size();
+        String line;
         for(int i=0;i<size;i++){ 
             if (pos>=startLine) {
                 //if(MFont.isCheck()){
                 //  MFont.drawString(g,(String)lines.elementAt(i),x, y);
                 //}else{
-                  g.drawString((String)lines.elementAt(i), x, y, Graphics.TOP|Graphics.LEFT);                    
+                line = (String)lines.elementAt(i);
+                if (line!=null && line.length()>0)  g.drawString(line, x, y, Graphics.TOP|Graphics.LEFT);
                 //}
                 y += fh;
             }

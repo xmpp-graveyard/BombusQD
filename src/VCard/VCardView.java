@@ -29,8 +29,6 @@
 package VCard;
 import Client.Config;
 import Client.Contact;
-import Client.StaticData;
-import ui.controls.AlertBox;
 //#if FILE_IO
 import io.file.FileIO;
 import io.file.browse.Browser;
@@ -49,9 +47,7 @@ import javax.microedition.lcdui.Displayable;
 //# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
 //#else
-import Menu.MenuListener;
 import Menu.Command;
-import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Image;
@@ -71,7 +67,6 @@ import ui.ImageList;
 //# import ui.GMenu;
 //# import ui.GMenuConfig;
 //#endif
-import Client.Msg;
 /**
  *
  * @author ad,aqent

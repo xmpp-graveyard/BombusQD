@@ -283,7 +283,9 @@ public class InfoWindow
 //#                .append(SR.get(SR.MS_TOTAL))
 //#                .append(Runtime.getRuntime().totalMemory()>>10);
 //#         //clipboard.setClipBoard(memory.toString() + "\n" + getAbilities().toString());
+//#ifdef DEBUG
 //#         System.out.println(clipboard.getClipBoard());
+//#endif
 //#         destroyView();
 //# 
 //#     }

@@ -31,7 +31,10 @@ package ui;
 import Colors.ColorTheme;
 import Fonts.FontCache;
 import javax.microedition.lcdui.*;
-import Client.*;
+import Client.Config;
+import Client.SimpleItemChat;
+import Client.StaticData;
+import Client.Contact;
 import locale.SR;
 //#ifdef POPUPS
 import ui.controls.PopUp;
@@ -43,7 +46,7 @@ import util.StringUtils;
 //#ifdef USER_KEYS
 //# import ui.keys.userKeyExec;
 //#endif
-import java.util.*;
+import java.util.Vector;
 
 //#ifdef MENU_LISTENER
 import Menu.Command;
@@ -468,6 +471,7 @@ public abstract class VirtualList
 //#         mHeight=0;
 //#endif
         if (!isDoubleBuffered()) offscreen=Image.createImage(width, height);
+        repaint();
     }
 
     protected void beginPaint(){};
@@ -493,7 +497,7 @@ public abstract class VirtualList
     public void paint(Graphics graphics) {
         mHeight=0;
         iHeight=0;
-
+        lastPaint = System.currentTimeMillis();
         Graphics g=(offscreen==null)? graphics: offscreen.getGraphics();
         /*
         if((time_wait-time_start)>=1000) {
@@ -537,6 +541,7 @@ public abstract class VirtualList
         g.fillRect(0, 0, width, height);
         
 //#ifdef BACK_IMAGE
+//# 
 //#         if(midlet.BombusQD.cf.bgnd_image==1){
 //#           if (null != bgndJimmImage) {
 //#                         int imgW = bgndJimmImage.getWidth();
@@ -555,7 +560,7 @@ public abstract class VirtualList
 //#           if(null != bgndImage) g.drawImage(bgndImage, 0, 0, Graphics.LEFT|Graphics.TOP);
 //#         }
 //#endif
-        
+
         if (mainbar!=null)
             mHeight=mainbar.getVHeight(); // nokia fix
 
@@ -1350,7 +1355,6 @@ public abstract class VirtualList
             if(null != menuItem) {
                 menuItem.pointerPressed(x, y);
                 repaint();
-                lastPaint = clickTime;
             }
             return;
         }
@@ -1358,21 +1362,7 @@ public abstract class VirtualList
 //#ifdef POPUPS
         getPopUp().next();
 //#endif
-        /*
-///#ifdef MENU_LISTENER
 
-        int act=ar.pointerPressed(x, y);
-        if (act==1) {
-             touchLeftPressed();
-             stickyWindow=false;
-             return;
-        } else if (act==2) {
-            touchRightPressed();
-            stickyWindow=false;
-            return;
-        }
-///#endif
-         * */
         boolean on_panel = false;
         if (reverse) {
             if (mainbar!=null && paintBottom) {
@@ -1425,27 +1415,13 @@ public abstract class VirtualList
             setRotator();
         }  else if (cursor>=0) pointer_state = Client.Constants.POINTER_SECOND;
 	
-	/*if (cursor==lastClickItem) {
-	    if (lastClickY-y<5 && y-lastClickY<5) {
-                if (clickTime-lastClickTime<500){
-                    //System.out.println("short");
-		    y=0;
-		    eventOk();
-                }
-            }
-        }*/
 	lastClickTime=clickTime;
         lastClickX=x;
 	lastClickY=y;
 	lastClickItem=cursor;
 
-        /*int il=itemLayoutY[cursor+1]-winHeight;
-        if (il>win_top) win_top=il;*/
         if(cursor==-1) cursor = 0;
-        /*il=itemLayoutY[cursor];
-        if (il<win_top) win_top=il;*/
         repaint();
-        lastPaint = clickTime;
     }
      
      int yPointerPos;
@@ -1458,7 +1434,6 @@ public abstract class VirtualList
                 menuItem.pointerPressed(x, y);
                 if (clickTime-lastPaint>80) {
                     repaint();
-                    lastPaint = clickTime;
                 }
             }
             return;
@@ -1467,14 +1442,13 @@ public abstract class VirtualList
             scrollbar.pointerDragged(x, y, this);
             if (clickTime-lastPaint>80) {
                     repaint();
-                    lastPaint = clickTime;
             }
             stickyWindow=false;
             return;
       }
       win_top = old_win_top - y + lastClickY;
-      if (x - lastClickX > 5 || lastClickX-x >5
-              || y - lastClickY > 5 || lastClickY-y>5)
+      if (x - lastClickX > 7 || lastClickX-x >7
+              || y - lastClickY > 7 || lastClickY-y>7)
           pointer_state = Client.Constants.POINTER_DRAG;
 
       if (win_top+winHeight>listHeight) win_top=listHeight-winHeight;
@@ -1482,7 +1456,6 @@ public abstract class VirtualList
       stickyWindow=false;
       if (clickTime-lastPaint>80) {
                     repaint();
-                    lastPaint = clickTime;
       }
       return;
     }   
@@ -1493,10 +1466,9 @@ public abstract class VirtualList
     protected void pointerReleased(int x, int y) {
         long clickTime=System.currentTimeMillis();
         if(gm.itemGrMenu>0){
-            if(null != menuItem && y>lastClickY-5 && y<lastClickY+5) {
+            if(null != menuItem && y>lastClickY-7 && y<lastClickY+7) {
                 menuItem.pointerReleased(x, y);
                 repaint();
-                lastPaint = clickTime;
             }
             lastClickTime=clickTime;
             lastClickX=x;
@@ -1549,7 +1521,6 @@ public abstract class VirtualList
                 y=0;
                 eventLongOk();
             } else {
-                
                 if (pointer_state == Client.Constants.POINTER_SECOND) eventOk();
                 repaint();
             }
@@ -2196,8 +2167,7 @@ public abstract class VirtualList
 
     public final static void sort(Vector sortVector, int itemType ,int sortType){
         try {
-            int size = sortVector.size();
-            int status,f,i;
+            int f,i;
             Contact find;
             switch(itemType){
                 case 0:
@@ -2382,26 +2352,3 @@ class TimerTaskRotate extends Thread{
     }
 }
 //#endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

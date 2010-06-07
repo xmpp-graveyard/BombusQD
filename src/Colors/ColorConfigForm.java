@@ -32,7 +32,6 @@ import io.file.FileIO;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#endif
-import Client.StaticData;
 import java.util.Vector;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -43,7 +42,6 @@ import ui.controls.form.LinkString;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.SimpleString;
 import util.StringLoader;
-import Client.Config;
 import ui.controls.AlertBox;
 
 /**
@@ -56,8 +54,6 @@ public class ColorConfigForm
         implements BrowserListener
 //#endif
     {
-    
-    private Display display;
 
 //#ifdef COLOR_TUNE
 //#     private LinkString configureColors;

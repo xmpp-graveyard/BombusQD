@@ -11,7 +11,6 @@ package Fonts;
 import java.io.InputStream;
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
-import java.io.IOException;
 import Client.Config;
 //#ifdef CONSOLE        
 //# import Console.StanzasList;
@@ -20,16 +19,16 @@ public class FontClass {
     
     private static FontClass df;
     
-    public static byte buff[] = new byte[768];//данные таблицы символов из файла xxxxx.dat
+    public static byte buff[] = new byte[768];//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ xxxxx.dat
     public static Image fontImage = null;
-    public int[] buf;//данные одного символа
+    public int[] buf;//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public int width = 0;
     public int Color = 0;
-    public int h_char;//высота символов
-    public int width_char;//ширина символов
+    public int h_char;//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public int width_char;//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     
     
-    public int italic =0;//флаг стиля символов italic
+    public int italic =0;//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ italic
     private String name_font="";
 
     public static FontClass getInstance(){
@@ -44,16 +43,16 @@ public class FontClass {
   
     public void Init(String name_font) {
         this.name_font=name_font;
-        try {//----- загрузка image символов ---------------
+        try {//----- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ image пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ---------------
             this.fontImage = Image.createImage("/images/fonts/"+name_font+".png");
         InputStream is = getClass().getResourceAsStream("/images/fonts/"+name_font+".dat");
         int off = 0;
         int readBytes = 0;
         int n_buf;
-          while ( (readBytes = is.read(buff, off, buff.length)) > -1) {}//копируем в буфер
-          h_char=buff[0];//высота символов
-           if (buff[1] ==1) {italic=h_char/4;}//если fontstyle = [italic] увеличиваем ширину символа
-       n_buf =h_char*h_char;// кол-во байт 1 знакоместо
+          while ( (readBytes = is.read(buff, off, buff.length)) > -1) {}//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
+          h_char=buff[0];//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+           if (buff[1] ==1) {italic=h_char/4;}//пїЅпїЅпїЅпїЅ fontstyle = [italic] пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+       n_buf =h_char*h_char;// пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅ 1 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
        this.buf = new int[n_buf];
        is.close();
        is=null;
@@ -104,13 +103,13 @@ public class FontClass {
        int result=-1;
         if (fontImage != null) {
              int ch = c;
-                    ch = ch == 0x401 ? 0xa8 : ch == 0x451 ? 0xb8 : ch; //401-Ё,451-ё
+                    ch = ch == 0x401 ? 0xa8 : ch == 0x451 ? 0xb8 : ch; //401-пїЅ,451-пїЅ
                     ch = ch > 0x400 ? ch - 0x350 : ch;
-                    //!- 0x21,я - 0x44f
-                    //0xa7 - параграф 
+                    //!- 0x21,пїЅ - 0x44f
+                    //0xa7 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
                     
-             int ind = ((int)(ch)-0x20)*3;//смещение данных в таблице xxxxx.dat
-             int len=0;//смещение в таблице xxxxx.png
+             int ind = ((int)(ch)-0x20)*3;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ xxxxx.dat
+             int len=0;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ xxxxx.png
            //  int maplenth = maplen.length;
              
            //for(int i=0;i<maplenth;i++)
@@ -121,10 +120,10 @@ public class FontClass {
            //}  
            
            //  if(result>=1){
-              int hlen = (buff[ind+1] & 0x00ff)<<8;//старший байт
-              len=(buff[ind] & 0x00ff)+hlen; //смещение в таблице xxxxx.png
-              width_char= buff[ind+2]+italic;//ширина символа
-               if (c==' '){width_char=h_char>>2;}//если пробел
+              int hlen = (buff[ind+1] & 0x00ff)<<8;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+              len=(buff[ind] & 0x00ff)+hlen; //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ xxxxx.png
+              width_char= buff[ind+2]+italic;//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+               if (c==' '){width_char=h_char>>2;}//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 result=width_char;
            //  }
         }
@@ -132,12 +131,12 @@ public class FontClass {
     }   
 
 
-    //Возвращает значение цвета из составляющих alpha-фльфа, RGB
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ alpha-пїЅпїЅпїЅпїЅпїЅ, RGB
     private int toBGR(int a, int r, int g, int b){
         return (b|(g<<8)|(r<<16)|(a<<24));
     }
     
-    //Устанавливает текущий цвет отображения букв по составляющим alpha-aфльфа, RGB
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ alpha-aпїЅпїЅпїЅпїЅпїЅ, RGB
     public void setColor(int a, int r, int g, int b){
         Color=toBGR(a,r,g,b);
     }
@@ -166,23 +165,23 @@ public class FontClass {
           //String s=String.valueOf(c);
           //  unicode to ansi 
             int ch = c;
-                    ch = ch == 0x401 ? 0xa8 : ch == 0x451 ? 0xb8 : ch; //401-Ё,451-ё
+                    ch = ch == 0x401 ? 0xa8 : ch == 0x451 ? 0xb8 : ch; //401-пїЅ,451-пїЅ
                     ch = ch > 0x400 ? ch - 0x350 : ch;
-            int ind = ((int)(ch)-0x20)*3;//смещение данных в таблице xxxxx.dat
-            int len=0;//смещение в таблице xxxxx.png
-            int hlen = (buff[ind+1] & 0x00ff)<<8;//старший байт
-            len=(buff[ind] & 0x00ff)+hlen;  //смещение в таблице xxxxx.png
-            width_char= buff[ind+2]+italic;//ширина символа
-              fontImage.getRGB(buf, 0, width_char, len-2, 0,width_char, h_char);//считать в буфер
+            int ind = ((int)(ch)-0x20)*3;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ xxxxx.dat
+            int len=0;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ xxxxx.png
+            int hlen = (buff[ind+1] & 0x00ff)<<8;//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+            len=(buff[ind] & 0x00ff)+hlen;  //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ xxxxx.png
+            width_char= buff[ind+2]+italic;//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+              fontImage.getRGB(buf, 0, width_char, len-2, 0,width_char, h_char);//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
                    for(int i=0;i<buf.length;i++)
                    {
-                        int color = (buf[i] &0x00ffffff);//читаем только RGB
-                        if (color == 0) color =  Color;//если черный красим в цвет
+                        int color = (buf[i] &0x00ffffff);//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ RGB
+                        if (color == 0) color =  Color;//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
                         buf[i] = color;
                     }
               g.drawRGB(buf, 0, width_char, x, y, width_char, h_char, true);
               //System.out.println(y); 
-              if (c==' '){width_char=h_char>>2;} //если пробел
+              if (c==' '){width_char=h_char>>2;} //пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 result=width_char;
          }
         return result;

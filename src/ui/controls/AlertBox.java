@@ -224,10 +224,11 @@ public abstract class AlertBox
         g.setFont(messageFont);
         int fh=getFontHeight();
         g.setColor(ColorTheme.getColor(ColorTheme.LIST_INK));
-
-	for (int line=0; line<lines.size(); ){
-            g.drawString((String) lines.elementAt(line), x, y, Graphics.TOP|Graphics.LEFT);
-            line=line+1;
+        String str;
+	for (int line=0; line<lines.size(); line++){
+            str = (String)lines.elementAt(line);
+            if (str!=null && str.length()>0)
+                g.drawString(str, x, y, Graphics.TOP|Graphics.LEFT);
             y += fh;
 	}
     }

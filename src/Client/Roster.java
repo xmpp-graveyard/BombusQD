@@ -730,7 +730,8 @@ public class Roster
         if (midlet.BombusQD.getInstance().s!=null){
              midlet.BombusQD.getInstance().s.setProgress(pgs, percent);
         }
-        mainbar.setElementAt(pgs, 3);
+	if (mainbar!=null)
+             mainbar.setElementAt(pgs, 3);
         redraw();
     }
 

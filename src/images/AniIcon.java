@@ -77,11 +77,15 @@ public class AniIcon {
             height = resImage.getHeight();
         } 
         catch(OutOfMemoryError eom) {
-            System.out.print("Ani OutofMem");
+//#ifdef DEBUG
+//#             System.out.print("Ani OutofMem");
+//#endif
         }        
-        catch (Exception e) { 
-            System.out.print("Can't load ");
-            System.out.println(resource);
+        catch (Exception e) {
+//#ifdef DEBUG
+//#             System.out.print("Can't load ");
+//#             System.out.println(resource);
+//#endif
         }
     }
     void addFrame(int num, int iconIndex, int dalay) {

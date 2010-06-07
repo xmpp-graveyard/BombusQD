@@ -28,26 +28,20 @@ package ui;
 import javax.microedition.lcdui.*;
 import Client.Config;
 import Colors.ColorTheme;
-///import java.util.Vector;
-//import Fonts.*;
 import locale.SR;
 import midlet.BombusQD;
 import Menu.MenuListener;
 import Menu.Command;
-//import images.MenuIcons;
-//import Menu.MyMenu;
 import java.util.*;
 
 public class GMenu extends Canvas {
        
    public GMenu() {};
    private Image offscreen = null;
-   private VirtualList view;
    
    public void init(Graphics g, int width, int height,VirtualList view) {
         this.height=height;
         this.width=width;
-        this.view=view;
         if (!isDoubleBuffered()){
             offscreen=Image.createImage(width, height);
         }
@@ -100,7 +94,6 @@ public class GMenu extends Canvas {
    private Font font;
    private int fh;
    private int size;  
-   private Vector menuCommands = new Vector(0);
    private static int x1,y1,x2,y2;
    
    
@@ -114,17 +107,11 @@ public class GMenu extends Canvas {
    }
    
    public GMenu(Display display, Displayable parentView, MenuListener menuListener, ImageList il, Vector menuCommands) {
-        /*
-        if(midlet.BombusQD.cf.graphicsMenu == false){
-            new MyMenu(display, parentView, menuListener, "Menu", il, menuCommands);
-            return;
-        }
-        */
         gm.ml=menuListener;
         this.parentView=parentView;
         this.display=display;
         if(null == menuCommands) return;
-        int size = menuCommands.size();
+        size = menuCommands.size();
         gm.commandslist = new String[size];//3
         gm.menuCommands=menuCommands;
         for (int index=0; index<size; index++) {
@@ -136,14 +123,7 @@ public class GMenu extends Canvas {
    
    
    public GMenu(Display display,Displayable parentView,MenuListener menuListener,ImageList il,Vector menuCommands,
-           Vector cmdfirstList,Vector cmdsecondList,Vector cmdThirdList){//���������� �������
-        /*
-        if(midlet.BombusQD.cf.graphicsMenu == false){
-            if(il == null) il = MenuIcons.getInstance();
-            new MyMenu(display, parentView, menuListener, "Menu", il, menuCommands);
-            return;
-        }
-         */
+           Vector cmdfirstList,Vector cmdsecondList,Vector cmdThirdList){
         gm.ml=menuListener;
         this.parentView=parentView;
         this.display=display;
@@ -151,7 +131,7 @@ public class GMenu extends Canvas {
             gm.menuCommands=null;
             return;
         }
-        int size = menuCommands.size();
+        size = menuCommands.size();
         gm.commandslist = new String[size];//3
         gm.menuCommands=menuCommands;
         for (int index=0; index<size; index++) {
@@ -166,7 +146,7 @@ public class GMenu extends Canvas {
    
    
    private boolean GMenuIn(Vector getList) {
-         int size = getList.size();
+         size = getList.size();
           gm.commandslistIn = new String[size];
           for (int index=0; index<size; index++) {
             Command c=(Command)getList.elementAt(index);
@@ -452,12 +432,12 @@ public class GMenu extends Canvas {
    }   
    
     
-   private Timer timer;
+   //private Timer timer;
    int cursorY=0;
    long s1,s2;
    boolean isDown;
    
-   
+   /*
 	private static final int ani_msed = 25;
 	private void startTimer (boolean isdownpress)
 	{
@@ -474,7 +454,7 @@ public class GMenu extends Canvas {
 			timer = new Timer();
 			timer.schedule( new anTask(), 0, ani_msed );
 		}
-             */
+             *
              
 	}
 	private void stopTimer ()
@@ -511,7 +491,7 @@ public class GMenu extends Canvas {
   		}
 	}
      
-
+*/
    public void keyPressed(int keyCode) {
      if (eventMenu==true) {
          eventMenu = sendEvent(keyCode);
@@ -551,7 +531,7 @@ public class GMenu extends Canvas {
                               if(gm.itemCursorIndex<0){
                                 gm.itemCursorIndex=size;  
                               }    
-                             startTimer(false);
+                             //startTimer(false);
                              break;  
                         case LEFT: break;
                         case RIGHT: break;
@@ -560,7 +540,7 @@ public class GMenu extends Canvas {
                              if(gm.itemCursorIndex>size){
                                 gm.itemCursorIndex=0;   
                             } 
-                            startTimer(true);
+                            //startTimer(true);
                             break;
                         case FIRE: eventOk(); break;
                     }
@@ -574,14 +554,14 @@ public class GMenu extends Canvas {
                      if(gm.itemCursorIndex<0){
                         gm.itemCursorIndex=size;  
                      } 
-                     startTimer(false);
+                     //startTimer(false);
                      break;
                 case KEY_NUM8:
                      gm.itemCursorIndex++;
                      if(gm.itemCursorIndex>size){
                         gm.itemCursorIndex=0;   
                      }  
-                     startTimer(true);
+                     //startTimer(true);
                      break;
                 case KEY_NUM5: 
                     gm.itemCursorIndexIn=0;
@@ -602,7 +582,7 @@ public class GMenu extends Canvas {
                               if(gm.itemCursorIndex<0){
                                 gm.itemCursorIndex=size;  
                               }
-                             startTimer(false);
+                             //startTimer(false);
                              break;                            
                         case LEFT: break;
                         case RIGHT: break;
@@ -611,7 +591,7 @@ public class GMenu extends Canvas {
                              if(gm.itemCursorIndex>size){
                                 gm.itemCursorIndex=0;   
                             } 
-                            startTimer(true);
+                            //startTimer(true);
                             break;                          
                         case FIRE: 
                             eventOk();
@@ -665,7 +645,7 @@ public class GMenu extends Canvas {
                               if(gm.itemCursorIndexIn<0){
                                 gm.itemCursorIndexIn=size;  
                               }
-                             startTimer(false);
+                             //startTimer(false);
                              return true;
                         case LEFT: gm.itemCursorIndexIn=0; cursorY=0; break;
                         //case RIGHT: return true;
@@ -674,7 +654,7 @@ public class GMenu extends Canvas {
                              if(gm.itemCursorIndexIn>size){
                                 gm.itemCursorIndexIn=0;   
                             } 
-                            startTimer(true);
+                            //startTimer(true);
                             return true;
                         case FIRE: closeEvent();
                             return false;
@@ -692,14 +672,14 @@ public class GMenu extends Canvas {
                      if(gm.itemCursorIndexIn<0){
                         gm.itemCursorIndexIn=size;  
                      } 
-                     startTimer(false);
+                     //startTimer(false);
                      return true;
                 case KEY_NUM8:
                      gm.itemCursorIndexIn++;
                      if(gm.itemCursorIndexIn>size){
                         gm.itemCursorIndexIn=0;   
                      }     
-                     startTimer(true);
+                     //startTimer(true);
                      return true;
                 case KEY_NUM5:
                     closeEvent();
@@ -718,7 +698,7 @@ public class GMenu extends Canvas {
                               if(gm.itemCursorIndexIn<0){
                                 gm.itemCursorIndexIn=size;  
                               }
-                             startTimer(false);
+                             //startTimer(false);
                              return true;
                         case LEFT: gm.itemCursorIndexIn=0; cursorY=gm.itemCursorIndex*fh;
                              break;
@@ -728,7 +708,7 @@ public class GMenu extends Canvas {
                              if(gm.itemCursorIndexIn>size){
                                 gm.itemCursorIndexIn=0;   
                             }  
-                            startTimer(true);
+                            //startTimer(true);
                             return true;                          
                         case FIRE: gm.inMenuSelected=true; gm.itemGrMenu=-1;
                             return false;

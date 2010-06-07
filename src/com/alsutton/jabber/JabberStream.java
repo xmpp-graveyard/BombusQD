@@ -231,9 +231,11 @@ public class JabberStream extends XmppParser implements Runnable {
             // Ignore an IO Exceptions because they mean that the stream is
             // unavailable, which is irrelevant.
         } finally {
-            dispatcher.halt();
-            dispatcher.restart();
-	    iostream.close();
+            if (dispatcher!=null) {
+                dispatcher.halt();
+                dispatcher.restart();
+            }
+	    if (iostream!=null) iostream.close();
              if(!midlet.BombusQD.cf.nokiaReconnectHack) {
                iostream=null;
              }

@@ -35,7 +35,6 @@ import Conference.AppendNick;
 //#endif
 import javax.microedition.lcdui.*;
 import locale.SR;
-//import ui.controls.ExTextBox;
 import io.TranslateSelect;
 //#ifdef STATS
 //# import Statistic.Stats;
@@ -43,7 +42,7 @@ import io.TranslateSelect;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
 //#endif
-import java.util.*;
+import java.util.Vector;
 
 /**
  *
@@ -104,7 +103,7 @@ public final class MessageEdit
           cmdSmile=new Command(SR.get(SR.MS_ADD_SMILE), Command.SCREEN,2);
 //#endif
           cmdInsNick=new Command(SR.get(SR.MS_NICKNAMES),Command.SCREEN,3);
-          cmdInsMe=new Command(SR.get(SR.MS_SLASHME), Command.SCREEN, 4); ; // /me
+          cmdInsMe=new Command(SR.get(SR.MS_SLASHME), Command.SCREEN, 4); // /me
 //#ifdef DETRANSLIT
 //#           cmdSendInTranslit=new Command(SR.get(SR.MS_TRANSLIT), Command.SCREEN, 5);
 //#           cmdSendInDeTranslit=new Command(SR.get(SR.MS_DETRANSLIT), Command.SCREEN, 5);
@@ -160,7 +159,10 @@ public final class MessageEdit
        switch(midlet.BombusQD.cf.msgEditType){
             case 0: 
                 if(!phoneSONYE) t.setTitle( null == to ? "Multi-Message" : to.toString() );
-                t.setString(body);
+                t.setConstraints(2);//just magic for clearing attributes
+                t.setConstraints(0);
+                t.setString("");
+                if (body!=null) t.insert(body,0);
                 if (midlet.BombusQD.cf.capsState) t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
 //#ifdef CLIPBOARD
 //#                 if (midlet.BombusQD.cf.useClipBoard && !midlet.BombusQD.clipboard.isEmpty())  t.addCommand(cmdPasteText);
@@ -179,7 +181,10 @@ public final class MessageEdit
                 break;
             case 1:
                 if(!phoneSONYE) form.setTitle(null == to ? "Multi-Message" : to.toString());
-                textField.setString(body);
+                textField.setConstraints(2);//just magic for clearing attributes
+                textField.setConstraints(0);
+                textField.setString("");
+                if (body!=null) textField.insert(body,0);
 //#ifdef CLIPBOARD
 //#                 if (midlet.BombusQD.cf.useClipBoard && !midlet.BombusQD.clipboard.isEmpty())  form.addCommand(cmdPasteText);
 //#endif  
@@ -229,7 +234,6 @@ public final class MessageEdit
 //#ifdef DETRANSLIT
 //#         dt=DeTranslit.getInstance();
 //#endif
-        this.t=t;
         
         if(cmdSend == null) initCommands();
         
@@ -305,8 +309,6 @@ public final class MessageEdit
          form.setTicker(ticker);
        } 
         
-       this.textField = textField;  
-       
        if (midlet.BombusQD.cf.capsState)
            textField.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
        
@@ -448,6 +450,11 @@ public final class MessageEdit
         }
         if (c==cmdSend){
             if(body==null){
+                composing=false;
+                if(!multiMessage) send(null,null);
+                if(multiMessage) multiMessage = false;
+                if(null != to && to.msgSuspended!=null) to.msgSuspended=null;
+                destroyView();
                 return;
             }else{
               if(null != to) to.msgSuspended=null; 

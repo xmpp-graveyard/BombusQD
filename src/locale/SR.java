@@ -1571,7 +1571,9 @@ public class SR {
     
     public static void changeLocale() {
         String langFile = Config.getInstance().langFileName();
-        System.out.print("   Loading locale -> " + langFile + "\n"); /* lang/ru.txt */
+//#ifdef DEBUG
+//#         System.out.print("   Loading locale -> " + langFile + "\n"); /* lang/ru.txt */
+//#endif
         resetLang();
         if (langFile==null){ //en
            return;

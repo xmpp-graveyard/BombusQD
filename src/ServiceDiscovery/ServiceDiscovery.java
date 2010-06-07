@@ -455,7 +455,7 @@ public class ServiceDiscovery
             sort(items);
         } catch (Exception e) { 
             //e.printStackTrace(); 
-        };
+        }
         Object obj;
         for (Enumeration e=cmds.elements(); e.hasMoreElements();) {
             obj = e.nextElement();
@@ -685,8 +685,10 @@ public class ServiceDiscovery
                             }
                             recordStore.closeRecordStore();
                             recordStore = null;
-                        } catch (Exception e) { 
-                          System.out.println("disco rms exception");
+                        } catch (Exception e) {
+//#ifdef DEBUG
+//#                           System.out.println("disco rms exception");
+//#endif
                         }
                         midlet.BombusQD.sd.roster.showRoster();
                         break;
@@ -698,10 +700,8 @@ public class ServiceDiscovery
                 case RosterIcons.ICON_GCJOIN_INDEX: {
                     int rp=service.indexOf('@');
                     String room=null;
-                    //String server=service;
                     if (rp>0) {
                         room=service.substring(0,rp);
-                        //server=service.substring(rp+1);
                     }
                     new ConferenceForm(display, parentView, room, service, null, false);
                     break;
@@ -718,6 +718,7 @@ public class ServiceDiscovery
                     break;
                 case RosterIcons.ICON_AD_HOC:
                     requestCommand(Constants.NODE_CMDS, "discocmd");
+                    break;
                 default:
             }
         }

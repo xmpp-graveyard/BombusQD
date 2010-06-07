@@ -1,7 +1,7 @@
 /*
  * AlertCustomize.java
  *
- * Copyright (c) 2006-2008, Daniel Apatin (ad), http://apatin.net.ru
+ * Copyright (c) 2009-2010, Andrey Tikhonov (Tishka17), http://zoo.dontexist.net
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -29,8 +29,6 @@ import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Vector;
-import util.StringLoader;
 
 public class LightConfig {
 
@@ -53,8 +51,6 @@ public class LightConfig {
     
     // Singleton
     private static LightConfig instance;
-
-    //public boolean flashBackLight;
     
     public static LightConfig getInstance(){
 	if (instance==null) {

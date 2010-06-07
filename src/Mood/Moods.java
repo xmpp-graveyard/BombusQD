@@ -40,13 +40,17 @@
 //#     /** Creates a new instance of Moods */
 //#     private Moods() {
 //#         String moodFile="/lang/"+Client.Config.getInstance().lang+".moods.txt";
+//#ifdef DEBUG
 //#         System.out.println(moodFile);
+//#endif
 //#         Vector vMood[]=new StringLoader().stringLoader(moodFile, 2);
 //#         Vector en_vMood[]=new StringLoader().stringLoader("/lang/en.moods.txt", 2);
 //#         
 //#         if (vMood==null) vMood=new StringLoader().stringLoader("/lang/en.moods.txt", 2);
 //#         if (vMood==null) {
+//#ifdef DEBUG
 //#             System.out.println("Cant't load mood names");
+//#endif
 //#             en_moodValue=moodKey=moodValue=new Vector(0);
 //#         } else {
 //#             moodKey=(Vector)vMood[0];

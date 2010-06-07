@@ -26,7 +26,6 @@ package ui;
 
 import Fonts.FontCache;
 import images.RosterIcons;
-import javax.microedition.lcdui.Font;
 
 public class MainBar extends ComplexString{
     

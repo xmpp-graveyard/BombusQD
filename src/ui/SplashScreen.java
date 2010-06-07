@@ -28,12 +28,9 @@
 package ui; 
 
 import Client.Config;
-import Client.StaticData;
 import Fonts.FontCache;
 //#ifdef AUTOSTATUS
 //# import Client.ExtendedStatus;
-//# import Client.Roster;
-//# import Client.StaticData;
 //# import Client.StatusList;
 //#endif
 import images.RosterIcons;
@@ -41,7 +38,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.microedition.lcdui.*;
 import javax.microedition.lcdui.game.GameCanvas;
-import midlet.BombusQD;
 import Colors.ColorTheme;
 import ui.controls.Progress;
 

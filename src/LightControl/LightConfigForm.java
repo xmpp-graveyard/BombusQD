@@ -4,20 +4,16 @@
 
 package LightControl;
 
-import Client.*;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import java.util.Vector;
-import ui.EventNotify;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.NumberInput;
 import ui.controls.form.SpacerItem;
 import ui.controls.form.TrackItem;
-import util.StringLoader;
-import java.util.Enumeration;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
@@ -49,8 +45,6 @@ public class LightConfigForm
 
     
     LightConfig light;
-    Vector files[];
-    Vector fileNames;
 
     /** Creates a new instance of ConfigForm */
     public LightConfigForm(Display display, Displayable pView) {
@@ -104,10 +98,13 @@ public class LightConfigForm
    
     public void cmdOk() {
         light.light_control=config_enabled.getValue();
-        light.light_idle=light_idle.getValue();
-        light.light_keypress=light_keypressed.getValue();
+        light.light_idle=light_idle.getValue()+2;
+        light.light_idle=(light.light_idle/5)*5;//округление
+        light.light_keypress=light_keypressed.getValue()+2;
+        light.light_keypress=(light.light_keypress/5)*5;
         light.light_keypressed_time=Integer.parseInt(light_keypressed_time.getValue());
-        light.light_message=light_message.getValue();
+        light.light_message=light_message.getValue()+2;
+        light.light_message=(light.light_message/5)*5;
         light.light_message_time=Integer.parseInt(light_message_time.getValue());
         //midlet.BombusQD.cf.lightState=lightState.getValue();
         light.saveToStorage();

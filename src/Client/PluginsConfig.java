@@ -356,7 +356,9 @@ public class PluginsConfig extends DefForm implements MenuListener
     
     
     private void initItems() {
-        System.out.println("init items");
+//#ifdef DEBUG
+//#         System.out.println("init items");
+//#endif
          showOfflineContacts = new CheckBox(SR.get(SR.MS_OFFLINE_CONTACTS), cf.showOfflineContacts);
          selfContact = new CheckBox(SR.get(SR.MS_SELF_CONTACT), cf.selfContact);
          showTransports = new CheckBox(SR.get(SR.MS_TRANSPORTS), cf.showTransports);
@@ -447,7 +449,9 @@ public class PluginsConfig extends DefForm implements MenuListener
     }
     
     public void reloadItems() {
-       System.out.println("reload items");
+//#ifdef DEBUG
+//#        System.out.println("reload items");
+//#endif
        mainbar = new MainBar(SR.get(SR.MS_MODULES_CONFIG));
        setMainBarItem(new MainBar(mainbar));
           infobar=new MainBar("", true);

@@ -52,7 +52,9 @@ public class SmilesIcons {
               int smilesCount = MessageParser.getInstance().getSmileTable().size();
               cols = ceil(SMILES_IN_ROW, smilesCount);
            } catch (Exception e) {
-              System.out.print("Can't load res");
+//#ifdef DEBUG
+//#               System.out.print("Can't load res");
+//#endif
            }
            staticInstance = new ImageList(res, cols, SMILES_IN_ROW);
        }
@@ -68,7 +70,9 @@ public class SmilesIcons {
                  smilesCount = MessageParser.getInstance().getSmileTable().size();
                  cols = ceil(SMILES_IN_ROW, smilesCount);
              } catch (Exception e) {
-                 System.out.print("Can't load res");
+//#ifdef DEBUG
+//#                  System.out.print("Can't load res");
+//#endif
              }
              animatedInstance=new AniImageList();
              boolean load = ((AniImageList)animatedInstance).load("/images/smiles");

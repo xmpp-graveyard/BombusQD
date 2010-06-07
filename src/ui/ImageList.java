@@ -33,17 +33,6 @@
 
 package ui;
 import javax.microedition.lcdui.*;
-import Client.StaticData;
-import midlet.BombusQD;
-import Client.Config;
-import javax.microedition.io.*;
-import java.io.*;
-//#if FILE_IO
-import io.file.FileIO;
-import io.file.browse.Browser;
-import io.file.browse.BrowserListener;
-//#endif
-import java.util.*;
 
 public class ImageList {
 
@@ -67,11 +56,15 @@ public class ImageList {
             height = (rows==0)? width : resImage.getHeight()/rows;
         }
         catch(OutOfMemoryError eom) {
-            System.out.print("ImageList OutOfMem "+resource);
+//#ifdef DEBUG
+//#             System.out.print("ImageList OutOfMem "+resource);
+//#endif
         }
-        catch (Exception e) { 
-            System.out.print("Can't load ImgList ");
-            System.out.println(resource);
+        catch (Exception e) {
+//#ifdef DEBUG
+//#             System.out.print("Can't load ImgList ");
+//#             System.out.println(resource);
+//#endif 
             //if(midlet.BombusQD.cf.debug) midlet.BombusQD.debug.add("error Can't load ImgList "+resource,10);
             //SE crashes on start with OutOfMem here
         }

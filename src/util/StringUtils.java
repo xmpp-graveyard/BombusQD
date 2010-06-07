@@ -306,12 +306,14 @@ public class StringUtils {
         for (int i = 0; i < len; i++) {
             c = valueChars[i];
             currentLineWidth += font.charWidth(c);
-            if (c == '\n') {
+            if (c == '\r') {
+            } else if (c == '\n') {
+                int x = c;
+                int y = valueChars[i+1];
                 lines.addElement( new String( valueChars, startPos, i - startPos ) );
                 lastSpacePos = -1;
                 startPos = i+1;
                 currentLineWidth = 0;
-                i = startPos;
             } else if (currentLineWidth >= availWidth && i > 0) {
                 if ( lastSpacePos == -1 ) {
                     i--;
