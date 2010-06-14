@@ -158,7 +158,9 @@ public class JabberDataBlockDispatcher
     
 
   public void restart() {
-       midlet.BombusQD.debug.add("restart dispatcher", 10);
+      //#ifdef CONSOLE
+//#        midlet.BombusQD.debug.add("restart dispatcher", 10);
+       //#endif
        halt();
        listener = null;
        stream = null;

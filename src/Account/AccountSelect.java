@@ -227,7 +227,9 @@ public class AccountSelect
 //#         }
 //# 
 //#         if (c==cmdJabber) {
-//#           midlet.BombusQD.debug.add("::add profile",10);            
+            //#ifdef CONSOLE
+//#           midlet.BombusQD.debug.add("::add profile",10);
+          //#endif
 //#           new AccountForm(display, this, this, null,1,false,null);  
 //#         }
 //#         if (c==cmdYaru) {

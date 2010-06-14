@@ -225,7 +225,9 @@ public class PluginsConfig extends DefForm implements MenuListener
     private StringBuffer sb = new StringBuffer(0);
 
     private void destroyItems() {
-        midlet.BombusQD.debug.add("::destroy options..", 10);
+        //#ifdef CONSOLE
+//#         midlet.BombusQD.debug.add("::destroy options..", 10);
+        //#endif
          showOfflineContacts = null;
          selfContact = null;
          showTransports = null;
@@ -351,7 +353,9 @@ public class PluginsConfig extends DefForm implements MenuListener
           if ( line_count != null ) line_count = null;          
           
           Runtime.getRuntime().gc();
-          midlet.BombusQD.debug.add("::destroy options..ok", 10);
+          //#ifdef CONSOLE
+//#           midlet.BombusQD.debug.add("::destroy options..ok", 10);
+          //#endif
     }
     
     

@@ -370,7 +370,9 @@ public abstract class VirtualList
 //#                    case 3: bgndImage = Image.createImage("/images/bgnd.jpg"); break;
 //#                }
 //#            } catch (Exception e) {
+//#ifdef CONSOLE
 //#               midlet.BombusQD.debug.add("VL -> createImage Exception: "+e.getMessage(),10);
+//#endif
 //#            }
 //#     }
 //#endif

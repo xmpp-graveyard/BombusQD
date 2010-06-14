@@ -60,7 +60,9 @@ public class Utf8IOStream {
         outStream = new ZOutputStream(outStream, JZlib.Z_DEFAULT_COMPRESSION);
          ((ZOutputStream)outStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
         this.isZlib = true;
-        midlet.BombusQD.debug.add("::ZLIB->" + this.isZlib,10);
+        //#ifdef CONSOLE
+//#         midlet.BombusQD.debug.add("::ZLIB->" + this.isZlib,10);
+        //#endif
      }
 //#endif
     
@@ -165,14 +167,18 @@ public class Utf8IOStream {
          bytesRecv = 0;
  	try { 
              boolean outZ = (outStream instanceof ZOutputStream);
-             midlet.BombusQD.debug.add("::CLOSE_OUT_ZLIB->"  + outZ,10);
+             //#ifdef CONSOLE
+//#              midlet.BombusQD.debug.add("::CLOSE_OUT_ZLIB->"  + outZ,10);
+             //#endif
              if(outZ) 
                  ((ZOutputStream)outStream).close();
              else outStream.close(); 
          } catch (Exception e) {} finally {  outStream = null; }
  	try { 
              boolean inZ = (inpStream instanceof ZInputStream);
-             midlet.BombusQD.debug.add("::CLOSE_IN_ZLIB->" +  inZ,10);
+             //#ifdef CONSOLE
+//#              midlet.BombusQD.debug.add("::CLOSE_IN_ZLIB->" +  inZ,10);
+             //#endif
              if(inZ) 
                  ((ZInputStream)inpStream).close();
              else inpStream.close();

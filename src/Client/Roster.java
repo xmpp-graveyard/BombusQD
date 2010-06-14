@@ -964,7 +964,9 @@ public class Roster
              if (cg.inRoom==false) {
                 boolean removeGroup = true;
                 hC = hContacts.size() - 1;
-                midlet.BombusQD.debug.add("::cleanupGroup->cg.inRoom->" + cg.inRoom + "(destroyContacts)",10);
+                //#ifdef CONSOLE
+//#                 midlet.BombusQD.debug.add("::cleanupGroup->cg.inRoom->" + cg.inRoom + "(destroyContacts)",10);
+                //#endif
                 for (int index = hC; index >= 0; --index) {
                     Contact contact=(Contact)hContacts.elementAt(index);
                     if (0 == contact.getNewMsgsCount()) {
@@ -2961,9 +2963,11 @@ public class Roster
      
      private static StringBuffer mucContactBuf = new StringBuffer(0);
      private String processPresence(MucContact mc, JabberDataBlock xmuc, Presence presence, String Prtext) {
-          midlet.BombusQD.debug.add("::role: processPresence", 10);
-          midlet.BombusQD.debug.add("::role: processPresence->affiliation.." +  mc.affiliation, 10);
-          midlet.BombusQD.debug.add("::role: processPresence->role.." +  mc.role, 10);
+         //#ifdef CONSOLE
+//#           midlet.BombusQD.debug.add("::role: processPresence", 10);
+//#           midlet.BombusQD.debug.add("::role: processPresence->affiliation.." +  mc.affiliation, 10);
+//#           midlet.BombusQD.debug.add("::role: processPresence->role.." +  mc.role, 10);
+          //#endif
           
          affiliation = mc.affiliation;
          role = mc.role;
@@ -2987,8 +2991,10 @@ public class Roster
          
          boolean roleChanged = !tempRole.equals(role);
          boolean affiliationChanged = !tempAffiliation.equals(affiliation);
-         midlet.BombusQD.debug.add("::role: " +  role  + "/"  + tempRole +  "("  + roleChanged +  ")"   +
-                 "\naff:" +  affiliation +  "/" +  tempAffiliation +  "("  + affiliationChanged  + ")", 10);
+         //#ifdef CONSOLE
+//#          midlet.BombusQD.debug.add("::role: " +  role  + "/"  + tempRole +  "("  + roleChanged +  ")"   +
+//#                  "\naff:" +  affiliation +  "/" +  tempAffiliation +  "("  + affiliationChanged  + ")", 10);
+         //#endif
          
          mc.affiliation = tempAffiliation;
          mc.role = tempRole;

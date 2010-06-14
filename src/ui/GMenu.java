@@ -171,7 +171,9 @@ public class GMenu extends Canvas {
         }
        gm.ml=null;
       } catch (Exception e) { /* IndexOutOfBounds */
-        midlet.BombusQD.debug.add("GMenu::select IndexOutOfBounds->" + e.getMessage(), 10);
+          //#ifdef CONSOLE
+//#         midlet.BombusQD.debug.add("GMenu::select IndexOutOfBounds->" + e.getMessage(), 10);
+        //#endif
       }
       gm.itemCursorIndexIn = 0;
       gm.itemCursorIndex = 0;
@@ -254,7 +256,9 @@ public class GMenu extends Canvas {
       }
     } catch (Exception e) {
         /* IndexOutOfBounds */
-        midlet.BombusQD.debug.add("GMenu::eventOk Exception->" + e.getMessage(), 10);
+        //#ifdef CONSOLE
+//#         midlet.BombusQD.debug.add("GMenu::eventOk Exception->" + e.getMessage(), 10);
+        //#endif
     }
    }
    

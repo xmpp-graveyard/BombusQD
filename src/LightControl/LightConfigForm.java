@@ -58,19 +58,19 @@ public class LightConfigForm
 
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.get(SR.L_IDLE_VALUE), true));
-        light_idle=new TrackItem(light.light_idle, 100);
+        light_idle=new TrackItem(light.light_idle/10, 10);
         itemsList.addElement(light_idle);
 
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.get(SR.L_KEYPRESS_VALUE), true));
-        light_keypressed=new TrackItem(light.light_keypress, 100);
+        light_keypressed=new TrackItem(light.light_keypress/10, 10);
         itemsList.addElement(light_keypressed);
         light_keypressed_time=new NumberInput(display, SR.get(SR.L_KEYPRESS_TIMEOUT), Integer.toString(light.light_keypressed_time), 1, 600);
         itemsList.addElement(light_keypressed_time);
 
         itemsList.addElement(new SpacerItem(10));
         itemsList.addElement(new SimpleString(SR.get(SR.L_MESSAGE_VALUE), true));
-        light_message=new TrackItem(light.light_message, 100);
+        light_message=new TrackItem(light.light_message/10, 10);
         itemsList.addElement(light_message);
         light_message_time=new NumberInput(display, SR.get(SR.L_MESSAGE_TIMEOUT), Integer.toString(light.light_message_time), 1, 600);
         itemsList.addElement(light_message_time);
@@ -98,13 +98,13 @@ public class LightConfigForm
    
     public void cmdOk() {
         light.light_control=config_enabled.getValue();
-        light.light_idle=light_idle.getValue()+2;
-        light.light_idle=(light.light_idle/5)*5;//округление
-        light.light_keypress=light_keypressed.getValue()+2;
-        light.light_keypress=(light.light_keypress/5)*5;
+        light.light_idle=light_idle.getValue();
+        light.light_idle=light.light_idle*10;//округление
+        light.light_keypress=light_keypressed.getValue();
+        light.light_keypress=light.light_keypress*10;
         light.light_keypressed_time=Integer.parseInt(light_keypressed_time.getValue());
-        light.light_message=light_message.getValue()+2;
-        light.light_message=(light.light_message/5)*5;
+        light.light_message=light_message.getValue();
+        light.light_message=light.light_message*10;
         light.light_message_time=Integer.parseInt(light_message_time.getValue());
         //midlet.BombusQD.cf.lightState=lightState.getValue();
         light.saveToStorage();

@@ -257,8 +257,9 @@ public final class MessageEdit
 //#endif
         t.addCommand(cmdPaste);
 //#endif
-        t.addCommand(cmdTemplate);
-
+//#ifdef TEMPLATES
+//#         t.addCommand(cmdTemplate);
+//#endif
         t.setCommandListener(this);
 //#ifdef RUNNING_MESSAGE
 //#         /*
@@ -334,7 +335,9 @@ public final class MessageEdit
 //#endif
        form.addCommand(cmdPaste);
 //#endif
-       form.addCommand(cmdTemplate);
+       //#ifdef TEMPLATES
+//#        form.addCommand(cmdTemplate);
+       //#endif
        form.setCommandListener(this);
     }
     

@@ -82,7 +82,9 @@ public class HistoryStorage {
    }
     
    public static void loadData(Contact c, RecordStore recordStore) {
-        midlet.BombusQD.debug.add("loadRMSData " + c + "/" + recordStore,10);
+       //#ifdef CONSOLE
+//#         midlet.BombusQD.debug.add("loadRMSData " + c + "/" + recordStore,10);
+        //#endif
         if (midlet.BombusQD.cf.module_history==false) return;
         switch(HistoryConfig.getInstance().historyTypeIndex) {
             case 0:

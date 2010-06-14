@@ -1,7 +1,7 @@
 /*
  * Commands.java
  *
- * Created on 3 Сентябрь 2009 г., 23:48
+ * Created on 3 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2009 пїЅ., 23:48
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -172,8 +172,9 @@ public class Commands {
         cmdHistoryRMS.setImg(0x64);
         cmdHistoryFS.setImg(0x64);
         cmdHistorySERVER.setImg(0x64);
-        
-        cmdTemplate.setImg(0x44);
+        //#ifdef TEMPLATES
+//#         cmdTemplate.setImg(0x44);
+        //#endif
     }
         
     private Commands() {

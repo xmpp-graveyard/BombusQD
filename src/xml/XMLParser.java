@@ -252,7 +252,9 @@ public class XMLParser {
          }
         }
       } catch (Exception xml) {
-          midlet.BombusQD.debug.add("XMLParser.XMLException ", 10);
+          //#ifdef CONSOLE
+//#           midlet.BombusQD.debug.add("XMLParser.XMLException ", 10);
+          //#endif
       }
     };
     
@@ -363,10 +365,12 @@ public class XMLParser {
            index+=2;
         }
        } catch (Exception e) {
-         midlet.BombusQD.debug.add("::xmlParser->exception::extractAttribute->" 
-                 + attributeName + "/" 
-                 + attributes.toString() + " Error on index: " 
-                 + index, 10);
+           //#ifdef CONSOLE
+//#          midlet.BombusQD.debug.add("::xmlParser->exception::extractAttribute->" 
+//#                  + attributeName + "/" 
+//#                  + attributes.toString() + " Error on index: " 
+//#                  + index, 10);
+         //#endif
          return null;
        }
        return null;

@@ -32,6 +32,8 @@ public class XMLException extends Exception {
     /** Creates a new instance of XMLException */
     public XMLException(String text) {
         //super(text);
-        midlet.BombusQD.debug.add("::XMLException->" + text, 10);
+        //#ifdef CONSOLE
+//#         midlet.BombusQD.debug.add("::XMLException->" + text, 10);
+        //#endif
     }
 }

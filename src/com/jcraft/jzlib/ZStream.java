@@ -70,7 +70,9 @@ final public class ZStream{
   public String msg;
   
   public void addDebugMsg(String msg) {
-     midlet.BombusQD.debug.add("::ZLIB->" + msg, 10);
+      //#ifdef CONSOLE
+//#      midlet.BombusQD.debug.add("::ZLIB->" + msg, 10);
+     //#endif
   }
 
   Deflate dstate; 

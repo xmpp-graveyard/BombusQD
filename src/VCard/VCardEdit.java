@@ -28,9 +28,7 @@ import java.util.*;
 //# import javax.microedition.lcdui.CommandListener;
 //# import javax.microedition.lcdui.Command;
 //#else
-import Menu.MenuListener;
 import Menu.Command;
-import Menu.MyMenu;
 //#endif
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
@@ -46,11 +44,7 @@ import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
 import ui.controls.form.TextInput;
 import ui.controls.form.LinkString;
-import ui.controls.form.SpacerItem;
 
-import util.StringLoader;
-import util.Strconv;
-import ui.VirtualList;
 //#ifdef GRAPHICS_MENU        
 //# import ui.GMenu;
 //# import ui.GMenuConfig;
@@ -68,8 +62,6 @@ public class VCardEdit
         , CameraImageListener
 {
     
-    private Display display;
-
     Command cmdPublish;
     Command cmdRefresh;
 //#if FILE_IO

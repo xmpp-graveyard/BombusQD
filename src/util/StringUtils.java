@@ -308,8 +308,6 @@ public class StringUtils {
             currentLineWidth += font.charWidth(c);
             if (c == '\r') {
             } else if (c == '\n') {
-                int x = c;
-                int y = valueChars[i+1];
                 lines.addElement( new String( valueChars, startPos, i - startPos ) );
                 lastSpacePos = -1;
                 startPos = i+1;

@@ -117,10 +117,18 @@ public final class ContactMessageList extends VirtualList implements MenuListene
                       recordStore.closeRecordStore();
                       recordStore = null;
                  }
-              } catch (Exception e) { midlet.BombusQD.debug.add("errclose rms",10); }
+              } catch (Exception e) { 
+                  //#ifdef CONSOLE
+//#                   midlet.BombusQD.debug.add("errclose rms",10);
+                  //#endif
+              }
               try {
                  recordStore = RecordStore.openRecordStore(rName, true);
-              } catch (Exception e) { midlet.BombusQD.debug.add("erropen rms",10); }
+              } catch (Exception e) { 
+                  //#ifdef CONSOLE
+//#                   midlet.BombusQD.debug.add("erropen rms",10);
+                  //#endif
+              }
               HistoryStorage.loadData(contact, recordStore);
               break;
       } 

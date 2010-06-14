@@ -44,8 +44,9 @@ public class XDataForm implements CommandListener {
         
         cmdOk=new Command(SR.get(SR.MS_SEND), Command.OK /*Command.SCREEN*/, 1);
         cmdCancel=new Command(SR.get(SR.MS_BACK), Command.BACK, 99);
-    
-        midlet.BombusQD.debug.add("captcha<<< " + data.toString(),10);
+    //#ifdef CONSOLE
+//#         midlet.BombusQD.debug.add("captcha<<< " + data.toString(),10);
+        //#endif
         
         JabberDataBlock challenge = data.findNamespace("captcha", "urn:xmpp:captcha");
         JabberDataBlock xdata = challenge.findNamespace("x","jabber:x:data");
@@ -96,7 +97,11 @@ public class XDataForm implements CommandListener {
                byte[] bytes=Strconv.fromBase64(dataImage.getText());
                Image img = Image.createImage(bytes, 0, bytes.length);
                f.append(new ImageItem(null, img, Item.LAYOUT_CENTER, null));
-            } catch(OutOfMemoryError eom) { midlet.BombusQD.debug.add("XDataForm OutOfMem",10); }
+            } catch(OutOfMemoryError eom) { 
+                //#ifdef CONSOLE
+//#                 midlet.BombusQD.debug.add("XDataForm OutOfMem",10);
+                //#endif
+            }
             catch (Exception e) { }
         }
 
