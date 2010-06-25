@@ -306,10 +306,10 @@ public class Contact extends IconTextElement{
             if (m.isPresence()) first_replace = chatInfo.isOnlyStatusMessage();
             else {
                 first_msgreplace = chatInfo.isFirstMessage();
-                StringBuffer temp = new StringBuffer(0);
+                StringBuffer temp;
 
                 if (m.body.startsWith("/me ")) {
-                    temp.setLength(0);
+                    temp = new StringBuffer(0);
 //#if NICK_COLORS
                     temp.append("<nick>");
 //#endif
@@ -326,16 +326,16 @@ public class Contact extends IconTextElement{
                     
                     temp.append(m.body.substring(3));
                     m.body=temp.toString().trim();
-                    temp.setLength(0);
+                    temp = new StringBuffer(0);
                 } else if (midlet.BombusQD.cf.showNickNames) {
-                    temp.setLength(0);
+                    temp = new StringBuffer(0);
                     temp.append((m.messageType==Constants.MESSAGE_TYPE_OUT)?midlet.BombusQD.sd.account.getNickName():getName());
                         temp.append(" (");
                         temp.append(m.getTime());
                         temp.append(')');
                     if (m.subject!=null) temp.append(m.subject);
                     m.subject=temp.toString();
-                    temp.setLength(0);
+                    temp = new StringBuffer(0);
                 }
                 temp = null;
             }

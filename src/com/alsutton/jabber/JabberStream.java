@@ -268,9 +268,9 @@ public class JabberStream extends XmppParser implements Runnable {
          }
      }
     
-    private StringBuffer sendData = new StringBuffer(0);
+    private StringBuffer sendData;
     public void send( String data ) throws IOException {
-        sendData.setLength(0);
+        sendData = new StringBuffer(0);
         sendData.append(data);
         sendBuf(sendData);
         /*
@@ -293,7 +293,7 @@ public class JabberStream extends XmppParser implements Runnable {
 //#         if (Console.StanzasList.enabled) addLog(data.toString(), 1);
 //#endif
         midlet.BombusQD.cf.outStanz+=1;                                                                                                                    
-        data.setLength(0);//Tishka17
+        data = new StringBuffer(0); //Tishka17
     }
 
     
@@ -303,22 +303,27 @@ public class JabberStream extends XmppParser implements Runnable {
      * @param block The data block to send to the server.
      */
     
+    private StringBuffer buf = new StringBuffer(0);
+    
     public void send( JabberDataBlock block )  {
         try{
             //System.out.println("SEND: "+block.toString());
-            sendBuf(getString(block));
+            buf = new StringBuffer(0);
+            block.constructXML(buf);
+            sendBuf(buf);
             block.destroy();
         } catch (Exception e) { }
     }
     
-    private final StringBuffer buf=new StringBuffer(0);
-    
+
+    /*
     private StringBuffer getString(JabberDataBlock block) {
-        buf.setLength(0);
+        buf = new StringBuffer(0);
         block.constructXML(buf);
         //block.destroy();
         return buf;
     }
+     */
     
     
 //#ifdef CONSOLE

@@ -223,7 +223,7 @@ public class Strconv {
     private static StringBuffer dst=new StringBuffer(0);
     
     public static String toLowerCase(String src){
-        dst.setLength(0);
+        dst = new StringBuffer(0);
         dst.append(src);
         int len=dst.length();
         char c;

@@ -116,7 +116,7 @@ public final class ActiveContacts
         this.opened = current;
         
         commandState();
-        activeContacts.setSize(0);
+        activeContacts = new Vector(0);
         Contact c = null;
         
         Vector hContacts = midlet.BombusQD.sd.roster.getHContacts();

@@ -39,7 +39,7 @@ public class StringLoader {
     
     public Vector[] stringLoader(String resource, int columns) {
 	//StringBuffer buf = new StringBuffer();
-        buf.setLength(0);
+        buf = new StringBuffer(0);
 	Vector table[] = new Vector[columns];
 	for (int i = 0; i<columns; i++) {
             table[i]=null;
@@ -86,7 +86,7 @@ public class StringLoader {
     public Vector[] stringLoader(final InputStream in, final int columns) {
 
         //StringBuffer buf = new StringBuffer();
-        buf.setLength(0);
+        buf = new StringBuffer(0);
         Vector table[] = new Vector[columns];
         for (int i = 0; i<columns; i++) {
             table[i]=null;
@@ -153,7 +153,7 @@ public class StringLoader {
                            arrayLocale[i] = value;
                            //buf.append(arrayLocale[i]);
                            //System.out.println("   *new: " + buf.toString());
-                           //buf.setLength(0);
+                           //buf = new StringBuffer(0);
                           i = size;
                         }
                     }
@@ -228,9 +228,9 @@ public class StringLoader {
     }
     
     
-    private static StringBuffer buf=new StringBuffer(0);
+    private static StringBuffer buf;
     String readLine(String source) throws IOException {//multiple calls
-	buf.setLength(0);
+	buf = new StringBuffer(0);
         int pos=0;
 	try {
             boolean eol=false;
@@ -286,7 +286,7 @@ public class StringLoader {
     }
     
     String readLine(InputStream inputstream) throws IOException {
-	buf.setLength(0);
+	buf = new StringBuffer(0);
 	try {
             if (afterEol>0) {
                 buf.append(afterEol);

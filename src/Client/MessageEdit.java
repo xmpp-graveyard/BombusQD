@@ -500,7 +500,7 @@ public final class MessageEdit
 //#        else {
 //#          if(to.msgSuspended==null) {
 //#             composing=false;
-//#             send(null,null);
+//#             //send(null,null);//check it on Sony Ericsson W595
 //#             send();
 //#          }
 //#          if(sendInTranslit) this.sendInTranslit = false;

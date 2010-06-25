@@ -67,9 +67,9 @@
 //#     private static StringBuffer tune_=new StringBuffer(0);
 //#      
 //#     private static void clear(){
-//#         mood_.setLength(0);
-//#         activity_.setLength(0);
-//#         tune_.setLength(0);        
+//#         mood_ = new StringBuffer(0);
+//#         activity_ = new StringBuffer(0);
+//#         tune_ = new StringBuffer(0);
 //#     }
 //#      
 //#     public int blockArrived(JabberDataBlock data) {

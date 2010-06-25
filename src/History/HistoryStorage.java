@@ -107,13 +107,13 @@ public class HistoryStorage {
     private static FileIO file;
     private static OutputStream os;
     private static byte[] bodyMessage;
-    private static StringBuffer buf = new StringBuffer(0);
+    private static StringBuffer buf;
     
     private static String createBody(Msg m) {
         //String fromName=midlet.BombusQD.sd.account.getUserName();
         //if (m.messageType!=Constants.MESSAGE_TYPE_OUT) fromName=m.from;
 
-        buf.setLength(0);
+        buf = new StringBuffer(0);
         switch(m.messageType){
              case Constants.MESSAGE_TYPE_IN:
                     buf.append('<')
@@ -156,7 +156,7 @@ public class HistoryStorage {
        bodyMessage = createBody(m).getBytes();
        filename = (HistoryConfig.getInstance().transliterateFilenames) ? DeTranslit.getInstance().translit(filename) : filename;
        
-       buf.setLength(0);
+       buf = new StringBuffer(0);
        buf.append(HistoryConfig.getInstance().historyPath)
                    .append(StringUtils.replaceBadChars(filename))
                    .append(".txt");
@@ -298,7 +298,7 @@ public class HistoryStorage {
   
     private static ByteArrayInputStream bais = null;
     private static DataInputStream dis = null;
-    private static StringBuffer sb = new StringBuffer(0);
+    private static StringBuffer sb;
     private static class LoadMessages extends TimerTask {
       int posRecord;
       RecordStore recordStore;
@@ -328,7 +328,7 @@ public class HistoryStorage {
                     msgData = recordStore.getRecord(posRecord);
                           bais = new ByteArrayInputStream(msgData, 1, msgData.length - 1);
                           dis = new DataInputStream(bais);
-                          sb.setLength(0);
+                          sb = new StringBuffer(0);
                           sb.append(dis.readUTF());
                           sb.append(':');
                           sb.append('%');
@@ -347,7 +347,7 @@ public class HistoryStorage {
                    timeE = System.currentTimeMillis();
                    stopTimer();
                    try{
-                     sb.setLength(0);
+                     sb = new StringBuffer(0);
                      if(size == 0) {
                         sb.append("RMS record empty.");
                         posRecord = -1;
@@ -370,7 +370,7 @@ public class HistoryStorage {
                      cmd.addObject(addCheckBox, posRecord, size);
                      cmd.addObject(c.bareJid, 0, 0);
                      
-                     sb.setLength(0);
+                     sb = new StringBuffer(0);
                    } catch (Exception e) { }
                   addCheckBox = null;
                   if (recordStore != null) {

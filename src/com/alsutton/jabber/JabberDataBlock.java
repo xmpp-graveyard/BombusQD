@@ -353,7 +353,7 @@ public class JabberDataBlock
 
   public String toString()
   {
-    data.setLength(0);
+    data = new StringBuffer(0);
     constructXML(data);
     return data.toString();
   }

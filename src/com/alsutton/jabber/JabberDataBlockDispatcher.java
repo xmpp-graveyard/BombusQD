@@ -215,7 +215,7 @@ public class JabberDataBlockDispatcher
                 for (int i = 0; i < blockListeners.size(); ++i) {
                     ((JabberBlockListener)blockListeners.elementAt(i)).destroy();
                 }
-                blockListeners.setSize(0);
+                blockListeners = new Vector(0);
             }
         } catch (Exception e) {
             e.printStackTrace();

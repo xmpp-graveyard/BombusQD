@@ -98,7 +98,7 @@ public class AccountForm
     
     /** Creates a new instance of AccountForm */
 
-    private StringBuffer uid = new StringBuffer(0);
+    private StringBuffer uid;
     public AccountForm(Display display, Displayable pView, AccountSelect accountSelect, Account account,int type_profile,
             boolean register,String serverReg) {
        super(display, pView, null);
@@ -153,7 +153,7 @@ public class AccountForm
            password=generate(1);
         }
         
-        uid.setLength(0);
+        uid = new StringBuffer(0);
         if(register == false){
           String res = account.getResource();
           String uname = account.getUserName();

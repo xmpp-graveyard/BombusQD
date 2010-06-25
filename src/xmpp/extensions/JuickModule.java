@@ -80,7 +80,7 @@
 //#                  
 //#                 if (c == '@'){  //@NICK: tagslist \n
 //#                     count++;
-//#                     bufMsg.setLength(0);
+//#                     bufMsg = new StringBuffer(0);
 //#                     bufMsg.append(count);
 //#                     bufMsg.append(").");
 //#                     while(c!='\n'){ i++;  c = body.charAt(i); bufMsg.append(c); } //include tags
@@ -100,8 +100,8 @@
 //#                        message = new Msg(Constants.MESSAGE_TYPE_JUICK, BOTNAME , null , bufMsg.toString() );
 //#                        message.id = id.append(' ').toString();
 //#                        storeMessage(message);
-//#                          bufMsg.setLength(0);
-//#                          id.setLength(0);
+//#                          bufMsg = new StringBuffer(0);
+//#                          id = new StringBuffer(0);
 //#                          parse = false;
 //#                      } else {
 //#                        bufMsg.append(c); id.append(c);
@@ -110,7 +110,7 @@
 //#                 }
 //#               } else bufMsg.append(c);
 //#            }
-//#          bufMsg.setLength(0);
+//#          bufMsg = new StringBuffer(0);
 //#          id = null;
 //#          body = null;
 //#          return true;
@@ -167,8 +167,8 @@
 //#                       JabberDataBlock child = null;
 //#                       JabberDataBlock tag = null;
 //#                       
-//#                       childBlocks.setSize(0);
-//#                       childTags.setSize(0);
+//#                       childBlocks = new Vector(0);
+//#                       childTags = new Vector(0);
 //#                       
 //#                       String uname = "";
 //#                       String mid = "";
@@ -223,9 +223,9 @@
 //#                           m = new Msg(Constants.MESSAGE_TYPE_JUICK, BOTNAME , null , buf.toString() );
 //#                           m.id = message_id.toString();
 //#                           storeMessage(m);
-//#                           buf.setLength(0);
-//#                           message_id.setLength(0);
-//#                           childTags.setSize(0);
+//#                           buf = new StringBuffer(0);
+//#                           message_id = new StringBuffer(0);
+//#                           childTags = new Vector(0);
 //#                            /*
 //#                             *<nick>NICK</nick>: textbody
 //#                            */
@@ -319,7 +319,7 @@
 //#                          *  url:OOB_LINK
 //#                          */                        
 //#                         
-//#                        sb.setLength(0);//Clear for next msg.id
+//#                        sb = new StringBuffer(0);//Clear for next msg.id
 //#                        if(mid==null) 
 //#                              sb.append("PM @").append(juickNs.getAttribute("uname"));
 //#                        else 
@@ -334,8 +334,8 @@
 //#                         //created [j] temp contact
 //#                         //juickNs!=null,�.�. ��������� � juick namespace
 //# ///////////////                        
-//#                        sb.setLength(0);
-//#                        childBlocks.setSize(0);
+//#                        sb = new StringBuffer(0);
+//#                        childBlocks = new Vector(0);
 //#                        childBlocks=null;
 //#                        sb=null;
 //#                        body=bodyAnsw=null;

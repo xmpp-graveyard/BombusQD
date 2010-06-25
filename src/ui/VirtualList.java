@@ -1685,7 +1685,7 @@ public abstract class VirtualList
     }
     
     private boolean popUpshow=false;
-    private static StringBuffer mem = new StringBuffer(0);
+    private static StringBuffer mem;
     
     private void key(int keyCode) {
 //#ifdef GRAPHICS_MENU    
@@ -1812,7 +1812,7 @@ public abstract class VirtualList
 //#             popUpshow=true;
 //#             if(!isServiceDiscoWindow) midlet.BombusQD.sd.roster.systemGC();
 //#ifdef POPUPS
-//#             mem.setLength(0);
+//#             mem = new StringBuffer(0);
 //#             mem.append(Time.getTimeWeekDay())
 //#                 .append("\nTraffic: ")
 //#                 .append(getTraffic());

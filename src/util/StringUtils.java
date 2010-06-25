@@ -69,7 +69,7 @@ public class StringUtils {
               sb.append(body.charAt(i));
             }
             body = sb.toString();
-            sb.setLength(0);
+            sb = new StringBuffer(0);
           } else parse = false;
          }
          len = body.length();
@@ -92,7 +92,7 @@ public class StringUtils {
               if(i==f2) i+=7;
               sb.append(body.charAt(i));
             }
-            body = sb.toString(); sb.setLength(0);
+            body = sb.toString(); sb = new StringBuffer(0);
           } else parse = false;
          }
          sb = null;
@@ -106,7 +106,7 @@ public class StringUtils {
     public static String stringReplace(String aSearch, String aFind, String aReplace) {
     	int pos = aSearch.indexOf(aFind);
     	if (pos != -1) {
-            buffer.setLength(0);
+            buffer = new StringBuffer(0);
             int lastPos = 0;
              while (pos != -1) {
                     buffer.append(aSearch.substring(lastPos, pos)).append(aReplace);
@@ -185,11 +185,11 @@ public class StringUtils {
     }    
    
    
-    private static StringBuffer suffix = new StringBuffer(0);
+    private static StringBuffer suffix;
     private static String ratio="";
   
     public static String getSizeString(long number) { //multiple calls
-        suffix.setLength(0);
+        suffix = new StringBuffer(0);
         try {
             if ( number > 1024000 ) {
                 ratio=Long.toString(number/100000);

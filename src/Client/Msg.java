@@ -110,7 +110,6 @@ public class Msg {
     public String toString() {
        if (messageType==Constants.MESSAGE_TYPE_PRESENCE && midlet.BombusQD.cf.timePresence) {
          StringBuffer time = new StringBuffer(0);
-         time.setLength(0);
          time.append(getTime());
          time.append(' ');
          time.append(body);

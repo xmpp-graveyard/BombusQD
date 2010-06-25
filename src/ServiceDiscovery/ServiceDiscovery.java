@@ -505,21 +505,24 @@ public class ServiceDiscovery
         }         
     }
     private void exitDiscovery(boolean cancel){
-        if (cancel || stackItems==null || stackItems.isEmpty()) {
-            if (stream!=null)
-                stream.cancelBlockListener(this);
+        boolean stackItemsEmpty = false;
+        if(stackItems != null) stackItemsEmpty = stackItems.isEmpty();
+        if (cancel || stackItems==null || stackItemsEmpty) {
+            if (stream!=null) stream.cancelBlockListener(this);
             if (display!=null && parentView!=null /*prevents potential app hiding*/ ) {
                 display.setCurrent(parentView);
                 isServiceDiscoWindow = false;
             }
         } else {
-            if (stackItems!=null && stackItems.size()>0) {
+            if (stackItems!=null) {
+              if(stackItems.size()>0) {
                 State st=(State)stackItems.lastElement();
+                if(st.service != null) service=st.service; else service="NULL ST.SERVICE";
+                if(st.items != null) items=st.items; else items=new Vector(0);
+                if(st.features != null) features=st.features; else features=new Vector(0);
                 stackItems.removeElement(st);
-                service=st.service;
-                items=st.items;
-                features=st.features;
                 moveCursorTo(st.cursor);
+              }
             }
             discoIcon=0;
             mainbarUpdate();

@@ -90,7 +90,7 @@ public class SearchResult
         
         sd.roster.cleanupSearch();
         
-        StringBuffer vcard=new StringBuffer(0);
+        StringBuffer vcard;
         Contact serv;
         Msg m;
         Vector queryElements = query.getChildBlocks();
@@ -101,7 +101,7 @@ public class SearchResult
             JabberDataBlock child = (JabberDataBlock) queryElements.elementAt(i);
 	    
             if (child.getTagName().equals("item")) {
-                vcard.setLength(0);
+                vcard = new StringBuffer(0);
                 String jid="";
 		
 	        byte status=Constants.PRESENCE_OFFLINE;
@@ -143,11 +143,11 @@ public class SearchResult
                 sd.roster.addContact(serv);
             }
         }
-        vcard.setLength(0);
+        vcard = new StringBuffer(0);
         vcard = null;
         
-        queryElements.setSize(0);
-        childBlocks.setSize(0);
+        queryElements = new Vector(0);
+        childBlocks = new Vector(0);
         sd.roster.reEnumRoster();
         commandState();
         attachDisplay(display);

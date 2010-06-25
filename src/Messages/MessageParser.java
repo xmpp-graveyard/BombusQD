@@ -170,7 +170,7 @@ public final class MessageParser // implements Runnable
 
                         addSmile(root, smile, strnumber);
 
-                        s.setLength(0);
+                        s = new StringBuffer(0);
                         firstSmile=false;
 
                         break;
@@ -184,11 +184,11 @@ public final class MessageParser // implements Runnable
                     firstSmile=true;
                 }
             }
-            s.setLength(0);
+            s = new StringBuffer(0);
             in.close();
             in=null;
         } catch (Exception e) {
-            s.setLength(0);
+            s = new StringBuffer(0);
         }
 //#endif
         
@@ -215,8 +215,8 @@ public final class MessageParser // implements Runnable
 //#endif
     }
     
-    private static StringBuffer s = new StringBuffer(0);
-
+    private static StringBuffer s;
+    
     private void parseMessage(final MessageItem task, final int windowWidth, String txt, boolean isSubj) {//fixes by aspro
       synchronized(this) {
 //long s1 = System.currentTimeMillis();          
@@ -232,7 +232,7 @@ public final class MessageParser // implements Runnable
         if (task.smilesEnabled() && !isSubj) smileRoot = root;
 //#endif
         
-        s.setLength(0);
+        s = new StringBuffer(0);
 
         int w=0;
         if (!task.msg.MucChat) {
@@ -282,7 +282,7 @@ public final class MessageParser // implements Runnable
                         if (s.length()>0) {
                             l.addUnderline();
                             l.addElement(s.toString());
-                            s.setLength(0);
+                            s = new StringBuffer(0);
                         }
                 }
 
@@ -320,7 +320,7 @@ public final class MessageParser // implements Runnable
                             l.addUnderline();
                         l.addElement(s.toString());
                     }
-                    s.setLength(0);
+                    s = new StringBuffer(0);
                     int iw=(smileIndex<0x01000000)? smileImages.getWidth(smileIndex) : 0;
                     if (w+iw>windowWidth) {
                         if (singleLine) return;
@@ -341,7 +341,7 @@ public final class MessageParser // implements Runnable
                 if (smileIndex==URL) {
                     if (s.length()>0) {
                         l.addElement(s.toString());
-                        s.setLength(0);
+                        s = new StringBuffer(0);
                     }
                     underline=true;
                     
@@ -363,7 +363,7 @@ public final class MessageParser // implements Runnable
                 if (newline || w + wordWidth + cw > windowWidth) {
                     if (underline) l.addUnderline();
                     l.addElement(s.toString());
-                    s.setLength(0); w = 0;
+                    s = new StringBuffer(0); w = 0;
                     
                     
                     if (c == 0xa0) l.setColor(ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT));

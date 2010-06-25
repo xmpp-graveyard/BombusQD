@@ -1035,7 +1035,7 @@ public class Roster
         String group,bareJid;
 
         try {
-          transports.setSize(0);
+          transports = new Vector(0);
           if (cont!=null){
             int size=cont.size();
             int k;
@@ -1071,7 +1071,7 @@ public class Roster
 //#         }
 //#endif
         if(cont!=null){
-          cont.setSize(0);
+          cont = new Vector(0);
           cont = null;
         }
         q=null;
@@ -2017,7 +2017,7 @@ public class Roster
 //#           }
 //#         
 //#         photoImg = null;
-//#         buffer.setLength(0);
+//#         buffer = new StringBuffer(0);
 //#     }
 //#endif      
     
@@ -2161,7 +2161,7 @@ public class Roster
                              }
                            }
                         }
-                        childBlocks.setSize(0);
+                        childBlocks = new Vector(0);
                         childBlocks=null;
                       }
                     }
@@ -2727,7 +2727,7 @@ public class Roster
                                .append(XmppError.findInStanza(pr).toString());
                              conferenceMessage = new Msg(Constants.MESSAGE_TYPE_ERROR, name, null, sb.toString());
                              if(!chatPres.startsWith("remote-server-not-found")) messageStore(room, conferenceMessage);
-                           sb.setLength(0);
+                           sb = new StringBuffer(0);
                            sb=null;
                         } else {                        
                            messageStore(conferenceContact, conferenceMessage);
@@ -3032,7 +3032,7 @@ public class Roster
          }
          //} catch (Exception e) { }
          
-         mucContactBuf.setLength(0);
+         mucContactBuf = new StringBuffer(0);
          mucContactBuf.append(mc.getNick().trim());
          
          String statusText = presence.getChildBlockText("status");
@@ -3051,7 +3051,7 @@ public class Roster
           //}
 
          if (statusCode==201) { //todo: fix this nasty hack, it will not work if multiple status codes are nested in presence)
-             mucContactBuf.setLength(0);
+             mucContactBuf = new StringBuffer(0);
              mucContactBuf.append(SR.get(SR.MS_NEW_ROOM_CREATED));
          } else if (presenceType==Constants.PRESENCE_OFFLINE) {
              mc.key0=3;
@@ -3938,7 +3938,7 @@ public class Roster
             if(cntact.annotations!=null) mess.append('\n'+SR.get(SR.MS_ANNOTATION)+": "+cntact.annotations);
             
             VirtualList.setWobble(1, null, mess.toString());
-            mess.setLength(0);
+            mess = new StringBuffer(0);
         } else {
             VirtualList.setWobble(type, contact.getJid(), info);
         }
@@ -4033,7 +4033,7 @@ public class Roster
 
     private Vector aContacts = new Vector(0);
     public void searchActiveContact(Contact first, boolean right) {
-        aContacts.setSize(0);
+        aContacts = new Vector(0);
         Vector search = contactList.contacts;
         int size = search.size();
         short activePos = 0;
@@ -4286,7 +4286,7 @@ public class Roster
                   vContacts = contactList.getVisibleTree(vContacts);
                 //System.out.println("     reenum vContacts" + sV + " ==> 0 ==> " + vContacts.size());
                   
-                  counts.setLength(0);
+                  counts = new StringBuffer(0);
                   counts.append('(')
                         .append(contactList.getOnlineCount())
                         .append('/')

@@ -66,8 +66,8 @@ public class XMLParser {
         this.eventListener=eventListener;
         state=PLAIN_TEXT;
 
-        sbuf.setLength(0);
-        tagName.setLength(0);
+        sbuf = new StringBuffer(0);
+        tagName = new StringBuffer(0);
         
     }
  
@@ -86,9 +86,9 @@ public class XMLParser {
                         
                         if (sbuf.length()>0) eventListener.plainTextEncountered( parsePlainText(sbuf) ); 
                         
-                        sbuf.setLength(0);
-                        temp.setLength(0);
-                        tagName.setLength(0);
+                        sbuf = new StringBuffer(0);
+                        temp = new StringBuffer(0);
+                        tagName = new StringBuffer(0);
                         
                         attr=null;
                         attr=new Vector(0);
@@ -105,15 +105,15 @@ public class XMLParser {
                 if (c=='?') continue;
                 if (c==' ') continue;
                 if (c=='=') continue;
-                if (c=='\'') { state=ATRVALQS; atrName=sbuf.toString(); sbuf.setLength(0); continue; }
-                if (c=='\"') { state=ATRVALQD; atrName=sbuf.toString(); sbuf.setLength(0); continue; }
+                if (c=='\'') { state=ATRVALQS; atrName=sbuf.toString(); sbuf = new StringBuffer(0); continue; }
+                if (c=='\"') { state=ATRVALQD; atrName=sbuf.toString(); sbuf = new StringBuffer(0); continue; }
 
                 if (c!='>' && c!='/') { 
                     sbuf.append(c);
                     continue;
                 } else {
                     state=TAGNAME;
-                    sbuf.setLength(0);
+                    sbuf = new StringBuffer(0);
                 }
             }
 
@@ -122,7 +122,7 @@ public class XMLParser {
                 if (c=='?') continue;
                 if (c=='/') { 
                     state=ENDTAGNAME; 
-                    sbuf.setLength(0);
+                    sbuf = new StringBuffer(0);
                     if (tagName.length()>0) {
                         String tn=tagName.toString();
                         eventListener.tagStart(tn, attr); 
@@ -170,7 +170,7 @@ public class XMLParser {
                 if (c=='>') {
                     state=PLAIN_TEXT;
                     eventListener.tagEnd(sbuf.toString());
-                    sbuf.setLength(0);
+                    sbuf = new StringBuffer(0);
                     continue;
                 }
                 sbuf.append(c);
@@ -183,8 +183,8 @@ public class XMLParser {
                     state=ATRNAME; 
                     attr.addElement(atrName);
                     attr.addElement(parsePlainText(sbuf)); 
-                    sbuf.setLength(0); 
-                    temp.setLength(0);
+                    sbuf = new StringBuffer(0);
+                    temp = new StringBuffer(0);
                     continue; 
                 }
                 sbuf.append(c);
@@ -196,8 +196,8 @@ public class XMLParser {
                     state=ATRNAME; 
                     attr.addElement(atrName);
                     attr.addElement(parsePlainText(sbuf)); 
-                    sbuf.setLength(0); 
-                    temp.setLength(0);
+                    sbuf = new StringBuffer(0);
+                    temp = new StringBuffer(0);
                     continue; 
                 }
                 sbuf.append(c);
@@ -229,8 +229,8 @@ public class XMLParser {
                         baos = null;
                     } catch (Exception ex) { ex.printStackTrace(); }
                     
-                    sbuf.setLength(0);
-                    tagName.setLength(0);
+                    sbuf = new StringBuffer(0);
+                    tagName = new StringBuffer(0);
                     state=TAGNAME;
                     continue;
                 }
@@ -266,7 +266,7 @@ public class XMLParser {
         int lenn = sb.length();
         char k;
         
-        temp.setLength(0);
+        temp = new StringBuffer(0);
         try{
           int i = 0;
           while(i<lenn){
@@ -289,7 +289,7 @@ public class XMLParser {
         while (ipos<lenn) {
             c=sb.charAt(ipos++);
             if (c=='&') { 
-                xmlChar.setLength(0);
+                xmlChar = new StringBuffer(0);
                 while (true) {
                     c=sb.charAt(ipos++);
                     if (c==';') break;
@@ -340,7 +340,7 @@ public class XMLParser {
             continue;
             
         }
-        xmlChar.setLength(0);
+        xmlChar = new StringBuffer(0);
         sb.setLength(opos);
         return sb.toString();
     }
@@ -350,8 +350,8 @@ public class XMLParser {
             if (sbuf.length()>0)
                 eventListener.plainTextEncountered( parsePlainText(sbuf) );
             
-            sbuf.setLength(0);
-            temp.setLength(0);
+            sbuf = new StringBuffer(0);
+            temp = new StringBuffer(0);
         }
     }
 

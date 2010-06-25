@@ -47,7 +47,7 @@ public class ExtendedStatus extends IconTextElement{
     private String screenName="";
     private boolean autoRespond;
     private String autoRespondMessage = "";
-    private StringBuffer state = new StringBuffer(0);
+    private StringBuffer state;
     public boolean usermood;
     
     /** Creates a new instance of ExtendedStatus */
@@ -68,7 +68,7 @@ public class ExtendedStatus extends IconTextElement{
 //#endif
     //public void onSelect(VirtualList view){}
     public String toString(){ 
-        state.setLength(0);
+        state = new StringBuffer(0);
         state.append(screenName);
         if(midlet.BombusQD.cf.userAppLevel == 1) {
            if(-1 == name.indexOf("pep")) {

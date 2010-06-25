@@ -98,7 +98,7 @@ public class Account extends IconTextElement{
 
     private StringBuffer sbuf = new StringBuffer(0);
     public String toString() {
-        sbuf.setLength(0);
+        sbuf = new StringBuffer(0);
         if (nick.length()!=0)
             sbuf.append(nick);
         else {

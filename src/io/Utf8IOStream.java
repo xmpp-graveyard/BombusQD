@@ -186,14 +186,14 @@ public class Utf8IOStream {
     }
 
 //#if ZLIB
-    private StringBuffer stats = new StringBuffer(0);
+    private StringBuffer stats;
 
     public String getPocketsStats() {
         return Long.toString(countPocketsSend);
     }    
   
     public String getStreamStatsBar() { //for info panel
-        stats.setLength(0);
+        stats = new StringBuffer(0);
         try {
             if (isZlib) {
                 ZInputStream z = (ZInputStream) inpStream;
@@ -221,7 +221,7 @@ public class Utf8IOStream {
     }
 
     public String getStreamStats() { //for stats window
-        stats.setLength(0);
+        stats = new StringBuffer(0);
         try {
             if (isZlib) {
                 ZInputStream z = (ZInputStream) inpStream;
@@ -258,7 +258,7 @@ public class Utf8IOStream {
         
     
     public String getConnectionData() {
-        stats.setLength(0);
+        stats = new StringBuffer(0);
         try {
             stats.append(((SocketConnection)connection).getLocalAddress())
                  .append(":")
@@ -279,7 +279,7 @@ public class Utf8IOStream {
 //#else
 //#      private StringBuffer stats = new StringBuffer(0);
 //#      public String getStreamStats() {
-//#          stats.setLength(0);
+//#          stats = new StringBuffer(0);
 //#          try {
 //#              long sent=bytesSent;
 //#              long recv=bytesRecv;

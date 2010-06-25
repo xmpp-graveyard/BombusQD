@@ -321,7 +321,7 @@ public class PopUp {
         }
 
         public void destroy() {
-            this.message.setSize(0);
+            this.message = new Vector(0);
             this.message=null;
             this.from=null;
         }

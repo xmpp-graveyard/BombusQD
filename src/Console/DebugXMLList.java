@@ -78,10 +78,10 @@
 //#      
 //#     }
 //#     
-//#     private StringBuffer str = new StringBuffer(0);
+//#     private StringBuffer str;
 //#     
 //#     protected void beginPaint() {
-//#         str.setLength(0);
+//#         str = new StringBuffer(0);
 //#         str.append(" (")
 //#         .append(getItemCount())
 //#         .append(")");

@@ -84,11 +84,11 @@ public class Presence extends JabberDataBlock {
 
     private byte presenceCode;
     
-    private StringBuffer presenseText = new StringBuffer(0);
+    private StringBuffer presenseText;
   
     public String getPresenceText() {
         String errText=null;
-        presenseText.setLength(0);
+        presenseText = new StringBuffer(0);
         String type=getTypeAttribute();
         presenceCode=Constants.PRESENCE_AUTH;
         if (type!=null) {

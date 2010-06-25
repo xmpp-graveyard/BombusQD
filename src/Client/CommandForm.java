@@ -83,14 +83,14 @@ public final class CommandForm extends DefForm
           cb.destroy();
          }
         itemsList.removeAllElements();
-        sb.setLength(0);
+        sb = new StringBuffer(0);
         cb = null;
         if(obj != null) obj = null;  
         if(res != null) res = null;
     }
     
     public void addObject(Object res, int current, int size){
-        sb.setLength(0);
+        sb = new StringBuffer(0);
         if(current != 0) {
             sb.append("Loading...")
               .append(current)

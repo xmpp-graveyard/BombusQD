@@ -111,7 +111,7 @@
 //#         item.selectable=true;
 //#         itemsList.addElement(item);
 //#         
-//#         sb.setLength(0);
+//#         sb = new StringBuffer(0);
 //#         commandState();
 //# 
 //#         attachDisplay(display);
