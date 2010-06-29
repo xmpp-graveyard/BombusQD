@@ -506,6 +506,7 @@ public class ServiceDiscovery
     }
     private void exitDiscovery(boolean cancel){
         boolean stackItemsEmpty = false;
+        try {
         if(stackItems != null) stackItemsEmpty = stackItems.isEmpty();
         if (cancel || stackItems==null || stackItemsEmpty) {
             if (stream!=null) stream.cancelBlockListener(this);
@@ -517,9 +518,9 @@ public class ServiceDiscovery
             if (stackItems!=null) {
               if(stackItems.size()>0) {
                 State st=(State)stackItems.lastElement();
-                if(st.service != null) service=st.service; else service="NULL ST.SERVICE";
-                if(st.items != null) items=st.items; else items=new Vector(0);
-                if(st.features != null) features=st.features; else features=new Vector(0);
+                service=st.service;
+                items=st.items;
+                features=st.features;
                 stackItems.removeElement(st);
                 moveCursorTo(st.cursor);
               }
@@ -527,6 +528,9 @@ public class ServiceDiscovery
             discoIcon=0;
             mainbarUpdate();
             redraw();
+        }
+        } catch (Exception ex) { 
+            midlet.BombusQD.debug.add("ServiceDiscovery exception(" + ex.getMessage() + ")",10);
         }
     }
     

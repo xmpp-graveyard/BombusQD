@@ -178,7 +178,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                }
                //History
                if (grType!=Groups.TYPE_TRANSP) {
-                     addItem(SR.get(SR.MS_HISTORY_SHOW), 1110, menuIcons.ICON_VERSION);
+                    if(midlet.BombusQD.cf.module_history) addItem(SR.get(SR.MS_HISTORY_SHOW), 1110, menuIcons.ICON_VERSION);
                }
            }   
 
