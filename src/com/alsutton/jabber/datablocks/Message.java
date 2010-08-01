@@ -62,6 +62,9 @@ public class Message extends JabberDataBlock {
   public void setSubject( String text ) {
       addChild( "subject", text );
   }
+  public void setType( String text ) {
+      setAttribute( "type", text );
+  }
 
   public String getSubject() {
       return getChildBlockText( "subject" );

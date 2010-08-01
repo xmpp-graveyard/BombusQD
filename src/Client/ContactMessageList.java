@@ -608,7 +608,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
              for(int i=0;i<size;i++){
               c=(Contact)midlet.BombusQD.sd.roster.contactList.contacts.elementAt(i);
               if (c instanceof MucContact){
-                if(c.getNick().equals(msg.from)) found=(c.status!=5);
+                if(c.jid.getBareJid().equals(contact.jid.getBareJid()) && c.getNick().equals(msg.from)) found=(c.status!=5);
                }
              }
            }

@@ -215,6 +215,9 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 //		addItem(SR.get(SR.MS_MOVE),1003, menuIcons.ICON_MOVE);
 		addItem(SR.get(SR.MS_DELETE), 4, menuIcons.ICON_DELETE);
 		addItem(SR.get(SR.MS_DIRECT_PRESENCE),45, menuIcons.ICON_SET_STATUS);
+
+		addItem("Request Attention",666,menuIcons.ICON_TIME);//Attention
+    
 	    }
          //}
 	    if (originGroupchat) return;
@@ -548,6 +551,13 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                     new RenameGroup(display, null, c);
                     return;
  */
+
+		case 666: //Attention
+			Message message = new Message(c.getJid(), "", "Wake up!!!",false);
+			message.setType("headline");
+			message.addChildNs("attention","urn:xmpp:attention:0");
+			midlet.BombusQD.sd.roster.theStream.send(message);
+			break;
                 case 889: //idle
                     midlet.BombusQD.sd.roster.setQuerySign(true);
                     midlet.BombusQD.sd.roster.theStream.send(IqLast.query(c.getJid(), "idle"));
@@ -570,6 +580,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                 case 887:
                     OkNotify(null);
                     break;
+
                 case 900:
                     midlet.BombusQD.sd.roster.leaveAllMUCs();
                     break;

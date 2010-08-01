@@ -737,9 +737,7 @@ public abstract class VirtualList
             }
           }
 //#ifdef POPUPS
-          if(popUpshow || midlet.BombusQD.cf.popUps){
             drawPopUp(g);
-          }
 //#endif
         }
 
@@ -1346,14 +1344,13 @@ public abstract class VirtualList
     int old_win_top;
     private long lastPaint;
     protected void pointerPressed(int x, int y) {
-
+	long clickTime=System.currentTimeMillis();
+        lastClickTime=clickTime;
+        lastClickX=x;
+        lastClickY=y;
 	pointer_state = Client.Constants.POINTER_NONE;
         old_win_top = win_top;
-	long clickTime=System.currentTimeMillis();
-        if(gm.itemGrMenu>0){
-            lastClickTime=clickTime;
-            lastClickX=x;
-            lastClickY=y;
+        if(gm.itemGrMenu>0){           
             if(null != menuItem) {
                 menuItem.pointerPressed(x, y);
                 repaint();
@@ -1405,9 +1402,6 @@ public abstract class VirtualList
 	    i++;
 	}
 	if (i==0 || i==32) {
-            lastClickTime=clickTime;
-            lastClickX=x;
-            lastClickY=y;
             return;
         }
 	//System.out.println(i);
@@ -1417,16 +1411,13 @@ public abstract class VirtualList
             setRotator();
         }  else if (cursor>=0) pointer_state = Client.Constants.POINTER_SECOND;
 	
-	lastClickTime=clickTime;
-        lastClickX=x;
-	lastClickY=y;
 	lastClickItem=cursor;
 
         if(cursor==-1) cursor = 0;
         repaint();
-    }
+   }
      
-     int yPointerPos;
+   int yPointerPos;
      
    protected void pointerDragged(int x, int y) {
 
@@ -1684,7 +1675,6 @@ public abstract class VirtualList
     public void touchMiddlePressed(){
     }
     
-    private boolean popUpshow=false;
     private static StringBuffer mem;
     
     private void key(int keyCode) {
@@ -1809,7 +1799,6 @@ public abstract class VirtualList
 //#             keyDwn();
 //#             break; 
 //#         case KEY_STAR:
-//#             popUpshow=true;
 //#             if(!isServiceDiscoWindow) midlet.BombusQD.sd.roster.systemGC();
 //#ifdef POPUPS
 //#             mem = new StringBuffer(0);
@@ -1841,7 +1830,6 @@ public abstract class VirtualList
 //#ifdef POPUPS
 //#         case KEY_POUND:
 //#             //if (midlet.BombusQD.cf.popUps) {
-//#             popUpshow=true;
 //#                 try {
 //#                     String text=((VirtualElement)getFocusedObject()).getTipString();
 //#                     if (text!=null) {
@@ -1993,7 +1981,6 @@ public abstract class VirtualList
 //#ifdef POPUPS
         case KEY_POUND:
             //if (midlet.BombusQD.cf.popUps) {
-            popUpshow=true;
                 try {
                     String text=((VirtualElement)getFocusedObject()).getTipString();
                     if (text!=null) {

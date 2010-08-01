@@ -29,8 +29,6 @@ package Info;
 
 import Client.Config;
 import Client.StaticData;
-import java.util.Enumeration;
-import java.util.Vector;
 import javax.microedition.io.ConnectionNotFoundException;
 //#ifndef MENU_LISTENER
 //# import javax.microedition.lcdui.CommandListener;
@@ -50,7 +48,6 @@ import ui.controls.form.MultiLine;
 import ui.controls.form.SpacerItem;
 import util.ClipBoard;
 import ui.controls.form.LinkString;
-import util.StringLoader;
 //#ifdef GRAPHICS_MENU        
 //# import ui.GMenu;
 //# import ui.GMenuConfig;

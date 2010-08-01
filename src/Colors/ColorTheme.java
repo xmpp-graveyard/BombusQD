@@ -59,7 +59,7 @@ public class ColorTheme {
             init();
             loadFromStorage();
 	    //#ifdef COLOR_TUNE
-            reInitNames();
+//#             reInitNames();
 	    //#endif
 	}
 	return instance;
@@ -198,7 +198,7 @@ public class ColorTheme {
 //#         int len = locale.length;
 //#         NAMES = new String[len];
 //#         for(byte i = 0; i < len; ++i) NAMES[i] = locale[i];
-    }
+//#     }
 //#endif
     
     
@@ -341,7 +341,7 @@ public class ColorTheme {
        StringBuffer body=new StringBuffer(0);
        body.append("xmlSkin\t");
 //#ifdef DETRANSLIT
-//#        body.append(DeTranslit.getInstance().translit(midlet.BombusQD.sd.account.getNickName()));
+//#        body.append(DeTranslit.translit(midlet.BombusQD.sd.account.getNickName()));
 //#else
        body.append(StaticData.getInstance().account.getNickName());
 //#endif

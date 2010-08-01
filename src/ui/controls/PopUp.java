@@ -66,7 +66,7 @@ public class PopUp {
 
     private int maxWdth;
 
-    private int startLine;
+    private int startLine=0;
     
     public int scrollable=SCROLLABLE_NONE;
     

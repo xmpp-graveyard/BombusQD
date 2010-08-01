@@ -39,9 +39,7 @@ import Conference.Bookmarks;
 import Conference.ConferenceGroup;
 import Conference.MucContact;
 import Conference.affiliation.ConferenceQuickPrivelegeModify;
-import Conference.ConferenceForm;
 //#endif
-import Fonts.FontCache;
 import images.MenuIcons;
 //#ifdef ARCHIVE
 import Archive.ArchiveList;
@@ -2485,6 +2483,16 @@ public class Roster
 //#                      if (type.equals("chat")) CustomLight.message();
 //#endif
                 }
+		if (message.findNamespace("attention", "urn:xmpp:attention:0")!=null) {
+			//#ifdef LIGHT_CONTROL
+			CustomLight.startBlinking();
+			//#endif
+			if (body==null || body.length()==0)
+				body="Attention!!! Wake Up!!!";
+			setWobbler(3, c, body, null);
+			playNotify(SOUND_ATTENTION);
+		}
+
                 if (type.equals("chat") && myStatus!=Constants.PRESENCE_INVISIBLE) {
                     if (message.findNamespace("request", "urn:xmpp:receipts")!=null) {
                         sendDeliveryMessage(c, data.getAttribute("id"));
@@ -3301,6 +3309,7 @@ public class Roster
     private final static int SOUND_FOR_VIP=100;
     private final static int SOUND_COMPOSING=888;
     private final static int SOUND_OUTGOING=999;    
+    private final static int SOUND_ATTENTION=666;
     
     
     public void blockNotify(int event, long ms) {
@@ -3376,6 +3385,12 @@ public class Roster
                 vibraLen=0;
                 //flashBackLight=false;
                 break;
+	    case SOUND_ATTENTION:
+		message=ac.soundForYou;
+		type=ac.soundForYouType;
+		vibraLen=vibraLen*5;
+		break;
+
             default:
                 message="";
                 type="none";
@@ -3682,7 +3697,7 @@ public class Roster
                 
                 
             case KEY_NUM0:
-                 if (getItemCount()==0)
+                if (getItemCount()==0)
                      return;
                 Vector contacts = contactList.contacts;
                 int size = contacts.size() - 1;
@@ -4191,6 +4206,27 @@ public class Roster
         } else {
             createActiveContacts(this, null);
 	}
+    }
+
+    public void touchMiddlePressed(){
+        if (getItemCount()==0)
+             return;
+        Vector contacts = contactList.contacts;
+        int size = contacts.size() - 1;
+        for (int index = size; 0 <= index; --index) {
+            Contact contact = (Contact) contacts.elementAt(index);
+            contact.setIncoming(Constants.INC_NONE);
+         }
+        if (messageCount==0) return;
+        Contact c = null;
+        Object atcursor = getFocusedObject();
+        if (atcursor instanceof Contact) c = (Contact)atcursor;
+        c = contactList.getFirstContactWithNewMessage(c);
+        if (null != c) {
+            focusToContact(c, true);
+            setRotator();
+        }
+        redraw();
     }
 //#ifdef GRAPHICS_MENU        
 //#     public void touchRightPressed(){ if (midlet.BombusQD.cf.oldSE) showGraphicsMenu(); else cmdActions(); }
