@@ -779,6 +779,13 @@ public class SR {
      
      public final static short MS_HISTORY_SHOW = 741;
      public final static short MS_APPRUN_COUNT = 742;
+
+     public final static short LA_ATTENTION = 743;
+     public final static short LA_WAKEUP = 744;
+     public final static short LA_ENABLE = 745;
+     public final static short LA_REQUEST = 746;
+     public final static short LA_SOUND = 747;
+
      
 
     private static String[] localeItemsDefault = new String[0];
@@ -1529,7 +1536,13 @@ public class SR {
         "Menu font",
         
         "Show History",
-        "AppRun count: "
+        "AppRun count: ",
+
+	"Attention!",
+	"Wake Up!!!",
+	"Enable attention requests",
+	"Request attention",
+	"Attention sound"
     };  
 
 

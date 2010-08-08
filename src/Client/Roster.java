@@ -2483,13 +2483,13 @@ public class Roster
 //#                      if (type.equals("chat")) CustomLight.message();
 //#endif
                 }
-		if (message.findNamespace("attention", "urn:xmpp:attention:0")!=null) {
+		if (message.findNamespace("attention", "urn:xmpp:attention:0")!=null && AlertCustomize.getInstance().enableAttention) {
 			//#ifdef LIGHT_CONTROL
 			CustomLight.startBlinking();
 			//#endif
 			if (body==null || body.length()==0)
-				body="Attention!!! Wake Up!!!";
-			setWobbler(3, c, body, null);
+          			body=SR.get(SR.LA_ATTENTION)+SR.get(SR.LA_WAKEUP);
+			setWobbler(3, c, c.getName() + "\n" +body, null);
 			playNotify(SOUND_ATTENTION);
 		}
 
@@ -3385,9 +3385,9 @@ public class Roster
                 vibraLen=0;
                 //flashBackLight=false;
                 break;
-	    case SOUND_ATTENTION:
-		message=ac.soundForYou;
-		type=ac.soundForYouType;
+	    case SOUND_ATTENTION://Attention Request
+		message=ac.soundAttention;
+		type=ac.soundAttentionType;
 		vibraLen=vibraLen*5;
 		break;
 

@@ -11,6 +11,7 @@ package xmpp;
 
 import Client.*; 
 import Info.Version;
+import Alerts.AlertCustomize;
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
@@ -149,7 +150,8 @@ public class EntityCaps implements JabberBlockListener{
 //#endif
 //#endif
         features.addElement("http://jabber.org/protocol/evil");//XEP-0076: Malicious Stanzas
-	features.addElement("urn:xmpp:attention:0");//XEP-0224: Attention
+	if (AlertCustomize.getInstance().enableAttention)
+		features.addElement("urn:xmpp:attention:0");//XEP-0224: Attention
 
         
         features.addElement("jabber:iq:time"); //DEPRECATED

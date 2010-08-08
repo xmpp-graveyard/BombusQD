@@ -61,6 +61,7 @@ public final class CustomLight extends TimerTask {
     private byte previous_state = IDLE;
     private int tick = 10;
     private int previous_tick =0;
+    private int blinks = 0;
 
     private static final int INTERVAL = 1000;
     
@@ -76,7 +77,7 @@ public final class CustomLight extends TimerTask {
         }
     }
     public static void message() {
-        if (null != instance) {
+        if (null != instance && instance.state<BLINK0) {
             instance.setMode(MESSAGE);
         }
     }
@@ -117,8 +118,6 @@ public final class CustomLight extends TimerTask {
                 return Math.max(1, cf.light_presence_time);
             case BLINK0:
             case BLINK1:
-            case BLINK2:
-            case BLINK3:
                 return Math.max(1, cf.light_blink_time);
         }
         return 32767;
@@ -148,6 +147,7 @@ public final class CustomLight extends TimerTask {
             state=BLINK1;
         else
             state = m;
+	blinks = cf.max_blinks;
         setLight();
     }
 
@@ -162,7 +162,7 @@ public final class CustomLight extends TimerTask {
         setLight();
         if (state==IDLE || isSystem())
             return;
-        if (0 != tick) {
+        if (0 < tick) {
             tick--;
             return;
         }
@@ -182,14 +182,13 @@ public final class CustomLight extends TimerTask {
             case BLINK0:
                 state = BLINK1;
                 tick = getMaxTickCount(state);
+		if (blinks<=0)
+			state = IDLE;
                 break;
             case BLINK1:
-                state = BLINK2;
+                state = BLINK0;
                 tick = getMaxTickCount(state);
-                break;
-            case BLINK2:
-                state = BLINK3;
-                tick = getMaxTickCount(state);
+		blinks--;
                 break;
             default:
                 state = IDLE;
@@ -324,7 +323,7 @@ public final class CustomLight extends TimerTask {
         if (worked) {
             if (!on) {
                 instance.timer.cancel();
-                instance.setLight(0);
+                instance.setLight(40);
                 instance = new CustomLight(null);
             }
         } else {

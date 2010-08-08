@@ -47,6 +47,8 @@ public class LightConfig {
     public int light_message=100;
     public int light_error=50;
     public int light_blink=100;
+    
+    public int max_blinks = 5;
 
     
     // Singleton

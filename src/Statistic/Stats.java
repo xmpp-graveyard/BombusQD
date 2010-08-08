@@ -30,9 +30,6 @@
 //# import java.io.DataInputStream;
 //# import java.io.DataOutputStream;
 //# import java.io.IOException;
-//# import locale.SR;
-//# import ui.VirtualList;
-//# import util.StringUtils;
 //# 
 //# public class Stats {
 //#ifdef PLUGINS
@@ -69,7 +66,7 @@
 //#     
 //#     public void updateRunValue() {
 //#         appRunCount++;
-//#         if(appRunCount == 1) {
+//#         if(appRunCount == 0) {
 //#             midlet.BombusQD.cf.initTouchOptions();
 //#         }
 //#         saveToStorage(false,true);

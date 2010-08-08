@@ -29,6 +29,7 @@
 package Menu;
 import Client.*;
 import Colors.ColorTheme;
+import Alerts.AlertCustomize;
 //#ifndef WMUC
 import Conference.ConferenceGroup;
 import Conference.InviteForm;
@@ -200,6 +201,8 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                 addItem(SR.get(SR.MS_TIME),891, menuIcons.ICON_TIME);
                 addItem(SR.get(SR.MS_IDLE),889, menuIcons.ICON_IDLE);
                 addItem(SR.get(SR.MS_PING),893, menuIcons.ICON_PING);
+		if (AlertCustomize.getInstance().enableAttention)
+			addItem(SR.get(SR.LA_REQUEST),666,menuIcons.ICON_TIME);//Attention
             }
 	    
 	    if (grType!=Groups.TYPE_SELF && grType!=Groups.TYPE_SEARCH_RESULT && contact.origin<Constants.ORIGIN_GROUPCHAT) {
@@ -216,8 +219,6 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
 		addItem(SR.get(SR.MS_DELETE), 4, menuIcons.ICON_DELETE);
 		addItem(SR.get(SR.MS_DIRECT_PRESENCE),45, menuIcons.ICON_SET_STATUS);
 
-		addItem("Request Attention",666,menuIcons.ICON_TIME);//Attention
-    
 	    }
          //}
 	    if (originGroupchat) return;
@@ -553,7 +554,7 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
  */
 
 		case 666: //Attention
-			Message message = new Message(c.getJid(), "", "Wake up!!!",false);
+			Message message = new Message(c.getJid(), SR.get(SR.LA_WAKEUP), SR.get(SR.LA_ATTENTION),false);
 			message.setType("headline");
 			message.addChildNs("attention","urn:xmpp:attention:0");
 			midlet.BombusQD.sd.roster.theStream.send(message);

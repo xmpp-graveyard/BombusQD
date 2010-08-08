@@ -77,6 +77,11 @@ public class AlertCustomize {
     public int vibraRepeatCount=2;
     public int vibraRepeatPause=200;
     
+    public boolean enableAttention=true;
+    public int soundAttentionIndex=1;
+    public String soundAttention="";
+    public String soundAttentionType="tone sequence";
+
     private static int size=0;
     
     // Singleton
@@ -125,6 +130,8 @@ public class AlertCustomize {
             
             vibrateOnlyHighlited=inputStream.readBoolean();
             inputStream.readBoolean(); //flashBackLight
+	    soundAttentionIndex=inputStream.readInt();
+            enableAttention=inputStream.readBoolean();
             inputStream.close();
             inputStream=null;
 	} catch (Exception e) {
@@ -157,6 +164,9 @@ public class AlertCustomize {
             
             outputStream.writeBoolean(vibrateOnlyHighlited);
             outputStream.writeBoolean(false); //flashBackLight
+            
+            outputStream.writeInt(soundAttentionIndex);
+            outputStream.writeBoolean(enableAttention);
             NvStorage.writeFileRecord(outputStream, "AlertCustomize", 0, true);
 	} catch (IOException e) {
             //e.printStackTrace();
@@ -219,5 +229,10 @@ public class AlertCustomize {
         if (soundVIPIndex>=size) soundVIPIndex=0;
 	soundVIPType=(String) files[0].elementAt(soundVIPIndex);
 	soundVIP=(String) files[1].elementAt(soundVIPIndex);
+    }
+    public void loadAttentionSoundName(){
+        if (soundAttentionIndex>=size) soundAttentionIndex=0;
+	soundAttentionType=(String) files[0].elementAt(soundAttentionIndex);
+	soundAttention=(String) files[1].elementAt(soundAttentionIndex);
     }
 }

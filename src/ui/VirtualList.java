@@ -647,7 +647,10 @@ public abstract class VirtualList
                 g.translate(0, drawYpos);
                 g.setColor(el.getColor());
                 g.clipRect(0, 0, itemMaxWidth, lh);
+		try {
                 el.drawItem(this, g, (sel)?offset:0, sel);
+		} catch (Exception e) {
+		}
                 
                 ++itemIndex;
 		displayedBottom=itemBorder[++displayedIndex]=itemBorder[0]+itemYpos+lh;

@@ -103,15 +103,17 @@ public class ColorConfigForm
                 int ind=0;
                 int size = files[0].size();
                 SimpleString str;
-                for (int i=0; i<size; i++) {
-                    skins.addElement((String)files[1].elementAt(i));
-                    str = new SimpleString(Integer.toString(i).concat("-").concat((String)files[1].elementAt(i)), true);
-                    
-                    itemsList.addElement(str);
-                    if(midlet.BombusQD.cf.path_skin.indexOf((String)files[1].elementAt(i))>-1) ind = i;
-                }
-                skinFiles = new TrackItem(ind, skins.size() - 1, skins, false);
-                itemsList.addElement(skinFiles);
+		if (size>1) {
+			for (int i=0; i<size; i++) {
+			    skins.addElement((String)files[1].elementAt(i));
+			    str = new SimpleString(Integer.toString(i).concat("-").concat((String)files[1].elementAt(i)), true);
+			    
+			    itemsList.addElement(str);
+			    if(midlet.BombusQD.cf.path_skin.indexOf((String)files[1].elementAt(i))>-1) ind = i;
+			}
+			skinFiles = new TrackItem(ind, skins.size() - 1, skins, false);
+			itemsList.addElement(skinFiles);
+		}
             }
         } catch (Exception e) {}
         

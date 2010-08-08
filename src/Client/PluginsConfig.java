@@ -26,6 +26,7 @@
  */
 
 package Client;
+import xmpp.EntityCaps;
 import Colors.ColorSelector;
 import Colors.ColorTheme;
 import javax.microedition.midlet.MIDlet;
@@ -967,6 +968,7 @@ public class PluginsConfig extends DefForm implements MenuListener
             if(null != fileTransfer) cf.fileTransfer=fileTransfer.getValue();
 //#endif
             if(null != adhoc) cf.adhoc=adhoc.getValue(); 
+            EntityCaps.initCaps();
             
          } 
          else if(type==SR.get(SR.MS_grStr)){

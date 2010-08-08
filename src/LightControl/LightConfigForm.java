@@ -108,6 +108,7 @@ public class LightConfigForm
         light.light_message_time=Integer.parseInt(light_message_time.getValue());
         //midlet.BombusQD.cf.lightState=lightState.getValue();
         light.saveToStorage();
+	CustomLight.switchOn(light.light_control);
         destroyView();
     }
            

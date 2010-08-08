@@ -730,3 +730,8 @@ Menu font	Шрифт меню
 Show History	История сообщений
 Pubsub events	Расширенные статусы
 AppRun count: 	Кол-во запусков: 
+Attention!	Внимание!
+Wake Up!!!	Проснись!!!
+Enable attention requests	Включить запросы привлечения внимания
+Request attention	Привлечь внимание
+Attention sound	Звук будильника

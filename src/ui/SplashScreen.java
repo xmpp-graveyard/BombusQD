@@ -227,6 +227,10 @@ public class SplashScreen extends GameCanvas implements CommandListener {
         }
     }
 
+    protected void pointerPressed(int x, int y) {
+	if (pos>=20) close();
+    }
+    
     public void keyPressed(int keyCode) {
         /*
         boolean keyCheck = false;

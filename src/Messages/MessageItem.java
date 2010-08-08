@@ -61,12 +61,13 @@ public class MessageItem
     }
 
     public int getVHeight() { 
-        if (msg==null) return 0;
+        if (msg==null) return 3;
         if (itemHeight<0) itemHeight=getFont().getHeight();
         if (msg.delivered) {
             int rh=RosterIcons.getInstance().getHeight();
             if (itemHeight<rh) return rh;
         }
+	if (itemHeight<3) itemHeight = 3;
         return itemHeight; 
     }
 

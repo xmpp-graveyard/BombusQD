@@ -30,6 +30,7 @@
 package Alerts;
 
 import Client.*;
+import xmpp.EntityCaps;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Displayable;
 import locale.SR;
@@ -88,6 +89,9 @@ public class AlertCustomizeForm
     
     private NumberInput vibraRepeatCount;
     private NumberInput vibraRepeatPause;
+
+    private DropChoiceBox AttentionFile;
+    private CheckBox enableAttention;
     //#ifdef LIGHT_CONTROL
 //#     LinkString linkLight;
     //#endif
@@ -147,6 +151,10 @@ public class AlertCustomizeForm
         VIPFile=new DropChoiceBox(display, SR.get(SR.MS_VIP_SOUND)); VIPFile.items=fileNames; 
         VIPFile.setSelectedIndex(ac.soundVIPIndex); itemsList.addElement(VIPFile);
 
+        enableAttention=new CheckBox(SR.get(SR.LA_ENABLE), ac.enableAttention); itemsList.addElement(enableAttention);
+        AttentionFile=new DropChoiceBox(display, SR.get(SR.LA_SOUND)); AttentionFile.items=fileNames; 
+        AttentionFile.setSelectedIndex(ac.soundAttentionIndex); itemsList.addElement(AttentionFile);
+
         itemsList.addElement(new SimpleString(SR.get(SR.MS_SHOW_LAST_APPEARED_CONTACTS), true)); 
         statusBox=new CheckBox(SR.get(SR.MS_STATUS), midlet.BombusQD.cf.notifyPicture); itemsList.addElement(statusBox);
         blinkBox=new CheckBox(SR.get(SR.MS_BLINKING), midlet.BombusQD.cf.notifyBlink); itemsList.addElement(blinkBox);
@@ -177,13 +185,15 @@ public class AlertCustomizeForm
           IQNotify=new CheckBox(SR.get(SR.MS_SHOW_IQ_REQUESTS), midlet.BombusQD.cf.IQNotify); itemsList.addElement(IQNotify);
         }
 
-        itemsList.addElement(new SpacerItem(5));
+	
+	
+
         //#ifdef LIGHT_CONTROL
+//#         itemsList.addElement(new SpacerItem(5));
 //#         linkLight = new LinkString(SR.get(SR.L_CONFIG)) { public void doAction() { 
 //#             new LightConfigForm(midlet.BombusQD.getInstance().display, midlet.BombusQD.getInstance().display.getCurrent());
 //#         } };
 //#         itemsList.addElement(linkLight);  
-//#         itemsList.addElement(new SpacerItem(5));
         //#endif
         commandState();
 
@@ -207,6 +217,8 @@ public class AlertCustomizeForm
         ac.soundStartUpIndex=StartUpFile.getSelectedIndex();
         ac.soundOutgoingIndex=OutgoingFile.getSelectedIndex(); 
         ac.soundVIPIndex=VIPFile.getSelectedIndex();
+        ac.soundAttentionIndex=AttentionFile.getSelectedIndex();
+	ac.enableAttention=enableAttention.getValue();
         
         if(isVibroProfile) ac.vibrateOnlyHighlited=vibrateOnlyHighlited.getValue();
         
@@ -219,6 +231,7 @@ public class AlertCustomizeForm
         ac.loadStartUpSoundName();
         ac.loadOutgoingSoundName();
         ac.loadVIPSoundName();
+        ac.loadAttentionSoundName();
 
         ac.saveToStorage();
 
@@ -230,6 +243,7 @@ public class AlertCustomizeForm
         }
 
         //cf.saveToStorage();
+        EntityCaps.initCaps();
 
         destroyView();
     }
@@ -246,7 +260,7 @@ public class AlertCustomizeForm
     }
     
     private int playable() {
-        if (cursor<9) return cursor;
+        if (cursor<9 || cursor==10) return cursor;
         return -1;
     }
     
