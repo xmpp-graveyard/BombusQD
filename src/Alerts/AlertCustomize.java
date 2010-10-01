@@ -105,6 +105,7 @@ public class AlertCustomize {
 	    instance.loadStartUpSoundName();
 	    instance.loadOutgoingSoundName();
             instance.loadVIPSoundName();
+            instance.loadAttentionSoundName();
 	}
 	return instance;
     }

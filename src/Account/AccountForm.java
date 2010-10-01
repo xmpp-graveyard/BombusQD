@@ -95,6 +95,7 @@ public class AccountForm
     private static final byte LJ_PROFILE=4;    
     private static final byte QIP_PROFILE=5;
     private static final byte GTALK_HTTPS_PROFILE=6;        
+    private static final byte VK_PROFILE=7;
     
     /** Creates a new instance of AccountForm */
 
@@ -147,6 +148,9 @@ public class AccountForm
                 break;
             case QIP_PROFILE:     
                 server="qip.ru";
+                break;
+            case VK_PROFILE:     
+                server="vk.com";
                 break;
           }
         }else{
@@ -330,6 +334,12 @@ public class AccountForm
                 break;
             case QIP_PROFILE:  
                 ip_box = "webim.qip.ru";
+                sslbox_ = false;
+                plainPwdbox_ = false;
+                compressionBox_ = true;                
+                break;
+            case VK_PROFILE:  
+                ip_box = "vkmessenger.com";
                 sslbox_ = false;
                 plainPwdbox_ = false;
                 compressionBox_ = true;                

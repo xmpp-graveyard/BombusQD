@@ -79,6 +79,7 @@ public class AccountSelect
         Command cmdGTalk_HTTPS=new Command("Gtalk HTTPS", Command.SCREEN,16);            
         Command cmdLj=new Command("LiveJournal", Command.SCREEN,17);   
         Command cmdQip=new Command("QIP", Command.SCREEN,18);
+        Command cmdVk=new Command("Вконтакте", Command.SCREEN,19);
         
     
     Command cmdEdit;
@@ -181,6 +182,7 @@ public class AccountSelect
 //#            addInCommand(1,cmdGTalk_HTTPS); cmdGTalk_HTTPS.setImg(0x92);           
 //#            addInCommand(1,cmdLj); cmdLj.setImg(0x93);
 //#            addInCommand(1,cmdQip); cmdQip.setImg(0x94);
+//#            addInCommand(1,cmdVk); cmdVk.setImg(0x95);
 //#endif          
           
         if (accountList.isEmpty()==true) {
@@ -249,6 +251,9 @@ public class AccountSelect
 //#         }
 //#         if (c==cmdQip) {
 //#           new AccountForm(display, this, this, null,5,false,null);
+//#         }          
+//#         if (c==cmdVk) {
+//#           new AccountForm(display, this, this, null,7,false,null);
 //#         }          
 //#else   
         if (c==cmdAdd) {

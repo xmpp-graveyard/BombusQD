@@ -159,20 +159,24 @@ public class CheckBox
     }    
 
     public int getVHeight(){ 
+        int h=0;
         Vector str=(Vector)checkBox.elementAt(0);
         if(state){
            if (str.size()<1) {
-             return fontHeight;
+             h = fontHeight;
            }else{
               if(toString().indexOf("%")>-1){
-                return fontHeight*(str.size() + 1);  
+                h = fontHeight*(str.size() + 1);  
               }else{
-                return fontHeight;   
+                h= fontHeight;   
               }
            }            
         }else{
-           return fontHeight;
+           h = fontHeight;
         }
+	if (h<il.getHeight()) h=il.getHeight();
+	if (h<8) h=8; //TODO: min height!!!
+	return h;
     }
 
     public boolean getValue() { return state; }

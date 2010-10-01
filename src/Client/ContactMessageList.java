@@ -92,7 +92,9 @@ public final class ContactMessageList extends VirtualList implements MenuListene
        return recordStore;
     }
     public void storeMessage(Msg msgObj) {
-       HistoryStorage.addText(contact, msgObj, this);
+	synchronized (this) {
+           HistoryStorage.addText(contact, msgObj, this);
+       }
     }
     public void getRmsData(int type, RecordStore rs){
       switch(type){
@@ -529,13 +531,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
     
     public void eventLongOk(){
         super.eventLongOk();
-//#ifndef WMUC
-        if (contact instanceof MucContact && contact.origin==Constants.ORIGIN_GROUPCHAT) {
-            checkOffline(); 
-            return;
-        }
-//#endif
-        keyGreen();
+	answer();
     }
     
     protected void keyClear(){

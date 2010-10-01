@@ -362,11 +362,6 @@ public class Contact extends IconTextElement{
         
         chatInfo.addMessage(m);
         
-        if (group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
-          boolean allowLog = (origin<Constants.ORIGIN_GROUPCHAT);
-          if (origin!=Constants.ORIGIN_GROUPCHAT && this instanceof MucContact) allowLog=false;
-          if(allowLog) getML().storeMessage(m);
-        }
         
         if(chatInfo.opened || m.messageType == Constants.MESSAGE_TYPE_OUT) chatInfo.reEnumCounts();
         if (first_msgreplace){
@@ -374,12 +369,18 @@ public class Contact extends IconTextElement{
             if (null != messageList) {
                 getML().resetMessages();
                 getML().redraw();
-            } return;
+            } 
+        } else {
+		if (null != messageList) {
+		    getML().addMessage(m);
+		} else if (!chatInfo.isOnlyStatusMessage()) {
+		    getML().resetMessages();
+		}
         }
-        if (null != messageList) {
-            getML().addMessage(m);
-        } else if (!chatInfo.isOnlyStatusMessage()) {
-            getML().resetMessages();
+        if (group.type!=Groups.TYPE_TRANSP && group.type!=Groups.TYPE_SEARCH_RESULT) {
+          boolean allowLog = (origin<Constants.ORIGIN_GROUPCHAT);
+          if (origin!=Constants.ORIGIN_GROUPCHAT && this instanceof MucContact) allowLog=false;
+          if(allowLog) getML().storeMessage(m);
         }
     }
 
