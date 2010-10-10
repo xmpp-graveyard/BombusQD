@@ -920,6 +920,7 @@ public class Roster
          contactList.cleanAllMessages();
          highliteMessageCount=0;
          messageCount=0;
+         midlet.BombusQD.sd.roster.showRoster();
          setModified();
          redraw();
      }
@@ -2050,6 +2051,10 @@ public class Roster
                 if (id!=null) {
                     if (id.startsWith("nickvc")) {
                         if (type.equals("get") || type.equals("set")) return JabberBlockListener.BLOCK_REJECTED;
+			String matchedjid = id.substring(6, id.length());
+			String vcardFrom = data.getAttribute("from");
+			if (!(vcardFrom.equals(matchedjid) || vcardFrom.equals(new Jid(matchedjid).getBareJid())))
+				return JabberBlockListener.BLOCK_REJECTED;
                         
                         VCard vc=new VCard(data);//.getNickName();
                         String nick=vc.getNickName();
@@ -2074,6 +2079,25 @@ public class Roster
 //#                         
 //#endif
                         if(c==null) c=getContact(jid, false); // drop unwanted vcards
+			String vcardFrom = data.getAttribute("from");
+			if (c instanceof MucContact) {
+				MucContact mucContact=(MucContact)c;
+				String realjid=mucContact.realJid;
+				mucContact=null;
+				if (realjid==null)
+					if (!(vcardFrom.equals(jid) || vcardFrom.equals(new Jid(jid).getBareJid())))
+						return JabberBlockListener.BLOCK_REJECTED;
+				else
+					if (!(vcardFrom.equals(jid) 
+					     || vcardFrom.equals(new Jid(jid).getBareJid()) 
+					     || vcardFrom.equals(realjid))) 
+						return JabberBlockListener.BLOCK_REJECTED;
+				realjid=null;
+			} else {
+				if (!(vcardFrom.equals(jid) || vcardFrom.equals(new Jid(jid).getBareJid())) )
+					return JabberBlockListener.BLOCK_REJECTED;
+			}
+
 //#if FILE_IO
                                 if(midlet.BombusQD.cf.autoSaveVcard) {//check img in fs?
                                     cashePhoto(vc,c);
@@ -2096,6 +2120,10 @@ public class Roster
  
                     if (id.startsWith("avcard_get")) {
                        Thread.sleep(100);
+			String matchedjid = id.substring(10, id.length());
+			String vcardFrom = data.getAttribute("from");
+			if (!(vcardFrom.equals(matchedjid) || vcardFrom.equals(new Jid(matchedjid).getBareJid())))
+				return JabberBlockListener.BLOCK_REJECTED;
                         VCard vc=new VCard(data);
                         try {
                             int length=vc.getPhoto().length;
@@ -2222,6 +2250,10 @@ public class Roster
           
                     
                     if (id.equals("getros")){
+			if (from != null) { 
+				if (!from.equals(midlet.BombusQD.sd.account.getBareJid())) 
+					return JabberBlockListener.BLOCK_REJECTED;	
+			}
                         theStream.enableRosterNotify(false);
                         processRoster(data, true);
 

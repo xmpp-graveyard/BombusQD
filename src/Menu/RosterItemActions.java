@@ -177,11 +177,11 @@ public final class RosterItemActions extends Menu implements MIDPTextBox.TextBox
                    addItem(SR.get(SR.MS_CREATE_ANNOTATION),888, menuIcons.ICON_VOICE);
                    if(contact.annotations!=null) addItem(SR.get(SR.MS_REMOVE_ANNOTATION),887, menuIcons.ICON_VOICE);
                }
-               //History
-               if (grType!=Groups.TYPE_TRANSP) {
-                    if(midlet.BombusQD.cf.module_history) addItem(SR.get(SR.MS_HISTORY_SHOW), 1110, menuIcons.ICON_VERSION);
-               }
            }   
+           //History
+           if (grType!=Groups.TYPE_TRANSP) {
+	        if(midlet.BombusQD.cf.module_history) addItem(SR.get(SR.MS_HISTORY_SHOW), 1110, menuIcons.ICON_VERSION);
+           }
 
             if(!originGroupchat) addItem(SR.get(SR.MS_CLIENT_INFO),0, menuIcons.ICON_VERSION);
 

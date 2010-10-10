@@ -485,6 +485,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
                 midlet.BombusQD.sd.roster.showUserActions(this, contact, -1);
         }
 	if (c==midlet.BombusQD.commands.cmdActive) {
+            contact.getChatInfo().opened = false;
             midlet.BombusQD.sd.roster.createActiveContacts(this, contact); 
         }
         
@@ -801,8 +802,8 @@ public final class ContactMessageList extends VirtualList implements MenuListene
                 break;
             case KEY_NUM3:
                 contact.getChatInfo().opened = false;
-                midlet.BombusQD.sd.roster.createActiveContacts(this, contact);
                 contact.setCursor(cursor);
+                midlet.BombusQD.sd.roster.createActiveContacts(this, contact);
                 break;        
             case KEY_NUM9:
                 Quote();
@@ -931,6 +932,7 @@ public final class ContactMessageList extends VirtualList implements MenuListene
     
 
     public void destroyView(){
+           contact.getChatInfo().opened = false;
 //#ifdef GRAPHICS_MENU
 //#            midlet.BombusQD.sd.roster.activeContact=null;
 //#            midlet.BombusQD.sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
@@ -941,7 +943,6 @@ public final class ContactMessageList extends VirtualList implements MenuListene
         sd.roster.reEnumRoster(); //to reset unread messages icon for this conference in roster
         if (display!=null) display.setCurrent(sd.roster);
 //#endif     
-           contact.getChatInfo().opened = false;
     }
 
     

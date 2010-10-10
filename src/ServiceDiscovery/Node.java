@@ -38,17 +38,20 @@ public class Node extends IconTextElement{
 
     private String node;
     private String name;
+    private String discoJid;
     
     public int getImageIndex() { return RosterIcons.ICON_COLLAPSED_INDEX; }
     /** Creates a new instance of Item */
-    public Node(String name, String node) {
+    public Node(String name, String jid, String node) {
         super(RosterIcons.getInstance());
         this.name=name;
         this.node=node;
+	this.discoJid = jid;
     }
     
     public String getName() { return name; }
     public String getNode() { return node; }
+      public String getTipString() { return discoJid; }
 
     public String toString() { return (name!=null)? name:node; }   
     //public String getTipString() { return (name!=null)? name:node; }

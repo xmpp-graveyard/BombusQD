@@ -338,12 +338,12 @@ public class ServiceDiscovery
                     jid = item.getAttribute("jid");
                     node = item.getAttribute("node");
                     if (node==null) {
-                        int resourcePos=jid.indexOf('/');
-                        if (resourcePos>-1)
-                            jid=jid.substring(0, resourcePos);
-                            serv = new DiscoContact( name , jid  , 0 , 4);
+                        //int resourcePos=jid.indexOf('/');
+                        //if (resourcePos>-1)
+                        //    jid=jid.substring(0, resourcePos);
+                        serv = new DiscoContact( name , jid  , 0 , 4);
                     } else {
-                        serv=new Node(name, node);
+                        serv=new Node(name, jid, node);
                     }
                     if(null != serv) items.addElement(serv);
                 }
@@ -439,8 +439,10 @@ public class ServiceDiscovery
           }
           if (o instanceof IconTextElement) {
             String element = ((IconTextElement)o).getTipString();
-            if(null == element) {
-                browse( service, ((Node) o).getNode() );
+            if(null == element) element=service;
+            if (o instanceof Node) {
+            //if(null == element) {
+                browse( element, ((Node) o).getNode() );
                return;
             }
             browse( element, null );

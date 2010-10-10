@@ -204,7 +204,6 @@ public final class ActiveContacts
         }
         if (c==cmdClearAllMessages) {
             midlet.BombusQD.sd.roster.cmdCleanAllMessages();
-            midlet.BombusQD.sd.roster.showRoster();
         }
         if (c==cmdSortDefault) {
            sortType = -1;

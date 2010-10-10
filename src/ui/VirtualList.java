@@ -466,6 +466,9 @@ public abstract class VirtualList
 
     
     protected void sizeChanged(int w, int h) {
+//#ifdef CONSOLE 
+//#         midlet.BombusQD.debug.add("VirtualList::sizeChanged " + width+"x"+height + "->"+w+"x"+h ,10);
+//#endif
         width=w;
         height=h;
 //#ifdef GRADIENT
