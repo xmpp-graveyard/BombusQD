@@ -120,94 +120,120 @@ public class ColorSelector extends Canvas implements Runnable, CommandListener {
     }
 
     protected void paint(Graphics g) {
-        py = h - 20;
-        ph = h - 50;
+        py = h - h/10;
+        ph = h - h*3/10;
         g.setColor(0xffffff);
         g.fillRect(0, 0, w, h);
         g.setFont(mfont);
         String s = ColorTheme.ColorToString(red, green, blue);  
 
            g.setStrokeStyle(Graphics.SOLID);
-           g.drawRect(4, h/2-42, w/2-22, 84);
+           g.setColor(0x000000);
+           g.drawRect(4, h/2-41, w*2/7+1, 81);
            g.setColor(red,green,blue);
-           g.fillRect(5, h/2-40, w/2-20, 80);
+           g.fillRect(5, h/2-40, w*2/7, 80);
            g.setColor(0x80000300);              
 //#ifdef COLOR_TUNE
 //#         g.drawString(s+" "+ColorTheme.NAMES[paramName], 5, 5, Graphics.TOP|Graphics.LEFT);
 //#endif
         
         //draw red
-        int pxred = (w/2+15)-15;//w/3-10;
+        int pxred = (w*3/7);
         int psred = (ph*red)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
-        g.fillRect(pxred-2, py-ph, 5, ph);
-        g.drawString("R", pxred, py+2, Graphics.TOP|Graphics.HCENTER);
-        g.setColor(0xff2020);
-        g.fillRect(pxred-2, py-psred, 5, psred);
-        if (cpos == 0) {
-            g.setColor(0);
-            g.setStrokeStyle(Graphics.DOTTED);
-            g.drawRect(pxred-7, py-ph-5, 15, ph+20);
+        g.fillRect(pxred, py-ph, w/10, ph);
+        g.setColor(0xff1111);
+        g.fillRect(pxred, py-psred, w/10, psred);
+        if (cpos != 0) {
+            g.setColor(0xffbbbb);
         }
+        g.fillArc(pxred, py-ph-h*7/100, w/10-1, h/10-1, 0, 180);
+        g.fillArc(pxred, py-h*3/100, w/10-1, h/10-1, 180, 180);
         
         //draw green
-        int pxgreen = (w/2+15);
+        int pxgreen = (w*4/7);
         int psgreen = (ph*green)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
-        g.fillRect(pxgreen-2, py-ph, 5, ph);
-        g.drawString("G", pxgreen, py+2, Graphics.TOP|Graphics.HCENTER);
-        g.setColor(0x00ff00);
-        g.fillRect(pxgreen-2, py-psgreen, 5, psgreen);
-        if (cpos == 1) {
-            g.setColor(0);
-            g.setStrokeStyle(Graphics.DOTTED);
-            g.drawRect(pxgreen-7, py-ph-5, 15, ph+20);
+        g.fillRect(pxgreen, py-ph, w/10, ph);
+        g.setColor(0x00ee00);
+        g.fillRect(pxgreen, py-psgreen, w/10, psgreen);
+        if (cpos != 1) {
+            g.setColor(0xbbffbb);
         }
+        g.fillArc(pxgreen, py-ph-h*7/100, w/10-1, h/10-1, 0, 180);
+        g.fillArc(pxgreen, py-h*3/100, w/10-1, h/10-1, 180, 180);
         
         //draw blue
-        int pxblue = (w/2+15)+15;//w-(w/3-10);
+        int pxblue = (w*5/7);
         int psblue = (ph*blue)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
-        g.fillRect(pxblue-2, py-ph, 5, ph);
-        g.drawString("B", pxblue, py+2, Graphics.TOP|Graphics.HCENTER);
-        g.setColor(0x4848ff);
-        g.fillRect(pxblue-2, py-psblue, 5, psblue);
-        if (cpos == 2) {
-            g.setColor(0);
-            g.setStrokeStyle(Graphics.DOTTED);
-            g.drawRect(pxblue-7, py-ph-5, 15, ph+20);
+        g.fillRect(pxblue, py-ph, w/10, ph);
+        g.setColor(0x3333ff);
+        g.fillRect(pxblue, py-psblue, w/10, psblue);
+        if (cpos != 2) {
+            g.setColor(0xbbbbff);
         }
+        g.fillArc(pxblue, py-ph-h*7/100, w/10-1, h/10-1, 0, 180);
+        g.fillArc(pxblue, py-h*3/100, w/10-1, h/10-1, 180, 180);
         
        if(paramName==49 || paramName==50 || paramName==40 || paramName==42 || paramName==34){
-        int pxalpha = w-10;//w-(w/3-10);
+        int pxalpha = (w*6/7);
         int pspxalpha = (ph*alpha)/255;
         g.setColor(0);
         g.setStrokeStyle(Graphics.SOLID);
-        g.fillRect(pxalpha-2, py-ph, 5, ph);
-        g.drawString("A", pxalpha, py+2, Graphics.TOP|Graphics.HCENTER);
-        g.setColor(0xcccccc);
-        g.fillRect(pxalpha-2, py-pspxalpha, 5, pspxalpha);
-        if (cpos == 3) {
-            g.setColor(0);
-            g.setStrokeStyle(Graphics.DOTTED);
-            g.drawRect(pxalpha-7, py-ph-5, 15, ph+20);
+        g.fillRect(pxalpha, py-ph, w/10, ph);
+        g.setColor(0x666666);
+        g.fillRect(pxalpha, py-pspxalpha, w/10, pspxalpha);
+        if (cpos != 3) {
+            g.setColor(0xaaaaaa);
         }            
+        g.fillArc(pxalpha, py-ph-h*7/100, w/10-1, h/10-1, 0, 180);
+        g.fillArc(pxalpha, py-h*3/100, w/10-1, h/10-1, 180, 180);
        }
     }
 
     protected void pointerPressed(int x, int y) {
-        if (y<py-ph-5)
+        if ((y<py-ph-h*7/100) || (y>py+h*7/100))
             return;
-        if (x>w/2-7 && x<(w/2+7))
+
+        if (x>3*w/7 && x<(3*w/7+w/10))
+            cpos = 0;
+        else if (x>(4*w/7) && x<(4*w/7+w/10))
+            cpos = 1;
+        else if (x>(5*w/7) && x<(5*w/7+w/10))
+            cpos = 2;
+        else if ((paramName==49 || paramName==50 || paramName==40 || paramName==42 || paramName==34)
+            && (x>(6*w/7) && x<(6*w/7+w/10)))
+                cpos = 3;
+        else return;
+
+        if ((y<py-ph) || (y>py)) {
+            if (y<py-ph)
+                dy = 1;
+            else dy = -1;
+            movePoint();
+            dy = 0;
+        }
+        else {
+            switch (cpos) {
+                case 0:
             red = (py-y)*255/ph;
-        if (x>(w/2+8) && x<(w/2+22))
+                    break;
+                case 1:
             green = (py-y)*255/ph;
-        if (x>(w/2+23) && x<(w/2+37))
+                    break;
+                case 2:
             blue = (py-y)*255/ph;
+                    break;
+                case 3:
+                    alpha = (py-y)*255/ph;
+                    break;
+            }
         repaint();
+    }
     }
 
     protected void keyPressed(int key) {

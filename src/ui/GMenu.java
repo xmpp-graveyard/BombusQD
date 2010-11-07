@@ -302,7 +302,7 @@ public class GMenu extends Canvas {
             pixelArray[i] = bgnd_menu;
           }
           g.drawRGB(pixelArray, 0, width, 0 , 0 , width, height, true);
-          g.drawRoundRect(-1,-1,width+1,height+1,10,10);
+          //g.drawRoundRect(-1,-1,width+1,height+1,10,10);
           pixelArray = null;
           pixelArray = new int[0];
         }
@@ -356,9 +356,12 @@ public class GMenu extends Canvas {
 
         if(midlet.BombusQD.cf.gradient_cursor){ //Tishka17
             int yc = 1 + (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh);
-            fon=new Gradient(1, yc, w, yc+fh, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
+            fon=new Gradient(0, yc, w+2, yc+fh, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
                   ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);
-            fon.paint(g);
+            fon.paintHRoundRect(g, 4);
+             g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE));
+             g.drawRoundRect(0, (midlet.BombusQD.cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w , fh+1, 8, 8);
+            //fon.paint(g);
             g.setColor(0x000000);
             //g.drawRect(1, 1 + (cf.animateMenuAndRoster?cursorY:itemCursorIndex*fh), w - 1 , fh - 1);
         }else {

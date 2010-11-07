@@ -435,7 +435,7 @@ public class ServiceDiscovery
               if (((DiscoContact)o).imNetwork > 0) return;
           }
           if (o instanceof DiscoCommand) {
-              if (((DiscoCommand)o).userCommands) return;
+              return;
           }
           if (o instanceof IconTextElement) {
             String element = ((IconTextElement)o).getTipString();

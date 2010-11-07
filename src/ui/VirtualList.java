@@ -579,12 +579,10 @@ public abstract class VirtualList
                 if (infobar!=null) {
                     iHeight=infobar.getVHeight();
                     itemBorder[0]=iHeight;
-                    drawInfoPanel(g, 0);
                 }
             } else {
                 if (mainbar!=null) {
                     itemBorder[0]=mHeight; 
-                    drawMainPanel(g, 0);
                 }
             }
         }
@@ -697,11 +695,21 @@ public abstract class VirtualList
 //#         if (memMonitor) drawHeapMonitor(g, itemBorder[0]); //heap monitor
 //#endif
         
+        if (paintTop) {
+            if (reverse) {
+                if (infobar!=null) {
+                    drawInfoPanel(g, 0);
+                }
+            } else {
+                    drawMainPanel(g, 0);
+              }
+        }
+
+	setAbsOrg(g,0,0);
+        setAbsClip(g, width, height);
         if (paintBottom) {
             if (reverse) {
                 if (mainbar!=null) {
-                    g.translate( g.getTranslateX(), g.getTranslateY() );
-                    //setAbsOrg(g, 0, 0);
                     drawMainPanel(g,height-mHeight);
 /*//#ifdef MENU_LISTENER
                     if (midlet.BombusQD.cf.isTouchPhone)
@@ -711,8 +719,6 @@ public abstract class VirtualList
                 }
             } else {
                 if (infobar!=null) {
-                    //setAbsOrg(g, 0, 0);
-                    g.translate( g.getTranslateX(), g.getTranslateY() );
                     drawInfoPanel(g,height-iHeight);
 /*//#ifdef MENU_LISTENER
                     if (midlet.BombusQD.cf.isTouchPhone)
@@ -880,7 +886,10 @@ public abstract class VirtualList
         if(midlet.BombusQD.cf.gradient_cursor){
              fon=new Gradient(x0, y0, width+x0, height+y0, ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_1),
                   ColorTheme.getColor(ColorTheme.GRADIENT_CURSOR_2), false);
-             fon.paint(g);
+             fon.paintHRoundRect(g, 4);
+             g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE));
+             g.drawRoundRect(x0, y0, width-1, height-1, 8, 8);
+             //fon.paint(g);
         }else
         {
          int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
@@ -1062,6 +1071,18 @@ public abstract class VirtualList
 //#              g.setColor(getMainBarBGnd());
 //#              g.fillRect(0, y, width, h);
 //#          }
+//#         if (midlet.BombusQD.cf.shadowBar) {
+//#             int sh = (width <= height)?width:height;
+//#             if (reverse) {
+//#                 sh = sh/50;
+//#                    drawShadow(g,0,y-sh,width,sh,200,10);
+//#             }
+//#             else {
+//#                 sh = sh/40;
+//#                    drawShadow(g,0,y+h,width,sh,10,200);
+//#             }
+//#         }
+//# 
 //#else
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
@@ -1112,7 +1133,6 @@ public abstract class VirtualList
 //#ifndef MENU
     private void drawInfoPanel (final Graphics g, int y) {
         int h=infobar.getVHeight()+1;
-        //g.setClip(0,y, width, h);
 //#ifdef GRADIENT
 //#         if (getMainBarBGnd()!=getMainBarBGndBottom()) {//32,102
 //#             int c = midlet.BombusQD.cf.gradientBarLigth?1:-1;
@@ -1126,12 +1146,22 @@ public abstract class VirtualList
 //#             g.setColor(getMainBarBGnd());
 //#             g.fillRect(0, y, width, h);
 //#         }
+//#         if (midlet.BombusQD.cf.shadowBar) {
+//#             int sh = (width <= height)?width:height;
+//#             if (!reverse) {
+//#                 sh = sh/50;
+//#                    drawShadow(g,0,y-sh,width,sh,200,10);
+//#             }
+//#             else {
+//#                 sh = sh/40;
+//#                    drawShadow(g,0,y+h,width,sh,10,200);
+//#             }
+//#         }
 //#else
             g.setColor(getMainBarBGnd());
             g.fillRect(0, 0, width, h);
 //#endif
         if(midlet.BombusQD.sd.roster!=null) {
-            //midlet.BombusQD.sd.roster.messageCount = 1;
             if (midlet.BombusQD.sd.roster.messageCount>0) drawEnvelop(g , width/2 - 5, y + 1);
             if (System.currentTimeMillis()-sd.getTrafficIn()<2000) drawTraffic(g, false, y + 15); // y + 1 + ( 9 + 5 )
             if (System.currentTimeMillis()-sd.getTrafficOut()<2000) drawTraffic(g, true, y + 15);
@@ -1161,11 +1191,12 @@ public abstract class VirtualList
         
     private static int[] infoBarBackground;
     private static int lastInfoHeightChange = -1;
+    private static int lastInfoWidthChange = -1;
     private static int infoBarLatestColor1 = -1;
     private static int infoBarLatestColor2 = -1;
     private static int[] getInfoBarBgnd(int width, int height, int color1, int color2)
     {
-		if (lastInfoHeightChange==height &&
+		if (lastInfoHeightChange==height && lastInfoWidthChange==width && 
                         color1 == infoBarLatestColor1 && color2 == infoBarLatestColor1 && infoBarBackground != null) return infoBarBackground; 
                 
 		int width2 = width/2;
@@ -1174,6 +1205,7 @@ public abstract class VirtualList
                 int r,g,b,dist,diff,new_r,new_g,new_b,color = 0;
 
                 lastInfoHeightChange=height;
+		lastHeightChange = width;
                 infoBarBackground = new int[height*width];
 		int r1 = ((color1 & 0xFF0000) >> 16);
 		int g1 = ((color1 & 0x00FF00) >> 8);
@@ -1216,14 +1248,30 @@ public abstract class VirtualList
   
     private static int[] menuBarBackground;
     private static int lastHeightChange = -1;
+    private static int lastWidthChange = -1;
     private static int barLatestColor1 = -1;
     private static int barLatestColor2 = -1;   
+
+    private void drawShadow(final Graphics g, int ox, int oy, int width, int height, int op1, int op2) {
+        int []menuBarShadow = new int[width];
+        int alpha, color;
+        for (int y = 0; y < height; y++) {
+	    alpha = ((op2*(height-y)+op1*y)/height) & 255;
+            color = (alpha << 24) | (0 << 16) | (0 << 8) | (0);
+            for (int x = 0; x < width; x++) {
+                menuBarShadow[x] = color;
+            }
+            g.drawRGB(menuBarShadow, 0, width, ox, oy+y, width, 1, true);
+        }
+         
+    }
     private static int[] getBarBgnd(int width, int height, int color1, int color2)
     {
-		if (lastHeightChange == height &&
+		if (lastHeightChange == height && lastHeightChange == width && 
                         color1 == barLatestColor1 && color2 == barLatestColor2 && menuBarBackground != null) return menuBarBackground;      
 
                 lastHeightChange=height;
+                lastWidthChange=width;
 		menuBarBackground = new int[height*width];
 		int r1 = ((color1 & 0xFF0000) >> 16);
 		int g1 = ((color1 & 0x00FF00) >> 8);

@@ -735,3 +735,4 @@ Wake Up!!!	Проснись!!!
 Enable attention requests	Включить запросы привлечения внимания
 Request attention	Привлечь внимание
 Attention sound	Звук будильника
+Shadow bar	Тень от панелей

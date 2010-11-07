@@ -94,6 +94,9 @@ public class TrackItem
     public int getVHeight(){ //fix it
         if(items != null) return 30;
         else if(maxValue==2) return 18;
+        if((midlet.BombusQD.cf.isTouchPhone) && (maxValue==25)) {
+            return 30;
+        }
        return maxValue==25?8:30;
     }    
     

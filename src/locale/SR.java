@@ -786,6 +786,7 @@ public class SR {
      public final static short LA_REQUEST = 746;
      public final static short LA_SOUND = 747;
 
+     public final static short MS_SHADOW_BAR =  748;
      
 
     private static String[] localeItemsDefault = new String[0];
@@ -1542,7 +1543,9 @@ public class SR {
 	"Wake Up!!!",
 	"Enable attention requests",
 	"Request attention",
-	"Attention sound"
+	"Attention sound",
+
+        "Shadow bar"
     };  
 
 

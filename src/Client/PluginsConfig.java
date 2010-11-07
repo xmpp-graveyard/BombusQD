@@ -148,6 +148,7 @@ public class PluginsConfig extends DefForm implements MenuListener
     private CheckBox popupFromMinimized;
     private CheckBox drawScrollBgnd; 
     private CheckBox gradientBarLigth;
+    private CheckBox shadowBar;
     private CheckBox autoLoadTransports;
 //#ifdef AUTOSTATUS
 //#     private CheckBox awayStatus;
@@ -293,6 +294,7 @@ public class PluginsConfig extends DefForm implements MenuListener
           popupFromMinimized = null;
           drawScrollBgnd = null;
           gradientBarLigth = null;
+          shadowBar = null;
           autoLoadTransports = null;
 //#ifdef AUTOSTATUS
 //#           awayStatus = null;
@@ -433,6 +435,7 @@ public class PluginsConfig extends DefForm implements MenuListener
           popupFromMinimized = new CheckBox(SR.get(SR.MS_ENABLE_POPUP), cf.popupFromMinimized);
           drawScrollBgnd = new CheckBox(SR.get(SR.MS_BGND_SCROLL),cf.drawScrollBgnd); 
           gradientBarLigth = new CheckBox(SR.get(SR.MS_USE_LIGHT_TO_DRWPANELS), cf.gradientBarLigth);
+          shadowBar = new CheckBox(SR.get(SR.MS_SHADOW_BAR), cf.shadowBar);
           autoLoadTransports = new CheckBox(SR.get(SR.MS_AUTOCONNECT_TRANSPORTS), cf.autoLoadTransports);
 //#ifdef AUTOSTATUS
 //#           awayStatus=new CheckBox(SR.get(SR.MS_AUTOSTATUS_MESSAGE), cf.setAutoStatusMessage);
@@ -797,6 +800,7 @@ public class PluginsConfig extends DefForm implements MenuListener
            
            if(midlet.BombusQD.cf.userAppLevel == 1) {
              itemsList.addElement(useLowMemory_userotator);
+             itemsList.addElement(shadowBar);
              itemsList.addElement(gradient_cursor);
 //#ifdef MEMORY_MONITOR
 //#              itemsList.addElement(memMon);
@@ -986,6 +990,7 @@ public class PluginsConfig extends DefForm implements MenuListener
            if(null != bgnd_image) cf.bgnd_image=bgnd_image.getSelectedIndex();
            if(null != scrollWidth) cf.scrollWidth=Integer.parseInt(scrollWidth.getValue());
            if(null != useLowMemory_userotator) cf.useLowMemory_userotator=useLowMemory_userotator.getValue();
+           if(null != shadowBar) cf.shadowBar=shadowBar.getValue();
            if(null != gradient_cursor) cf.gradient_cursor=gradient_cursor.getValue();
 //#ifdef MEMORY_MONITOR
 //#            if(null != memMon) ui.VirtualList.memMonitor=cf.memMonitor=memMon.getValue();

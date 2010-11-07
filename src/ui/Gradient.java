@@ -68,6 +68,36 @@ public class Gradient {
             }
 	}
 	
+        public void paintHRoundRect(Graphics g, int R) {//Makasi
+            int ds = 0;
+		for(int i2 = y1; i2 <= y2 - 1; ++i2) {
+                    int ai[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, y1, y2 - 1);
+                    g.setColor(ai[0], ai[1], ai[2]);
+                    
+                    ds = 0;
+                    if ((R-i2+y1) > 0)
+                        ds = (int)(R+1-sqrt((i2+1-y1)*2*R-(i2+1-y1)*(i2+1-y1)));
+                    else if (R-y2+i2 > 0)
+                        ds = (int)(R+1-sqrt((y2-i2)*2*R-(y2-i2)*(y2-1-i2)));
+
+                    if (ds != 0)
+                        g.drawLine(x1+ds, i2, x2-ds - 1, i2);
+                    else
+                        g.drawLine(x1, i2, x2 - 1, i2);
+		}
+        }
+
+        private int sqrt( int x ) {
+		final byte iterations = 20;
+		int a = 7;
+		for( int i2 = 0; i2 < iterations; i2++ ) {
+			if( a == 0 ) 
+				break;
+			a = ( a + x / a ) >> 1;
+		}
+		return a;
+	}
+
 	private void paintV(Graphics g) {
 		for(int i2 = x1; i2 <= x2 - 1; ++i2) {
                     int gCol[] = GradBackgr(redS, greenS, blueS, redE, greenE, blueE, i2, x1, x2 - 1);

@@ -33,7 +33,7 @@ import java.util.*;
 import java.io.IOException;
 
 public class XMLParser {
-    private final static int MAX_BIN_DATASIZE=40*1024; //40 KB - experimental
+    private final static int MAX_BIN_DATASIZE=60*1024; //40 KB - experimental
         
     private final static byte PLAIN_TEXT=0;
     private final static byte TAGNAME=1;
@@ -105,8 +105,8 @@ public class XMLParser {
                 if (c=='?') continue;
                 if (c==' ') continue;
                 if (c=='=') continue;
-                if (c=='\'') { state=ATRVALQS; atrName=sbuf.toString(); sbuf = new StringBuffer(0); continue; }
-                if (c=='\"') { state=ATRVALQD; atrName=sbuf.toString(); sbuf = new StringBuffer(0); continue; }
+                if (c=='\'') { state=ATRVALQS; atrName=parsePlainText(sbuf); sbuf = new StringBuffer(0); continue; }
+                if (c=='\"') { state=ATRVALQD; atrName=parsePlainText(sbuf); sbuf = new StringBuffer(0); continue; }
 
                 if (c!='>' && c!='/') { 
                     sbuf.append(c);
@@ -124,9 +124,9 @@ public class XMLParser {
                     state=ENDTAGNAME; 
                     sbuf = new StringBuffer(0);
                     if (tagName.length()>0) {
-                        String tn=tagName.toString();
+                        String tn=parsePlainText(tagName);
                         eventListener.tagStart(tn, attr); 
-                        sbuf.append(tn);
+                        sbuf.append(tagName.toString());
                         tn=null;
                     }
                     continue; 
@@ -134,7 +134,7 @@ public class XMLParser {
                 if (c==' ') { state=ATRNAME; continue; }
                 if (c=='>') { 
                     state=PLAIN_TEXT; 
-                    if (eventListener.tagStart(tagName.toString(), attr))
+                    if (eventListener.tagStart(parsePlainText(tagName), attr))
                         state=BASE64_INIT; 
                     continue; 
                 }
@@ -169,7 +169,7 @@ public class XMLParser {
                 if (c==' ') continue;
                 if (c=='>') {
                     state=PLAIN_TEXT;
-                    eventListener.tagEnd(sbuf.toString());
+                    eventListener.tagEnd(parsePlainText(sbuf));
                     sbuf = new StringBuffer(0);
                     continue;
                 }

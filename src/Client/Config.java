@@ -306,6 +306,7 @@ public class Config {
     
     public boolean createMessageByFive = true;
     public boolean gradientBarLigth = false;
+    public boolean shadowBar = true;
     public int gradientBarLight1=120;
     public int gradientBarLight2=5;
     public boolean autoLoadTransports = true;
@@ -546,6 +547,7 @@ public class Config {
             adhoc=inputStream.readBoolean();
             createMessageByFive=inputStream.readBoolean();
             gradientBarLigth=inputStream.readBoolean();
+            shadowBar=inputStream.readBoolean();
             autoLoadTransports=inputStream.readBoolean();
             simpleContacts=inputStream.readBoolean();
             
@@ -790,6 +792,7 @@ public class Config {
             outputStream.writeBoolean(adhoc);
             outputStream.writeBoolean(createMessageByFive);
             outputStream.writeBoolean(gradientBarLigth);
+            outputStream.writeBoolean(shadowBar);
             outputStream.writeBoolean(autoLoadTransports);
             outputStream.writeBoolean(simpleContacts);
             
