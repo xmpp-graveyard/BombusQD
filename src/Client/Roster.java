@@ -302,7 +302,7 @@ public class Roster
     }
     
     public void showRoster(){
-        display.setCurrent(this);
+        midlet.BombusQD.getInstance().display.setCurrent(this);
     }
     
     public void setLight(boolean state) {
@@ -356,7 +356,9 @@ public class Roster
 //#endif    
 //#            */              
 //#            cmdAlert=new Command(SR.get(SR.MS_ALERT_PROFILE_CMD), Command.SCREEN, 32);
+//#ifdef ARCHIVE  
 //#            cmdArchive=new Command(SR.get(SR.MS_ARCHIVE), Command.SCREEN, 33);
+//#endif
 //#           
 //#           /*cmdMyService=new Command(SR.get(SR.MS_SERVICE) + '>', Command.SCREEN, 31);   //3
 //#ifdef STATS       
@@ -431,8 +433,9 @@ public class Roster
 //#       private static Command cmdFM;
 //#      */
 //#endif      
-
-    private static Command cmdArchive;      
+//#ifdef ARCHIVE
+    private static Command cmdArchive;     
+//#endif	
     private static Command cmdAccount;
     private static Command cmdInfo;
     private static Command cmdMinimize;
@@ -505,7 +508,9 @@ public class Roster
 //#               addInCommand(3,cmdReconnect); cmdReconnect.setImg(MenuIcons.ICON_RECONNECT);
 //#          */
 //#         addCommand(cmdAccount); cmdAccount.setImg(MenuIcons.ICON_VCARD);
+//#ifdef ARCHIVE
 //#         addCommand(cmdArchive); cmdArchive.setImg(MenuIcons.ICON_ARCHIVE);
+//#endif
 //#         addCommand(cmdOptions);   cmdOptions.setImg(0x03);              
 //# 
 //#ifdef CONSOLE
@@ -1442,8 +1447,10 @@ public class Roster
 //#endif
         }
         Contact c=selfContact();
-        c.setStatus(myStatus);
-        sortRoster(c);
+        if (c!=null) {
+            c.setStatus(myStatus);
+            sortRoster(c);
+        }
         setModified();
         reEnumRoster();
     }
@@ -2517,7 +2524,7 @@ public class Roster
                 }
 		if (message.findNamespace("attention", "urn:xmpp:attention:0")!=null && AlertCustomize.getInstance().enableAttention) {
 			//#ifdef LIGHT_CONTROL
-			CustomLight.startBlinking();
+//# 			CustomLight.startBlinking();
 			//#endif
 			if (body==null || body.length()==0)
           			body=SR.get(SR.LA_ATTENTION)+SR.get(SR.LA_WAKEUP);
@@ -2610,7 +2617,7 @@ public class Roster
                         if (m.dateGmt<= ((ConferenceGroup)c.group).conferenceJoinTime)
                             m.messageType=Constants.MESSAGE_TYPE_HISTORY;
                         // highliting messages with myNick substring
-	                String myNick=mucGrp.selfContact.getName();
+	                String myNick=mucGrp.selfContact.getNick();
                         String myNick_=myNick+" ";
                         String _myNick=" "+myNick;
 			if (body.indexOf(myNick)>-1) {

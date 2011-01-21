@@ -188,6 +188,7 @@ public class SmilePicker
          g.setColor(getColorBGnd());
          g.fillRect(0,y0,width, height);
          super.drawCursor(g, x+x0,y0,imgWidth, lineHeight);
+         getMainBarItem().setElementAt(getTipString(), 0);
      } 
 
     protected void drawBalloon(final Graphics g, int balloon, final String text) {

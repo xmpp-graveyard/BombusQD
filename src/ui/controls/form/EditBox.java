@@ -75,7 +75,7 @@ public class EditBox implements CommandListener {
 //#     private Command cmdPasteText;
 //#endif
     
-    public EditBox(Display display, String caprion, String text, TextInput ti, int boxType) {
+    public EditBox(Display display, String caption, String text, TextInput ti, int boxType) {
         this.display=display;
         
         cmdOk=new Command(SR.get(SR.MS_OK), Command.OK,1);

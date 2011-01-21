@@ -28,7 +28,7 @@ import Fonts.FontCache;
 import images.RosterIcons;
 
 public class MainBar extends ComplexString{
-    
+
     public MainBar(int size, Object first, Object second, boolean bold) {
         this (size);
         if (first!=null) setElementAt(first,0);
@@ -52,4 +52,10 @@ public class MainBar extends ComplexString{
         super (RosterIcons.getInstance());
         setSize(size);
     }   
+
+    public int getVHeight(){
+	    super.getVHeight();
+	    if (height<midlet.BombusQD.cf.minHeight) height = midlet.BombusQD.cf.minHeight;
+	    return height;
+    }
 }

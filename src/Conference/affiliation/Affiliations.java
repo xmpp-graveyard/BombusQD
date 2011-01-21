@@ -28,12 +28,20 @@
 package Conference.affiliation; 
 
 import Client.*;
+//#ifndef MENU_LISTENER
+//#     import javax.microedition.lcdui.CommandListener;
+//#     import javax.microedition.lcdui.Command;
+//#else
+    import Menu.MenuListener;
+    import Menu.Command;
+    import ui.GMenu;
+    import ui.GMenuConfig;
+//#endif
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Iq;
 import images.RosterIcons;
-import java.util.Enumeration;
 import java.util.Vector;
 import javax.microedition.lcdui.*;
 import locale.SR;
@@ -49,9 +57,14 @@ import ui.VirtualList;
  * @author EvgS
  */
 public class Affiliations 
-        extends VirtualList 
-        implements CommandListener,
-        JabberBlockListener
+        extends VirtualList
+		implements
+//#ifndef MENU_LISTENER
+//#         CommandListener,
+//#else
+            MenuListener,
+//#endif
+            JabberBlockListener
 {
 
     private Vector items;
@@ -78,13 +91,6 @@ public class Affiliations
         super ();
         this.room=room;
         
-        cmdCancel = new Command (SR.get(SR.MS_BACK), Command.BACK, 99);
-        cmdModify = new Command (SR.get(SR.MS_MODIFY), Command.SCREEN, 1);
-        cmdNew    = new Command (SR.get(SR.MS_NEW_JID), Command.SCREEN, 2);
-//#ifdef CLIPBOARD
-//#         cmdCopy   = new Command(SR.get(SR.MS_COPY), Command.SCREEN, 3);
-//#endif
-        
 	//fix for old muc
 	switch (affiliationIndex) {
 	    case AffiliationItem.AFFILIATION_OWNER:
@@ -99,21 +105,43 @@ public class Affiliations
         
         items=null;
         items=new Vector(0);
-        
-        addCommand(cmdCancel);
-        addCommand(cmdModify);
-        addCommand(cmdNew);
-//#ifdef CLIPBOARD
-//#         if (Config.getInstance().useClipBoard) {
-//#             clipboard=ClipBoard.getInstance(); 
-//#             addCommand(cmdCopy);
-//#         }
-//#endif
+
+        initCommands();
         
         setCommandListener(this);
         attachDisplay(display);
         this.parentView=pView;
         getList();
+    }
+
+    public void initCommands() {
+        cmdCancel = new Command (SR.get(SR.MS_BACK), Command.BACK, 99);
+        cmdModify = new Command (SR.get(SR.MS_MODIFY), Command.SCREEN, 1);
+        cmdNew    = new Command (SR.get(SR.MS_NEW_JID), Command.SCREEN, 2);
+        //#ifdef CLIPBOARD
+//#             cmdCopy   = new Command(SR.get(SR.MS_COPY), Command.SCREEN, 3);
+        //#endif
+    }
+
+    public void commandState() {
+        //#ifdef MENU_LISTENER
+            menuCommands.removeAllElements();
+            cmdfirstList.removeAllElements();
+            cmdsecondList.removeAllElements();
+            cmdThirdList.removeAllElements();
+        //#endif
+        //addCommand(cmdCancel);
+        addCommand(cmdModify);
+        cmdModify.setImg(0x03);
+        addCommand(cmdNew);
+        cmdNew.setImg(0x02);
+        //#ifdef CLIPBOARD
+//#             if (Config.getInstance().useClipBoard) {
+//#                 clipboard=ClipBoard.getInstance();
+//#                 addCommand(cmdCopy);
+//#                 cmdCopy.setImg(0x23);
+//#             }
+        //#endif
     }
     
     public void getList() {
@@ -123,7 +151,7 @@ public class Affiliations
     }
     
     public void commandAction(Command c, Displayable d){
-        if (c==cmdNew) new AffiliationModify(display, parentView, room, null, "none", "");
+        if (c==cmdNew) new AffiliationModify(display, this, room, null, "none", "");
         if (c==cmdModify) eventOk();
 //#ifdef CLIPBOARD
 //#         if (c==cmdCopy) {
@@ -148,7 +176,7 @@ public class Affiliations
     public void eventOk(){
         try {
             AffiliationItem item=(AffiliationItem)getFocusedObject();
-            new AffiliationModify(display, parentView, room, item.jid, 
+            new AffiliationModify(display, this, room, item.jid,
 					AffiliationItem.getAffiliationName( (short)item.affiliation), 
                                         (item.reason==null)? "":item.reason
                     );
@@ -197,4 +225,13 @@ public class Affiliations
         stream.addBlockListener(this);
         stream.send(request);
     }
+
+//#ifdef GRAPHICS_MENU
+//#     public int showGraphicsMenu() {
+//#         commandState();
+//#         menuItem = new GMenu(display, parentView, this, null, menuCommands, cmdfirstList, cmdsecondList, cmdThirdList);
+//#         GMenuConfig.getInstance().itemGrMenu = GMenu.AFFILIATIONS_EDIT;
+//#         return GMenu.AFFILIATIONS_EDIT;
+//#     }
+//#endif
 }

@@ -159,8 +159,8 @@ public final class MessageEdit
        switch(midlet.BombusQD.cf.msgEditType){
             case 0: 
                 if(!phoneSONYE) t.setTitle( null == to ? "Multi-Message" : to.toString() );
-                t.setConstraints(2);//just magic for clearing attributes
-                t.setConstraints(0);
+                //t.setConstraints(2);//just magic for clearing attributes
+                //t.setConstraints(0);
                 t.setString("");
                 if (body!=null) t.insert(body,0);
                 if (midlet.BombusQD.cf.capsState) t.setConstraints(TextField.INITIAL_CAPS_SENTENCE);
@@ -181,8 +181,8 @@ public final class MessageEdit
                 break;
             case 1:
                 if(!phoneSONYE) form.setTitle(null == to ? "Multi-Message" : to.toString());
-                textField.setConstraints(2);//just magic for clearing attributes
-                textField.setConstraints(0);
+                //textField.setConstraints(2);//just magic for clearing attributes
+                //textField.setConstraints(0);
                 textField.setString("");
                 if (body!=null) textField.insert(body,0);
 //#ifdef CLIPBOARD

@@ -48,6 +48,7 @@ import ui.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
+import Conference.Bookmarks;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -651,22 +652,22 @@ public class ServiceDiscovery
                     case MenuIcons.ICON_VCARD:
                         Contact cs=midlet.BombusQD.sd.roster.selfContact();
                         if (cs.vcard!=null) {
-                          new VCardEdit(display, parentView, cs.vcard);
+                          new VCardEdit(display, view, cs.vcard);
                           return;
                         }
                         VCard.request(cs.bareJid, cs.getJid());
                         break;
                     case MenuIcons.ICON_CONFERENCE:
-                        midlet.BombusQD.sd.roster.cmdConference();
+                        new Bookmarks(display, view, null);
                         break;
                     case MenuIcons.ICON_ADD_CONTACT:
-                        midlet.BombusQD.sd.roster.cmdAdd();
+                        new ContactEdit(display, view, null);
                         break;
                     case MenuIcons.ICON_USER_SEARCH:
-                        new DiscoSearchForm(display, parentView , null , -1);
+                        new DiscoSearchForm(display, view , null , -1);
                         break;
                     case MenuIcons.ICON_PRIVACY:
-                        new PrivacyLists.PrivacySelect(display, parentView);
+                        new PrivacyLists.PrivacySelect(display, view);
                         break;
                     case MenuIcons.ICON_FT:
                         new io.file.transfer.TransferManager(display);

@@ -313,6 +313,8 @@ public class Config {
     
     public boolean simpleContacts = false;//fast contact draw
     public int userAppLevel = 0; //0-simple, 1-advanced
+
+    public int minHeight=0;
     
     public static Config getInstance(){
 	if (instance==null) {
@@ -519,8 +521,9 @@ public class Config {
             fileTransfer=inputStream.readBoolean(); //newMenu
             lightState=inputStream.readBoolean();
             notifySound=inputStream.readBoolean();
-
-            setAutoStatusMessage=inputStream.readBoolean();   
+//#ifdef AUTOSTATUS
+//#             setAutoStatusMessage=inputStream.readBoolean();
+//#endif
             autoScroll=inputStream.readBoolean();
             popUps=inputStream.readBoolean();
             showResources=inputStream.readBoolean();
@@ -646,10 +649,14 @@ public class Config {
             notInListDropLevel=inputStream.readInt(); 
 	    textWrap=inputStream.readInt();
             loginstatus=inputStream.readInt();
-            autoAwayDelay=inputStream.readInt();      
+//#ifdef AUTOSTATUS
+//#             autoAwayDelay=inputStream.readInt();
+//#endif
             panelsState=inputStream.readInt();
             confMessageCount=inputStream.readInt();   
-            autoAwayType=inputStream.readInt();
+//#ifdef AUTOSTATUS
+//#             autoAwayType=inputStream.readInt();
+//#endif
             messageLimit=inputStream.readInt();
             msglistLimit=inputStream.readInt();
             autoSubscribe=inputStream.readInt();
@@ -765,7 +772,9 @@ public class Config {
             outputStream.writeBoolean(lightState);
             outputStream.writeBoolean(notifySound);
 
-            outputStream.writeBoolean(setAutoStatusMessage);   
+//#ifdef AUTOSTATUS
+//#             outputStream.writeBoolean(setAutoStatusMessage);
+//#endif
             outputStream.writeBoolean(autoScroll);
             outputStream.writeBoolean(popUps);
             outputStream.writeBoolean(showResources);
@@ -877,10 +886,14 @@ public class Config {
             outputStream.writeInt(notInListDropLevel); 
 	    outputStream.writeInt(textWrap);
             outputStream.writeInt(loginstatus);
-            outputStream.writeInt(autoAwayDelay);      
+//#ifdef AUTOSTATUS
+//#             outputStream.writeInt(autoAwayDelay);
+//#endif
             outputStream.writeInt(panelsState);
             outputStream.writeInt(confMessageCount);   
-            outputStream.writeInt(autoAwayType);
+//#ifdef AUTOSTATUS
+//#             outputStream.writeInt(autoAwayType);
+//#endif
             outputStream.writeInt(messageLimit);
             outputStream.writeInt(msglistLimit);
             outputStream.writeInt(autoSubscribe);

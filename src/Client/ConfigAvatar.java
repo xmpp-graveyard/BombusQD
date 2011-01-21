@@ -105,11 +105,11 @@ public class ConfigAvatar
           itemsList.addElement(new SpacerItem(5));
         }
         
-        maxAvatarHeight=new NumberInput(display, SR.get(SR.MS_MAX_AVATAR_HEIGHT), Integer.toString(cf.maxAvatarHeight), 25, 100);
+        maxAvatarHeight=new NumberInput(display, SR.get(SR.MS_MAX_AVATAR_HEIGHT), Integer.toString(cf.maxAvatarHeight), 12, 100);
         itemsList.addElement(maxAvatarHeight); 
         
         itemsList.addElement(new SpacerItem(5));
-        maxAvatarWidth=new NumberInput(display, SR.get(SR.MS_MAX_AVATAR_WIDTH), Integer.toString(cf.maxAvatarWidth), 25, 100);
+        maxAvatarWidth=new NumberInput(display, SR.get(SR.MS_MAX_AVATAR_WIDTH), Integer.toString(cf.maxAvatarWidth), 12, 100);
         itemsList.addElement(maxAvatarWidth);    
         
         if(midlet.BombusQD.cf.userAppLevel==1) {

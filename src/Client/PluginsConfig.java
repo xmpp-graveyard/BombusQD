@@ -863,19 +863,21 @@ public class PluginsConfig extends DefForm implements MenuListener
                itemsList.addElement(langFiles);
             }
          }
-         else if(type==SR.get(SR.MS_astatusStr)){
-           autoAwayType=new DropChoiceBox(display, SR.get(SR.MS_AWAY_TYPE));
-           autoAwayType.append(SR.get(SR.MS_AWAY_OFF));
-           autoAwayType.append(SR.get(SR.MS_AWAY_LOCK));
-           autoAwayType.append(SR.get(SR.MS_MESSAGE_LOCK));
-           autoAwayType.append(SR.get(SR.MS_IDLE));
-           autoAwayType.setSelectedIndex(cf.autoAwayType);
-           itemsList.addElement(autoAwayType);
-           fieldAwayDelay=new NumberInput(display, "*"+SR.get(SR.MS_AWAY_PERIOD), Integer.toString(cf.autoAwayDelay), 1, 60);
-           itemsList.addElement(fieldAwayDelay);
-           itemsList.addElement(awayStatus);            
-
-         } 
+//#ifdef AUTOSTATUS
+//#          else if(type==SR.get(SR.MS_astatusStr)){
+//#            autoAwayType=new DropChoiceBox(display, SR.get(SR.MS_AWAY_TYPE));
+//#            autoAwayType.append(SR.get(SR.MS_AWAY_OFF));
+//#            autoAwayType.append(SR.get(SR.MS_AWAY_LOCK));
+//#            autoAwayType.append(SR.get(SR.MS_MESSAGE_LOCK));
+//#            autoAwayType.append(SR.get(SR.MS_IDLE));
+//#            autoAwayType.setSelectedIndex(cf.autoAwayType);
+//#            itemsList.addElement(autoAwayType);
+//#            fieldAwayDelay=new NumberInput(display, "*"+SR.get(SR.MS_AWAY_PERIOD), Integer.toString(cf.autoAwayDelay), 1, 60);
+//#            itemsList.addElement(fieldAwayDelay);
+//#            itemsList.addElement(awayStatus);
+//#
+//#          }
+//#endif
          else if(type==SR.get(SR.MS_clchatStr)){
            itemsList.addElement(new SimpleString(SR.get(SR.MS_CLCHAT_ON), true));
            //itemsList.addElement(useClassicChat);
@@ -1052,11 +1054,13 @@ public class PluginsConfig extends DefForm implements MenuListener
          else if(type==SR.get(SR.MS_hotkeysStr)){
  
          }
-         else if(type==SR.get(SR.MS_astatusStr)){
-            if(null != autoAwayType) cf.autoAwayType=autoAwayType.getSelectedIndex();
-            if(null != fieldAwayDelay) cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
-            if(null != awayStatus) cf.setAutoStatusMessage=awayStatus.getValue();
-         } 
+//#ifdef AUTOSTATUS
+//#          else if(type==SR.get(SR.MS_astatusStr)){
+//#             if(null != autoAwayType) cf.autoAwayType=autoAwayType.getSelectedIndex();
+//#             if(null != fieldAwayDelay) cf.autoAwayDelay=Integer.parseInt(fieldAwayDelay.getValue());
+//#             if(null != awayStatus) cf.setAutoStatusMessage=awayStatus.getValue();
+//#          }
+//#endif
          else if(type==SR.get(SR.MS_clchatStr)){
             //cf.useClassicChat=useClassicChat.getValue();
             if(null != use_phone_theme) cf.use_phone_theme=use_phone_theme.getValue();

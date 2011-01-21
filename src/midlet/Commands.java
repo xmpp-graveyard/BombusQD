@@ -158,7 +158,9 @@ public class Commands {
         cmdPurge.setImg(0x33);
         cmdAddSearchQuery.setImg(0x83);
         cmdSelect.setImg(0x60);
+//#ifdef ARCHIVE
         cmdArch.setImg(0x64);
+//#endif
         cmdCopy.setImg(0x23);
         cmdCopyPlus.setImg(0x23);
         cmdxmlSkin.setImg(0x07);

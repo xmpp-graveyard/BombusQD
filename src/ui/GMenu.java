@@ -85,7 +85,7 @@ public class GMenu extends Canvas {
    public final static byte USERKEYSLIST=28; 
    public final static byte RECONNECT=30; 
    public final static byte NEWVECTORCHAT=31; 
-   
+   public final static byte AFFILIATIONS_EDIT=32;
    
    
 

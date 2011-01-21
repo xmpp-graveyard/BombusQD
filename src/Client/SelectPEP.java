@@ -400,13 +400,16 @@ public final class SelectPEP extends VirtualList implements
 
     protected void pointerPressed(int x, int y) { 
         super.pointerPressed(x,y);
+        if (pointer_state != Client.Constants.POINTER_SECOND && pointer_state != Client.Constants.POINTER_NONE)
+            return;
         if (x>=xCnt*imgWidth) return;
+        if (pointer_state == Client.Constants.POINTER_SECOND && xCursor!= x/imgWidth)
+            pointer_state = Client.Constants.POINTER_NONE;
         xCursor=x/imgWidth;
         setRotator();
         if (cursor!=lines-1) return;
         if (xCursor >= xLastCnt) xCursor=xLastCnt-1;
     }
-    
     public void userKeyPressed(int keyCode) {
         switch (keyCode) {
             case KEY_NUM3 :

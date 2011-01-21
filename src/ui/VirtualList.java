@@ -398,6 +398,10 @@ public abstract class VirtualList
          gm.phoneWidth = width;
          gm.phoneHeight = height;        
 
+	if(midlet.BombusQD.cf.isTouchPhone)
+		midlet.BombusQD.cf.minHeight = height/16;
+	else
+		midlet.BombusQD.cf.minHeight = height/26;
         
 //#ifdef BACK_IMAGE
 //#         createImage(true);
@@ -435,6 +439,7 @@ public abstract class VirtualList
     public VirtualList(Display display) {
         this();
         attachDisplay(display);
+	
     }
 
     public void attachDisplay (Display display) {

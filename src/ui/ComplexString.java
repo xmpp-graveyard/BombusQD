@@ -51,8 +51,8 @@ public class ComplexString implements VirtualElement {
     protected Font font=FontCache.getFont(false, FontCache.msg);
 
     private int font_height = font.getHeight();
-    private int height;
-    private int width;
+    protected int height;
+    protected int width;
     private ImageList imageList;
     private int colorBGnd;
     private int color;

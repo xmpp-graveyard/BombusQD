@@ -44,7 +44,9 @@ import locale.SR;
 import Client.Contact;
 import ui.controls.AlertBox;
 import Messages.MessageItem;
-import IE.IEMenu;
+//#ifdef IMPORT_EXPORT
+//# import IE.IEMenu;
+//#endif
 
 /**
  *
@@ -63,7 +65,9 @@ public class ArchiveList
     Command cmdNew;
     Command cmdDelete;
     Command cmdDeleteAll;
-    Command cmdExport;
+//#ifdef IMPORT_EXPORT
+//#     Command cmdExport;
+//#endif
 
     MessageArchive archive;
     
@@ -100,9 +104,9 @@ public class ArchiveList
        cmdNew = new Command(SR.get(SR.MS_NEW), Command.SCREEN, 5);
        cmdDelete = new Command(SR.get(SR.MS_DELETE), Command.SCREEN, 9);
        cmdDeleteAll = new Command(SR.get(SR.MS_DELETE_ALL), Command.SCREEN, 10);
-       //if(midlet.BombusQD.cf.module_ie){
-       cmdExport = new Command(SR.get(SR.MS_ieStr), Command.SCREEN, 11);           
-       //}
+//#ifdef IMPORT_EXPORT
+//#         cmdExport = new Command(SR.get(SR.MS_ieStr), Command.SCREEN, 11);
+//#endif
         
         archive=new MessageArchive(where);
 	MainBar mainbar=new MainBar(
@@ -148,7 +152,9 @@ public class ArchiveList
             addCommand(cmdDeleteAll); cmdDeleteAll.setImg(0x41);
         }
         addCommand(cmdNew); cmdNew.setImg(0x47);
-        addCommand(cmdExport); cmdExport.setImg(0x60);
+//#ifdef IMPORT_EXPORT
+//#     addCommand(cmdExport); cmdExport.setImg(0x60);
+//#endif
         
 //#ifdef MENU_LISTENER
         super.addCommands();
@@ -185,10 +191,11 @@ public class ArchiveList
         super.commandAction(c,d);
         
 	Msg m=getMessage(cursor);
-     
-        if(c==cmdExport) {
-            display.setCurrent(new IE.IEMenu(display, this));
-        }
+//#ifdef IMPORT_EXPORT
+//#     if(c==cmdExport) {
+//#         display.setCurrent(new IE.IEMenu(display, this));
+//#     }
+//#endif
         if (c==cmdNew) { new archiveEdit(display, this, -1, where, this); }
 	if (m==null) return;
         
