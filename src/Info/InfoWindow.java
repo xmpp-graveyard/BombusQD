@@ -149,8 +149,10 @@ public class InfoWindow
         }
         
         name = new LinkString(SR.get(SR.MS_STATS)){ 
-             public void doAction() { 
-                 new Statistic.StatsWindow(midlet.BombusQD.getInstance().display);
+             public void doAction() {
+                 //#ifdef STATS
+//#                  new Statistic.StatsWindow(midlet.BombusQD.getInstance().display);
+                 //#endif
              }
         };
         itemsList.addElement(name);

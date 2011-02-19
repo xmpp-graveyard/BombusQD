@@ -571,9 +571,12 @@ public class PluginsConfig extends DefForm implements MenuListener
           //String type = touchLeftCommand();
           String type=getFocusedObject().toString();
           if(touchLeftCommand()=="") return;
-          if(type==SR.get(SR.MS_hotkeysStr)){
-           display.setCurrent(new ui.keys.userKeysList(display));
-          }
+          //#ifdef USER_KEYS
+//#           if(type==SR.get(SR.MS_hotkeysStr)){
+//# 
+//#            display.setCurrent(new ui.keys.userKeysList(display));
+//#           }
+          //#endif
           else if(type==SR.get(SR.MS_COLOR_TUNE)){
            display.setCurrent(new Colors.ColorConfigForm(display, this));
           }         
